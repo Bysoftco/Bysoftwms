@@ -1,0 +1,111 @@
+<style>
+
+  tbody tr.odd th,tbody tr.odd td {border-color:#EBE5D9;background:#F7F4EE;}
+
+  tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
+
+</style>
+
+<script>
+
+  function borrar_foto(id_reg, orden, nombre) {
+
+    if(confirm("\u00bfDesea eliminar la foto "+nombre+"?")) {
+
+      $("#vFotos").load("./scripts_index.php", {
+
+      clase:'Orden',metodo:'regBorrar',id:id_reg,do_asignado:orden,nombre_foto:nombre,mostrar:1},
+
+      function(datos){
+
+      });
+
+    }
+
+  }
+
+  
+
+  $(function() {
+
+    
+
+	$("a.documento_id").click(function() { //check for the first selection
+
+	  var $column = $(this).attr('id'); // assign the ID of the column
+
+	   
+
+      with (document.verRegistros){
+
+	  	if($column == 1 && n.value==1){
+
+		  var orden=$('#do_asignado').val();
+
+		} else {
+
+		  var orden=do_asignado[$column-1].value;
+
+          //$( "#dialog-form" ).dialog( "close" );
+
+		}	
+
+      }
+
+
+
+      $("div#componente_central").load("./scripts_index.php", {clase:'Anexos',metodo:'getAnexos',do_asignado:anexos}, function(data){
+
+      });
+
+	});
+
+  });
+
+</script>
+
+<p><span id="msgbox" style="display:block;text-align:left" class="{estilo}" >{mensaje}</span></p>
+
+<form  name="verRegistros" method="post" id="verRegistros" action="scripts_index.php">
+
+  <table width="100%" class="ui-widget ui-widget-content" id="users" >
+
+    <thead>
+
+      <tr class="ui-widget-header "> 
+
+        <th>&nbsp;Fecha Foto</th>
+
+        <th>&nbsp;Nombre</th>
+
+        <th colspan=2>&nbsp;Acciones 
+
+          <input name="n" type="hidden" id="n" value="{num_registros}"></th>
+
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <!-- BEGIN ROW -->
+
+      <tr class="{odd}"> 
+
+        <td>{fecha_foto} </td>
+
+        <td>{nombre_foto} </td>
+
+		<td>&nbsp;<a href="#" onclick="borrar_foto('{id}','{orden}','{nombre_foto}');return false;">Eliminar</a></td>
+
+		<td>&nbsp;<a target='_blank' href='integrado/_files/{nombre_foto}'>Ver</a></td>
+
+      </tr>
+
+      <!-- END ROW -->
+
+    </tbody>
+
+  </table>
+
+</form>

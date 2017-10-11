@@ -1,0 +1,126 @@
+{COMODIN}
+<div style="height: 30px;"></div>
+<form name="envioDatos" id="envioDatos" action="javascript:EnviarFormulario()">
+	<table align="center" border='1'
+		width="70%" cellpadding="0" cellspacing="0" id="tabla_rda">
+		<tr class="titulo encabezadoTabla">
+			<td colspan="2" height="30px" align="center">{titlulo_tabla}</td>
+		</tr>
+		<tr>
+			<td width="30%" class="espacio titulo">Usuario </td>
+			<td><input class="inputTabla required" type="text" name="sigusu_id" id="sigusu_id" value="{sigusu_id}" /></td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Perfil </td>
+			<td><select class="selectTabla required" name="sigusu_perfil" id="sigusu_perfil">{select_perfil}</select></td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Nombres </td>
+			<td><input class="inputTabla required" type="text" name="sigusu_nombres" id="sigusu_nombres" value="{sigusu_nombres}" /></td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Apellidos </td>
+			<td><input class="inputTabla required" type="text" name="sigusu_apellidos" id="sigusu_apellidos" value="{sigusu_apellidos}" /></td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Email </td>
+			<td><input class="inputTabla required email" type="text" name="sigusu_mail" id="sigusu_mail" value="{sigusu_mail}" /></td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Oficina </td>
+			<td><select class="selectTabla required" name="sigusu_oficina" id="sigusu_oficina">{select_oficina}</select></td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Nivel </td>
+			<td><select class="selectTabla required" name="sigusu_nivel" id="sigusu_nivel">{select_nivel}</select></td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Tipo de Gestor</td>
+			<td><select class="selectTabla required" name="sigusu_gestor" id="sigusu_gestor">{select_gestor}</select></td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">G&eacute;nero</td>
+			<td><select class="selectTabla required" name="sigusu_genero" id="sigusu_genero">{select_genero}</select></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center" height="50px"><input class="button small yellow2" type="submit" value=" ENVIAR " /></td>
+		</tr>
+	</table>
+	<input type="hidden" name="id" id="id" value="{id}" />
+	
+	<input type="hidden" name="page" id="page" value="{page}" />
+	<input type="hidden" name="id_page" id="id_page" value="{id_page}" />
+	<input type="hidden" name="orden" id="orden" value="{orden}" />
+	<input type="hidden" name="filtroPerfil" id="filtroPerfil" value="{filtroPerfil}" />
+	<input type="hidden" name="filtroOficina" id="filtroOficina" value="{filtroOficina}" />
+	<input type="hidden" name="filtroNivel" id="filtroNivel" value="{filtroNivel}" />
+	<input type="hidden" name="filtroGestor" id="filtroGestor" value="{filtroGestor}" />
+	<input type="hidden" name="filtroGenero" id="filtroGenero" value="{filtroGenero}" />
+</form>
+<script>
+	$().ready(function() {
+		$("#envioDatos").validate();
+	});
+
+	function usuarioValido(){
+		var usuario=$('#sigusu_id').attr('value');
+		for(var i=0; i<usuario.length; i++){
+			if(usuario[i]==' '){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	function EnviarFormulario(){
+		if(usuarioValido()){
+			if(nombreValido()=='valido'){
+					$.ajax({
+						url:'index_blank.php?component=usuarios&method=editarUsuario',
+						type: "POST",
+						data:$('#envioDatos').serialize(),
+						success: function (msm){
+							jQuery(document.body).overlayPlayground('close');void(0);
+							$('#componente_central').html(msm);
+						}
+					});
+			}
+			else{
+				alert('El usuario que desea asignar ya se encuentra en uso.');
+			}
+		}
+		else{
+			alert('El usuario que desea asignar contiene espacios en blanco.\nPor Favor verifique.');
+		}
+	}
+
+	function nombreValido(){
+		var usuario = $('#sigusu_id').attr('value');
+		var ident = $('#id').attr('value');
+		var responder='';
+		$.ajax({
+			url:'index_blank.php?component=usuarios&method=validarRepetido',
+			type: "POST",
+			async:false,
+			data:'usuario='+usuario+'&id='+ident,
+			success: function (msm){
+				responder=msm;
+			}
+		});
+		return responder;
+	}
+
+	function regresar(){
+		$.ajax({
+			url:'index_blank.php?component=usuarios&method=listadoUsuarios',
+			type: "POST",
+			data:$('#envioDatos').serialize(),
+			success: function (msm){
+				jQuery(document.body).overlayPlayground('close');void(0);
+				$('#componente_central').html(msm);
+				$('.formError').remove();
+			}
+		});
+	}
+
+</script>

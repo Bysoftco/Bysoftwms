@@ -1,0 +1,176 @@
+<script>
+  function seleccion(n) {
+    $('#orden_seleccion').val($('#orden'+n).val());
+    $('#arribo').val($('#arribo'+n).val());
+  }
+  
+  $(function() {
+    $("#btnConsolidar")
+      .button({
+        icons: {
+          primary: "ui-icon-refresh"
+        }
+      })
+      .click(function() {
+        //Valida Selección de CheckBox y RadioButton
+        if(document.getElementById('total_fob2').value == 0) {
+          alert('Debe seleccionar al menos un n\u00famero de Orden');
+        } else {
+          //Verifica selección de DO-Consolidado
+          var chkElem = document.getElementsByName("n2[]");
+          var ElemOk = 0;
+					
+          for(var i=1; i <= chkElem.length; i++) {
+            if(chkElem[i-1].checked) {
+              ElemOk = 1; 
+              break;
+            }
+          }
+          //Verifica Búsqueda
+          if(ElemOk == 0) {
+            //alert('Debe seleccionar el n\u00famero de Orden Consolidado');
+            alert('Debe seleccionar el n\u00famero de Orden Integrado');
+          } else {
+            //Confirma la cantidad seleccionada
+            //if(confirm('\u00bfConfirma consolidar la cantidad '+$('#tot_cant_nonac').val()+'?')) {
+            if(confirm('\u00bfConfirma integrar la cantidad '+$('#tot_cant_nonac').val()+'?')) {
+              var cmdOK = false;
+              //Verifica Referencia diferente a Bultos y Bultos Reempacados
+              if($('#alerta').val() === 'true')
+                //cmdOK = confirm('Referencia diferente a BULTOS y BULTOS REEMPACADOS - \u00bfConfirma Consolidar?') 
+                cmdOK = confirm('Referencia diferente a BULTOS y BULTOS REEMPACADOS - \u00bfConfirma Integrar?')
+                  ? true : false;                
+              else cmdOK = true;
+              if(cmdOK) {
+                //Enviar datos a addItemReempacar
+                $.ajax({
+                  url:'./scripts_index.php',
+                  type: "POST",
+                  async: false,
+                  data: $("#listadoConsolidar").serialize(),
+                  success: function(msm) {
+                    //alert(msm);
+                    $('#tabs').tabs("select", 0);
+                  }
+                });
+              }  
+            } 
+          }
+        }
+        return false;
+      });
+  });
+  
+  function SumaTotales() {
+    var sum_nec = 0;
+    var sum_nep = 0;
+    var sum_nef = 0;
+    var chkElem = document.getElementsByName("n[]");
+    var alerta = document.getElementById("alerta").value;
+
+    for(var i=1; i <= chkElem.length; i++) {
+      nec = "cant"+i;
+      nep = "peso"+i;
+      nef = "fob"+i;
+      cref = "codref"+i;
+
+      if(chkElem[i-1].checked) {
+        sum_nec += parseFloat($("#"+nec).val());
+        sum_nep += parseFloat($("#"+nep).val());
+        sum_nef += parseFloat($("#"+nef).val());
+        alerta = ($("#"+cref).val()!=1 && $("#"+cref).val()!=2) ? true : false;
+      }
+    }
+    document.getElementById("tot_cant_nonac").value = sum_nec.toFixed(2);
+    document.getElementById("tot_peso_nonac").innerHTML = formatoNumero(sum_nep,'');
+    document.getElementById("total_fob").innerHTML = formatoNumero(sum_nef,'');
+    document.getElementById("tot_peso_nonac2").value = sum_nep.toFixed(2);
+    document.getElementById("total_fob2").value = sum_nef.toFixed(2);
+    document.getElementById("alerta").value = alerta;
+  } 
+</script>
+<style>
+  .ui-button { margin-left: -1px; }
+  .ui-button-icon-only .ui-button-text { padding: 0.35em; } 
+  .ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; width:200px;}
+  #formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
+</style>
+<div id="users-contain" class="ui-widget" > 
+  <link rel="stylesheet" type="text/css" href="./_estilos/jquery.autocomplete.css" />
+  <form id="listadoConsolidar" name="listadoConsolidar"> 
+    <input name="orden_seleccion" type="hidden" id="orden_seleccion" value="{orden_seleccion}" />  
+	
+    <fieldset class="ui-widget ui-widget-content ui-corner-all">
+      <!-- <legend class="ui-widget ui-widget-header ui-corner-all"> Disponible para Consolidar</legend> -->
+      <legend class="ui-widget ui-widget-header ui-corner-all"> Disponible para Integrar</legend>
+      <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
+      <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
+        <thead>
+          <tr class="ui-widget-header"> 
+            <th>No.</th>
+            <th>Orden</th>
+            <th>Documento TTE</th>
+            <th>Referencia</th>
+            <th width="5%" style="text-align: center;">Cantidad</th>
+            <th style="text-align: center;">Peso</th>
+            <th style="text-align: center;">Valor</th>
+            <!-- <th style="text-align: center;">Consolidar</th> -->
+            <th style="text-align: center;">Integrar</th>
+            <!-- <th style="text-align: center;">DO-Consolidado -->
+            <th style="text-align: center;">DO-Integrado
+              <input name="n" type="hidden" id="n" value="{num_registros}" />
+            </th>          
+          </tr>
+        </thead>
+        <tbody>
+        {comodin} 
+          <!-- BEGIN ROW -->
+          <tr class="{odd}"> 
+            <td>{n}</td>
+            <td>{orden} <input name="orden[]" type="hidden" id="orden{n}" value="{orden}" /></td>
+            <td>{doc_tte}</td>
+            <td>[{cod_referencia}] {nombre_referencia}
+              <input type="hidden" name="codref[]" id="codref{n}" value="{cod_referencia}"/>
+              <input type="hidden" name="nomref[]" id="nomref{n}" value="{nombre_referencia}"/>
+            </td>
+            <td width="5%" style="text-align: right;">{cant_nonac_f}</td>
+            <td style="text-align: right;">{peso_nonac_f}</td>
+            <td style="text-align: right;">{fob_nonac_f}</td>
+            <td style="text-align: center;"><input name="n[]" type="checkbox" id="n" value="{n}" onclick="SumaTotales()" /></td>
+            <input name="arribo[]" type="hidden" id="arribo{n}" value="{arribo}" />
+            <input name="item[]" type="hidden" id="item{n}" value="{item}" />
+            <input name="cant[]" type="hidden" id="cant{n}" value="{cantidad_nonac}" />           
+            <input name="peso[]" type="hidden" id="peso{n}" value="{peso_nonac}" />
+            <input name="fob[]" type="hidden" id="fob{n}" value="{fob_nonac}" />
+            <td style="text-align: center;"><input name="n2[]" type="radio" id="n2{n}" value="" onclick="javascript: seleccion({n})" /></td>
+          </tr>          
+          <!-- END ROW -->
+          <tr> 
+            <td>Totales</td>
+            <td>{n}</td>
+            <td>{n}</td>
+            <td>{n}</td>
+            <td><input type="text" style="text-align:right;" name="tot_cant_nonac" id="tot_cant_nonac" value="" size="15"/></td>
+            <td style="text-align: right;"><div id="tot_peso_nonac"></div></td>
+            <td style="text-align: right;"><div id="total_fob"></div></td>
+            <td>{n}</td>
+            <td>{n}</td>
+          </tr>
+        </tbody>
+        <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}" />
+        <input name="tot_peso_nonac2" type="hidden" id="tot_peso_nonac2" value="" />
+        <input name="total_fob2" type="hidden" id="total_fob2" value="0" />
+        <input name="arribo" type="hidden" id="arribo" value="" />
+        <input type="hidden" name="ns" id="ns" value=""/> 
+      </table>
+      <!-- <div align="center"><button id="btnConsolidar">Consolidar</button></div> -->
+      <div align="center"><button id="btnConsolidar">Integrar</button></div>
+    </fieldset>
+    <input type="hidden" name="clase" value="Reempaque" />
+    <input type="hidden" name="metodo" value="addItemReempacar" />
+    <input type="hidden" name="id_reempaque" value="{id_reempaque}" />
+    <input type="hidden" name="mostrar" value="1" />
+    <input type="hidden" name="tipo_movimiento" value="5" />
+    <input type="hidden" name="alerta" id="alerta" value="false"/>  
+  </form>
+</div>

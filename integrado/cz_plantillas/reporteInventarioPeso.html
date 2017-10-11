@@ -1,0 +1,218 @@
+    <link rel="StyleSheet" href="./integrado/cz_estilos/reporteGerencial.css" type="text/css">
+
+    <style>
+
+        /*
+
+    table {
+
+       FONT-SIZE: 12px; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; COLOR:red;
+
+    }*/
+
+        
+
+		
+
+  </style>
+
+    <script language="javascript" type="text/javascript">
+
+    function excel() {
+
+	//alert("x")
+
+        document.reporteForm.metodo.value='generaExcel' ;
+
+        document.reporteForm.submit();
+
+    }
+
+	</script>
+
+</head><body id="home">
+
+<div id="boundary"> 
+
+  <div id="content">
+
+  	<div id="intro"> 
+
+      <h2><strong><font size="4" face="Verdana, Arial, Helvetica, sans-serif"><img src="./integrado/imagenes/cliente.png" width="90" height="45" align="right"></font></strong></h2>
+
+    </div>
+
+	<form action="./scripts_index.php" name="reporteForm" id="reporteForm" method="post" onSubmit="javascript : return formEnvio()">	
+
+      <div id="itsthetable"> 
+
+        <table summary="Submitted table designs" style=" font-size:12px;">
+
+          <caption>
+
+          Inventario por peso{titulo} <a href="javascript: excel()" ><img src="./integrado/imagenes/report-excel.png" border="0" style="display:{mostrarExcel};" ></a> 
+
+          <a href="javascript: window.print();" ><img src="./integrado/imagenes/printer.png" border="0" style="display:{mostrarExcel};" ></a> 
+
+          </caption>
+
+          <thead>
+
+            <tr> 
+
+              <th height="23">Cliente</th>
+
+              <th>Orden</th>
+
+              <th>Documento</th>
+
+              <th>Referencia</th>
+
+              <th>Peso</th>
+
+              <th>NAL</th>
+
+              <th>EXT</th>
+
+              <th>RET NAL</th>
+
+              <th>RET EXT</th>
+
+              <th>PPRO NAL</th>
+
+              <th>PPRO EXT</th>
+
+              <th>PTER NAL</th>
+
+              <th>PTER EXT</th>
+              <th>RPK</th>
+              <th>KIT NAL</th>
+
+              <th>KIT EXT</th>
+
+            </tr>
+
+          </thead>
+
+          <tfoot>
+
+            <tr> 
+
+              <th colspan="25" scope="row"> [{num_registros}]Registros 
+                <input name="nombreSede" type="hidden" id="nombreSede" value="{nombreSede}"> 
+
+                <input name="nombreEstado" type="hidden" id="nombreEstado2" value="{nombreEstado}">
+
+                {fechaActual} </th>
+
+            </tr>
+
+          </tfoot>
+
+          <tbody>
+
+            <!-- BEGIN ROW -->
+
+            <tr> 
+
+              <th scope="row" id="r101">{nombre_cliente}</th>
+
+              <td>{orden}</td>
+
+              <td>{doc_tte}</td>
+
+              <td>{nombre_referencia}</td>
+
+              <td title="Peso">{peso_f}</td>
+
+              <td title="Peso Nacional">{p_nal_f}</td>
+
+              <td title="Peso Extrangero">{p_ext_f}</td>
+
+              <td title="Peso Retirado Nacional">{p_ret_nal_f}</td>
+
+              <td title="Peso Retirado Extrangero">{p_ret_ext_f}</td>
+
+              <td title="Peso Salida Por Reempaque Nacional">{p_sptr_nal_f}</td>
+
+              <td title="Peso Salida Por Reempaque Extrangero">{p_sptr_ext_f}</td>
+
+              <td title="Peso Producto Terminado Nacional">{p_prtt_nal_f}</td>
+
+              <td title="Peso Producto Terminado Extrangero">{p_prtt_ext_f}</td>
+              <td title="Peso Producto Terminado Extrangero">{p_rpk}</td>
+              <td title="Peso Producto Terminado Extrangero">{p_kit_nal_f}</td>
+
+              <td title="Peso Producto Terminado Extrangero">{p_kit_ext_f}</td>
+
+            </tr>
+
+            <!-- END ROW -->
+
+          </tbody>
+
+          <tr> 
+
+            <th>Totales</th>
+
+            <th></th>
+
+            <th></th>
+
+            <th></th>
+
+            <th>{tpeso_f}</th>
+
+            <th>{tp_nal_f}</th>
+
+            <th>{tp_ext_f}</th>
+
+            <th>{tp_ret_nal_f}</th>
+
+            <th>{tp_ret_ext_f}</th>
+
+            <th>{tp_sptr_nal_f}</th>
+
+            <th>{tp_sptr_ext_f}</th>
+
+            <th>{tp_prtt_nal_f}</th>
+
+            <th>{tp_prtt_ext_f}</th>
+            <th>{p_rpk_t}</th>
+            <th>{tp_kit_nal_f}</th>
+
+            <th>{tp_kit_ext_f}</th>
+
+          </tr>
+
+        </table>
+
+      </div>
+
+      <div> 
+
+        <p><a href="javascript: excel()" ><img src="./integrado/imagenes/report-excel.png" border="0" style="display:{mostrarExcel};" ></a> 
+
+          <a href="javascript: window.print();" ><img src="./integrado/imagenes/printer.png" border="0" style="display:{mostrarExcel};" ></a> 
+
+          <input name="clase" type="hidden" id="clase" value="Reporte">
+
+          <input name="metodo" type="hidden" id="metodo" value="">
+
+          <input name="por_cuenta_filtro" type="hidden" id="por_cuenta_filtro" value="{por_cuenta_filtro}">
+
+          <input name="fecha_fin" type="hidden" id="fecha_fin" value="{fecha_fin}">
+
+          <input name="fecha_inicio" type="hidden" id="fecha_inicio" value="{fecha_inicio}">
+
+          <input name="titulo" type="hidden" id="titulo" value="{titulo}">
+
+        </p>
+
+    </div>
+
+	</form>
+
+</div>
+
+</div></body>

@@ -1,0 +1,168 @@
+<?php
+class UsuariosVista{
+
+	function __construct(){
+		$this->template = new HTML_Template_IT();
+	}
+
+	function template_inicial($arreglo, $datos, $paginacion, $filtros){
+		$plantilla = new HTML_Template_IT();
+		$plantilla->loadTemplateFile( COMPONENTS_PATH . 'usuarios/views/tmpl/templateArbol.php' );
+		$plantilla->setVariable('COMODIN', '' );
+		ob_start();
+		$this->listadoUsuarios($arreglo, $datos, $paginacion);
+		$contenido = ob_get_contents();
+		ob_end_clean();
+		$plantilla->setVariable('contenido' , $contenido);
+		$plantilla->setVariable('menu'      , $this->filtros($filtros));
+		$plantilla->show();
+	}
+
+	function filtros($filtros){
+		$filtro='<center>
+					<table>
+						<tr height="40px">
+							<td><select class="selectFiltro" onChange="filtrarSelect(\'filtroPerfil\', this.value)">'.$filtros['select_perfil'].'</select></td>
+						</tr>
+						<tr height="40px">
+							<td><select class="selectFiltro" onChange="filtrarSelect(\'filtroOficina\', this.value)">'.$filtros['select_oficina'].'</select></td>
+						</tr>
+						<tr height="40px">
+							<td><select class="selectFiltro" onChange="filtrarSelect(\'filtroNivel\', this.value)">'.$filtros['select_nivel'].'</select></td>
+						</tr>
+						<tr height="40px">
+							<td><select class="selectFiltro" onChange="filtrarSelect(\'filtroGestor\', this.value)">'.$filtros['select_gestor'].'</select></td>
+						</tr>
+						<tr height="40px">
+							<td><select class="selectFiltro" onChange="filtrarSelect(\'filtroGenero\', this.value)">'.$filtros['select_genero'].'</select></td>
+						</tr>
+						<tr height="40px">
+							<td><input type="button" value="LIMPIAR FILTRO" class="button small yellow2" onclick="limpiarFiltro()" /></td>
+						</tr>
+					</table>
+				</center>';
+		return $filtro;
+	}
+
+	function listadoUsuarios($arreglo, $datos, $paginacion){
+		$this->template->loadTemplateFile( COMPONENTS_PATH . 'usuarios/views/tmpl/listadoUsuarios.php' );
+		$this->template->setVariable('COMODIN', '' );
+		$this->template->setVariable('paginacion', $paginacion );
+
+		if(isset($arreglo['page']) && !empty($arreglo['page'])){
+			$this->template->setVariable('page_temporal'      ,$arreglo['page']);
+		}
+		if(isset($arreglo['filtroPerfil']) && !empty($arreglo['filtroPerfil'])){
+			$this->template->setVariable('filtroPerfil'      ,$arreglo['filtroPerfil']);
+		}
+		if(isset($arreglo['filtroOficina']) && !empty($arreglo['filtroOficina'])){
+			$this->template->setVariable('filtroOficina'      ,$arreglo['filtroOficina']);
+		}
+		if(isset($arreglo['filtroNivel']) && !empty($arreglo['filtroNivel'])){
+			$this->template->setVariable('filtroNivel'      ,$arreglo['filtroNivel']);
+		}
+		if(isset($arreglo['filtroGestor']) && !empty($arreglo['filtroGestor'])){
+			$this->template->setVariable('filtroGestor'      ,$arreglo['filtroGestor']);
+		}
+		if(isset($arreglo['filtroGenero']) && !empty($arreglo['filtroGenero'])){
+			$this->template->setVariable('filtroGenero'      ,$arreglo['filtroGenero']);
+		}
+		if(isset($arreglo['orden']) && !empty($arreglo['orden'])){
+			$this->template->setVariable('orden'      ,$arreglo['orden']);
+			$this->template->setVariable('id_page'      ,$arreglo['id_page']);
+		}
+		$codbagcolor=1;
+		foreach($datos as $value){
+			$this->template->setCurrentBlock("ROW");
+			if($codbagcolor==1){
+				$this->template->setVariable('id_tr_estilo','tr_bla');
+				$codbagcolor=2;
+			}else{
+				$this->template->setVariable('id_tr_estilo','tr_ros_cla');
+				$codbagcolor=1;
+			}
+			$this->template->setVariable('id'    , $value['id']);
+			$this->template->setVariable('usuario'    , strtoupper($value['sigusu_id']));
+			$this->template->setVariable('perfil'     , strtoupper($value['nombre_perfil']));
+			$this->template->setVariable('nombres'    , strtoupper($value['sigusu_nombres']));
+			$this->template->setVariable('apellidos'  , strtoupper($value['sigusu_apellidos']));
+			$this->template->setVariable('email'      , $value['sigusu_mail']);
+			$this->template->setVariable('oficina'    , $value['nombre_oficina']);
+			$this->template->setVariable('nivel'      , $value['sigusu_nivel']);
+
+			$gestor='No';
+			if($value['sigusu_gestor']=='S'){$gestor='Gestor';}
+			if($value['sigusu_gestor']=='N'){$gestor='No';}
+			if($value['sigusu_gestor']=='Z'){$gestor='Admin. Gestores';}
+
+			$genero='';
+			if($value['sigusu_genero']=='M'){$genero='Masculino';}
+			if($value['sigusu_genero']=='F'){$genero='Femenino';}
+
+			$this->template->setVariable('gestor'     , strtoupper($gestor));
+			$this->template->setVariable('genero'     , strtoupper($genero));
+			$this->template->parseCurrentBlock("ROW");
+		}
+		$this->template->show();
+	}
+
+	function agregarUsuario($arreglo){
+		$this->template->loadTemplateFile( COMPONENTS_PATH . 'usuarios/views/tmpl/editarUsuario.php' );
+		$this->template->setVariable('COMODIN', '' );
+		$this->template->setVariable('titlulo_tabla', $arreglo['titlulo_tabla'] );
+		$this->template->setVariable('select_perfil', $arreglo['select_perfil'] );
+		$this->template->setVariable('select_oficina', $arreglo['select_oficina'] );
+		$this->template->setVariable('select_nivel', $arreglo['select_nivel'] );
+		$this->template->setVariable('select_gestor', $arreglo['select_gestor'] );
+		$this->template->setVariable('select_genero', $arreglo['select_genero'] );
+
+		$this->template->setVariable('id'                , isset($arreglo['id'])?$arreglo['id']:'');
+		$this->template->setVariable('sigusu_id'         , isset($arreglo['datosUsuario']['sigusu_id'])?$arreglo['datosUsuario']['sigusu_id']:'');
+		$this->template->setVariable('sigusu_apellidos'  , isset($arreglo['datosUsuario']['sigusu_apellidos'])?$arreglo['datosUsuario']['sigusu_apellidos']:'');
+		$this->template->setVariable('sigusu_nombres'    , isset($arreglo['datosUsuario']['sigusu_nombres'])?$arreglo['datosUsuario']['sigusu_nombres']:'');
+		$this->template->setVariable('sigusu_mail'       , isset($arreglo['datosUsuario']['sigusu_id'])?$arreglo['datosUsuario']['sigusu_mail']:'');
+
+
+		$this->template->setVariable('page'              , isset($arreglo['page_temporal'])?$arreglo['page_temporal']:'');
+		$this->template->setVariable('id_page'           , isset($arreglo['page'])?$arreglo['id_page']:'');
+		$this->template->setVariable('orden'             , isset($arreglo['page'])?$arreglo['orden']:'');
+		$this->template->setVariable('filtroPerfil'      , isset($arreglo['page'])?$arreglo['filtroPerfil']:'');
+		$this->template->setVariable('filtroOficina'     , isset($arreglo['filtroOficina'])?$arreglo['filtroOficina']:'');
+		$this->template->setVariable('filtroNivel'       , isset($arreglo['filtroNivel'])?$arreglo['filtroNivel']:'');
+		$this->template->setVariable('filtroGestor'      , isset($arreglo['filtroGestor'])?$arreglo['filtroGestor']:'');
+		$this->template->setVariable('filtroGenero'      , isset($arreglo['filtroGenero'])?$arreglo['filtroGenero']:'');
+
+		$this->template->show();
+	}
+
+	function verUsuario($arreglo){
+		$this->template->loadTemplateFile( COMPONENTS_PATH . 'usuarios/views/tmpl/verUsuario.php' );
+		$this->template->setVariable('COMODIN', '' );
+		$this->template->setVariable('id'                , $arreglo['datosUsuario']['id']);
+		$this->template->setVariable('sigusu_id'         , $arreglo['datosUsuario']['sigusu_id']);
+		$this->template->setVariable('sigusu_apellidos'  , $arreglo['datosUsuario']['sigusu_apellidos']);
+		$this->template->setVariable('sigusu_nombres'    , $arreglo['datosUsuario']['sigusu_nombres']);
+		$this->template->setVariable('sigusu_mail'       , $arreglo['datosUsuario']['sigusu_mail']);
+
+		$this->template->setVariable('nombre_perfil'     , $arreglo['datosUsuario']['nombre_perfil']);
+		$this->template->setVariable('nombre_oficina'    , $arreglo['datosUsuario']['nombre_oficina']);
+		$this->template->setVariable('sigusu_nivel'      , $arreglo['datosUsuario']['sigusu_nivel']);
+		$gestor='NO';
+		if($arreglo['datosUsuario']['sigusu_gestor']=='S'){
+			$gestor='GESTOR';
+		}
+		if($arreglo['datosUsuario']['sigusu_gestor']=='Z'){
+			$gestor='ADMIN. GESTORES';
+		}
+		$this->template->setVariable('sigusu_gestor'      , $gestor);
+
+		$genero='MASCULINO';
+		if($arreglo['datosUsuario']['sigusu_genero']=='F'){
+			$genero='FEMENINO';
+		}
+		$this->template->setVariable('sigusu_genero'      , $genero);
+
+		$this->template->show();
+	}
+}
+?>

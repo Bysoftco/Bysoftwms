@@ -1,0 +1,18 @@
+$query = "SELECT orden, doc_tte, nombre_referencia, codigo_ref, documento, nombre_cliente, nombre_ubicacion,
+                  ingreso, SUM(cantidad) AS cantidad, SUM(peso) AS peso FROM (SELECT do_asignados.do_asignado AS orden,
+                  do_asignados.doc_tte AS doc_tte, ref.nombre AS nombre_referencia, ref.codigo_ref AS codigo_ref,
+                  clientes.razon_social AS nombre_cliente, clientes.numero_documento AS documento, do_asignados.ingreso AS ingreso, 
+                  p.nombre AS nombre_ubicacion,
+                  CASE WHEN im.tipo_movimiento IN(1) AND (im.flg_control = 1) AND ((cantidad_naci!=0) OR (cantidad_nonac!=0)) THEN ie.cantidad
+                  ELSE 0 END AS cantidad,
+                  CASE WHEN im.tipo_movimiento IN(1) AND (im.flg_control = 1) AND ((cantidad_naci!=0) OR (cantidad_nonac!=0)) THEN ie.peso
+                  ELSE 0 END AS peso
+                FROM inventario_movimientos im,inventario_entradas ie,arribos,do_asignados,clientes,referencias ref,posiciones p
+                WHERE im.inventario_entrada = ie.codigo
+                  AND arribos.arribo = ie.arribo
+                  AND arribos.orden = do_asignados.do_asignado
+                  AND clientes.numero_documento = do_asignados.por_cuenta
+                  AND ie.referencia = ref.codigo
+                  AND p.codigo = ie.posicion
+                  AND do_asignados.sede = '$sede'$arreglo[where]) AS inv
+                $arreglo[GroupBy] $arreglo[having]";

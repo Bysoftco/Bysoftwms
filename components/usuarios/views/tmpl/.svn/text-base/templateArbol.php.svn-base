@@ -1,0 +1,66 @@
+{COMODIN}
+<div id="arbol">
+	<div id="toggle">
+		<a id="close" class="close" href="javascript:void(0)"><img src="img/buttons/collapse.gif" /></a>
+		<a id="open" class="open" style="display: none;" href="javascript:void(0)"><img src="img/buttons/expand.gif" /></a>
+	</div>
+	<div id="ver_arbol">
+	{menu}
+	</div>	
+</div>
+<div id="contenido_arbol" class="contenido_arbol">
+	{contenido}
+</div>
+<script>
+		
+function ocultar_mostrar(){
+	if($('#ver_arbol').css('display')=='none'){
+		$('#ver_arbol').css('display','block');
+	}
+	else{
+		$('#ver_arbol').css('display','none');
+	}
+}
+
+$(document).ready(function(){
+	// Collapse Panel
+	$("#close").click(function(){
+		if($("div#arbol").animate({width: "3%"},1000)){
+			$("div#ver_arbol").hide(200);
+			window.setTimeout(collapse, 500);
+		}
+		$('#container').removeClass('container');
+		$('#container').addClass('containerExpand');
+	});	
+	 
+	// Expand Panel
+	$("#open").click(function(){
+		$("div#arbol").animate({width: "20%"},1000);
+		$("div#ver_arbol").show(200);
+		$('#contenido_arbol').removeClass('contenido_arbolExpand');
+		$('#contenido_arbol').addClass('contenido_arbol');
+		$('#container').removeClass('containerExpand');
+		$('#container').addClass('container');
+		
+	});
+ 
+	$("#toggle a").click(function () {
+		$("#toggle a").toggle();
+	});		
+});
+
+function collapse(){
+	$('#contenido_arbol').removeClass('contenido_arbol');
+	$('#contenido_arbol').addClass('contenido_arbolExpand');
+}
+
+function muestraDatos(oficina){
+	$.ajax({
+		  url: 'index_blank.php?component=productosMes&method=contenedorDatos&oficina='+oficina,
+		  success: function(msm){
+		    $('#contenido_arbol').html(msm);
+		  }
+		  });
+}
+
+</script>

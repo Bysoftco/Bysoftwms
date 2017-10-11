@@ -1,0 +1,146 @@
+<?php 
+require_once(CLASSES_PATH.'BDControlador.php');
+class UsuariosModelo extends BDControlador{
+	
+	var $id;
+	var $sigusu_id;
+	var $sigusu_perfil;
+	var $sigusu_apellidos;
+	var $sigusu_nombres;
+	var $sigusu_mail;
+	var $sigusu_oficina;
+	var $sigusu_nivel;
+	var $sigusu_clave='';
+	var $sigusu_bloqueado;
+	var $sigusu_cambio_clave;
+	var $sigusu_usuario_web;
+	var $sigusu_ultima_entrada;
+	var $sigusu_ultima_salida;
+	var $sigusu_gestor;
+	var $sigusu_genero;
+	var $eliminado = 0;
+	
+	var $table_name = "sig_usuarios";
+	var $module_directory= 'usuarios';
+	var $object_name = "UsuariosModelo";
+	  
+	var $campos = array('id', 'sigusu_id','sigusu_perfil','sigusu_apellidos', 'sigusu_nombres', 'sigusu_mail'
+	, 'sigusu_oficina', 'sigusu_nivel', 'sigusu_clave', 'sigusu_bloqueado', 'sigusu_cambio_clave'
+	, 'sigusu_usuario_web', 'sigusu_ultima_entrada', 'sigusu_ultima_salida', 'sigusu_gestor', 'sigusu_genero'
+	, 'eliminado');
+	
+	function __construct(){
+		parent :: Manejador_BD();
+		$this->sigusu_bloqueado='N';
+		$this->sigusu_cambio_clave='N';
+		$this->sigusu_usuario_web='S';
+	}
+	
+	function listadoUsuarios($arreglo){
+		global $db;
+		$query = "SELECT su.id,
+		                 su.sigusu_id,
+		                 su.sigusu_perfil,
+		                 sp.nombre as nombre_perfil,
+		                 su.sigusu_apellidos,
+		                 su.sigusu_nombres,
+		                 su.sigusu_mail,
+		                 su.sigusu_oficina,
+		                 sco.sigcof_descripcion nombre_oficina,
+		                 su.sigusu_nivel,
+		                 su.sigusu_clave,
+		                 su.sigusu_bloqueado,
+		                 su.sigusu_cambio_clave,
+		                 su.sigusu_usuario_web,
+		                 su.sigusu_ultima_entrada,
+		                 su.sigusu_ultima_salida,
+		                 su.sigusu_gestor,
+		                 su.sigusu_genero
+					FROM sig_usuarios su,
+					     sig_perfiles sp,
+					     SIG_CODIFICACION_OFICINAS sco
+				   WHERE su.eliminado=0
+				     AND su.sigusu_perfil = sp.id
+				     AND su.sigusu_oficina = sco.sigcof_codigo";
+		
+		if(isset($arreglo['filtroPerfil']) && !empty($arreglo['filtroPerfil'])){
+			$query.=" AND su.sigusu_perfil = $arreglo[filtroPerfil] ";
+		}
+		
+		if(isset($arreglo['filtroOficina']) && !empty($arreglo['filtroOficina'])){
+			$query.=" AND su.sigusu_oficina = $arreglo[filtroOficina] ";
+		}
+		
+		if(isset($arreglo['filtroNivel']) && !empty($arreglo['filtroNivel'])){
+			$query.=" AND su.sigusu_nivel = $arreglo[filtroNivel] ";
+		}
+		
+		if(isset($arreglo['filtroGestor']) && !empty($arreglo['filtroGestor'])){
+			$query.=" AND su.sigusu_gestor = '$arreglo[filtroGestor]' ";
+		}
+		
+		if(isset($arreglo['filtroGenero']) && !empty($arreglo['filtroGenero'])){
+			$query.=" AND su.sigusu_genero = '$arreglo[filtroGenero]' ";
+		}
+		
+		if(isset($arreglo['orden']) && !empty($arreglo['orden'])){
+			$query.=" ORDER BY $arreglo[orden] ";
+		}
+		
+		$db->query($query);
+		$mostrar = 20;
+		$retornar['paginacion']=$this->paginar($arreglo['page'],$db->countRows(),$mostrar);
+		
+		$limit= ' LIMIT '. ($arreglo['page'] -1) * $mostrar . ',' . $mostrar;
+		$query.=$limit;
+		$db->query($query);
+		$retornar['datos']=$db->getArray();
+		return $retornar;
+	}
+	
+	function validarRepetido($arreglo){
+		global $db;
+		$query="SELECT * FROM sig_usuarios WHERE sigusu_id = '$arreglo[usuario]'";
+		
+		if(isset($arreglo['id']) && !empty($arreglo['id'])){
+			$query.=" AND id <> $arreglo[id]";
+		}
+		$db->query($query);
+		return $db->getArray();
+	}
+	
+	function datosUsuario($arreglo){
+		global $db;
+		$query="SELECT * FROM sig_usuarios WHERE id = $arreglo[id]";
+		
+		$db->query($query);
+		return $db->getArray();
+	}
+	
+	function mostrarUsuario($arreglo){
+		global $db;
+		$query="SELECT su.id,
+					   su.sigusu_id,
+					   su.sigusu_perfil,
+					   sp.nombre as nombre_perfil,
+					   su.sigusu_apellidos,
+					   su.sigusu_nombres,
+					   su.sigusu_mail,
+					   su.sigusu_oficina,
+					   co.sigcof_descripcion as nombre_oficina,
+					   su.sigusu_nivel,
+					   su.sigusu_gestor,
+					   su.sigusu_genero
+					   
+		          FROM sig_usuarios su,
+		               sig_perfiles sp,
+		               SIG_CODIFICACION_OFICINAS co
+		         WHERE su.id = $arreglo[id]
+		           AND su.sigusu_perfil = sp.id
+		           AND su.sigusu_oficina = co.sigcof_codigo";
+		
+		$db->query($query);
+		return $db->getArray();
+	}
+}
+?>

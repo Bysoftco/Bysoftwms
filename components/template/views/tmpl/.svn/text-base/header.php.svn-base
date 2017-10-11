@@ -1,0 +1,14 @@
+{COMODIN}
+<div id="header">
+	<div class="contenedorHeader">
+		<div class="logo">
+			<img src="img/logos/logo_inicial_bancamia.png" />
+		</div>
+		<div class="infoUser">{NOMBRE_USUARIO}</div>
+	</div>
+	<div class="contenedorMenu">
+    	<div class="menu">
+    		{MENU}
+    	</div>
+    </div>
+</div>

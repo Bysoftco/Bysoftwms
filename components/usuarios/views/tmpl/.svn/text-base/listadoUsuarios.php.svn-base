@@ -1,0 +1,182 @@
+{COMODIN}
+<div class="ruta">ADMINISTRACIÓN DE USUARIOS</div>
+<table align="center" border='0'
+	width="95%" cellpadding="0" cellspacing="0">
+  <tr height="40px">
+    <td><div class="popups">
+    	<a class="button small yellow2" href="" onclick="agregarUsuario(0)">AGREGAR USUARIO</a>
+    	</div>
+    </td>
+  </tr>
+</table>
+<table align="center" border='1'
+	width="95%" cellpadding="0" cellspacing="0" id="tabla_rda">
+	<tr class="titulo encabezadoTabla">
+		<td colspan="10" height="30px" align="center">USUARIOS</td>
+	</tr>
+	<tr align="center" class="titulo encabezadoTabla">
+		<td class="espacio" width="10%"
+			onclick="javascript:ordenar('su.sigusu_id', 'spanUsuario')">Usuario
+			<span id="spanUsuario" class="noOrden"></span></td>
+		<td class="espacio" width="15%"
+			onclick="javascript:ordenar('sp.nombre', 'spanPerfil')">Perfil
+			<span id="spanPerfil" class="noOrden"></span></td>
+		<td class="espacio" width="15%"
+			onclick="javascript:ordenar('su.sigusu_nombres', 'spanNombres')">Nombres
+			<span id="spanNombres" class="noOrden"></span></td>
+		<td class="espacio" width="15%"
+			onclick="javascript:ordenar('su.sigusu_apellidos', 'spanApellidos')">Apellidos
+			<span id="spanApellidos" class="noOrden"></span></td>
+		<td class="espacio" width="15%"
+			onclick="javascript:ordenar('sco.sigcof_descripcion', 'spanOficina')">Oficina
+			<span id="spanOficina" class="noOrden"></span></td>
+		<td class="espacio"
+			onclick="javascript:ordenar('su.sigusu_nivel', 'spanNivel')">Nivel
+			<span id="spanNivel" class="noOrden"></span></td>
+		<td class="espacio" width="10%"
+			onclick="javascript:ordenar('su.sigusu_gestor', 'spanGestor')">Gestor
+			<span id="spanGestor" class="noOrden"></span></td>
+		<td class="espacio"
+			onclick="javascript:ordenar('su.sigusu_genero', 'spanGenero')">G&eacute;nero
+			<span id="spanGenero" class="noOrden"></span></td>
+		<td class="espacio">Acciones</td>
+	</tr>
+	<!-- BEGIN ROW  -->
+	<tr id="{id_tr_estilo}">
+		<td class="espacio"><span class="popups"><a href="" onclick="javascript:verUsuario({id})">{usuario}</a></span></td>
+		<td class="espacio">{perfil}</td>
+		<td class="espacio">{nombres}</td>
+		<td class="espacio">{apellidos}</td>
+		<td class="espacio">{oficina}</td>
+		<td class="espacio">{nivel}</td>
+		<td class="espacio">{gestor}</td>
+		<td class="espacio">{genero}</td>
+		<td class="espacio" align="center"><span class="popups"><a href="" onclick="javascript:editarUsuario({id})"><img
+				src="img/acciones/page_edit.png" title="Editar Usuario" width="17"
+				height="17" border="0" /> </a></span> - <a
+			href="javascript:eliminarUsuario({id},'{usuario}')"><img
+				src="img/acciones/delete.png" title="Eliminar Usuario" width="17"
+				height="17" border="0" /> </a></td>
+	</tr>
+	<!-- END ROW  -->
+</table>
+<center>
+	<table border="0">
+		<tr>
+			<td height="80px">
+				{paginacion}
+			</td>
+		</tr>
+	</table>
+</center>
+<form name="form_filtros" id="form_filtros" action="index_blank.php">
+	<input type="hidden" name="page" id="page" value="{page}" />
+	<input type="hidden" name="page_temporal" id="page_temporal" value="{page_temporal}" />
+	<input type="hidden" name="id_page" id="id_page" value="{id_page}" />
+	<input type="hidden" name="orden" id="orden" value="{orden}" />
+	<input type="hidden" name="filtroPerfil" id="filtroPerfil" value="{filtroPerfil}" />
+	<input type="hidden" name="filtroOficina" id="filtroOficina" value="{filtroOficina}" />
+	<input type="hidden" name="filtroNivel" id="filtroNivel" value="{filtroNivel}" />
+	<input type="hidden" name="filtroGestor" id="filtroGestor" value="{filtroGestor}" />
+	<input type="hidden" name="filtroGenero" id="filtroGenero" value="{filtroGenero}" />
+</form>
+<script>
+
+$(document).ready(function(){
+	$('.popups a').wowwindow({
+        draggable: true,
+        width:450,
+        height:400,
+        overlay: {clickToClose: false,
+        	      background: '#000000'},
+		onclose: function() {$('.formError').remove();}
+    }); 
+});
+
+$('.noOrden').html('<img src="img/buttons/menu_abajo.gif" border="0" width="12px" height="12px" />');
+var ordenadoPor=$('#id_page').attr('value');
+$('#'+ordenadoPor).html('<img src="img/buttons/img_move_down.gif" border="0" width="12px" height="12px" />');
+
+function verUsuario(id_usuario){
+	$.ajax({
+		url:'index_blank.php?component=usuarios&method=verUsuarios',
+		data:'id='+id_usuario,
+		success: function(msm){
+			$('#wowwindow-inner').html(msm);
+        }
+	});
+}
+
+function filtrar(){
+	$.ajax({
+		  url: 'index_blank.php?component=usuarios&method=listadoSimple',
+		  data: $('#form_filtros').serialize(),
+		  success: function(msm){
+		   $('#contenido_arbol').html(msm);
+		  }
+		});
+}
+
+function paginar(pagina){
+    $('#page').attr('value', pagina);
+    filtrar();
+}
+
+function filtrarSelect(idFiltrar, valor){
+	$('#'+idFiltrar).attr('value', valor);
+	filtrar();
+}
+
+function ordenar(orden, id_page){
+	$('#orden').attr('value', orden);
+	$('#id_page').attr('value', id_page);
+	filtrar();
+}
+
+function agregarUsuario(id_usuario){
+	$.ajax({
+		url:'index_blank.php?component=usuarios&method=agregarUsuario',
+		data:$('#form_filtros').serialize(),
+		type: "POST",
+		success: function(msm){
+			//$('#componente_central').html(msm);
+			$('#wowwindow-inner').html(msm);
+        }
+	});
+}
+
+function editarUsuario(id){
+	$.ajax({
+		url:'index_blank.php?component=usuarios&method=editar&id='+id,
+		type: "POST",
+		data:$('#form_filtros').serialize(),
+		success: function(msm){
+			//$('#componente_central').html(msm);
+			$('#wowwindow-inner').html(msm);
+        }
+	});
+}
+
+function eliminarUsuario(id, nombre){
+	if(confirm('¿Realmente desea eliminar el usuario '+nombre+' ?')){
+		$.ajax({
+		  type: "POST",
+		  url: 'index_blank.php?component=usuarios&method=eliminarUsuario&id='+id,
+		  data:$('#form_filtros').serialize(),
+		  success: function(msm){
+		   $('#componente_central').html(msm);
+		  }
+		});
+	}
+}
+
+function limpiarFiltro(){
+    $('.selectFiltro').attr('value','');
+	$('#filtroPerfil').attr('value','');
+	$('#filtroOficina').attr('value','');
+	$('#filtroNivel').attr('value','');
+	$('#filtroGestor').attr('value','');
+	$('#filtroGenero').attr('value','');
+	filtrar();
+}
+</script>

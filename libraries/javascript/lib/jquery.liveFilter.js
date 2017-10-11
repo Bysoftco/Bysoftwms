@@ -1,0 +1,1 @@
+(function(a){a.fn.liveFilter=function(c){var b="#"+a(this).attr("id");a("input.filter").keyup(function(){var d=a(this).val();a(b+" "+c+' li:not(:Contains("'+d+'"))').hide();a(b+" "+c+'  li:Contains("'+d+'")').show()});jQuery.expr[":"].Contains=function(e,f,d){return jQuery(e).text().toUpperCase().indexOf(d[3].toUpperCase())>=0}}})(jQuery);

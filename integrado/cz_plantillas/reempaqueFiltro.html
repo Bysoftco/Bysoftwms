@@ -1,0 +1,157 @@
+<script>
+	function EnviarFormulario() {
+		alert("EnviarFormulario");
+	}
+
+	$(function() {
+    $("#buscarClienteReempaque").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
+      width: 260,
+      selectFirst: false
+    });
+
+    $("#buscarClienteReempaque").result(function(event, data, formatted) {
+      $("#por_cuenta_filtro_reempaque").val(data[1]);
+      $("#doc_tte_reempaque").autocomplete("./scripts_index.php?clase=Control&metodo=findDocumento&cliente="+
+        $("#por_cuenta_filtro_reempaque").val(), {
+        width: 260,
+        selectFirst: false
+      });
+
+      $("#doc_tte_reempaque").result(function(event, data, formatted) {
+        $("#doc_tte_reempaque").val(data[1]);
+        $("#orden_reempaque").val(data[2]);
+      });                         
+    });
+  });
+
+  $(document).ready(function() {
+    //#reempaque - nombre del formulario
+    $("#reempaque").validate({
+      submitHandler: function(form) {
+        //Asignamos el tipo de operación de Reempaque seleccionada
+        form.tipo_reempaque_label.value = form.tipo_reempaque.options[form.tipo_reempaque.selectedIndex].text;
+        $.post("./scripts_index.php",{clase:'Reempaque',metodo:'existeCliente',por_cuenta:$('#por_cuenta_filtro_reempaque').val()} ,function(data) {
+          //Validación información del formulario
+          var bValid = true;
+          if(data==0) {
+            bValid = false;
+            $("#msgbox_filtro_reempaque").html('El Cliente con Identificaci&oacute;n '+$('#por_cuenta_filtro_reempaque').val()+' No se encuentra en la BD').addClass('ui-state-error');
+            setTimeout(function(){
+              $("#msgbox_filtro_reempaque").html('Seleccione uno o varios filtros para delimitar resultados.').removeClass('ui-state-error');
+            }, 3000);
+          }
+
+          if(bValid) {
+            //Parámetros de envío de información
+            $.ajax({
+              url: 'scripts_index.php',
+              type: "POST",
+              async: false,
+              data: $('#reempaque').serialize(),
+              success: function(msm) {
+                $("#dialog-form-reempaque").dialog("close");
+                //Limpiar Formulario
+                $("#reempaque").each(function() {
+                  this.reset();
+                });
+                $('#componente_central').html(msm);
+              }
+            });
+          }   
+        });
+      }
+    });	
+  });
+  
+  //Inicializa fecha_desde y fecha_hasta con la fecha actual
+  $(function() { 
+    $("#fecha_desde").datepicker();
+    
+    $("#fecha_desde").datepicker('option', {
+      dateFormat: 'yy-mm-dd',
+      changeYear: true,
+      changeMonth: true,
+      showOn: 'both',
+      buttonImage: 'integrado/imagenes/calendar.png',
+      buttonImageOnly: true
+    });
+    
+    $("#fecha_hasta").datepicker();
+    
+    $("#fecha_hasta").datepicker('option', {
+      dateFormat: 'yy-mm-dd',
+      changeYear: true,
+      changeMonth: true,
+      showOn: 'both',
+      buttonImage: 'integrado/imagenes/calendar.png',
+      buttonImageOnly: true
+    });
+  });
+</script>
+<style>
+  body { font-size: 62.5%; }
+  label { display: inline-block; width: 100px; }
+  legend { padding: 0.5em; }
+  fieldset fieldset label { display: block; }
+  #reempaque label { width: 160px; margin-left: 10px;} /*ancho de las etiquetas de los campos*/
+  h1 { font-size: 1.2em; margin: .6em 0; }
+  div#users-contain { width: 100%; margin: 5px 0; margin-left: 0%; }
+  div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+  div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+  .ui-dialog .ui-state-error { padding: .3em; }
+  tbody tr.odd th,tbody tr.odd td {border-color:#EBE5D9;background:#F7F4EE;}
+  tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
+  .ui-datepicker-trigger { position: relative; top: 5px; right: 1px; height:22px; } /* Configuración tamaño imagen del DatePicker */
+</style>	
+
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+
+<p id="msgbox_filtro_reempaque">Seleccione uno o varios filtros para delimitar resultados.</p>
+
+<form class="reempaque" id="reempaque" method="post" action="javascript:EnviarFormulario()" name="reempaque">
+  <fieldset class="ui-widget ui-widget-content ui-corner-all">
+    <legend class="ui-widget ui-widget-header ui-corner-all">
+      <div id="nombre_reporte">Formulario de Transacciones Reempaque 
+        <input name="comodin" type="hidden" id="comodin" value="{comodin}" />
+      </div> 
+    </legend>
+    <p>
+      <label>Por Cuenta de:</label>
+      <input type="text" id="buscarClienteReempaque" size="50"/>
+    </p>
+    <p> 
+      <label>Nit *: </label>
+      <input name="por_cuenta_filtro" type="text" class="required ui-widget-content" id="por_cuenta_filtro_reempaque"/>
+    </p>
+    <p> 
+      <label>Documento de Transporte: </label>
+      <input type="text" name="doc_tte_reempaque" id="doc_tte_reempaque" size="20"/>
+    </p>
+    <p> 
+      <label>Orden: </label>
+      <input type="text" name="orden_reempaque" id="orden_reempaque"/>
+    </p>
+    <p>
+      <label>Fecha Desde:</label>
+      <input type="text" name="fecha_desde" id="fecha_desde" class="ui-widget-content" title="aaaa-mm-dd" 
+      value="{fecha_desde}"/>
+    </p>
+    <p>
+      <label>Fecha Hasta:</label>
+      <input type="text" name="fecha_hasta" id="fecha_hasta" class="ui-widget-content" title="aaaa-mm-dd"
+      value="{fecha_hasta}"/>
+    </p> 
+    <p> 
+      <label>Tipo de Procedimiento *: </label>
+      <select name="tipo_reempaque" id="tipo_reempaque" class="required ui-widget-content">
+        {listaTiposReempaque}
+      </select>
+    </p> 
+  </fieldset> 
+  {restrinje1} 
+  <input name="clase" type="hidden" id="clase" value="Reempaque" />
+  <input name="metodo" type="hidden" id="metodo_reempaque" value="newReempaque" />
+  <input name="tipo_reempaque_label" type="hidden"  id="tipo_reempaque_label" value="" />
+  <input name="id_reempaque" type="hidden" id="id_reempaque_aux" value="" />
+</form>
+<p id="msgbox_filtro_requerido">El campo marcado con un asterisco (*) es obligatorio.</p> 

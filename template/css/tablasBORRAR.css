@@ -1,0 +1,48 @@
+DIV#tbl-container {
+	MARGIN-TOP: 10px; OVERFLOW: auto; WIDTH: 50%; SCROLLBAR-BASE-COLOR: #eeeeee; HEIGHT: 252px
+}
+#tbl {
+	BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; BORDER-COLLAPSE: collapse; BACKGROUND-COLOR: #ffffff
+}
+DIV#tbl-container TABLE TH {
+	WHITE-SPACE: nowrap
+}
+#tbl TD {
+	BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 6px; PADDING-LEFT: 12px; FONT-SIZE: 13px; PADDING-BOTTOM: 6px; COLOR: #333333; PADDING-TOP: 6px; BORDER-BOTTOM: #cccccc 1px solid; WHITE-SPACE: nowrap
+}
+#tbl TD A:link {
+	COLOR: #333333; TEXT-DECORATION: none
+}
+#tbl TD A:visited {
+	COLOR: #333333; TEXT-DECORATION: none
+}
+#tbl TD A:hover {
+	TEXT-DECORATION: underline
+}
+THEAD TH {
+	BORDER-RIGHT: #ebebeb 1px solid; PADDING-RIGHT: 6px; BORDER-TOP: #ebebeb 1px solid; PADDING-LEFT: 12px; FONT-WEIGHT: normal; FONT-SIZE: 14px; BACKGROUND: #dedede no-repeat; PADDING-BOTTOM: 6px; CURSOR: default; COLOR: #666666; PADDING-TOP: 6px; BORDER-BOTTOM: #ebebeb 1px solid; POSITION: relative; TEXT-ALIGN: center
+}
+THEAD TH.locked {
+	BORDER-RIGHT: #ebebeb 1px solid; PADDING-RIGHT: 6px; BORDER-TOP: #ebebeb 1px solid; PADDING-LEFT: 12px; FONT-WEIGHT: normal; FONT-SIZE: 14px; BACKGROUND: #dedede no-repeat; PADDING-BOTTOM: 6px; CURSOR: default; COLOR: #666666; PADDING-TOP: 6px; BORDER-BOTTOM: #ebebeb 1px solid; POSITION: relative; TEXT-ALIGN: center
+}
+THEAD TH {
+	Z-INDEX: 20; ; TOP: expression(document.getElementById("tbl-container").scrollTop-2)
+}
+THEAD TH A {
+	COLOR: #666666; TEXT-DECORATION: none
+}
+BODY {
+	FONT-FAMILY: tahoma
+}
+#tbl TR:hover {
+	BACKGROUND-COLOR: #c3d4ff
+}
+.tabclass TR:hover {
+	BACKGROUND-COLOR: #c3d4ff
+}
+.tabclass TR.hilite {
+	BACKGROUND-COLOR: #c3d4ff
+}
+.totales {
+	BACKGROUND-COLOR: #eeeeee
+}

@@ -1,0 +1,7 @@
+.deps
+phpize
+run-tests
+php-config
+pear
+pearize
+phptar

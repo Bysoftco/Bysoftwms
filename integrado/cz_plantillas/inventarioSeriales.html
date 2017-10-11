@@ -1,0 +1,40 @@
+<style>
+  body { font-size: 62.5%; }
+  label { display: inline-block; width: 100px;  }
+  legend { padding: 0.5em; }
+  .titulosTabla { COLOR: #336699; }
+  fieldset fieldset label { display: block; }
+  #commentForm label { width: 160px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
+  #formulario label { width: 160px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
+  .estilotextarea {border: 1px dotted #000099;}
+  h1 { font-size: 1.2em; margin: .6em 0; }
+  div#users-contain { width: 90%; margin: 5px 0; margin-left: 5%; }
+  div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+  div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+  .ui-dialog .ui-state-error { padding: .3em; }
+  font-size: 16px;
+</style>
+<script>
+  $(function() {
+    $("div#titulo_seriales").html("Orden: "+$("#orden_title").val()+" - Referencia: "+$("#nombre_referencia").val());
+  });
+</script>
+<!-- Estructura - Registro de Seriales -->
+<div class="div_barra" style="width:529px;">
+  <div id="titulo_ruta"> 
+    <table align="right" cellpadding="5" cellspacing="0" border="0">
+      <tr>
+        <td><div id="titulo_seriales" style="font-size: 10px; padding-top:3px;"></div></td>
+      </tr>
+    </table>
+  </div>
+  <input type="hidden" name="orden" id="orden" value="{orden_title}" />
+  <input type="hidden" name="referencia_seleccionada" id="referencia_seleccionada" />
+  <input type="hidden" name="referencia" id="nombre_referencia" value="{referencia}" />
+  <div id="contenedor_opciones" align="left">
+    {toolbarSeriales}		
+  </div>
+</div>
+<div id="listado_seriales" style="padding-top:45px;">
+  {listarSeriales} 
+</div> 

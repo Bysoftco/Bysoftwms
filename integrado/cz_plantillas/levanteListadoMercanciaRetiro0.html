@@ -1,0 +1,296 @@
+<script>
+//VERSION 11032017
+$(function() {
+		
+	 	$("#buscarReferencia{accion}").autocomplete("./scripts_index.php?clase=Inventario&metodo=findReferencia&id_cliente="
+		+$("#por_cuenta_aux").val()
+		+'&arribo='
+		+'0'
+		+'&filtro_arribo=0'
+		, 
+		{
+      		width: 260,
+      		selectFirst: false
+        });
+
+    	$("#buscarReferencia{accion}").result(function(event, data, formatted) 
+		{
+      			//alert($('#tipo_movimiento').val());
+				//alert($('#tipo_retiro_filtro').val());
+				
+			$("div#htmlMercancia").load("./scripts_index.php", {clase:'Levante',metodo:'getMercanciaBusquedaReferencia',mostrar:'1',id_levante:0,tipo_retiro:$('#tipo_retiro_filtro').val(),por_cuenta_filtro:$("#por_cuenta_aux").val(),referencia_filtro:data[1]}, function(datos){
+          
+			});
+		});
+	});
+	
+	function proporcion(n){
+		$('#peso'+n).val($('#peso_ant'+n).val()) 
+	 	var pesoProp = ($('#peso_ant'+n).val() / $('#cantidad_ant'+n).val()) * $('#cantidad'+n).val();
+      	pesoProp = pesoProp.toFixed(2);
+     	$('#peso'+n).val(pesoProp)
+		
+		$('#valor'+n).val($('#valor_ant'+n).val()) 
+	 	var valorProp = ($('#valor_ant'+n).val() / $('#cantidad_ant'+n).val()) * $('#cantidad'+n).val();
+      	valorProp = valorProp.toFixed(2);
+     	$('#valor'+n).val(valorProp)
+	
+	}
+	
+	function buscar(){
+		$("div#htmlMercancia").load("./scripts_index.php", {clase:'Levante',metodo:'getMercanciaBusquedaReferencia',mostrar:'1',id_levante:0,tipo_retiro:$('#tipo_retiro_filtro').val(),por_cuenta_filtro:$("#por_cuenta_aux").val()}, function(datos){
+            
+			});	
+	}
+		function addRetiroVolver(n){
+			if(validar(n)){
+				$("div#htmlMercancia").load("./scripts_index.php", {clase:'Levante',metodo:'retiroDirecto',mostrar:'1',id_levante:$("#id_levante").val(),tipo_retiro:$('#tipo_retiro_filtro').val(),por_cuenta_filtro:$("#por_cuenta_aux").val(),cantidad_naci_para:$('#cantidad'+n).val(),peso_naci_para:$('#peso'+n).val(),cif_ret:$('#valor'+n).val(),fob_ret:0,tipo_retiro_filtro:1,tipo_retiro:$('#tipo_retiro_filtro').val(),peso_nonaci_para:0,tipo_movimiento:$('#tipo_movimiento').val(),id_item:$('#id_item_ret'+n).val()}, function(datos){
+            });
+			$('#tabs').tabs("select", 0);
+				
+			}	
+		}
+		
+		function addRetiro(n){
+		
+			if(validar(n)){
+				$("div#htmlMercancia").load("./scripts_index.php", {clase:'Levante',metodo:'retiroDirecto',mostrar:'1',id_levante:$("#id_levante").val(),tipo_retiro:$('#tipo_retiro_filtro').val(),por_cuenta_filtro:$("#por_cuenta_aux").val(),cantidad_naci_para:$('#cantidad'+n).val(),peso_naci_para:$('#peso'+n).val(),cif_ret:$('#valor'+n).val(),fob_ret:0,tipo_retiro_filtro:1,tipo_retiro:$('#tipo_retiro_filtro').val(),peso_nonaci_para:0,tipo_movimiento:$('#tipo_movimiento').val(),id_item:$('#id_item_ret'+n).val()}, function(datos){
+            		
+						
+				});
+				
+			}	
+				
+	}
+	
+	
+	
+	function validar(n){
+		
+		if($('#cantidad'+n).val() ==""){
+			alert('La cantidad es un campo obligatorio');
+			$('#cantidad'+n).focus();
+			return false; 
+		}
+		
+		if($('#peso'+n).val() ==""){
+			alert('El peso es un campo obligatorio');
+			$('#peso'+n).focus();
+			return false; 
+		}
+		if($('#valor'+n).val() ==""){
+			alert('El valor es un campo obligatorio');
+			$('#valor'+n).focus();
+			return false; 
+		}
+		
+		var cantidad=parseFloat($('#cantidad'+n).val());
+		cantidad=cantidad.toFixed(2);
+		var cantidad_ant=parseFloat($('#cantidad_ant'+n).val());
+		cantidad_ant=cantidad_ant.toFixed(2);
+		
+		if( parseFloat(cantidad) > parseFloat(cantidad_ant)){
+			var mensaje= 'La cantidad retirada '+cantidad+ ' no puede ser mayor a la cantidad disponible '+cantidad_ant
+			alert(mensaje);
+			$('#cantidad'+n).focus();
+			return false; 
+		}
+		
+		var peso=parseFloat($('#peso'+n).val());
+		peso=peso.toFixed(2);
+		var peso_ant=parseFloat($('#peso_ant'+n).val());
+		peso_ant=peso_ant.toFixed(2);
+		if(parseFloat(peso) > parseFloat(peso_ant)){
+			var mensaje= 'El peso retirado '+peso+ ' no puede ser mayor a el peso disponible '+peso_ant
+			alert(mensaje);
+			$('#peso'+n).focus();
+			return false; 
+		}
+			return true;
+			
+	}
+
+  $(function() {
+    $('#btnAdicionales').hide();
+    $("a.id_mercancia").click(function() { //check for the first selection
+      var $column = $(this).attr('id'); // assign the ID of the column
+
+      with(document.listadoMercancia) {
+        if(parseInt($("#do_bloqueo" + $column).val())==1) {
+          alert("Una Orden BLOQUEADA no puede tener movimientos mientras este en este estado !!.");
+          return 0;
+        }
+        // se debe enviar el codigo referencia y el cliente y el max id
+        var cod_ref = $("#cod_ref" + $column).val();
+        var id_item = $("#id_item_ret" + $column).val();
+        //var tipo_movimiento = $("#tipo_movimiento" + $column).val();
+				var tipo_movimiento = $("#tipo_movimiento_fijo").val();
+        var una_orden = $("#orden_retiro" + $column).val();
+				var orden_detalle = $("#orden_detalle" + $column).val();
+        
+        if($("#placa").val() == "" && tipo_movimiento == 3) {
+          alert("Antes de hacer un retiro debe ingresar los datos del retiro")
+          $('#tabs').tabs("select", 0);
+        } else {
+          //alert($('#una_matriz').val());
+          switch(parseInt(tipo_movimiento)) {
+            case 3: // Retiro
+            case 7: // Alistamiento
+              getmetodo = 'getItemRetiro';    // metodo que trae el formulario que abre
+              sendmetodo = 'addItemRetiro' // metodo que recibe el formulario al enviarlo
+              break;
+            case 8://Proceso
+              getmetodo = 'getItemRetiro';    // metodo que trae el formulario que abre
+              sendmetodo = 'addItemProceso' // metodo que recibe el formulario al enviarlo
+              break;
+            case 9://Ensable
+              getmetodo = 'getItemProceso';
+              sendmetodo = 'addItemEnsamble'
+              $('#btnAdicionales').show();
+              break;
+            case 13://Endoso
+              var cantidad = $("#cant_reg").val();
+              
+							if(cantidad >= 1) {
+                alert('Solo puede endosar un DO a la vez');
+								return 0;
+							}
+							getmetodo = 'getItemRetiro';    // metodo que trae el formulario que abre
+              sendmetodo = 'addItemRetiro' // metodo que recibe el formulario al enviarlo
+              break;	
+            default:
+              getmetodo = 'getItemRetiro';    // metodo que trae el formulario que abre
+              sendmetodo = 'addItemRetiro' // metodo que recibe el formulario al enviarlo
+          }
+          //alert({referencia_filtro})	
+          //alert('{guia_aux}');
+          $("#dialog-form-hacer-levante").dialog("open");
+          $("#ventana_levante").html("Espere un momento....");
+          //marca matriz y otras variables estan en levante maestro.html
+          $("div#ventana_levante").load("./scripts_index.php", { clase: 'Levante', metodo: getmetodo, mostrar: '1',
+            id_item: id_item, id_levante: $("#id_levante").val(),
+            tipo_retiro_filtro: $("#tipo_retiro_filtro").val(),
+            orden_retiro: una_orden, sendmetodo: sendmetodo, tipo_movimiento: tipo_movimiento,
+            cod_ref: cod_ref, por_cuenta_filtro: $("#por_cuenta_aux").val(),orden_detalle:orden_detalle,accion_aux:'{metodo}',
+            una_matriz:$('#una_matriz').val(),filtro_guia_aux:'{guia_aux}',referencia_filtro:'{referencia_filtro}',
+            modelo_filtro:'{modelo_filtro}',marca_matriz:$('#marca_matriz').val(),email:$("#email_aux").val(),
+            nombre_cliente:$("#nombre_cliente").val(),nombre_movimiento:$("#nombre_movimiento").val(),
+            fecha:$("#fecha").val(),conductor:$("#conductor").val(),placa:$("#placa").val(),
+            destinatario:$("#destinatario").val(),ciudad:$("#ciudad").val(),direccion:$("#direccion").val()}, function(datos) {
+            //alert(datos)
+          });
+        }// sin si lleno cabecera  
+      }
+    });
+    $(":submit").button();
+  });
+</script>
+<style>
+  .ui-button { margin-left: -1px; }
+  .ui-button-icon-only .ui-button-text { padding: 0.35em; } 
+  .ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; width:200px;}
+  #formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
+</style>
+<link rel="stylesheet" type="text/css" href="./_estilos/jquery.autocomplete.css" />
+<div id="users-contain" class="ui-widget" > 
+<div align="right"> 
+     
+      <label>Referencia:</label>
+      
+    <input type="text" id="buscarReferencia{accion}" size="50" {soloLectura} />
+      <img src="integrado/imagenes/ver.png" width="25" height="25" onClick="buscar()"> 
+  </div>
+  <form id="listadoMercancia" name="listadoMercancia">   
+    <fieldset class="ui-widget ui-widget-content ui-corner-all">
+      <legend class="ui-widget ui-widget-header ui-corner-all"> Datos de la Mercanc&iacute;a</legend>
+      <span id="msgbox_mercancia_retiro" style="display:block" class="{estilo}"> {mensaje} </span>
+      
+    <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
+      <thead>
+        <tr class="ui-widget-header "> 
+          <th>#</th>
+          <th>Orden</th>
+          <th>DocTTE</th>
+          <th>Ref</th>
+          <th>Mercanc&iacute;a 
+            <input name="es_matriz" type="hidden" id="es_matriz" value="{es_matriz}" />
+            {es_matrizX} 
+            <input name="guia_filtro_aux" type="hidden" id="guia_filtro_aux" value="{guia_aux}" /> 
+          </th>
+          <th>Cantidad</th>
+          <th>Peso</th>
+          <th>Cif{ext}</th>
+          <th style="text-align:center;">Acci&oacute;n 
+            <input name="n" type="hidden" id="n" value="{num_registros}" /> <input name="id_tab" type="hidden" id="id_tab" value="{id_tab}" /> 
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      {comodin} 
+      <!-- BEGIN ROW -->
+      <tr class="{odd}"> 
+        <td width="1%" >{n}{itemX}{tipo_movimientoX}</td>
+        <td> <div id="label_concepto{n}">{orden} 
+            <input name="orden_retiro[]" type="hidden" id="orden_retiro{n}" value="{orden}" />
+            <input name="orden_detalle{n}" type="hidden" id="orden_detalle{n}" value="{orden}" />
+            <a href="#" class="signup id_mercancia" title="Nuevo Levante {n}" id="{n}" cursor> 
+            </a> </div></td>
+        <td>{doc_tte_aux}</td>
+        <td>{cod_referencia}</td>
+        <td> {nombre_referencia} 
+          <input name="item[]" type="hidden" id="id_item_ret{n}" value="{item}" /> 
+          <input name="tip_mov[]" type="hidden" id="tipo_movimiento{n}" value="{tipo_movimiento}" /> 
+          <input name="cod_ref[]" type="hidden" id="cod_ref{n}" value="{codigo_referencia}" /> 
+          <input name="do_bloqueo[]" type="hidden" id="do_bloqueo{n}" value="{bloqueado}" /> 
+        </td>
+        <td>
+		{cant_naci_f} {sn}{cant_nonac_f}
+		<input name="cantidad" type="text" id="cantidad{n}" size="5" style="display:{mostrarCaptura};" onBlur="javascript:proporcion({n})" >
+          <input name="cantidad_ant{n}" type="hidden" id="cantidad_ant{n}" value="{cantidad_naci}">
+          {cantidad_nacix} </td>
+        <td>
+		{peso_naci_f} {sn}{peso_nonac_f}
+		<input name="peso" type="text" id="peso{n}" size="5" style="display:{mostrarCaptura};">
+          <input name="peso_ant{n}" type="hidden" id="peso_ant{n}" value="{peso_naci}"> 
+        </td>
+        <td>{cif_f} {sn}{fob_nonac_f} 
+		<input name="valor" type="text" id="valor{n}" size="5" style="display:{mostrarCaptura};">
+          <div id="lab_valores{n}" class="ui-priority-primary">
+            <input name="valor_ant{n}" type="hidden" id="valor_ant{n}" value="{cif}">
+          </div></td>
+        <td style="text-align:center;"> 
+		<img src="integrado/imagenes/masref.png" width="25" height="25" border="1" onClick="addRetiro({n})" style="display:{verRetiroRapido};cursor: pointer"/ title="Hacer el retiro y quedarse en la pantalla para agregar m&agrave;s mercanc&igrave;a">
+		 <img src="integrado/imagenes/back.gif" width="25" height="25" border="1" onClick="addRetiroVolver({n})" style="display:{verRetiroRapido};cursor: pointer" title="Hacer el retiro y volver al formulario principal"/>
+		 <a href="#" class="signup id_mercancia" title="Agregar Mercancia {n}" id="{n}" cursor> 
+          <img src="integrado/imagenes/{imagen}" width="25" height="25" border="1" title="Abrir ventana auxiliar para retirar mercanc&igrave;a extranjera y nacional"/> 
+		  
+          </a>
+		  
+		   </td>
+      </tr>
+      <!-- END ROW -->
+      <tr> 
+        <td>Totales</td>
+        <td>{n}</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>{n}</td>
+        <td>{tot_cant_nac}{snt}{tot_cant_nonac}</td>
+        <td>{tot_peso_nacf}{snt}{tot_peso_nonacf}</td>
+        <td>{tot_cif}{snt}{total_fob}</td>
+        <td>{n}</td>
+      </tr>
+      <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}" />
+    </table>
+    </fieldset>
+    <input type="hidden" name="email" id="email_aux" value="{email}" />
+    <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="{cliente}" />
+    <input type="hidden" name="nombre_movimiento" id="nombre_movimiento" value="{nombre_movimiento}" />
+    <input type="hidden" name="fecha" id="fecha" value="{fecha}" />
+    <input type="hidden" name="conductor" id="conductor" value="{conductor}" />
+    <input type="hidden" name="placa" id="placa" value="{placa}" />
+    <input type="hidden" name="destinatario" id="destinatario" value="{destinatario}" />
+    <input type="hidden" name="ciudad" id="ciudad" value="{ciudad}" />
+    <input type="hidden" name="direccion" id="direccion" value="{direccion}" />
+  </form>
+</div>

@@ -1,0 +1,119 @@
+		
+<script>
+
+
+
+$.validator.setDefaults({
+	submitHandler: function() { 
+		
+		// Se valida que el Documento de transporte No Exista
+		$.post("./scripts_index.php",{ clase:'Orden',metodo:'existeCamion',placa:$('#placa').val(),identificacion:$('#identificacion').val() } ,function(data)
+			{
+				
+				bValid=true;
+				if(data > 0){
+					bValid=false;  
+					$("#msgbox_addCamiones").html('El Vehiculo '+$('#placa').val()+' Ya existe con el conductor '+$('#identificacion').val()).addClass('ui-state-error');
+				}else{
+                                //$("#msgbox_addCamion").html('').removeClass().addClass('ui-state-highlight');
+                                 $.ajax(
+                                {
+                                    url:'scripts_index.php',
+                                    type: "POST",
+                                    async:false,
+                                    data:$('#formularioAddCamion').serialize(),
+                                    success: function (msm)
+                                    {
+                                        alert(msm)
+                                        $( "#dialog-addCamion" ).dialog( "close" );
+                                        //$('#componente_central').html(msm);
+                                    }
+                                 });
+				}
+			});					
+		
+		
+		
+	},
+	highlight: function(input) {
+		$(input).addClass("ui-state-highlight");
+	},
+	unhighlight: function(input) {
+		$(input).removeClass("ui-state-highlight");
+	}
+});
+
+
+	$(function() {
+        $("#formularioAddCamion").validate()
+	
+	$("#buscarCliente").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
+	//$("#buscarCliente").autocomplete("search.php", {
+			width: 260,
+			selectFirst: false
+			
+		});
+
+	
+	$("#buscarCliente").result(function(event, data, formatted) {
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+	
+	$("#clear").click(function() {
+		$(":input").unautocomplete();
+	});
+		
+	$("#msgbox_addCamion").removeClass().addClass('{estilo}').text('{mensaje}').fadeIn(1000);
+	if('{estilo}'=='ui-state-error'){
+	}else{
+		//alert(msgbox{id_tab})
+		setTimeout ("$('#msgbox_addCamion').removeClass().addClass('').text('').delay();", 5000); 
+	}
+	$("#formularioAddCamion").submit(function()
+	{
+		
+			
+	});
+
+});
+</script>
+<link rel="stylesheet" type="text/css" href="./cz_estilos/main1.css" />
+<link rel="stylesheet" type="text/css" href="./cz_estilos/jquery.autocomplete.css" />
+<link rel="stylesheet" type="text/css" href="./cz_estilos/thickbox1.css" />
+{comodin}
+<span id="msgbox_addCamiones" class="{estilox}"  ></span>.
+<form class="formularioAddCamion" name="formularioAddCamion"  id="formularioAddCamion" method="post" action="./scripts_index.php">
+	<fieldset class="ui-widget ui-widget-content ui-corner-all">
+	
+  <legend class="ui-widget ui-widget-header ui-corner-all"> Agregar Cami&ograve;n</legend>
+  <p> 
+        <label for="nombre"> Placa:</label>
+        <input name="placa" type="text" class=" required   ui-widget-content" id="placa" value="{doc_tte}" size="20">
+   </p>
+   
+  <p> 
+        <label for="nombre">Identificaci&ograve;n:</label>
+        <input name="identificacion" type="text" class=" required   ui-widget-content" id="identificacion" value="{doc_tte}" size="20">
+  </p>
+  
+  <p> 
+    <label>Conductor:</label>
+     <input name="conductor" type="text" class=" required   ui-widget-content" id="conductor" value="{doc_tte}" size="40">
+  </p>
+  
+	
+  <p> 
+    <label>Empresa: </label>
+     <input name="empresa" type="text" class=" required   ui-widget-content" id="empresa" value="{doc_tte}" size="40"> 
+  </p>
+ 
+    	
+	</fieldset>
+	   <input name="clase" type="hidden" id="clase" value="Orden">
+  <input name="metodo" type="hidden" id="metodo" value="addCamion">          
+   
+</form>
+	
+
+	

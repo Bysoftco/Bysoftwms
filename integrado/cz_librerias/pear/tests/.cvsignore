@@ -1,0 +1,5 @@
+*.exp
+*.out
+*.php
+phpt.*
+*.reg

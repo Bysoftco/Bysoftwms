@@ -1,0 +1,529 @@
+<script>
+
+
+  // mantiene un campo espejo para validar campos
+
+
+  function seleccion(valor)
+
+
+  {
+
+
+		//alert("ready to validar");
+
+
+		var n =$("#n_proceso").val();
+
+
+		
+
+
+  		for(var i=1; i<= n; i++)//n
+
+
+		{
+
+
+			if(valor==0){
+
+
+				$("#cant_nonac_pro"+i).val(0);
+
+
+				$("#peso_ext_pro"+i).val(0);
+
+
+				$("#fob_ret_pro"+i).val(0);
+
+
+				
+
+
+				
+
+
+			}else{
+
+
+				$("#cant_nonac_pro"+i).val($("#cant_nonac_para_aux"+i).val()/1);
+
+
+				$("#peso_ext_pro"+i).val($("#peso_ext_aux"+i).val()/1);
+
+
+				$("#fob_ret_pro"+i).val($("#fob_ret_aux"+i).val()/1);
+
+
+				
+
+
+				
+
+
+				
+
+
+			}		
+
+
+			
+
+
+ 		}  
+
+
+ 
+
+
+  }
+
+
+   function seleccion_nal(valor)
+
+
+  {
+
+
+		var n =$("#n_proceso").val();
+
+
+		
+
+
+  		for(var i=1; i<= n; i++)//n
+
+
+		{
+
+
+			
+
+
+			if(valor==0){
+
+
+				$("#cant_nal_pro"+i).val(0);
+
+
+				$("#peso_nal_pro"+i).val(0);
+
+
+				$("#cif_ret_pro"+i).val(0);
+
+
+				
+
+
+				
+
+
+			}else{
+
+
+				$("#cant_nal_pro"+i).val($("#cant_naci_aux"+i).val()/1);
+
+
+				$("#peso_nal_pro"+i).val($("#peso_nal_aux"+i).val()/1);
+
+
+				
+
+
+			}		
+
+
+			
+
+
+ 		}  
+
+
+ 		
+
+
+  }
+
+
+
+
+
+  function proporcion_ext (n)
+
+
+ {
+
+
+	 n=n/1;
+
+
+	 if($('#cant_nonac_pro'+n).val()!= 0) {
+
+
+		 
+
+
+	 	//var pesoProp = ($('#cant_nonac_para_aux'+n).val() / $('#cant_nonac_para_aux'+n).val()) * $('#cant_nonac_pro'+n).val();
+
+
+		var pesoProp = ($('#cant_nonac_pro'+n).val() * $('#peso_ext_aux'+n).val()) / $('#cant_nonac_para_aux'+n).val();
+
+
+     	pesoProp = pesoProp.toFixed(2);
+
+
+     	$('#peso_ext_pro'+n).val(pesoProp);
+
+
+		
+
+
+		
+
+
+		var fobProp = ($('#cant_nonac_pro'+n).val() * $('#fob_ret_aux'+n).val()) / $('#cant_nonac_para_aux'+n).val();
+
+
+     	fobProp = fobProp.toFixed(2);
+
+
+		$("#fob_ret_pro"+n).val(fobProp);
+
+
+		
+
+
+	}
+
+
+ }	
+
+
+  function proporcion_nal (n)
+
+
+ {
+
+
+ 		if($('#cant_naci_aux'+n).val()!= 0) {
+
+
+			//var pesoProp = ($('#peso_nal_aux'+n).val() / $('#cant_naci_aux'+n).val()) * $('#cant_nal_pro'+n).val();
+
+
+     		//pesoProp = pesoProp.toFixed(2);
+
+
+    	 	//$('#peso_nal_pro'+n).val(pesoProp);
+
+
+			
+
+
+			var pesoProp = ($('#cant_nal_pro'+n).val() * $('#peso_nal_aux'+n).val()) / $('#cant_naci_aux'+n).val();
+
+
+     		pesoProp = pesoProp.toFixed(2);
+
+
+     		$('#peso_nal_pro'+n).val(pesoProp);
+
+
+		//alert($('#peso_ext_aux'+n).val())
+
+
+			var fobProp = ($('#cant_nal_pro'+n).val() * $('#cif_aux'+n).val()) / $('#cant_naci_aux'+n).val();
+
+
+     		fobProp = fobProp.toFixed(2);
+
+
+			$("#cif_ret_pro"+n).val(fobProp);
+
+
+	 	} 
+
+
+	
+
+
+ }  
+
+
+
+
+
+</script>
+
+
+
+
+
+<style>
+
+
+    .ui-button { margin-left: -1px; }
+
+
+    .ui-button-icon-only .ui-button-text { padding: 0.35em; } 
+
+
+    .ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; width:200px;}
+
+
+    #formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
+
+
+</style>
+
+
+<div id="users-contain" class="ui-widget" > 
+
+
+    <link rel="stylesheet" type="text/css" href="./_estilos/jquery.autocomplete.css" />
+
+
+
+
+
+
+
+
+    <fieldset class="ui-widget ui-widget-content ui-corner-all">
+
+
+        <legend class="ui-widget ui-widget-header ui-corner-all"> Datos de la Mercanc&iacute;a Procesada</legend>
+
+
+      <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} 
+
+
+            <input name="aplicaMatriz" type="hidden" id="aplicaMatriz" value="1" />
+
+
+      </span>
+
+
+        <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
+
+
+            <thead>
+
+
+                <tr class="ui-widget-header "> 
+
+
+                    <th width="2%">#</th>
+
+
+                    <th width="5%"  >Orden</th>
+
+
+                    <th width="20%" >Mercanc&iacute;a</th>
+
+
+                    <th width="11%" >Cantidad Ext</th>
+
+
+                    <th width="11%" >Peso Ext</th>
+
+
+                    <th width="11%"  >Fob</th>
+
+
+                    <th width="11%"  >Cantidad Nal</th>
+
+
+                    <th width="11%"  >Peso Nal</th>
+
+
+                    <th width="11%" >Cif
+
+
+                    <input name="n_proceso" type="hidden" id="n_proceso" value="{num_registros}" /></th>
+
+
+                    </tr>
+
+
+            </thead>
+
+
+            <tbody>
+
+
+                {comodin} 
+
+
+                <!-- BEGIN ROW -->
+
+
+                <tr class="{odd}"> 
+
+
+                    <td width="4%" >{n_aux}</td>
+
+
+                    <td> <div id="label_concepto{n}">{orden}                                <a href="#" class="signup id_mercancia" title="Nuevo Levante {n}" id="{n}" cursor> 
+
+
+                            </a>
+
+
+                            <input name="cod_maestro_pro[{n_aux}]" type="hidden" id="cod_maestro_pro{n}" value="{cod_maestro}" />
+
+
+                            <input name="id_entrada[{n_aux}]" type="hidden" id="id_entrada{n}" value="{item}" />
+
+
+                            {cod_maestroX}{itemX}
+
+
+
+
+
+                        </div></td>
+
+
+                    <td> [{codigo_referencia}]{nombre_referencia} </td>
+
+
+                    <td>
+
+
+                 
+
+
+                       <input name="cant_nonac_pro[{n_aux}]" type="text" class="ui-widget-content {required:true,number:true,min:0,max:{cantidad_nonac}}"  id="cant_nonac_pro{n_aux}" size="5" onblur="javascript:proporcion_ext({n_aux})"/>
+
+
+                        de: {cant_nonac_f}
+
+
+                        <input name="cant_nonac_aux" type="hidden" id="cant_nonac_para_aux{n_aux}" value="{cantidad_nonac} " size="5"  />
+
+
+                      
+
+
+<label for="cant_nonac_pro"></label>
+
+
+                    </td>
+
+
+                    <td><input name="peso_ext_pro[{n_aux}]" type="text"  class="ui-widget-content {required:true,number:true,min:0,max:{peso_nonac}}" id="peso_ext_pro{n_aux}" value="{peso_nonac}" size="5"/> 
+
+
+                        de: 
+
+
+                          <input name="peso_ext_aux" type="hidden" id="peso_ext_aux{n_aux}" value="{peso_nonac}" />
+
+
+                      {peso_nonac_f}</td>
+
+
+                    <td>
+
+
+                        <input name="fob_ret_pro[{n_aux}]" type="text"  class="required number ui-widget-content" id="fob_ret_pro{n_aux}" value="{fob_nonac}" size="5" /> 
+
+
+                        de:{fob_f} 
+
+
+                        <input name="fob_ret{n_aux}" type="hidden" id="fob_ret_aux{n_aux}" value="{fob_nonac}" /></td>
+
+
+                    <td>
+
+
+                        de: {cant_naci_f}
+
+
+                                          <input name="cant_nal_pro[{n_aux}]" type="text" class="ui-widget-content {required:true,number:true,min:0,max:{cantidad_naci}}" id="cant_nal_pro{n_aux}" value="{cantidad_naci}" size="5" onblur="javascript:proporcion_nal({n_aux})"/>                                          <input type="hidden" name="cant_naci_aux{n_aux}" id="cant_naci_aux{n_aux}"  value="{cantidad_naci}"/>
+
+
+
+
+
+                  </td>
+
+
+                    <td><input name="peso_nal_pro[{n_aux}]" type="text" class="required ui-widget-content" id="peso_nal_pro{n_aux}" value="{peso_naci}" size="5"/>
+
+
+                        de: {peso_naci_f}                        
+
+
+                        <input name="hiddenField" type="hidden" id="peso_nal_aux{n_aux}" value="{peso_naci}" /></td>
+
+
+                    <td><input name="cif_ret_pro[{n_aux}]" type="text" class="required number ui-widget-content" id="cif_ret_pro{n_aux}" value="{cif}" size="5" />
+
+
+                        de:
+
+
+                        {cif_f} 
+
+
+                  <input name="cif_aux" type="hidden" id="cif_aux{n_aux}" value="{cif} " /><div id="lab_valores{n}" class="ui-priority-primary"></div></td>
+
+
+          </tr>
+
+
+                <!-- END ROW -->
+
+
+                <tr> 
+
+
+                    <td>Totales</td>
+
+
+                    <td>{n}</td>
+
+
+                    <td>{n}</td>
+
+
+                    <td>{tot_cant_nonac}</td>
+
+
+                    <td>{tot_peso_nonac}</td>
+
+
+                    <td>&nbsp;</td>
+
+
+                    <td>&nbsp;</td>
+
+
+                    <td>&nbsp;</td>
+
+
+                    <td>{total_fob}</td>
+
+
+                    </tr>
+
+
+            <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}">
+
+
+        </table>
+
+
+
+
+
+    </fieldset>
+
+
+
+
+
+</div>

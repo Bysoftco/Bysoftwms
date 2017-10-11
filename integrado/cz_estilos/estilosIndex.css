@@ -1,0 +1,247 @@
+.tablaMenu {
+	BACKGROUND-COLOR: #08558c
+}
+.textoimportante{
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; PADDING-BOTTOM: 10px; PADDING-TOP: 10px
+}
+H1 {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #000000; PADDING-TOP: 0px; BORDER-BOTTOM: #ff9933 1px solid; FONT-FAMILY: Verdana; TEXT-ALIGN: left
+}
+.ladoFlash {
+	BACKGROUND-COLOR: #ffbb72
+}
+LI {
+	LIST-STYLE-IMAGE: url(../_images/circulo_lista.gif); FONT: 12px Arial, Helvetica, sans-serif; COLOR: #444444
+}
+UL {
+	LIST-STYLE-IMAGE: url(../_images/circulo_lista.gif); FONT: 12px Arial, Helvetica, sans-serif; COLOR: #444444
+}
+H2 {
+	PADDING-LEFT: 5px; FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #ff9933; PADDING-TOP: 5px; FONT-FAMILY: Verdana
+}
+.tablaListadoEvento {
+	BORDER-BOTTOM: #ff6600 1px dotted
+}
+.listadoConsultaEventos {
+	PADDING-RIGHT: 7px; BACKGROUND-POSITION: right 50%; BACKGROUND-IMAGE: url(../_images/bg_listado_eventos.gif); HEIGHT: 25px; TEXT-ALIGN: right
+}
+
+
+
+BODY {
+	FONT-SIZE: 11px; COLOR: #000000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #6666FF
+}
+A:link {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #ffbb72; TEXT-DECORATION: none
+}
+.sm {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; COLOR: #000000; LINE-HEIGHT: 130%; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+
+A.linkprincipal:link {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #000; LINE-HEIGHT: 130%; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.linkprincipal:visited {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #000; LINE-HEIGHT: 130%; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+A.linkprincipal:hover {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #000; LINE-HEIGHT: 130%; FONT-FAMILY: Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.principalmenu {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 0px; PADDING-BOTTOM: 7px; FONT: bold 16px Arial, Helvetica, sans-serif; COLOR: #ffffff; PADDING-TOP: 5px
+}
+A.principalmenu:link {
+	FONT: bolder 18px/18px "Trebuchet MS", Arial, Helvetica, sans-serif; CURSOR: default; COLOR: #ffffff; TEXT-DECORATION: none
+}
+A.principalmenu:visited {
+	FONT: bolder 18px/18px "Trebuchet MS", Arial, Helvetica, sans-serif; CURSOR: default; COLOR: #ffffff; TEXT-DECORATION: none
+}
+A.principalmenu:hover {
+	FONT: bolder 18px/18px "Trebuchet MS", Arial, Helvetica, sans-serif; CURSOR: help; COLOR: #ffffff; TEXT-DECORATION: none
+}
+P {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; FONT-SIZE: 11px; PADDING-BOTTOM: 5px; COLOR: #000000; PADDING-TOP: 5px; FONT-FAMILY: Verdana; TEXT-ALIGN: justify
+}
+.textospq {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; FONT-SIZE: 10px; COLOR: #666666; FONT-FAMILY: Verdana
+}
+.lineas {
+	BORDER-TOP: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid
+}
+
+.titulo {
+	PADDING-LEFT:10px; FONT-WEIGHT: bold; FONT-SIZE: 17px; COLOR: #4f7aaf; PADDING-TOP: 5px; FONT: bolder 22px/22px "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+.textos {
+	PADDING-LEFT: 5px; FONT-SIZE: 11px; COLOR: #666666; PADDING-TOP: 5px; FONT-FAMILY: Verdana
+}
+.tituloslider {
+BORDER-RIGHT: #000000 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: #000000 1px solid; PADDING-LEFT: 0px; PADDING-BOTTOM: 5px; FONT: bold 15px Arial, Helvetica, sans-serif; TEXT-TRANSFORM: none; BORDER-LEFT: #000000 1px solid; COLOR: #000000; PADDING-TOP: 5px; BORDER-BOTTOM: #000000 1px solid; BACKGROUND-COLOR: #ffffff; TEXT-ALIGN: center
+}
+.copyright {
+	BORDER-TOP: #cccccc 1px solid; FONT-SIZE: 10px; PADDING-BOTTOM: 5px; COLOR: #999999; PADDING-TOP: 5px; BORDER-BOTTOM: #cccccc 1px solid; FONT-FAMILY: Verdana; TEXT-ALIGN: center
+}
+.titulossubmenus {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; PADDING-BOTTOM: 3px; COLOR: #000000; PADDING-TOP: 5px; FONT-FAMILY: Verdana; TEXT-ALIGN: left
+}
+.opcionessubmenu {
+	PADDING-LEFT: 5px; FONT-SIZE: 11px; COLOR: #666666; PADDING-TOP: 5px; FONT-FAMILY: Verdana
+}
+.lineaderecha {
+	BORDER-RIGHT: #999999 1px solid
+}
+.lineaizqmenu {
+	BORDER-LEFT: #ffffff 1px dashed
+}
+.lineaderechaclara {
+	BORDER-LEFT: #ffffff 1px dashed
+}
+.importante1 {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 10px; BACKGROUND: #08558c; PADDING-BOTTOM: 3px; MARGIN: 0px; FONT: bolder 90% "Trebuchet MS", Arial, Helvetica, sans-serif; COLOR: #fff; PADDING-TOP: 3px ; FONT-SIZE:15px
+}
+.importante {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: #f0f0dc; FLOAT: left; PADDING-BOTTOM: 0px; MARGIN: 0px 0px 0px 10px; WIDTH: 299px; PADDING-TOP: 0px
+}
+
+.contenidos {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; FONT-SIZE: 11px; PADDING-BOTTOM: 5px; COLOR: #000000; PADDING-TOP: 5px; FONT-FAMILY: Verdana
+}
+
+.textoSlider {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; FONT-WEIGHT: bold; FONT-SIZE: 11px; PADDING-BOTTOM: 2px; COLOR: #336699; PADDING-TOP: 0px; FONT-FAMILY: Verdana; TEXT-ALIGN: center
+}
+
+.borderlines {
+	BORDER-RIGHT: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid
+}
+.subMenu {
+	PADDING-LEFT: 5px; FONT-WEIGHT: normal; FONT-SIZE: 11px; PADDING-BOTTOM: 5px; COLOR: #FFFFFF; LINE-HEIGHT: 130%; PADDING-TOP: 5px; BORDER-BOTTOM: #ffffff 1px solid; FONT: bolder 18px/18px "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+.menu {
+	PADDING-LEFT: 5px; FONT-WEIGHT: normal; FONT-SIZE: 11px; PADDING-BOTTOM: 5px; COLOR: #FFFFFF; LINE-HEIGHT: 130%; PADDING-TOP: 5px; BORDER-BOTTOM: #ffffff 1px solid; FONT: bolder 18px/18px "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+.lista {
+  background-color:#f1f1f1;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: #000000;
+}
+.atencion{
+	
+	BORDER-RIGHT: #ff0000 1px solid; 
+	PADDING-RIGHT: 5px; 
+	BACKGROUND-POSITION: 1% 10%; 
+	BORDER-TOP: #ff0000 1px solid; PADDING-LEFT: 20px; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 10px; 
+	BACKGROUND-IMAGE: url(../imagenes/.gif);
+	PADDING-BOTTOM: 7px; MARGIN: 3px; 
+	BORDER-LEFT: #ff0000 1px solid; PADDING-TOP: 5px; 
+	BORDER-BOTTOM: #ff0000 1px solid; 
+	BACKGROUND-REPEAT: no-repeat; 
+	FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif; 
+    BACKGROUND-COLOR: #edf6ff;
+	COLOR: red; 
+}
+.boton {
+	font: x-small Verdana, Arial, Helvetica, sans-serif;
+	background-color: #f1f1f1;
+	text-align: center;
+	border-right-width: thin;
+	border-bottom-width: thin;
+	border-top-style: none;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: none;
+	border-right-color: #B8C4C9;
+	border-bottom-color: #B8C4C9;
+	cursor: hand;
+	color: #0066CC;
+}
+.tituloapertura {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; FONT: bolder 18px/18px "Trebuchet MS", Arial, Helvetica, sans-serif; COLOR: #4f7aaf; PADDING-TOP: 0px
+}
+.lineaAbajo {
+	BORDER-BOTTOM: #ff6600 1px dotted
+}
+A.linksifa:link {
+	COLOR: #ff6600; TEXT-DECORATION: underline
+}
+A.linksifa:hover {
+	COLOR: #ffbb72; TEXT-DECORATION: underline
+}
+A.linksifa:visited {
+	COLOR: #ff6600; TEXT-DECORATION: underline
+}
+A.linkEvento {
+	COLOR: #ff6600; TEXT-DECORATION: underline
+}
+#contenedor {
+	OVERFLOW: hidden; WIDTH: 173px; POSITION: relative; HEIGHT: 200px
+}
+#Mover {
+	WIDTH: 100%; POSITION: relative
+}
+#Mover2 {
+	WIDTH: 100%; POSITION: relative
+}
+.info{
+	
+	BORDER-RIGHT: #66FF00 1px solid; 
+	PADDING-RIGHT: 5px; 
+	BACKGROUND-POSITION: 1% 10%; 
+	BORDER-TOP: #66FF00 1px solid; PADDING-LEFT: 20px; 
+	FONT-WEIGHT: bold; 
+	FONT-SIZE: 10px; 
+	BACKGROUND-IMAGE: url(../imagenes/bombillo18.gif);
+	PADDING-BOTTOM: 7px; MARGIN: 3px; 
+	BORDER-LEFT: #66FF00 1px solid; PADDING-TOP: 5px; 
+	BORDER-BOTTOM: #66FF00 1px solid; 
+	BACKGROUND-REPEAT: no-repeat; 
+	FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif; 
+    BACKGROUND-COLOR: #edf6ff;
+	COLOR: green; 
+}
+.messagebox{
+	position:absolute;
+	width:100px;
+	margin-left:30px;
+	border:1px solid #c93;
+	background:#ffc;
+	padding:3px;
+	color:blue;
+	FONT-SIZE: 10px; 
+	FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+.messageboxok{
+	position:absolute;
+	width:auto;
+	margin-left:30px;
+	border:1px solid #349534;
+	background:#C9FFCA;
+	padding:3px;
+	font-weight:bold;
+	color:#008000;
+	FONT-SIZE: 10px; 
+	FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+.acceso_error {
+	
+	position:absolute;
+	width:auto;
+	margin-left:30px;
+	border:1px solid #CC0000;
+	background:#F7CBCA;
+	padding:3px;
+	font-weight:bold;
+	color:#CC0000; 
+	FONT-SIZE: 10px; 
+	FONT-FAMILY: Verdana, Geneva, Arial, Helvetica, sans-serif;
+}

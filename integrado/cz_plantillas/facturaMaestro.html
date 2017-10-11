@@ -1,0 +1,188 @@
+<script>
+    
+    $(function() {
+	
+    $('#tabs').tabs();
+	$('#tabs').tabs( "select" ,{tab_seleccionado}) ;
+	$( "#tabs" ).tabs({
+            select: function(event, ui) 
+            { 
+               
+                 var n=ui.index +1 
+                 switch(n)
+                {
+                    case 1: 	//Levante
+					
+			if($('#id_levante').val()!=""){			
+                            $("div#htmlLevante").load("./scripts_index.php", {clase:'Levante',metodo:'getCabezaLevante',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val()}, function(datos){
+                            });
+                            $("div#htmlCuerpo").load("./scripts_index.php", {clase:'Levante',metodo:'getCuerpoLevante',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val(),tipo_retiro:$('#tipo_retiro_filtro').val()}, function(datos){
+                            });
+                         }    
+                        //$("div#contenedor_opciones").load("./scripts_index.php", {clase:'Inventario',metodo:'getOrdenToolbar',mostrar:'1',do_asignado:{do_asignado}}, function(datos){});
+                   		 $('#btnBuscar').hide();
+				    break;
+                
+                    case 2:    //  Arribo  Listado de mercancia no se recarga
+                        // var por_cuenta_filtro={por_cuenta_filtro}
+                        //$("div#htmlMercancia").load("./scripts_index.php", {clase:'Levante',metodo:'getMercancia',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val(),por_cuenta_filtro:por_cuenta_filtro}, function(datos){
+                     	//});
+                        //Crear Boton Actualizar para esta opcion
+						//alert($('#tipo_movimiento').val())
+						if($('#tipo_movimiento').val()==3){
+							$('#btnBuscar').show();
+						}
+					  //$('#btnBuscar').show();
+                    break;			
+                }
+            }
+	});
+  //		$('div#toolArribo').hide();
+ });
+
+    $(function() 
+    {
+		
+        //$("#accordion").accordion({ header: "h3",active: false ,autoHeight:false});
+	/*Ventana*********************************************/
+	$( "#dialog-form-levante{metodo}" ).dialog(
+        {
+            autoOpen: false,
+            height: 420,
+            width: 650, 
+            modal: true,
+            buttons: 
+            {
+                "Aceptar": function() 
+                {
+                   alert('xhere{metodo}x')
+                   		
+                    var bValid = true;
+                    $("#{metodo}").submit();
+                    
+		},
+		Cancelar: function() 
+                {
+                     $( "#dialog-form-levante{metodo}" ).dialog( "close" );
+					
+		}
+            },
+            close: function()
+            {
+            }
+    });/*Fin Ventana*********************************************/
+    
+    $( "#dialog-newFactura" ).dialog(
+        {
+            autoOpen: false,
+            height: 420,
+            width: 650, 
+            modal: true,
+            buttons: 
+            {
+                "Aceptar": function() 
+                {
+                  //alert($("#un_formulario").val())
+                  var bValid = true;
+                  $("#"+$("#un_formulario_factura").val()).submit();
+                    
+		},
+		Cancelar: function() 
+                {
+                     $( "#dialog-newFactura" ).dialog( "close" );
+					
+		}
+            },
+            close: function()
+            {
+            }
+    });/*Fin Ventana*********************************************/
+    
+    $( "#window_filtro" ).dialog(
+        {
+            autoOpen: false,
+            height: 420,
+            width: 650,  
+            modal: true,
+            buttons: 
+            {
+                "Aceptar": function() 
+                {
+                  
+                  	
+                    var bValid = true;
+                  //alert($("#un_formulario_aux").val()+"x")
+                    $("#filtroMovimientoFiltro").submit();
+                    
+		},
+		Cancelar: function() 
+                {
+                     $( "#window_filtro" ).dialog( "close" );
+					
+		}
+            },
+            close: function()
+            {
+            }
+    });/*Fin Ventana*********************************************/
+
+		
+});
+
+   if({abre_ventana})
+    {    // Abre la ventana por defecto
+		
+        $( "#dialog-newFactura" ).dialog( "open" );
+    }else{ 
+        $( "#dialog-newFactura" ).dialog( "close" );
+    }
+			
+</script>
+<style>
+       
+</style>
+<div class="div_barra">
+  <div id="titulo_ruta">{titulo}</div>
+  <div id="contenedor_opciones" align="left"> {toolbarLevante} </div>
+  
+</div>
+<div id="mensaje" class="{estilo}">{mensaje}</div>
+<!-- Tabs -->
+    
+<div id="tabs"> 
+  <ul>
+    <li><a href="#tabs-1">Factura</a></li>
+    <li><a href="#tabs-2">Mercanc&iacute;a</a>  
+     
+    </li>
+  </ul>
+			
+	<div id="tabs-1">
+         <div id="htmlLevante">{htmlLevante}</div>
+          <div id="htmlCuerpo">{htmlCuerpo}</div>    
+            				
+	</div>
+			
+	<div id="tabs-2">
+           <div id="htmlMercancia">{htmlMercancia}</div>   
+        </div>
+   </div>
+		
+    <div id="dialog-form-levante{metodo}" title="Movimientos">
+        <div id="contenedor1"> {filtro} </div>
+  		<!-- End contenedor -->
+    </div><!-- End ventana -->
+
+    <div id="dialog-newFactura" title="Facturaci&oacute;n">
+        <div id="ventana_newFactura"> </div>
+  		{filtroFiltro}		
+		<!-- End contenedor -->
+    </div><!-- End ventana -->
+    
+    <div id="window_filtro" title="Filtro">
+        <div id="cuerpo_filtro">{filtro} </div>
+  		<!-- End contenedor -->
+    </div><!-- End ventana -->
+
+  <input name="por_cuenta_aux" type="hidden" id="por_cuenta_aux" value="{por_cuenta_filtro}">
+ 

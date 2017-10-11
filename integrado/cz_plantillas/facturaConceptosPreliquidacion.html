@@ -1,0 +1,54 @@
+<span id="msgbox_factura_cuerpo1" style="display:block" class="{estilo}"> {mensaje} </span>
+  
+<table width="100%" class="ui-widget ui-widget-content" id="users"   background="integrado/imagenes/copianovalida.gif">
+  <tr class="ui-widget-header "> 
+    <th >Item</th>
+    <th ><table width="95%" border="0" cellpadding="0">
+        <tr> 
+          <td width="20%">Iva </td>
+          <td width="20%">RFuente</td>
+          <td width="20%">RIca</td>
+        </tr>
+      </table></th>
+    <th >Codigo</th>
+    <th >Concepto{comodin}</th>
+    <th ><strong>Medida</strong></th>
+    <th >base</th>
+    <th ><strong>*</strong></th>
+    <th >V. Unitario</th>
+    <th>Cantidad</th>
+    <th >Valor Total</th>
+  </tr>
+  <tbody>
+    <!-- BEGIN ROW -->
+    <tr class="{odd}"> 
+      <td><font size="1">{n}</font></td>
+      <td> <table width="90%" border="0" cellpadding="0">
+          <tr> 
+            <td width="20%" ><font size="1">{iva} </font></td>
+            <td width="20%"><font size="1">{rte_fuente}</font></td>
+            <td width="20%"><font size="1">{rte_ica} </font></td>
+          </tr>
+        </table></td>
+      <td> <div id="label_concepto{n}"><font size="1"> {concepto}</font></div></td>
+      <td><font size="1"> {nombre_servicio} 
+        <input name="id_conceptos[]" type="hidden" id="id_conceptos{n}" value="{codigo}">
+        <input name="v_iva[]" type="hidden" id="v_iva{n}">
+        <input name="vrte_fuentes[]" type="hidden" id="vrte_fuentes{n}" value="0">
+        <input name="vrte_icas[]" type="hidden" id="vrte_icas{n}">
+        </font></td>
+      <td><font size="1"> 
+        <select name="concep_tarifa[]" id="concep_tarifa{n}" class=" required ui-widget-content" onChange="javascript: setValue('concep_tarifa',{n})">
+                {selectTipos}
+                 
+        </select>
+        </font></td>
+      <td><font size="1">{base}</font></td>
+      <td><font size="1">{porcentaje}</font></td>
+      <td><font size="1"> {valor_unitario}</font></td>
+      <td><font size="1">{cantidad}</font></td>
+      <td><font size="1"> {valorf}</div> </font></td>
+    </tr>
+    <!-- END ROW -->
+  </tbody>
+</table>

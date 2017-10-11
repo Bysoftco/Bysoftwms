@@ -1,0 +1,66 @@
+{COMODIN}
+<div id="content">
+<div id="div_login"></div>
+<form name="envio_datos" id="envio_datos" method="post" action="index_blank.php">
+<div class="centraTabla">
+<table class="table_login" border="0" onkeypress="testKey(this);" >
+	<tr align="center" height="100px">
+		<td colspan="2"><img src="img/logos/logo_inicial_bancamia.png" /></td>
+	</tr>
+	<tr >
+		<td class="font_login">ID. Usuario : </td>
+		<td><input class="login" type="text" name="usuario" id="usuario" /></td>
+	</tr>
+	<tr>
+		<td class="font_login">Clave de Acceso : </td>
+		<td><input class="login" type="password" name="clave" id="clave" /></td>
+	</tr>
+	<tr align="center" height="35px">
+		<td colspan="2"><a href="javascript:validar_envio()"><img src="img/buttons/btnIngresar.png" border="0" /></a></td>
+	</tr>
+	<tr align="center" height="20px">
+		<td colspan="2" class="copyright" valign="top">Copyright &copy; 2009 - 2011 Bancam&iacute;a (v1.6)</td>
+	</tr>
+</table>
+</div>
+	<input type="hidden" name="component" id="component" value="login" />
+	<input type="hidden" name="method" id="method" value="login_usuario" />
+</form>
+</div>
+<script>
+function validar_envio(){
+	$.ajax({
+		url: $('#envio_datos').attr('action'),
+		data:$('#envio_datos').serialize(),
+		success:function(msm){
+			if(msm=='error'){
+				showDialog('Error','Datos Incorrectos, Por favor verifique.','error');
+			}
+			else if(msm=='faltante'){
+				showDialog('Warning','Debe Ingresar Usuario y clave para continuar.','warning');
+			}
+			else if(msm=='logueado'){
+				logEntrar();
+				window.location="index.php";
+			}
+		}
+	});
+}
+
+function logEntrar(){
+	$.ajax({
+		url: 'index_blank.php?component=logAplicacion&method=logMenu&accionLog=Acceso_al_Sistema'
+	});
+}
+
+function testKey(objeto){
+	objeto.onkeydown = function (evt) {
+	    evt = (evt) ? evt : ((window.event) ? window.event : "");
+	    if (evt) {
+		    if(evt.keyCode==13){
+		    	validar_envio();
+			}
+	    }
+	}
+}
+</script>

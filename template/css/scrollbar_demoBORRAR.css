@@ -1,0 +1,15 @@
+div.scrollbar {
+    display:none; /* initially display:none; to hide from incapable */
+    position:relative;
+}
+
+div.wn{
+    position:relative;
+    height:450px;
+    overflow:hidden;
+}
+
+div.lyr1{
+    height:200px;
+    width: 100%;
+}

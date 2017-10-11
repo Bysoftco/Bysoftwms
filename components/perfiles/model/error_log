@@ -1,0 +1,2 @@
+[20-Apr-2015 22:41:39] PHP Warning:  require_once(CLASSES_PATHBDControlador.php) [<a href='function.require-once'>function.require-once</a>]: failed to open stream: No such file or directory in /home/isamis/public_html/BysoftWMS/components/perfiles/model/perfiles.php on line 2
+[20-Apr-2015 22:41:39] PHP Fatal error:  require_once() [<a href='function.require'>function.require</a>]: Failed opening required 'CLASSES_PATHBDControlador.php' (include_path='.:/opt/php52/lib/php') in /home/isamis/public_html/BysoftWMS/components/perfiles/model/perfiles.php on line 2

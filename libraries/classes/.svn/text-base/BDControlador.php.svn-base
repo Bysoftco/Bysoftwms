@@ -1,0 +1,313 @@
+<?php
+class BDControlador
+{
+	 /**
+     * La tabla de la base de datos donde los registros de esta clase son almacenados
+     *
+     * @var String
+     */
+    var $table_name = '';
+
+	/**
+	 * Este esl el nombre singular del objeto.  (i.e. Usuario).
+	 *
+	 * @var String
+	 */
+	var $object_name = '';
+  
+	/**
+	 * El nombre de directorio del mdulo para este tipo de objeto.
+	 *
+	 * @var String
+	 */
+	var $module_directory = '';
+	
+    function Manejador_BD(){
+	}
+	
+	function log($id_usuario, $ip, $modulo, $query, $funcion='save'){
+	  global $db;
+	  $sql="INSERT INTO sig_log
+	                    (siglog_id_usuario,
+	                     siglog_ip_equipo,
+	                     siglog_modulo,
+	                     siglog_funcion,
+	                     siglog_sql
+						)
+				  VALUE 
+				        ($id_usuario,
+				         '$ip',
+						 '$modulo',
+						 '$funcion',
+						 '$query')";			 				
+	  $db->query($sql);		
+	}
+	
+	
+	
+	function build_list($table,$code,$name_camp,$where='') 
+	 {
+	 	global $db;
+       $sql = "SELECT $code,$name_camp
+				FROM $table
+				$where";	
+       
+    	$db->query($sql);
+		$result = $db->GetArray();
+		$array = array();
+		
+		foreach ($result as $key=>$index) 
+	    {
+		 foreach($index as $keyAux=>$value)
+		  {
+		   $je = $keyAux;
+		   $$je = $value;
+		  }
+		   $array[$$code] = $$name_camp;
+	    }
+		return $array;
+     }  
+	
+	/**
+	 * function guardar()
+     * Guarda el objeto. Si se ingresa un id se actualiza dicho registro de lo contrario se inserta un nuevo registro.
+     * 
+     * 
+     * @param ID $registro_id ID del registro que se va a guardar
+	 * @return BOOLEAN true si guarda correctamente false de lo contrario
+     * 
+	 */
+	function save($registro_id=0, $campo='id', $log='save'){
+		global $db;
+		$variables_objeto = get_class_vars(get_class($this));
+		$total_campos = count($variables_objeto);
+ 		$numero_campo = 1;
+		if($registro_id>0){
+			$sql_guardar = "UPDATE ".$this->table_name." SET";	
+		}else{
+			$sql_guardar = "INSERT INTO ".$this->table_name." SET";			
+		}
+    
+		foreach($variables_objeto as $variable => $valor){
+			if($variable != 'table_name' && $variable != 'module_directory' && $variable != 'object_name'
+			 	&& $variable != 'campos' && $variable!='camposSincronizar' && $variable != 'fecha_creacion' && ($variable != 'id') && $variable != "_etapa"){
+				if($numero_campo!=$total_campos && $numero_campo>1) $sql_guardar .=", ";
+			        if ($this->$variable === null){
+			          $sql_guardar .= " $variable = NULL";
+			        }else{
+			        	if($this->$variable === "on"){
+			        		$this->$variable = 1;
+			        	}
+			          	$sql_guardar .= " $variable = '".addslashes($this->$variable)."'";
+			        }
+				$numero_campo++;			
+			}else{
+				$total_campos--;
+			}
+		}
+    
+		if($registro_id>0){
+			$sql_guardar .= " WHERE $campo = $registro_id";
+			//__P($sql_guardar);
+			//exit;
+			$db->query($sql_guardar);
+			$this->log($_SESSION['datos_logueo']['id_usuario'], 'N/A', $this->module_directory, base64_encode($sql_guardar),$log);
+      	    return $registro_id;
+		}else{
+			//__P($sql_guardar);
+			//exit;
+			$db->query($sql_guardar);
+			$id_obtenido=$db->getInsertID();
+			$this->log($_SESSION['datos_logueo']['id_usuario'], 'N/A', $this->module_directory, base64_encode($sql_guardar),$log);
+			return $id_obtenido;
+		}
+	}
+	
+	/**
+     * Funcin trae una sola fila de datos basado en un valor de clave primaria.
+     * 
+     * Los datos recuperados son colocados en el objeto instanciado. La funcin tambien procesa los datos formateandolos en 
+	 * el formato correcto de hora/fecha y valores nmericos.
+     * 
+     * @param string $id usado para la bsqueda
+     * @param boolean $codificar Optional, predeterminado true, codifica los valores recuperados de la base de datos.
+     * 
+	 */
+	function recover($id, $field = null, $poblarObjeto = true){
+	global $db;
+    if ($field === null){
+      $field = 'id';
+    }else{
+      $field = $field;
+    }
+		$query = "SELECT $this->table_name.* FROM $this->table_name"
+				." WHERE $this->table_name.{$field} = '$id' ";
+		//$GLOBALS['log']->debug("Recuperar $this->object_name : ".$query);		
+		//__P($query);
+		//exit;
+		$db->query($query);
+		$result = $db->getArray();
+        
+		if(empty($result)){
+			return null;
+		}
+		
+		if(!count($result)>0){
+			return null;
+		}
+		
+		if($poblarObjeto === true){
+			$this->poblar_desde_fila($result[0]);
+			return $this;
+		}else{
+			return $registry;
+		}
+		
+	}
+	
+	
+    /**
+     * Coloca el valor de la fila recuperada en el objeto actual.
+     * 
+     * @param ARRAY $registro fila recuperada
+     * 
+     */
+    function poblar_desde_fila($registro){
+    	foreach($this->campos as $campo){
+    		if(isset($registro[$campo]) && $registro[$campo] != ""){
+					$this->$campo = $registro[$campo];					
+				}else{
+					if (!isset($registro[$campo]) && $this->$campo === null){
+						$this->$campo = null;
+					}else{
+						$this->$campo = '';
+					}
+				}
+    	}
+    }
+	/**
+     * Funcin trae un listado con todos los registro del objeto
+     * 
+     * Los datos recuperados son devueltos en un array. 
+     * 
+     * @param STRING $where usado para limitar los registros
+     * @param ARRAY $campos array que se utiliza para seleccionar los campos que se necesitan del listado
+	 * @return ARRAY $registros arreglo con los registros de la lista
+     * 
+	 */
+	function get_listed($where = "", $fields=array(), $associative = false, $return_result = false){
+		$fields = (count($fields)>0)?$fields:$this->fields;
+		$sql_list = "SELECT ";
+		$sql_list .= $this->select_fields_build($fields);
+		$sql_list .= " FROM ".$this->table_name;
+		if(!empty($where)) $sql_list .= "\n WHERE $where";
+		
+		//__P($sql_list);
+		//exit;
+		
+		$result = $GLOBALS['db']->Execute($sql_list);
+		
+		if($associative)	return $result->GetAssoc();	
+		else return $result->GetArray();
+	}
+	
+	/**
+	 * function select_fields_build()
+	 * Construye una cadena de los campos que se colocarn en el select separado por comas 
+	 *
+     * @param ARRAY $campos array que se utiliza para seleccionar los campos que se necesitan del listado 
+	 * @return STRING $cadena_campos campos separados por comas
+	*/
+	function select_fields_build($campos=array()){
+		return implode(",", $campos);
+	}
+	
+	
+	function armSelect($array,  $title = '-',$seleccion='NA' ,$maxCaracteres = 50)
+     {
+       $returnValue = "<OPTION VALUE=\"\" SELECTED>$title</OPTION> \n";
+       foreach($array as $key => $value)
+        {
+          $selected  = ($seleccion == $key)? ' SELECTED' : '';
+	      $returnValue.= "<OPTION VALUE=\""
+		  . $key
+		  . "\"$selected>"
+		  . htmlentities( ucwords( substr($value, 0, $maxCaracteres)), ENT_QUOTES). "</OPTION>\n";
+        }
+       return $returnValue;
+     }
+     
+     function deleted($id = null){
+         if(is_numeric($id) === true){
+             if($this->recover($id) === null){
+                 return false;
+             }else{
+                 $this->eliminado = 1;
+                 $this->save($id,'id','delete');
+                 return true;
+             }
+         }else{
+             return null;
+         }
+     } 
+	 
+	 function paginar($paginaActual,$numeroFilas,$filasMostrar){
+		if($numeroFilas != 0){
+   			$siguiente= $paginaActual +1;
+   			$anterior= $paginaActual -1;
+		}
+		else{
+			$siguiente= 1;
+   			$anterior= 1;
+		}
+		
+	    $ultima= ceil($numeroFilas / $filasMostrar);
+	    $paginaActual=(int)$paginaActual;
+	    if($paginaActual > $ultima){
+	       $paginaActual= $ultima;
+		}
+		if($paginaActual < 1){
+		   $paginaActual=1;
+		}
+		
+		return $this->lu_paginado($paginaActual, $ultima, $anterior, $siguiente);
+	 }
+	 
+	 function lu_paginado($pagina, $ultima, $anterior, $siguiente){
+	 	$paginacion="<ul id='pagination-digg'>";
+		if ($pagina == 1){
+			$paginacion.='<li class="previous-off">&laquo; Anterior</li>
+			                <li class="active">1</li>';
+			
+			for($i= $pagina+1; $i<= $ultima; $i++){
+				$paginacion.='<li><a href="javascript:paginar('.$i.')">'.$i.'</a></li>';
+			}
+			if($ultima > $pagina ){
+				$paginacion.='<li class="next"><a href="javascript:paginar('.$siguiente.')" >Siguiente &raquo;</a></li>';
+			}
+			else{
+				$paginacion.='<li class="next-off">Siguiente &raquo;</li>';
+			}
+		}
+		else{
+			$paginacion.='<li class="previous"><a href="javascript:paginar('.$anterior.')"  >&laquo; Anterior</a></li>';
+			for($i= 1; $i<= $ultima ; $i++){
+				if($pagina == $i){
+					$paginacion.='<li class="active">'.$i.'</li>';
+				}
+				else{
+					$paginacion.='<li><a href="javascript:paginar('.$i.')" >'.$i.'</a></li>';
+				}
+			}
+			if($ultima > $pagina ){
+				$paginacion.='<li class="next"><a href="javascript:paginar('.$siguiente.')" >Siguiente &raquo;</a></li>';
+			}
+			else{
+				$paginacion.='<li class="next-off">Siguiente &raquo;</li>';
+			}
+		}
+		$paginacion.="</ul>";
+		return $paginacion;
+	 }    
+ }
+ ?>

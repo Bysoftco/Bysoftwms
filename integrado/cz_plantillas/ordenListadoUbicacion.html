@@ -1,0 +1,38 @@
+<style>
+	tbody tr.odd th,tbody tr.odd td { border-color:#EBE5D9;background:#F7F4EE; }
+	tbody tr:hover td,tbody tr:hover th { background:#EAECEE;border-color:#523A0B; }
+</style>
+<div id="users-contain" class="ui-widget"  > 
+<form action="" name="listaDocumentos" method="post" />
+	<table width="100%" class="ui-widget ui-widget-content" id="users" >
+		<thead>
+			<tr class="ui-widget-header "> 
+				<th width="5%"> 
+					<input type="hidden" name="clase" id="clase" value="Orden" />
+					No.
+				</th>
+        <th width="15%">Ubicaci&oacute;n</th>
+        <th width="5%">Sigla</th>
+        <th width="10%">Inicio</th>
+        <th width="5%">Fin</th>
+        <th width="5%">Pr&oacute;ximo DO</th>
+        <th width="5%">Contador</th>
+        <th width="10%">A&ntilde;o </th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- BEGIN ROW -->
+      <tr class="{odd}"> 
+        <td>{n}</td>
+        <td>{nombre} </td>
+        <td>{sigla}</td>
+        <td>{doini} </td>
+        <td>{dofin}</td>
+        <td>{do_asignado}</td>
+        <td>{contador}</td>
+        <td>{anio}</td>
+      </tr>
+      <!-- END ROW -->
+    </tbody>
+  </table>
+</form>

@@ -1,0 +1,56 @@
+<script>
+  /* $(function() {
+    $("a.get_remesa_id").click(function() { //check for the first selection
+      var $column = $(this).attr('id'); // assign the ID of the column
+
+      $('#orden').val($('#do_seleccionado'+$column).val());
+      $('#documento_transporte').val($('#do_fac'+$column).val());
+      $('#subcentro').val($('#do_subcentro'+$column).val());
+      $('#centro_costo').val($('#do_centro'+$column).val());
+      $('#remesa').val($('#do_remesa'+$column).val());
+      $( "#dialog-form-factura" ).dialog( "close" );
+	});
+  }); */
+</script>	
+<span id="msgbox" style="display:block" class="{estilo}"> {mensaje} </span>
+<div id="users-contain" class="ui-widget">
+  <form action="" name="listadoSeriales" method="post" id="listadoSeriales">
+    <table width="80%" class="ui-widget ui-widget-content" id="users" >
+    <!-- <table width="80%" id="tabla_general" > -->
+      <thead>
+        <tr class="ui-widget-header"> 
+          <th style="text-align:center; width:5%;">No.</th>
+          <th width="14%">Fecha</th>
+          <th width="13%">Serial</th>
+          <th style="text-align:center; width:12%;">Seleccionar 
+            <input name="n" type="hidden" id="n" value="{num_registros}" /> 
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- BEGIN ROW -->
+        <tr id="{id_tr_estilo}">
+        <!-- <tr class="{odd}"> -->
+          <td>{n}</td>
+          <td>{fecha}
+            <input name="fecha[]" type="hidden" id="fecha{n}" value="{fecha}">
+          </td>
+          <td>{serial} 
+            <input name="serial[]" type="hidden" id="serial{n}" value="{serial}">
+          </td>
+          <td align="center"><input type="radio" name="seleccion" onclick="javascript:seleccionado('{n}')" /></td>
+        </tr>
+        <!-- END ROW -->
+      </tbody>
+    </table>
+    <input type="hidden" name="noSeleccionado" id="noSeleccionado" />
+  </form>
+</div>
+<script>
+	$('.noSeleccion').css('display', 'none');
+	
+	function seleccionado(documento) {
+    $('#noSeleccionado').attr('value', n);
+    $('.noSeleccion').css('display', 'block');
+  }
+</script>

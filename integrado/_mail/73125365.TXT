@@ -1,0 +1,2 @@
+Numero_Ident_Afiliado,Nombre_Afiliado,PeriodosMora,ValorCotizacion
+73125365,Fredy Henrique Salom Puello,201501,77000.00

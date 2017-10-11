@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<title>Ordenes</title>
+	<link type="text/css" href="./integrado/cz_estilos/jquery-ui-1.8.10.custom.css" rel="stylesheet" />	  
+	<style>
+		body { font-size: 62.5%; }
+		label { display: inline-block; width: 100px; }
+		legend { padding: 0.5em; }
+		fieldset fieldset label { display: block; }		
+		#formularioOrden label { width: 160px; margin-left: 10px; } /*ancho de las etiquetas de los campos*/
+		h1 { font-size: 1.2em; margin: .6em 0; }
+		div#users-contain { width: 90%; margin: 5px 0; margin-left: 5%; }
+		div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+		div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+		.ui-dialog .ui-state-error { padding: .3em; }
+	</style>
+	<script>
+		Nifty("div.borde_circular","transparent");
+		Nifty("div.div_barra","top transparent");
+	
+		$(function() {
+			$(":submit").button();
+
+			$("#formularioCrearOrden").validate();
+			$.validator.addMethod("justifique", function(value) {
+				if(document.formulario.observacion.value == "") {
+					if($('#obligatorio').val() == 1) {
+						return false;
+					}
+				}
+				return true;
+			}, '* Por Favor justifique!');
+
+			$( "#dialog:ui-dialog" ).dialog( "destroy" );
+
+			$( "#dialog-form" ).dialog({
+				autoOpen: false,
+				height: 450,
+				width: 550,
+				modal: true,
+				buttons: {
+					"Consultar": function() {
+						$.post("./index_scripts.php",{ clase:'Empleado',metodo:'existeEmpleado',identificacion:$('#identificacion_aux').val(),rand:Math.random() },
+							function(data) {
+							bValid = true;
+
+							if(data == 0) {
+								bValid = false;
+								$("#msgbox").html('El Empleado con Identificación '+$('#identificacion_aux').val()+' No se encuentra en la BD').addClass('ui-state-error');
+							} else {
+								$("#msgbox").html('').removeClass().addClass('ui-state-highlight');
+							}
+							if(bValid) {// solo entra a validar si ya paso las primeras validaciones
+								if(!validaciones()) {// Si no pasa la validaciones no envia  el formulario
+									bValid = false;
+								}
+							}
+							if(bValid) {
+								$( "#formulario" ).submit();
+							}
+						});
+					},
+					Nuevo: function() {
+						var bValid = true;
+						$('#metodo').val('addEmpleado');
+
+						if(bValid) {
+							$( "#formulario" ).submit();
+						}
+					}
+				},
+				close: function() {
+					//allFields.val( "" ).removeClass( "ui-state-error" );
+				}
+			});
+			
+			/*Ventana Registro de Cargas*****************************/
+			$("#dialog-cargas").dialog({
+				autoOpen: false,
+				height: 420,
+				width: 600,
+				modal: true,
+				buttons: {
+					"Cerrar": function() {
+						$("#dialog-cargas").dialog("close");
+        	}
+				},
+			});/*Fin Ventana Registro de Cargas**********************/
+
+			// Tabs
+			$('#tabs').tabs();
+			//$('#tabs').tabs( "select" , 0 ) ;
+
+			if({abre_ventana}) {    // Abre la ventana por defecto
+				$( "#dialog-form" ).dialog( "open" );
+			}
+
+			$( "#editar" ).button().click(function() { // Para modificar documentos
+				$("div#contenedor").load("./index_scripts.php", {clase:'Auxilio',metodo:'auxilioNuevaSolicitud'}, function() {});
+				$( "#ventanaDocumentos" ).dialog( "open" );
+			});
+
+			/*Ventana*********************************************/
+			$( "#ventanaDocumentos" ).dialog({
+				autoOpen: false,
+				height: 450,
+				width: 550,
+				modal: true,
+				buttons: {
+					"Modificar": function() {
+						var bValid = true;
+						//$("#formDocumentos").validate();
+						$('#metodo').val('updateDocumento');
+						if(bValid) {
+							$("#formDocumentos").submit();
+						}
+					},
+					Eliminar: function() {
+						$('#metodoModifica').val('deleteDocumento');
+						$("#formDocumentos").validate();
+					
+						if(confirm('\u00BFSeguro que desea Borrar el documento?')) {
+							$("#formDocumentos").submit();
+							//$( this ).dialog( "close" );
+						}
+					}
+				},
+				close: function() {}
+			});
+		});
+		
+		function validaciones() {
+			with(document.formulario) {
+				/*
+					if(document.formulario.tipo_solicitud.value=='1'){// valores
+						if(valor.value/1 <100){
+							if(confirm('El valor que ingreso por ser menor a 100 se ajusta mas a un porcentaje \n Verifique!!'))
+								return true;
+							valor.focus();
+						}
+					}
+
+					if(tipo_solicitud.value/1=='2'){// porcentaje
+						if(valor.value/1 >100){
+							alert('Porcentaje debe ser menor a 100 \n Verifique!!');
+							valor.focus();
+							return false;
+						}
+					} */
+				return true;
+			}//fin with
+			//return true;	
+		}
+	</script>
+</head>
+<body>
+  <!-- Tabs -->
+  <div class="div_barra">	
+		<h2 class="demoHeaders" align="right">Asignaci&oacute;n de DOs&nbsp;&nbsp;&nbsp;</h2>
+  </div>
+  <div style="padding-top:45px;"></div>
+	<div id="tabs">
+		<ul>
+			<li><a href="#tabs-1">Creación de DOs</a></li>
+			<li><a href="#tabs-2">Area de Revisi&oacute;n </a></li>
+		</ul>	
+  	<div id="tabs-1"> {toolbar} {htmlFormularioCrear}</div> 
+		<div id="tabs-2"> {htmlListaUbicaciones} </div> 
+	</div>
+	<div id="dialog-form" title="Formulario de Ingreso">
+		<div id="contenedor">
+			{filtroReporte}
+		</div><!-- End contenedor -->	
+	</div><!-- End ventana -->
+	<div id="dialog-cargas" title="Registro de Cargas">
+	  <div id="ventana_cargas"> </div>
+	</div>
+</body>
+</html>

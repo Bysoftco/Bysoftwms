@@ -1,0 +1,252 @@
+<style type="text/css">	
+	@page {
+		margin-top: 0.5cm;
+		margin-bottom: 0.5cm;
+		margin-left: 2.5cm;
+		margin-right: 1cm;
+	
+		@top-right-corner { content: "Impresion de la Factura"; }
+		@bottom-right-corner { content: " "; }
+		@bottom-left-corner { content: " "; }			
+	}
+
+	.Estilo1 {
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 10px;
+	}
+		
+	.Estilo4 {font-family: Verdana, Arial, Helvetica, sans-serif}
+	.Estilo7 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14px; font-weight: bold; }
+	.Estilo13 {font-size: 10px}
+	.Estilo14 {color: #000000}
+	.Estilo16 {color: #FFFFFF}
+	.Estilo17 {color: WHITE}
+</style>
+<div align="center"> 
+	<table class="Estilo1" width="100%" border="0" background="integrado/imagenes/copianovalida1.gif" >
+		<tr>
+			<td valign="bottom" width="22%"><img src="integrado/imagenes/cliente.png" width="80" height="40" /></td>
+			<td colspan="2" valign="bottom" width="78%"><div align="left"><img src="integrado/imagenes/clientecabeza.jpg" width="330" height="25" /></div></td>
+		</tr>
+    <tr> 
+			<td colspan="2">RESOLUCION DIAN {resolucion} Fecha {fecha} Numeraci&oacute;n 
+				{desde} al {hasta} <br/>{cree} {comodin} </td>
+			<td width="28%" align="center" class="titulosTabla"><strong>{title}FACTURA DE VENTA</strong></td>
+		</tr>
+    <tr>
+			<td width="38%">Regimen {regimen} Nit {nitResolucion} </td>
+			<td width="34%" height="25"> <strong>CIIU</strong>: {ciiu} </td>
+			<td align="center">No. <span class="Estilo7">{prefijo}{numero_oficial}</span></td>
+		</tr>
+	</table>
+	<table class="Estilo1" width="100%" border="1" >
+		<tr> 
+			<td width="44%" rowspan="5" valign="top" class="filasTabla"><strong>Facturado a:</strong> {facturado_a_nombre}<br>
+				Nit: {facturado_a_nit} <br>
+				Direccion: <span class="Estilo15">{direccion}<br>
+				Tel: {telefonos_fijos} <br>
+				<hr class="filasTabla">
+				<strong>Por Cuenta de</strong>: {por_cuenta_nombre}<br>
+				Nit: {por_cuenta_nit}<br>
+				Dirección: {por_cuenta_dir}<br>
+				Tel: {por_cuenta_tel}
+      </td>
+      <td width="18%" height="24" class="titulosTabla" align="center"><strong>FECHA FACTURA</strong></td>
+			<td width="19%" class="titulosTabla" align="center"><strong>FECHA INGRESO</strong></td>
+			<td width="19%" class="titulosTabla" align="center"><strong>FECHA VENCIMIENTO</strong></td>
+		</tr>
+		<tr> 
+			<td height="41"> 
+				<table class="Estilo1" width="100%" border="0">
+					<tr align="center" valign="middle" class="filasTabla"> 
+						<td width="32%" height="14">DIA</td>
+						<td width="35%">MES</td>
+						<td width="33%">A&Ntilde;O</td>
+					</tr>
+          <tr align="center" class="filasTabla"> 
+            <td height="14">{d_fac} </td>
+            <td>{m_fac} </td>
+            <td>{a_fac} </td>
+          </tr>
+        </table>
+      </td>
+      <td>
+      	<table class="Estilo1" width="100%" border="0">
+					<tr align="center" class="filasTabla"> 
+						<td width="28%">DIA</td>
+						<td width="35%">MES</td>
+						<td width="37%">A&Ntilde;O</td>
+					</tr>
+					<tr align="center" class="filasTabla"> 
+						<td>{d_en} </td>
+						<td>{m_en}</td>
+						<td>{a_en}</td>
+					</tr>
+				</table>
+      </td>
+			<td>
+      	<table class="Estilo1" width="100%" border="0">
+					<tr align="center" class="filasTabla"> 
+						<td width="32%">DIA</td>
+						<td width="34%">MES</td>
+						<td width="34%">A&Ntilde;O</td>
+					</tr>
+					<tr align="center" class="filasTabla"> 
+						<td height="17">{d_sa}</td>
+						<td>{m_sa}</td>
+						<td>{a_sa}</td>
+					</tr>
+				</table>
+      </td>
+		</tr>
+		<tr> 
+			<td height="16" valign="top" class="filasTabla">ORDEN: <strong>{orden}</strong></td>
+			<td colspan="2" rowspan="2" valign="top" class="filasTabla"> 
+				<div align="center">DOCUMENTO DE TRANSPORTE<span class="Estilo7"><br>
+					<font size="1">{documento_transporte}</font></span>
+        </div>
+      </td>
+		</tr>
+		<tr>
+			<td height="17" align="right" valign="bottom" class="filasTabla"><div align="left">REMESA: <strong>{remesa}</strong></div></td>
+		</tr>
+		<tr>
+			<td height="17" align="right" valign="bottom" class="filasTabla"><strong>TRM: </strong>{trm} </td>
+			<td height="17" colspan="2" valign="top" class="filasTabla">
+      	<div align="center">CENTRO COSTO<span class="Estilo7"><br>
+					<font size="1"> {centro_costo}</font></span>
+        </div>
+      </td>
+		</tr>
+	</table>
+	{conceptos}
+	<table class="Estilo1" width="100%" border="0">
+		<tr> 
+			<td height="73" colspan="2">
+      	<table class="Estilo1" width="100%" height="100%" border="1" cellspacing="0">
+					<tr class="titulosTabla"> 
+						<td><strong>OBSERVACIONES</strong></td>
+					</tr>
+					<tr>
+          	<td height="39" valign="top"><font size="1">{datos_remesa} {observaciones}</font></td>
+					</tr>
+					<tr>
+						<td height="23" valign="top"><span class="Estilo13">SON: <br>{monto_letras}</span>&nbsp;</td>
+					</tr>
+					<tr> 
+            <td height="52" align="justify" >EFECTUAR CONSIGNACIÓN 
+              EN <strong>BANCO DE BOGOTA </strong> CUENTA CTE N.<strong>165-34450-8</strong> 
+              DE CIMPEX SAS.
+            </td>
+					</tr>
+					<tr>
+						<td height="28"><div align="center">VALOR DESPUES DE RETENCIONES </div></td>
+					</tr>
+				</table>
+      </td>
+      <td width="26%" colspan="2">
+      	<table class="Estilo1" width="100%" height="100%" border="1">
+					<tr>
+          	<td width="45%" class="titulosTabla">SUBTOTAL</td>
+						<td width="55%" align="right" class="filasTabla">{subtotalf}</td>
+					</tr>
+					<tr> 
+						<td class="titulosTabla">IVA</td>
+						<td align="right" class="filasTabla">{ivaf}</td>
+					</tr>
+					<tr> 
+						<td  class="titulosTabla">ANTICIPO</td>
+						<td align="right" class="filasTabla">{anticipof}</td>
+					</tr>
+					<tr> 
+						<td height="26" class="filasTabla"><strong>TOTAL</strong></td>
+						<td align="right" class="filasTabla">{totalf}</td>
+					</tr>
+					<tr> 
+						<td class="titulosTabla">RETE FUENTE</td>
+						<td align="right" class="filasTabla">{rte_fuentef}</td>
+					</tr>
+					<tr> 
+						<td class="titulosTabla">RETE ICA</td>
+						<td align="right" class="filasTabla">{rte_icaf}</td>
+					</tr>
+					<tr> 
+						<td class="titulosTabla">RETE IVA</td>
+						<td align="right" class="filasTabla">{rte_ivaf}</td>
+					</tr>
+					<tr> 
+						<td height="26" class="filasTabla">OTROS</td>
+						<td align="right" class="filasTabla">{otrosf}</td>
+					</tr>
+					<tr> 
+						<td height="26" class="filasTabla"><strong>NETO</strong></td>
+						<td align="right" class="filasTabla">{netof}</td>
+					</tr>
+				</table>
+    	</td>
+		</tr>
+		<tr> 
+			<td colspan="4">
+      	<table class="Estilo1" width="100%" border="1" cellspacing="0">
+					<tr class="filasTabla"> 
+						<td>Efectivo: {ck_efectivo}</td>
+						<td>Cheque : {ck_cheque}</td>
+						<td>Banco: {banco}</td>
+						<td>Cuenta: {cuenta}</td>
+					</tr>
+				</table>
+      </td>
+		</tr>
+		<tr> 
+			
+      <td colspan="4" class="textoFactura"> <p> <span> 
+          <!-- <span class="Estilo17">
+            	<font size="2">...................................................</font>
+            </span> -->
+          <!-- <font size="2">Factura Elaborada por CIMPEX Nit:860.033.925-1.Mediante el WHMS de: Bysoft &reg; Ltda www.bysoft.us <br/>
+          		Despu&eacute;s de 10 d&iacute;as calendario se considera aceptada. Ley 1231 de 2008. :: F.ZF7.5-006 V001
+          	</font><br/> -->
+          Factura Elaborada por <strong>CIMPEX Nit:860.033.925-1</strong>.Mediante 
+          el WHMS de: <strong>Bysoft &reg; Ltda www.bysoft.us</strong> <br/>
+          Esta Factura se asimila en todos sus efectos a una letra de cambio. 
+          Art. 774 del C.C: Despu&eacute;s de 10 d&iacute;as calendario se considera 
+          aceptada. Ley 1231 de 2008. :Esta Factura causar&aacute; intereses moratorios 
+          a la tasa m&aacute;xima permitida por la ley, a partir de la fecha de 
+          vencimiento estipulada en esta: F.ZF7.5-006 V001 <br/>
+          </span> </p>
+      </td>
+		</tr>
+		<tr> 
+			<td height="94" colspan="4"> 
+        <!-- <table class="Estilo1" width="100%" border="0">
+					<tr> 
+						<td width="30%" height="21" align="center">_________________________</td>
+						<td width="33%" rowspan="2" align="center"><br/>RESPONSABLE</td>
+						<td width="37%" align="center"><div align="left">Fecha Recibido:______________________</div></td>
+					</tr>
+					<tr> 
+						<td height="40" valign="bottom" align="center">ELABORADO POR: {nombre_usuario}</td>
+						<td height="40" valign="bottom" align="center">-------------------------------------<br/>NOMBRE,Y CARGO DE QUIEN RECIBE</td>
+					</tr>
+				</table> -->
+        <table class="Estilo1" width="100%" border="0">
+					<tr> 
+						<td width="30%" height="21" align="center">&nbsp;</td>
+						<td width="33%" rowspan="2" valign="bottom" align="center">_____________________________</td>
+						<td width="37%" align="center"><div align="left">Fecha Recibido:______________________</div></td>
+						<!-- Cambio Solicitado via Mail Jorge, Argenis Mayor/13 -->
+					</tr>
+					<tr> 
+						<td height="21" valign="bottom" align="center">________________________</td>
+						<td height="21" valign="bottom" align="center">_________________________</td>
+					</tr>
+					<tr> 
+						<td height="21" valign="bottom" align="center">ELABORADO POR: {elaborado_por} </td>
+						<td height="21" valign="bottom" align="center">RESPONSABLE</td>
+						<td height="21" valign="bottom" align="center">NOMBRE,Y CARGO DE QUIEN RECIBE</td>
+					</tr>
+				</table>
+      </td>
+		</tr>
+	</table>
+</div>

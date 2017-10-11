@@ -1,0 +1,75 @@
+	<script>
+	
+
+	$(function() 
+	{
+	
+		$("a.get_do_id").click(function() 
+		{ //check for the first selection
+			var $column = $(this).attr('id'); // assign the ID of the column
+			$('#orden').val($('#do_seleccionado'+$column).val());
+			$('#documento_transporte').val($('#do_fac'+$column).val());
+			$('#subcentro').val($('#do_subcentro'+$column).val());
+			$('#centro_costo').val($('#do_centro'+$column).val());
+			
+			$('#fecha_entrada').val($('#fecha_aux'+$column).val());
+			$('#fecha_salida').val($('#fecha_fin'+$column).val());
+			$('#remesa').val($('#do_remesa'+$column).val());
+			$( "#dialog-form-factura" ).dialog( "close" );
+			$( "#dialog-form-factura" ).dialog( "close" );
+	});
+});
+</script>	
+</span> <span id="msgbox" style="display:block" class="{estilo}"  > 
+    {mensaje} </span>
+<div id="users-contain" class="ui-widget"  > 
+
+<form action="" name="paraFacturar" method="post" id="paraFacturar">
+  <table width="80%" class="ui-widget ui-widget-content" id="users" >
+    <thead>
+      <tr class="ui-widget-header "> 
+        <th width="5%">DOs</th>
+        <th width="14%">Fecha</th>
+        <th width="13%">Documento</th>
+        <th width="9%">Ingreso</th>
+        <th width="9%">Pedido</th>
+        <th width="12%">Prefactura</th>
+        <th width="12%">Acci&oacute;n 
+          <input name="n" type="hidden" id="n" value="{num_registros}"> <input name="id_tab" type="hidden" id="id_tab" value="{id_tab}"> 
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- BEGIN ROW -->
+      <tr class="{odd}"> 
+        <td>{do_asignado} 
+          <input name="do_centro[]" type="hidden" id="do_centro{n}" value="{centro}"></td>
+        <td>{fecha}
+          <input name="fecha_aux[]" type="hidden" id="fecha_aux{n}" value="{fecha_arribo}" />
+          <input name="do_subcentro[]" type="hidden" id="do_subcentro{n}" value="{subcentro}">
+        <input name="fecha_fin[]" type="hidden" id="fecha_fin{n}" value="{fecha_fin}" /></td>
+        <td>{doc_tte} 
+          <input name="do_codigo[]" type="hidden" id="do_codigo{n}" value="{codigo}">
+          <input name="do_fac[]" type="hidden" id="do_fac{n}" value="{doc_tte}"></td>
+        <td>{ingreso}
+          <input name="do_ingreso[]" type="hidden" id="do_ingreso{n}" value="{ingreso}">
+       </td>
+        <td>{pedido}
+          <input name="do_pedido[]" type="hidden" id="do_pedido[]" value="{pedido}">
+        </td>
+        <td>{prefactura} 
+         </td>
+        <td> <a href="#" class="signup get_do_id" title="Facturar Do {do_asignado}" id="{n}" cursor><img src="integrado/imagenes/{img_editar}" border="0"  > 
+          <input name="do_seleccionado[]" type="hidden" id="do_seleccionado{n}" value="{do_asignado}">
+          </a>
+        
+        
+          <input name="do_fac[]" type="hidden" id="do_fac" value="{doc_tte}">
+         </td>
+      </tr>
+      <!-- END ROW -->
+    </tbody>
+  </table>
+</form>
+
+

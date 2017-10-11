@@ -1,0 +1,286 @@
+<?php
+  /* header ("Expires: Thu, 27 Mar 1980 23:59:00 GMT"); //La página expira en una fecha pasada
+  header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); //ultima actualizacion ahora cuando la cargamos
+  header ("Cache-Control: no-cache, must-revalidate"); //No guardar en CACHE
+  header ("Pragma: no-cache"); */
+  function limpia_cache() {
+    ob_end_flush();
+    ob_flush();
+    flush();
+    ob_start();
+  }
+?> 
+<script>
+
+    
+
+
+
+    function EnviarFormulario()
+
+    {
+
+        alert("EnviarFormulario");
+
+        
+
+	
+
+    }
+
+	
+
+    $(function() 
+
+    {
+
+	
+
+         	
+
+        $("#buscarClienteretiros").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
+
+                width: 260,
+
+                selectFirst: false
+
+
+
+        });
+
+
+
+
+
+        $("#buscarClienteretiros").result(function(event, data, formatted) 
+
+     	{
+
+            $("#por_cuenta_filtro_retiros").val(data[1]);                         
+
+          
+
+        });
+
+        
+
+		$("#fecha_inicior").datepicker();
+
+		$("#fecha_inicior").datepicker('option', 
+
+				{dateFormat: 'yy/mm/dd',
+
+				  changeYear: true,
+
+				  changeMonth: true,
+
+				  showOn: 'both',
+
+				  buttonImage: 'integrado/imagenes/calendar.png',
+
+				  buttonImageOnly: true
+
+				 
+
+         });
+
+		  
+
+		
+
+		$("#fecha_finr").datepicker();
+
+		$("#fecha_finr").datepicker('option', 
+
+				{dateFormat: 'yy/mm/dd',
+
+				  changeYear: true,
+
+				  changeMonth: true,
+
+				  showOn: 'both',
+
+				  buttonImage: 'integrado/imagenes/calendar.png',
+
+				  buttonImageOnly: true
+
+				 
+
+         });
+
+		
+
+        	
+
+    });
+
+  
+
+    $(document).ready(function()
+
+    {
+
+	$("#formularioSubpartida").validate(
+
+        {
+
+            
+
+            submitHandler: function(form) 
+
+            {
+
+                
+
+                //form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text;
+
+             
+
+                    var bValid = true;
+
+                   
+
+                    
+
+                    if (bValid) 
+
+                    {
+
+                        $.ajax(
+
+                        {
+
+                                url:'scripts_index.php',
+
+                                type: "POST",
+
+                                async:false,
+
+                                data:$('#formularioSubpartida').serialize(),
+
+                                success: function (msm)
+
+                                {
+									alert(msm)
+                                    $( "#dialog-form-hacer-levante" ).dialog( "close" );
+
+                                                                //$( "#num_levante" ).val( " ");
+
+                                   // $('#componente_central').html(msm);
+
+                                }
+
+                        });
+
+                     }   
+
+               
+
+            }
+
+	});	
+
+    });
+
+</script>
+
+<style>
+
+        body { font-size: 62.5%; }
+
+        label { display: inline-block; width: 100px; }
+
+        legend { padding: 0.5em; }
+
+        fieldset fieldset label { display: block; }
+
+        #formularioSubpartida label { width: 160px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
+
+        h1 { font-size: 1.2em; margin: .6em 0; }
+
+        div#users-contain { width: 100%; margin: 5px 0; margin-left: 0%; }
+
+        div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+
+        div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+
+        .ui-dialog .ui-state-error { padding: .3em; }
+
+        tbody tr.odd th,tbody tr.odd td {border-color:#EBE5D9;background:#F7F4EE;}
+
+        tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
+        
+        .ui-datepicker-trigger { position:relative; top: 5px; right: 1px; height:22px; } /* Configuración tamaño imagen del DatePicker */
+
+</style>	
+
+
+
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+
+     <div align="center"></div>
+
+
+
+
+
+
+
+     
+
+<p class="validateTips" id="msgbox_filtro">Seleccione uno o varios filtros para 
+
+  delimitar resultados</p>
+
+
+
+<form class="formularioSubpartida" id="formularioSubpartida" method="post" action="javascript:EnviarFormulario()" name="formularioSubpartida">
+
+    <fieldset class="ui-widget ui-widget-content ui-corner-all">
+
+	<legend class="ui-widget ui-widget-header ui-corner-all">
+
+            <div id="nombre_reporte">Formulario de Consulta 
+
+            <input name="filtro_levante" type="hidden" id="filtro_levante" value="1">
+
+            <input name="comodin" type="hidden" id="comodin" value="{comodin}">
+
+            </div> 
+
+      </legend>
+  Descripci&oacute;n: {descripcion} 
+  <p> 
+    <label>Subpartida: {subpartida}</label>
+    <input name="subpartida" type="hidden" id="subpartida" value="{subpartida}">
+  </p> 
+
+	   
+
+	   <p> 
+
+    	
+    <label>Arancel: </label>
+
+    		
+    <input name="arancel" type="text" class=" required   ui-widget-content" id="arancel" value="{arancel}" />
+
+    
+
+ 	   </p> 
+
+	   	
+
+	</fieldset>  
+  <input name="clase" type="hidden" id="clase" value="Subpartida">
+
+     
+  <input name="metodo" type="hidden" id="metodoReporte" value="updateSubpartida">
+
+     <input name="un_formulario" type="hidden"  id="un_formulario" value="formularioSubpartida">
+
+     
+
+  </form>
+
+ 

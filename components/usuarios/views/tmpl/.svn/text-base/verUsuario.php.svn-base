@@ -1,0 +1,56 @@
+{COMODIN}
+<div style="height: 30px;"></div>
+<table align="center" border='1'
+		width="90%" cellpadding="0" cellspacing="0" id="tabla_rda">
+		<tr class="titulo encabezadoTabla">
+			<td colspan="2" height="30px" align="center">DETALLE USUARIO</td>
+		</tr>
+		<tr>
+			<td width="40%" class="espacio titulo">Usuario </td>
+			<td>&nbsp;&nbsp;{sigusu_id}</td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Perfil </td>
+			<td>&nbsp;&nbsp;{nombre_perfil}</td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Nombres </td>
+			<td>&nbsp;&nbsp;{sigusu_nombres}</td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Apellidos </td>
+			<td>&nbsp;&nbsp;{sigusu_apellidos}</td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Email </td>
+			<td>&nbsp;&nbsp;{sigusu_mail}</td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Oficina </td>
+			<td>&nbsp;&nbsp;{nombre_oficina}</td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Nivel </td>
+			<td>&nbsp;&nbsp;{sigusu_nivel}</td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">Tipo de Gestor</td>
+			<td>&nbsp;&nbsp;{sigusu_gestor}</td>
+		</tr>
+		<tr>
+			<td class="espacio titulo">G&eacute;nero</td>
+			<td>&nbsp;&nbsp;{sigusu_genero}</td>
+		</tr>
+	</table>
+<script>
+function regresar(){
+	$.ajax({
+		url:'index_blank.php?component=usuarios&method=listadoUsuarios',
+		type: "POST",
+		success: function (msm){
+			$('#componente_central').html(msm);
+			$('.formError').remove();
+		}
+	});
+}
+</script>
