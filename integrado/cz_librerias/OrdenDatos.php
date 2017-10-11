@@ -210,7 +210,7 @@ class Orden extends MYDB {
 	
 	function findPuerto($arregloDatos) {
 		$sql = "SELECT puerto,nombrepuerto,pais
-						FROM puertos WHERE (nombrepuerto LIKE '%$arregloDatos[q]%')";
+						FROM puertos WHERE (nombrepuerto LIKE '%$arregloDatos[q]%') or (pais LIKE '%$arregloDatos[q]%')";
             
 		$this->query($sql);
 		if($this->_lastError) {
