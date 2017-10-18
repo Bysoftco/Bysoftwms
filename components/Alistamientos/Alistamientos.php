@@ -3,7 +3,7 @@
  * Description of Alistamientos
  *
  * @author  Teresa
- * @author  Fredy Henrique Salom <fsalom@bysoft.us>
+ * @author  Fredy Salom <fsalom@bysoft.us>
  * @date    17-Marzo-2015 
  */
 if(!defined('entrada_valida')) die('Acceso directo no permitido');
