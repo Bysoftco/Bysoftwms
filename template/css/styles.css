@@ -46,7 +46,7 @@ input.campoForm {
 #contenedor_opciones { 
 	width: 50%; 
 	float: left;
-  padding: 2px;
+  padding: 0.5px; /* Anterior -> padding: 2px; */
   position: fixed;
 }
 
@@ -109,7 +109,7 @@ input.campoForm {
 
 .div_barra {
 	background-color: #cedae8;
-	height: 42px;
+	height: 44px; /* height: 42px; */
   position: fixed;
   width: 99%;
   z-index: 10;
@@ -156,11 +156,12 @@ input.campoForm {
   background-color: #f4f4f4;
 }
 
-/*TAMAÑO DE FONTS EN INPUTS::BYSOFT */
-#tabla_general input[type=text], #tabla_general input[type=password] {
+/*TAMAÃ‘O DE FONTS EN INPUTS::BYSOFT */
+#tabla_general input[type=text],
+#tabla_general input[type=password],
+#tabla_general input[type=email] {
   width: 250px;
   height: 10px;
-  text-transform: uppercase; 
   font-size: 11px;
   color: #55758c;
 }
@@ -390,7 +391,7 @@ img {
 }
 
 #contenedor_externo {
-  /* Distancia div_barra al menú */
+  /* Distancia div_barra al menÃº */
   padding-top: 70px;
   margin: 5px;
   overflow: hidden;
@@ -504,7 +505,7 @@ table#tabla_rda a {
   font-weight: bold;
 }
 
-/* TABLA CON Tï¿½TULOS EN 2 REGLONES */
+/* TABLA CON TÃTULOS EN 2 REGLONES */
 
 table#tabla_doble {
   background-color: #FFFFFF;
@@ -592,7 +593,7 @@ table#tabla_rdaCM tr {
   font-size: 10px;
 }
 
-.button { /* botones genéricos */
+.button { /* botones genÃ©ricos */
   background: #cccccc;
   padding: 5px 50px 5px 50px;
   color: #ffffff;
@@ -603,8 +604,6 @@ table#tabla_rdaCM tr {
   border-right: 0px;
   cursor:pointer;
 }
-
-
 
 button::-moz-focus-inner,
 
@@ -632,7 +631,7 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
   top: 1px;
 }
 
-/* botones pequeños */
+/* botones pequeÃ±os */
 
 .small.button, .small.button:visited {
   font-size: 11px ;
@@ -1214,9 +1213,11 @@ label.errorCampo{color: #ca0000;}
   background-color: #f4f4f4;
 }
 
-/*TAMAÑO DE FONTS EN INPUTS::BYSOFT */
+/*TAMAÃ‘O DE FONTS EN INPUTS::BYSOFT */
 
-#tabla_general_z input[type=text], #tabla_general_z input[type=password] {
+#tabla_general_z input[type=text],
+#tabla_general_z input[type=password],
+#tabla_general_z input[type=email] {
   width: 250px;
   height: 10px;
   text-transform: uppercase; 

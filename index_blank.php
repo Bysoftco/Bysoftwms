@@ -1,5 +1,4 @@
 <?php
-header('Content-Type: text/html; charset=ISO-8859-1');
 session_start();
 define('entrada_valida', true);
 require_once('config.php');
@@ -8,10 +7,11 @@ require_once(CLASSES_PATH.'DatabaseMySQL.php');
 require_once(CLASSES_PATH.'adicionales.php');
 
 //LOCAL
-$_SESSION['conexion'] = new Database(array('DB_HOST'=>'localhost','DB_SOCK'=>'','DB_USER'=>'root','DB_PASS'=>'bysoft','DB_NAME'=>'nbysoft_db'));
+$_SESSION['conexion'] = new Database(array('DB_HOST'=>'localhost','DB_SOCK'=>'','DB_USER'=>'root','DB_PASS'=>'73125365','DB_NAME'=>'nbysoft_db'));
 
 //SERVIDOR
-//$_SESSION['conexion'] = new Database(array('DB_HOST'=>'bysoft.us','DB_SOCK'=>'','DB_USER'=>'venus_ubysoft','DB_PASS'=>'pbysoft','DB_NAME'=>'venus_linedb'));
+//$_SESSION['conexion'] = new Database(array('DB_HOST'=>'grupobysoft.com','DB_SOCK'=>'','DB_USER'=>'isamis_uwbysoft','DB_PASS'=>'pwbysoft','DB_NAME'=>'isamis_wmsbysoft'));
+
 $component = isset( $_REQUEST['component'] ) ? $_REQUEST['component'] : 'menus';
 $method = isset( $_REQUEST['method'] ) ? $_REQUEST['method'] : 'armar_menu_principal';
 

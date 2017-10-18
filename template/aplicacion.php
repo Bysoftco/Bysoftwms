@@ -2,12 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>Bysoft &reg; Logistic</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<!-- <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /> -->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
 	<!-- Estilos generales del aplicativo -->
 	<link href="template/css/styles.css" rel="stylesheet" type="text/css" />
 	<link href="template/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
-	<!-- Estilos del menú -->
+	<!-- Estilos del menÃº -->
 	<link href="template/css/jqueryslidemenu.css" rel="stylesheet" type="text/css" />
 	<!-- Estilos de popups -->
 	<link href="template/css/wowwindow.css" rel="stylesheet" type="text/css" />
@@ -21,9 +22,9 @@
 	<script type="text/javascript" src="{LIB_PATH}javascript/scripts.js"></script>
 	<!-- <script type="text/javascript" src="./integrado/cz_javascript/jquery-1.3.2.min.js"></script> -->
     
-	<!-- Librerías de php usadas en javascript -->
+	<!-- LibrerÃ­as de php usadas en javascript -->
 	<script type="text/javascript" src="{LIB_PATH}javascript/php.js"></script>
-	<!-- Javascript del menú principal -->
+	<!-- Javascript del menÃº principal -->
 	<script type="text/javascript" src="{LIB_PATH}javascript/jqueryslidemenu.js"></script>
 	<script type="text/javascript" src="{LIB_PATH}javascript/lib/jquery.liveFilter.js"></script>
 	<!-- Validar campos formulario -->
@@ -57,7 +58,7 @@
 	<script src="./integrado/cz_javascript/ui/jquery.ui.dialog.js"></script>
 	<script src="./integrado/cz_javascript/ui/jquery.effects.core.js"></script>
 
-  <!-- Script para dar formato moneda a los números -->
+  <!-- Script para dar formato moneda a los nÃºmeros -->
   <script type="text/javascript" src="./integrado/cz_javascript/formatoNumero.js"></script>
   
 	<!-- NO SE USAN 
@@ -86,7 +87,7 @@
 	-->
 </head>
 <body>
-  <!-- Div de máscara cargando -->
+  <!-- Div de mÃ¡scara cargando -->
 	<div id="imgCargando">
 		<img src="img/bar.gif" border="0" />
 	</div>

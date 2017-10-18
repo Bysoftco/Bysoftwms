@@ -19,7 +19,7 @@ if(!empty($_GET['clase'])) {
   $clase  = $kernel.'Logica';
   $metodo =$_GET['metodo'];
 
- require_once(LIBRERIAS .$kernel."Logica.php");
+  require_once(LIBRERIAS .$kernel."Logica.php");
   $unKernel= new $clase();
 		
   $unKernel->$metodo($_GET);
@@ -37,6 +37,4 @@ if(!empty($_GET['clase'])) {
     $unKernel= new $clase();
     $unKernel->$metodo($_POST);
 }
-		
-	
 ?>
