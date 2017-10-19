@@ -816,7 +816,7 @@ class Factura extends MYDB {
 			return TRUE;
 		}
     		$this->fetch();
-			echo "XXXXXX$this->nuevo_consecutivo";
+			
 			return 	$this->nuevo_consecutivo;
     	}
 }  
