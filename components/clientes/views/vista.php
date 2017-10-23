@@ -309,6 +309,7 @@ class ClientesVista {
 	$this->template->setVariable('ancho', $arreglo['infoReferencia']->ancho);
 	$this->template->setVariable('largo', $arreglo['infoReferencia']->largo);
 	$this->template->setVariable('alto', $arreglo['infoReferencia']->alto);
+	$this->template->setVariable('lote_cosecha', $arreglo['infoReferencia']->lote_cosecha);	
 	if(empty($arreglo['infoReferencia']->codigo_ref)){
 		$this->template->setVariable('parte_numero', '1');
 	}

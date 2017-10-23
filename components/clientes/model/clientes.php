@@ -197,12 +197,13 @@ class ClientesModelo extends BDControlador {
     } else {
       $query = "INSERT INTO referencias(codigo_ref, ref_prove, nombre,  cliente, unidad,
                   unidad_venta, presentacion_venta, fecha_expira, min_stock, alto, largo,
-                  ancho, serial, tipo, grupo_item, factor_conversion,vigencia,parte_numero)
+                  ancho, serial, tipo, grupo_item, factor_conversion,vigencia,parte_numero,lote_cosecha)
                 VALUES('$arreglo[id_referencia]', '$arreglo[SKU_Proveedor]', '$arreglo[nombre_referencia]',
                   '$arreglo[cliente]', $arreglo[embalaje_referencia], '$arreglo[unidad_referencia]',
                   $arreglo[presenta_venta], $arreglo[vence_referencia], $arreglo[minimo_stock], $arreglo[alto_referencia],
                   $arreglo[largo_referencia], $arreglo[ancho_referencia], $arreglo[serial_referencia],
-                  '$arreglo[tipo_referencia]', RIGHT('$arreglo[grupo_items]',4),$arreglo[factor_conversion],'$arreglo[vigencia]','$arreglo[parte_numero]')";
+                  '$arreglo[tipo_referencia]', RIGHT('$arreglo[grupo_items]',4),$arreglo[factor_conversion],'$arreglo[vigencia]',
+				  '$arreglo[parte_numero]','$arreglo[lote_cosecha]')";
                   
       //echo  $query;
 	  $db->query($query);

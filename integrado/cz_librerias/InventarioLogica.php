@@ -99,7 +99,7 @@ class InventarioLogica {
     
     while($unaConsulta->fetch()) {
       $nombre ='['.$unaConsulta->codigo_ref.']' .trim($unaConsulta->nombre);
-      echo "$nombre|$unaConsulta->codigo|$unaConsulta->fecha_expira|$unaConsulta->serial|$unaConsulta->codigo_ref|$unaConsulta->parte_numero|$unaConsulta->vigencia\n";
+      echo "$nombre|$unaConsulta->codigo|$unaConsulta->fecha_expira|$unaConsulta->serial|$unaConsulta->codigo_ref|$unaConsulta->parte_numero|$unaConsulta->vigencia|$unaConsulta->lote_cosecha\n";
     }
 
     if($unaConsulta->N == 0) {

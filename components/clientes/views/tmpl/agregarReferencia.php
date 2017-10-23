@@ -4,7 +4,7 @@ Los campos marcados con un asterisco (*) son obligatorios.<br /><br />
 <form name="enviar_datos" id="enviar_datos" action="javascript:enviarDatos()" method="post" >
   <table width="100%" cellpadding="0" cellspacing="0" id="tabla_general">
     <tr align="center">
-      <th colspan="6">Informaci&oacute;n Referencia</th>
+      <th height="21" colspan="6">Informaci&oacute;n Referencia</th>
     </tr>
     <tr>
       <td>C&oacute;digo *</td>
@@ -15,7 +15,7 @@ Los campos marcados con un asterisco (*) son obligatorios.<br /><br />
       <td><select style="width:auto;" name="tipo_referencia" id="tipo_referencia" class="required">{select_tiporef}</select></td>
     </tr>      
     <tr>
-      <td>SubPartida</td>
+      <td height="26">SubPartida</td>
       <td><input type="text" style="width:100px" name="SKU_Proveedor" id="SKU_Proveedor" value="{SKU_Proveedor}" /></td>
       <td>Unidad Comercial/Venta</td>
       <td><select style="width:auto;" name="unidad_referencia" id="unidad_referencia">{select_unidad}</select></td>
@@ -23,29 +23,33 @@ Los campos marcados con un asterisco (*) son obligatorios.<br /><br />
       <td><select style="width:auto;" name="presenta_venta" id="presenta_venta">{select_tipoemb}</select></td>
     </tr>      
     <tr>
-      <td height="24">Ancho</td>
-      <td><input type="text" style="width:60px" name="ancho_referencia" id="ancho_referencia" value="{ancho}" /></td>
-      <td>Largo</td>
-      <td><input type="text" style="width:60px" name="largo_referencia" id="largo_referencia" value="{largo}" /></td>
-      <td>Alto</td>
-      <td><input type="text" style="width:60px" name="alto_referencia" id="alto_referencia" value="{alto}" /></td>
-    </tr>
-    <tr>
       <td>Unidades Embalaje</td>
       <td><input type="text" style="width:60px" name="embalaje_referencia" id="embalaje_referencia" value="1" /></td>
-      <td>Vence&nbsp;<input type="checkbox" name="vence_referencia" id="vence_referencia" {vence_referencia} /></td>
-      <td>Serial&nbsp;<input type="checkbox" name="serial_referencia" id="serial_referencia" {serial_referencia} />Min_Stock&nbsp;<input type="checkbox" name="minimo_stock" id="minimo_stock" {minimo_stock} /></td>
+      <td>M/Lote/C <input type="text" style="width:60px" name="lote_cosecha" id="lote_cosecha" value="{lote_cosecha}" /></td>
+      <td>Vence&nbsp;<input type="checkbox" name="vence_referencia" id="vence_referencia" {vence_referencia} />
+        Serial&nbsp; 
+        <input type="checkbox" name="serial_referencia" id="serial_referencia" {serial_referencia} />
+        Min_Stock&nbsp; 
+        <input type="checkbox" name="minimo_stock" id="minimo_stock" {minimo_stock} /></td>
       <td>Fecha Vigencia</td>
       <td><input name="vigencia" class="required"  type="text" id="vigencia" style="width:60px" value="{vigencia}">
         <input type="hidden" name="vigencia_aux" id="vigencia_aux" value="{vigencia}" /></td>
     </tr>
     <tr>
       <td>Grupo Items</td>
-      <td><select style="width:auto;" name="grupo_items" id="grupo_items">{select_grupo}</select></td>
+      <td><select style="width:200px;" name="grupo_items" id="grupo_items">{select_grupo}</select></td>
       <td>Factor de Conversión</td>
       <td><input type="number" style="width:100px" step="0.1" name="factor_conversion" id="factor_conversion" class="required" value="{factor_conversion}" /></td>
       <td>Parte N./Registro N.</td>
       <td><input name="parte_numero" type="text"  class="required"  id="parte_numero" style="width:60px" value="{parte_numero}"></td>
+    </tr>
+	<tr>
+      <td height="24">Ancho</td>
+      <td><input type="text" style="width:60px" name="ancho_referencia" id="ancho_referencia" value="{ancho}" /></td>
+      <td>Largo</td>
+      <td><input type="text" style="width:60px" name="largo_referencia" id="largo_referencia" value="{largo}" /></td>
+      <td>Alto</td>
+      <td><input type="text" style="width:60px" name="alto_referencia" id="alto_referencia" value="{alto}" /></td>
     </tr>
   </table><br />
   <input type="hidden" name="cliente" id="cliente" value="{cliente}" />
