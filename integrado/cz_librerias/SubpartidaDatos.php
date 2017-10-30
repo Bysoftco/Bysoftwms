@@ -57,7 +57,7 @@ class Subpartida extends MYDB {
       $fecha=date('Y-m-d:a');
       $sede=$_SESSION['sede'];
       $subpartida=trim($arregloDatos[subpartida]);
-      $sql="update  subpartidas set arancel=$arregloDatos[arancel] where TRIM(subpartida) = '$subpartida'";
+      $sql="update  subpartidas set arancel=$arregloDatos[arancel], descripcion='$arregloDatos[descripcion]' where TRIM(subpartida) = '$subpartida'";
       $this->query($sql);
        //echo $sql;
 		if ($this->_lastError) 
