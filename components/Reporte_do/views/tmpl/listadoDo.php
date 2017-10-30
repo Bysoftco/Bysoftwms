@@ -97,6 +97,7 @@
   $(document).ready(function() {
     $('#tabla_general_z').dataTable({
       "aaSorting": [],
+	  "aLengthMenu": [[20, 40, 60, -1], [20, 40, 60, "Todos"]],
       "oLanguage": {
         "sLengthMenu": "Mostrar _MENU_ registros por página",
         "sZeroRecords": "No hay registros para mostrar",
