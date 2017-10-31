@@ -868,6 +868,7 @@ class Levante extends MYDB {
                     imm.cantidad_ext,imm.doc_tte,imm.peso,imm.valor,imm.unidad,imm.bodega,imm.orden,
                     imm.cierre,imm.pos_arancelaria,imm.tip_movimiento,imm.tipo_retiro,imm.posicion,
                     imm.pedido,imm.destinatario,imm.ciudad AS codigo_ciudad,ubicaciones.nombre AS nombre_ubicacion,
+					imm.peso_ext,imm.peso_nac,
                     posiciones.nombre AS nombre_posicion,ciudades.nombre AS nombre_ciudad,bodegas.nombre AS nombre_bodega, 
                     destinatarios.razon_social AS nombre_destinatario
             FROM inventario_maestro_movimientos imm
@@ -880,7 +881,7 @@ class Levante extends MYDB {
               LEFT JOIN bodegas ON imm.bodega = bodegas.codigo
               LEFT JOIN clientes AS destinatarios ON imm.destinatario = destinatarios.numero_documento
             WHERE imm.codigo = $arregloDatos[id_levante]";
-
+//echo $sql;
     $this->query($sql);
     if($this->_lastError) {
       $this->mensaje = "error al consultar Inventario " . $sql;
@@ -911,6 +912,8 @@ class Levante extends MYDB {
                 doc_tte                 = '$arregloDatos[doc_tte]',
                 valor                   = '$arregloDatos[valor]',
                 peso                    = '$total_peso',
+				peso_ext                   = '$arregloDatos[tot_peso_nonac]',
+				peso_nac                   = '$arregloDatos[tot_peso_nac]',
                 posicion                = '$arregloDatos[posicion]',
                 bodega                  = '$arregloDatos[id_bodega]',
                 pos_arancelaria         = '$arregloDatos[pos_arancelaria]',
@@ -1255,6 +1258,7 @@ class Levante extends MYDB {
                 cantidad_nonac = '$arregloDatos[cantidad_ext]',
                 peso_naci = '$arregloDatos[tot_peso_nac]',
                 peso_nonac = '$arregloDatos[tot_peso_nonac]',
+				
                 fob_nonac = '$arregloDatos[valor]'
             WHERE inventario_entrada = '$arregloDatos[inventario_entrada]'";
 
