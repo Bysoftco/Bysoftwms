@@ -97,6 +97,13 @@
       }
     }, '* Debe seleccionar una referencia de la lista!');
   });
+  $.validator.addMethod("mayor_cero", function(value){
+		if(value > 0 ){
+			return true;	
+		}else{
+			return false;
+		}
+	}, '* El valor indicado no puede ser cero!');
 
   $.validator.setDefaults({
     submitHandler: function() {
@@ -139,7 +146,7 @@
     if($("#serial").val()==1) $("#btnSerialesItem{item}").css("display", "block");
     else $("#btnSerialesItem{item}").css("display", "none");
     $("#formInventario{item}").validate({
-      rules: {referencia: "justifique"}
+      rules: {referencia: "justifique",cantidad:"mayor_cero",peso:"mayor_cero"}
     });
     $("#referencia_nombre{item}").autocomplete("./scripts_index.php?clase=Inventario&metodo=findReferencia&id_cliente="+
       $("#cliente_filtro").val(), {
