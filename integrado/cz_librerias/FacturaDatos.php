@@ -326,7 +326,8 @@ class Factura extends MYDB {
               iva = '$arregloDatos[iva]', rte_fuente = '$arregloDatos[rte_fuente]', rte_iva = '$arregloDatos[rte_iva]', rte_ica = '$arregloDatos[rte_ica]',
               total = '$arregloDatos[total]', efectivo = '$arregloDatos[efectivo]', cheque = '$arregloDatos[cheque]', banco = '$arregloDatos[banco]',
               cuenta = '$arregloDatos[cuenta]', credito = '$arregloDatos[credito]', anticipo = '$arregloDatos[anticipo]',
-              valor_anticipo = '$arregloDatos[valor_anticipo]', recibo = '$arregloDatos[recibo]', observaciones = '$arregloDatos[observaciones]'
+              valor_anticipo = '$arregloDatos[valor_anticipo]', recibo = '$arregloDatos[recibo]', observaciones = '$arregloDatos[observaciones]',
+			  trm='$arregloDatos[trm]'
             WHERE codigo = $arregloDatos[num_prefactura] ";
 
     $this->query($sql);
@@ -355,7 +356,8 @@ class Factura extends MYDB {
               rte_fuente = '$arregloDatos[rte_fuente]', rte_iva = '$arregloDatos[rte_iva]', rte_ica = '$arregloDatos[rte_ica]',
               rte_cree = '$arregloDatos[rte_cree]', total = '$arregloDatos[total]', efectivo = '$arregloDatos[efectivo]', cheque = '$arregloDatos[cheque]',
               banco = '$arregloDatos[banco]', cuenta = '$arregloDatos[cuenta]', credito = '$arregloDatos[credito]', anticipo = '$arregloDatos[anticipo]',
-              valor_anticipo = '$arregloDatos[valor_anticipo]', recibo = '$arregloDatos[recibo]', observaciones = '$arregloDatos[observaciones]'
+              valor_anticipo = '$arregloDatos[valor_anticipo]', recibo = '$arregloDatos[recibo]', observaciones = '$arregloDatos[observaciones]',
+			  trm='$arregloDatos[trm]'
             WHERE codigo = $arregloDatos[num_prefactura] ";
 		
     $this->query($sql);
