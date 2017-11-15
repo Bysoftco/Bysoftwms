@@ -10,7 +10,7 @@ class ExistenciasModelo extends BDControlador {
     $db = $_SESSION['conexion'];
 		$sede = $_SESSION['sede'];
 
-    $arreglo[movimiento] = "1,2,3,7,10,15,30";
+    $arreglo[movimiento] = "1,2,3,7,10,15,16,30";
     $arreglo[GroupBy] = "orden,codigo_ref,modelo";
     $arreglo[having] = "HAVING (TRUNCATE(c_nal,1) > 0 OR TRUNCATE(c_ext,1) > 0) AND (TRUNCATE(cantidad,1) > 0)";
 
@@ -39,13 +39,13 @@ class ExistenciasModelo extends BDControlador {
                 END AS peso,
                 CASE WHEN im.tipo_movimiento IN(1) AND (im.flg_control = 1) AND ((cantidad_naci!=0) OR (cantidad_nonac!=0)) THEN ie.valor ELSE 0
                 END AS valor,
-                CASE WHEN im.tipo_movimiento IN(1,2,3,7,10,15,30) THEN peso_nonac ELSE 0
+                CASE WHEN im.tipo_movimiento IN(1,2,3,7,10,15,16,30) THEN peso_nonac ELSE 0
                 END AS p_ext,
-                CASE WHEN im.tipo_movimiento IN(1,2,3,7,10,15,30) THEN peso_naci ELSE 0
+                CASE WHEN im.tipo_movimiento IN(1,2,3,7,10,15,16,30) THEN peso_naci ELSE 0
                 END AS p_nal,
-                CASE WHEN im.tipo_movimiento IN(3,7,10,15) THEN peso_nonac ELSE 0
+                CASE WHEN im.tipo_movimiento IN(3,7,10,15,16) THEN peso_nonac ELSE 0
                 END AS p_ret_ext,
-                CASE WHEN im.tipo_movimiento IN(3,7,10,15) THEN peso_naci ELSE 0
+                CASE WHEN im.tipo_movimiento IN(3,7,10,15,16) THEN peso_naci ELSE 0
                 END AS p_ret_nal,
                 CASE WHEN im.tipo_movimiento IN(8,9) THEN peso_nonac ELSE 0
                 END AS p_sptr_ext,
@@ -61,13 +61,13 @@ class ExistenciasModelo extends BDControlador {
                 END AS p_kit_ext,
                 CASE WHEN im.tipo_movimiento IN(10) THEN peso_naci ELSE 0
                 END AS p_kit_nal,
-                CASE WHEN im.tipo_movimiento IN(1,2,3,7,10,15,30) THEN cantidad_naci ELSE 0
+                CASE WHEN im.tipo_movimiento IN(1,2,3,7,10,15,16,30) THEN cantidad_naci ELSE 0
                 END AS c_nal,
-                CASE WHEN im.tipo_movimiento IN(1,2,3,7,10,15,30) THEN cantidad_nonac ELSE 0
+                CASE WHEN im.tipo_movimiento IN(1,2,3,7,10,15,16,30) THEN cantidad_nonac ELSE 0
                 END AS c_ext,
-                CASE WHEN im.tipo_movimiento IN(3,7,10,15) THEN cantidad_nonac ELSE 0
+                CASE WHEN im.tipo_movimiento IN(3,7,10,15,16) THEN cantidad_nonac ELSE 0
                 END AS c_ret_ext,
-                CASE WHEN im.tipo_movimiento IN(3,7,10,15) THEN cantidad_naci ELSE 0
+                CASE WHEN im.tipo_movimiento IN(3,7,10,15,16) THEN cantidad_naci ELSE 0
                 END AS c_ret_nal,
                 CASE WHEN im.tipo_movimiento IN(8,9) THEN cantidad_nonac ELSE 0
                 END AS c_sptr_ext,
@@ -83,17 +83,17 @@ class ExistenciasModelo extends BDControlador {
                 END AS c_kit_ext,
                 CASE WHEN im.tipo_movimiento IN(10) THEN cantidad_naci ELSE 0
                 END AS c_kit_nal,
-                CASE WHEN im.tipo_movimiento IN(1,2,3,7,8,9,10,15) THEN fob_nonac ELSE 0
+                CASE WHEN im.tipo_movimiento IN(1,2,3,7,8,9,10,15,16) THEN fob_nonac ELSE 0
                 END AS fob,
-                CASE WHEN im.tipo_movimiento IN(3,7,10,15) THEN fob_nonac ELSE 0
+                CASE WHEN im.tipo_movimiento IN(3,7,10,15,16) THEN fob_nonac ELSE 0
                 END AS fob_retiro,
-                CASE WHEN im.tipo_movimiento IN(2,3,10,15,30) THEN cif ELSE 0
+                CASE WHEN im.tipo_movimiento IN(2,3,10,15,16,30) THEN cif ELSE 0
                 END AS cif,
                 CASE WHEN im.tipo_movimiento IN(8,9) THEN cif ELSE 0
                 END AS cif_proceso,
                 CASE WHEN im.tipo_movimiento IN(9) THEN cif ELSE 0
                 END AS cif_ensamble,
-                CASE WHEN im.tipo_movimiento IN(3,7,10,15) THEN cif ELSE 0
+                CASE WHEN im.tipo_movimiento IN(3,7,10,15,16) THEN cif ELSE 0
                 END AS cif_retiro,
                 CASE WHEN im.tipo_movimiento IN(4,5) THEN fob_nonac ELSE 0
                 END AS v_rpk,
