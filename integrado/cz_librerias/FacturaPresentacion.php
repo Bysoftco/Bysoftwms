@@ -365,9 +365,9 @@ class FacturaPresentacion {
 			 $arregloDatos[rte_fuentef] = number_format ($unDatos->rte_fuente/$unDatos->trm,2,',','.');
 			 $arregloDatos[rte_icaf] = number_format ($unDatos->rte_ica/$unDatos->trm,2,',','.');
 			 $arregloDatos[rte_ivaf] = number_format ($unDatos->rte_iva/$unDatos->trm,2,',','.');
-			 $arregloDatos[totalf] = number_format($unDatos->total/$unDatos->trm,0,',','.');
-			 $arregloDatos[netof] = number_format($unDatos->neto/$unDatos->trm,0,',','.');
-			 $arregloDatos[valorf] = number_format($unDatos->valor/$unDatos->trm,0,',','.');
+			 $arregloDatos[totalf] = number_format($unDatos->total/$unDatos->trm,2,',','.');
+			 $arregloDatos[netof] = number_format($unDatos->neto/$unDatos->trm,2,',','.');
+			 $arregloDatos[valorf] = number_format($unDatos->valor/$unDatos->trm,2,',','.');
 			 
 			 $arregloDatos[valor_unitariof] = number_format($unDatos->valor_unitario/$unDatos->trm,0,',','.');
 		}
@@ -410,14 +410,13 @@ class FacturaPresentacion {
 	$valor=round($unDatos->total);
 	if($unDatos->trm > 0)
 	{
+		$moneda = 'Dolares';
 		$valor=$unDatos->total/$unDatos->trm;
 	}
     $arregloDatos[monto_letras] = strtoupper($monto->ValorEnLetras($valor,$moneda));   
 	$arregloDatos[elaborado_por]=$_SESSION['datos_logueo']['nombre_usuario']." ".$_SESSION['datos_logueo']['apellido_usuario'];
 	if($unDatos->trm > 0)
 	{
-		$moneda='Dolares';
-		
 		$array_valor=explode(",",number_format ($valor,2,',','.'));
 		$decimal=substr($array_valor[1],0,2);
 		if($decimal==1){$decimal=0;}
