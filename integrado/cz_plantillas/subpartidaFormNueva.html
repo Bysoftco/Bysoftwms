@@ -38,7 +38,7 @@
 
          	
 
-        $("#buscarClienteretiros").autocomplete("./scripts_index.php?clase=Subpartida&metodo=findSupartida", {
+        $("#buscarClienteretiros").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
 
                 width: 260,
 
@@ -120,7 +120,7 @@
 
     {
 
-	$("#maestro").validate(
+	$("#formularioSubpartidaNueva").validate(
 
         {
 
@@ -130,7 +130,7 @@
 
             {
 
-                 //alert("test ready");
+                alert("step 1");	
 
                 //form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text;
 
@@ -156,17 +156,17 @@
 
                                 async:false,
 
-                                data:$('#maestro').serialize(),
+                                data:$('#formularioSubpartidaNueva').serialize(),
 
                                 success: function (msm)
 
                                 {
-
-                                    $( "#ventana_reporte" ).dialog( "close" );
+									alert(msm)
+                                    $( "#dialog-form-hacer-levante" ).dialog( "close" );
 
                                                                 //$( "#num_levante" ).val( " ");
 
-                                    $('#componente_central').html(msm);
+                                   // $('#componente_central').html(msm);
 
                                 }
 
@@ -194,7 +194,7 @@
 
         fieldset fieldset label { display: block; }
 
-        #formularioReporte label { width: 160px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
+        #formularioSubpartida label { width: 160px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
 
         h1 { font-size: 1.2em; margin: .6em 0; }
 
@@ -234,53 +234,43 @@
 
 
 
-<form class="formularioReporte" id="maestro" method="post" action="javascript:EnviarFormulario()" name="maestro">
+<form class="formularioSubpartidaNueva" id="formularioSubpartidaNueva" method="post" action="javascript:EnviarFormulario()" name="formularioSubpartidaNueva">
 
     <fieldset class="ui-widget ui-widget-content ui-corner-all">
 
 	<legend class="ui-widget ui-widget-header ui-corner-all">
 
-            <div id="nombre_reporte">Formulario de Consulta 
-
-            <input name="filtro_levante" type="hidden" id="filtro_levante" value="1">
+            
+  <div id="nombre_reporte"> Nueva subpartidaTest 
+    <input name="filtro_levante" type="hidden" id="filtro_levante" value="1">
 
             <input name="comodin" type="hidden" id="comodin" value="{comodin}">
 
             </div> 
 
-      </legend>  
+      </legend>
+  <p> 
+    <label>Subpartida: 
+    <input type="text" name="textfield">
+    </label>
+  </p>
+  Descripci&oacute;n: 
+  <textarea rows="3" cols="90" id="descripcion" name="descripcion">{descripcion}</textarea>
 
-        
+
+	   
+
+	   <p> 
+
+    	
+    <label>Arancel: </label>
+
+    		
+    <input name="arancel" type="text" class=" required   ui-widget-content" id="arancel" value="{arancel}" />
 
     
 
-    	<p>
-
-            
-    <label>Nombre:</label>
-
-            
-    <input name="nombre" type="text" id="buscarClienteretiros" size="50" />
-
-	</p>
-
-
-
-  	
-
-	
-
-  <p> 
-
-    <label>Subpartida: </label>
-
-    <input name="subpartida" type="text" class="     ui-widget-content" id="por_cuenta_filtro_retiros" />
-
-    <input name="tipo_movimiento_filtro" type="hidden" id="tipo_movimiento_filtro" value="1">
-
-  </p> 
-
-
+ 	   </p> 
 
 	   	
 
@@ -288,11 +278,12 @@
   <input name="clase" type="hidden" id="clase" value="Subpartida">
 
      
-  <input name="metodo" type="hidden" id="metodoReporte" value="getListado">
+  <input name="metodo" type="hidden" id="metodoReporte" value="nuevaSubpartida">
 
-     
- <input name="un_formulario" type="hidden"  id="un_formulario" value="formularioSubpartidaNueva">
+     <input name="un_formulario" type="hidden"  id="un_formulario" value="formularioSubpartidaNueva">
 
      
 
   </form>
+
+ 

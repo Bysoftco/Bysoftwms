@@ -10,7 +10,7 @@
 
                 <a href="#">
 
-                    <img src="img/acciones/agregar.png" title="Nueva Transacci&ograve;n" width="25" height="25" border="0" />
+                    <img src="img/acciones/ver.png" title="Filtro" width="25" height="25" border="0" />
 
                 </a>
 
@@ -24,7 +24,7 @@
 
                 <a href="#">
 
-                    <img src="img/acciones/ver.png" title="Filtros" width="25" height="25" border="0" />
+                    <img src="img/acciones/agregar.png" title="Filtros" width="25" height="25" border="0" />
 
                 </a>
 
@@ -64,13 +64,16 @@
     {
 
 
-
+		
         $("#window_filtro").dialog("open");
+		//$("#cuerpo_filtro").html("cambio contenido de la ventana");
+		 $("div#cuerpo_filtro").load("./scripts_index.php", {clase:'Subpartida',metodo:'getFormaNueva',mostrar:'1'}, function(datos){
+          });
 
     });
 
 
-
+// filtro
     $('.popupsAgregar a').click(function()
 
     {
@@ -225,7 +228,7 @@
 
 
 
-    $('#btnBuscar').hide();  // Si el Tab es 1 se Oculta
+    
 
 
 

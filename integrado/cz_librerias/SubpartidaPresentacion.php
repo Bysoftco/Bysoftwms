@@ -336,6 +336,9 @@ class SubpartidaPresentacion {
      function  getUnaSubpartida($arregloDatos,$unDatos){
 			//var_dump($unDatos);
      }
+	 function nuevaSubpartida($arregloDatos) {
+		
+	}
 	 
 
   } 

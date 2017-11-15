@@ -78,5 +78,8 @@ class Subpartida extends MYDB {
 			return TRUE;
 		}
 	}
+	function nuevaSubpartida($arregloDatos) {
+		
+	}
   }
 ?>
