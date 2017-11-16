@@ -730,7 +730,7 @@ class Factura extends MYDB {
               AND imm.codigo = $arregloDatos[datos_remesa]
             GROUP BY imm.codigo
               LIMIT 0, 30";
-              
+     //echo    $sql ;       
     $this->query($sql);
     if($this->_lastError) {
       echo "<div class=error align=center> :( Error al Consultar Datos de la remesa <br>$sql</div>.";
