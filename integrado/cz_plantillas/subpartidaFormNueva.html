@@ -129,49 +129,25 @@
             submitHandler: function(form) 
 
             {
+                //form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text;      
 
-                alert("step 1");	
+                    var bValid = true;                 
 
-                //form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text;
-
-             
-
-                    var bValid = true;
-
-                   
-
-                    
-
-                    if (bValid) 
-
-                    {
-
-                        $.ajax(
-
-                        {
-
-                                url:'scripts_index.php',
-
-                                type: "POST",
-
-                                async:false,
-
-                                data:$('#formularioSubpartidaNueva').serialize(),
-
-                                success: function (msm)
-
-                                {
+                    if (bValid){ 
+						$.ajax({
+							url:'scripts_index.php',
+							type: "POST",
+							async:false,
+							data:$('#formularioSubpartidaNueva').serialize(),
+							success: function (msm) {
 									alert(msm)
                                     $( "#dialog-form-hacer-levante" ).dialog( "close" );
-
                                                                 //$( "#num_levante" ).val( " ");
 
                                    // $('#componente_central').html(msm);
 
                                 }
-
                         });
-
                      }   
 
                
@@ -219,21 +195,9 @@
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
 
      <div align="center"></div>
-
-
-
-
-
-
-
-     
-
 <p class="validateTips" id="msgbox_filtro">Seleccione uno o varios filtros para 
 
   delimitar resultados</p>
-
-
-
 <form class="formularioSubpartidaNueva" id="formularioSubpartidaNueva" method="post" action="javascript:EnviarFormulario()" name="formularioSubpartidaNueva">
 
     <fieldset class="ui-widget ui-widget-content ui-corner-all">
@@ -241,8 +205,8 @@
 	<legend class="ui-widget ui-widget-header ui-corner-all">
 
             
-  <div id="nombre_reporte"> Nueva subpartidaTest 
-    <input name="filtro_levante" type="hidden" id="filtro_levante" value="1">
+  <div id="nombre_reporte"> Nueva subpartida
+<input name="filtro_levante" type="hidden" id="filtro_levante" value="1">
 
             <input name="comodin" type="hidden" id="comodin" value="{comodin}">
 
@@ -250,27 +214,22 @@
 
       </legend>
   <p> 
-    <label>Subpartida: 
-    <input type="text" name="textfield">
-    </label>
-  </p>
-  Descripci&oacute;n: 
-  <textarea rows="3" cols="90" id="descripcion" name="descripcion">{descripcion}</textarea>
-
-
-	   
-
-	   <p> 
-
-    	
-    <label>Arancel: </label>
-
-    		
-    <input name="arancel" type="text" class=" required   ui-widget-content" id="arancel" value="{arancel}" />
-
-    
-
- 	   </p> 
+   		<p><label>Subpartida:</label> 
+    		<input name="subpartida" type="text" class="required   ui-widget-content" id="subpartida" value="{subpartida}" />
+    	</p>
+  		<label>Descripci&oacute;n:</label>		 
+  			<textarea rows="2" cols="60" id="descripcion" name="descripcion">{descripcion}</textarea>
+  		<p>    	
+    	<p><label>Arancel: </label>
+			<input name="arancel" type="text" class="required   ui-widget-content" id="arancel" value="{arancel}" />
+		</p>	
+		<p><label>Detalle: </label>
+    		<input name="detalle" type="text" class="required   ui-widget-content" id="detalle" value="{detalle}" />
+		</p>
+		<p><label>Observación: </label>
+    		<input name="obs" type="text" class="ui-widget-content" id="obs" value="{obs}" />	
+		</p>
+ </p> 
 
 	   	
 
@@ -278,7 +237,7 @@
   <input name="clase" type="hidden" id="clase" value="Subpartida">
 
      
-  <input name="metodo" type="hidden" id="metodoReporte" value="nuevaSubpartida">
+  <input name="metodo" type="hidden" id="metodoReporte" value="addSubpartida">
 
      <input name="un_formulario" type="hidden"  id="un_formulario" value="formularioSubpartidaNueva">
 
