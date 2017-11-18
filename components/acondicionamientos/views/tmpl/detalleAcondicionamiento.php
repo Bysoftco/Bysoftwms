@@ -202,11 +202,7 @@
         }
         else $("#cantidad_nonac").val($("#acondicionadas").val());
         $.ajax({
-<<<<<<< HEAD
           url: 'index_blank.php?component=acondicionamientos&method=registrarAcondicionamiento',
-=======
-          url: 'index_blank.php?component=Acondicionamientos&method=registrarAcondicionamiento',
->>>>>>> c84d7f852dc1161bb99d4defb1e87bd0e109f0aa
           type: "POST",
           data: {
             codigo_operacion: $("#codigo_operacion").attr("value"),
@@ -244,11 +240,7 @@
 	.click(function() {
     if(confirm("\u00BFRealmente desea Cerrar la Operación?")) {
       $.ajax({
-<<<<<<< HEAD
         url: 'index_blank.php?component=acondicionamientos&method=cerrarAcondicionamiento',
-=======
-        url: 'index_blank.php?component=Acondicionamientos&method=cerrarAcondicionamiento',
->>>>>>> c84d7f852dc1161bb99d4defb1e87bd0e109f0aa
         type: "POST",
         data: {
           codigo_operacion: $("#codigo_operacion").attr("value"),
@@ -294,11 +286,7 @@
     }
   })
 	.click(function() {
-<<<<<<< HEAD
     window.open("index_blank.php?component=acondicionamientos&method=generarPackingList&codigoMaestro="+$("#codigoMaestro").attr("value"));
-=======
-    window.open("index_blank.php?component=Acondicionamientos&method=generarPackingList&codigoMaestro="+$("#codigoMaestro").attr("value"));
->>>>>>> c84d7f852dc1161bb99d4defb1e87bd0e109f0aa
     return false;
   });
   
