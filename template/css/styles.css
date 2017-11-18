@@ -166,6 +166,13 @@ input.campoForm {
   color: #55758c;
 }
 
+#tabla_general select { /*ESTILOS DE LISTAS :: BYSOFT*/
+  width: 350px;
+  height: 20px;
+  font-size: 11px;
+  color: #55758c;
+}
+
 /* Fredy Salom */
 #tabla_seriales input[type=file] {
  	width: 420px;
@@ -173,10 +180,56 @@ input.campoForm {
 	border: 1px solid #000;
   font-size: 12px;
   color: #55758c;
+}
+
+#tabla_acondicionar {
+  background-color: #ffffff;
+  border-left-style:solid;
+  border-left-width:1px;
+  border-left-color:#cccccc;
+  border-bottom-style:solid;
+  border-bottom-width:1px;
+  border-bottom-color:#cccccc;
+}
+
+#tabla_acondicionar tr {
+  height: 10px;
+  
+}
+
+#tabla_acondicionar td {
+  padding: 2px 2px 2px 2px;
+  border-top-style:solid;
+  border-top-width:1px;
+  border-top-color:#cccccc;
+  border-right-style:solid;
+  border-right-width:1px;
+  border-right-color:#cccccc;
+  font-size: 9px;
+  text-transform: uppercase; 
+  
+}
+
+#tabla_acondicionar th {
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: center;
+  border-top-style:solid;
+  border-top-width:1px;
+  border-top-color:#cccccc;
+  border-right-style:solid;
+  border-right-width:1px;
+  border-right-color:#cccccc;
+  background-color: #f4f4f4;
+}
+
+#tabla_acondicionar input[type=text] {
+  height: 15px;
+  font-size: 11px;
+  color: #55758c;
 }	
 
-#tabla_general select { /*ESTILOS DE LISTAS :: BYSOFT*/
-  width: 350px;
+#tabla_acondicionar select { /*ESTILOS DE LISTAS :: BYSOFT*/
   height: 20px;
   font-size: 11px;
   color: #55758c;
