@@ -120,7 +120,7 @@
 
     {
 
-	$("#formularioSubpartida").validate(
+	$("#formularioSubpartidaNueva").validate(
 
         {
 
@@ -130,7 +130,7 @@
 
             {
 
-                
+                alert("step 1");	
 
                 //form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text;
 
@@ -156,7 +156,7 @@
 
                                 async:false,
 
-                                data:$('#formularioSubpartida').serialize(),
+                                data:$('#formularioSubpartidaNueva').serialize(),
 
                                 success: function (msm)
 
@@ -234,27 +234,29 @@
 
 
 
-<form class="formularioSubpartida" id="formularioSubpartida" method="post" action="javascript:EnviarFormulario()" name="formularioSubpartida">
+<form class="formularioSubpartidaNueva" id="formularioSubpartidaNueva" method="post" action="javascript:EnviarFormulario()" name="formularioSubpartidaNueva">
 
     <fieldset class="ui-widget ui-widget-content ui-corner-all">
 
 	<legend class="ui-widget ui-widget-header ui-corner-all">
 
-            <div id="nombre_reporte">Formulario de Consulta 
-
-            <input name="filtro_levante" type="hidden" id="filtro_levante" value="1">
+            
+  <div id="nombre_reporte"> Nueva subpartidaTest 
+    <input name="filtro_levante" type="hidden" id="filtro_levante" value="1">
 
             <input name="comodin" type="hidden" id="comodin" value="{comodin}">
 
             </div> 
 
       </legend>
-  Descripci&oacute;n:
-  <textarea rows="3" cols="90" id="descripcion" name="descripcion">{descripcion}</textarea>
   <p> 
-    <label>Subpartida: {subpartida}</label>
-    <input name="subpartida" type="hidden" id="subpartida" value="{subpartida}">
-  </p> 
+    <label>Subpartida: 
+    <input type="text" name="textfield">
+    </label>
+  </p>
+  Descripci&oacute;n: 
+  <textarea rows="3" cols="90" id="descripcion" name="descripcion">{descripcion}</textarea>
+
 
 	   
 
@@ -276,9 +278,9 @@
   <input name="clase" type="hidden" id="clase" value="Subpartida">
 
      
-  <input name="metodo" type="hidden" id="metodoReporte" value="updateSubpartida">
+  <input name="metodo" type="hidden" id="metodoReporte" value="nuevaSubpartida">
 
-     <input name="un_formulario" type="hidden"  id="un_formulario" value="formularioSubpartida">
+     <input name="un_formulario" type="hidden"  id="un_formulario" value="formularioSubpartidaNueva">
 
      
 

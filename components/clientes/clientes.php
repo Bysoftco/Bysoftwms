@@ -186,16 +186,16 @@ class clientes {
   }
 
   function agregarReferencia($arreglo) {
-    $lista_tiporef = $this->datos->build_list("tipos_referencias", "codigo", "nombre");
+    $lista_tiporef = $this->datos->build_list("tipos_referencias", "codigo", "nombre"," ORDER BY nombre ");
     $arreglo['select_tiporef'] = $this->datos->armSelect($lista_tiporef, 'Seleccione Tipo Referencia...', 0);
 
-    $lista_unidad = $this->datos->build_list("unidades_medida", "id", "medida");
+    $lista_unidad = $this->datos->build_list("unidades_medida", "id", "medida"," ORDER BY medida ");
     $arreglo['select_unidad'] = $this->datos->armSelect($lista_unidad, 'Seleccione Unidad...', 1);
 
-    $lista_tipoemb = $this->datos->build_list("tipos_embalaje", "codigo", "nombre");
+    $lista_tipoemb = $this->datos->build_list("tipos_embalaje", "codigo", "nombre"," ORDER BY nombre ");
     $arreglo['select_tipoemb'] = $this->datos->armSelect($lista_tipoemb, 'Seleccione Presentacion Venta...', 0);
     
-    $lista_grupo = $this->datos->build_list("grupo_items", "codigo", "nombre");
+    $lista_grupo = $this->datos->build_list("grupo_items", "codigo", "nombre"," ORDER BY nombre ");
     $arreglo['select_grupo'] = $this->datos->armSelect($lista_grupo, 'Seleccione Grupo Items...', 0);
 
 

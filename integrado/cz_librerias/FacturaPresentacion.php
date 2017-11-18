@@ -7,6 +7,7 @@ require_once("montoEscrito.php");
 class FacturaPresentacion {
   var $datos;
   var $plantilla;
+  var $trm;
 
   function FacturaPresentacion(&$datos) {
     $this->datos =& $datos;
@@ -252,6 +253,7 @@ class FacturaPresentacion {
     $this->getLista($arregloDatos,$unDatos->tipo,$unaPlantilla);
     if($unDatos->tipo == 0) { $arregloDatos[tipo] = ""; }//Para que se dispare la validación
     $this->valoresFormateados($arregloDatos,$unDatos);
+	
     $arregloDatos[nombre_usuario] = $_SESSION['nombre_usuario'];
     $this->mantenerDatos($arregloDatos,$unaPlantilla);
   }
@@ -347,6 +349,29 @@ class FacturaPresentacion {
     $unDatos->valor_anticipo = $unDatos->valor_anticipo + $otros_anticipos;
     $arregloDatos[anticipof] = number_format(round($unDatos->valor_anticipo),0,',','.');
     $arregloDatos[netof] = number_format(round($unDatos->neto),0,',','.');
+	
+	// SI LA FACTURA ESTA EN DOLARES
+	
+	if($unDatos->trm > 0 or $this->trm > 0){
+		    if(empty($unDatos->trm)){
+				$unDatos->trm=$this->trm ;
+			}	
+				$this->trm=$unDatos->trm;
+			//var_dump($unDatos);
+			 $arregloDatos[subtotalf]=number_format ($unDatos->subtotal/$unDatos->trm,2,',','.');
+			 $arregloDatos[ivaf]=number_format ($unDatos->iva/$unDatos->trm,2,',','.');
+			 $arregloDatos[anticipof]=number_format ($unDatos->valor_anticipo/$unDatos->trm,2,',','.');
+			 $arregloDatos[totalf] = number_format ($unDatos->total/$unDatos->trm,2,',','.');
+			 $arregloDatos[rte_fuentef] = number_format ($unDatos->rte_fuente/$unDatos->trm,2,',','.');
+			 $arregloDatos[rte_icaf] = number_format ($unDatos->rte_ica/$unDatos->trm,2,',','.');
+			 $arregloDatos[rte_ivaf] = number_format ($unDatos->rte_iva/$unDatos->trm,2,',','.');
+			 $arregloDatos[totalf] = number_format($unDatos->total/$unDatos->trm,2,',','.');
+			 $arregloDatos[netof] = number_format($unDatos->neto/$unDatos->trm,2,',','.');
+			 $arregloDatos[valorf] = number_format($unDatos->valor/$unDatos->trm,2,',','.');
+			 
+			 $arregloDatos[valor_unitariof] = number_format($unDatos->valor_unitario/$unDatos->trm,0,',','.');
+		}
+	
   }
 
   function getMarcaCheck(&$arregloDatos,$unDatos) {
@@ -382,8 +407,21 @@ class FacturaPresentacion {
     $monto = new EnLetras();
 
     $moneda = 'Pesos';
-    $arregloDatos[monto_letras] = strtoupper($monto->ValorEnLetras(round($valor),$moneda));   
+	$valor=round($unDatos->total);
+	if($unDatos->trm > 0)
+	{
+		$moneda = 'Dolares';
+		$valor=$unDatos->total/$unDatos->trm;
+	}
+    $arregloDatos[monto_letras] = strtoupper($monto->ValorEnLetras($valor,$moneda));   
 	$arregloDatos[elaborado_por]=$_SESSION['datos_logueo']['nombre_usuario']." ".$_SESSION['datos_logueo']['apellido_usuario'];
+	if($unDatos->trm > 0)
+	{
+		$array_valor=explode(",",number_format ($valor,2,',','.'));
+		$decimal=substr($array_valor[1],0,2);
+		if($decimal==1){$decimal=0;}
+		$arregloDatos[monto_letras]=str_replace('MCTE',$decimal.'/100 '.'USD$',$arregloDatos[monto_letras]);
+	}
   }
 
   function getFormaAnticipos($arregloDatos,$unaPlantilla) { }
@@ -475,6 +513,7 @@ class FacturaPresentacion {
 	$this->valoresFormateados($arregloDatos,$unDatos);
 	$this->valorLetras($arregloDatos,$unDatos);
   	$this->mantenerDatos($arregloDatos,$unaPlantilla); 
+	
 	
 	//$arregloDatos[num_prefactura]=1398;
 	$arregloDatos[mostrar] = 0;

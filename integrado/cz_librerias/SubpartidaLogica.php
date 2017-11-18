@@ -91,6 +91,16 @@ require_once("SubpartidaPresentacion.php");
                 $this->pantalla->setFuncion($arregloDatos,&$this->datos);
 			 	 //$this->pantalla->maestro($arregloDatos);
 			}
+			function getFormaNueva($arregloDatos){
+				$arregloDatos[plantilla]        ='subpartidaFormNueva.html';
+                $arregloDatos[thisFunction]     ='nuevaSubpartida';
+                $this->pantalla->setFuncion($arregloDatos,&$this->datos);
+				
+			}
+			function nuevaSubpartida($arregloDatos){
+				echo "Ready";
+				
+			}
           
 	}		
   	

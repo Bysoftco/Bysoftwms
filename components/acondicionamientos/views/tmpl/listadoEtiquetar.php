@@ -109,7 +109,11 @@
     var busqueda = trim($('#campoBuscar').attr('value'));
     $('#buscar').attr('value', busqueda);
     $.ajax({
+<<<<<<< HEAD
       url: 'index_blank.php?component=acondicionamientos&method=listadoEtiquetar',
+=======
+      url: 'index_blank.php?component=Acondicionamientos&method=listadoEtiquetar',
+>>>>>>> c84d7f852dc1161bb99d4defb1e87bd0e109f0aa
       data: $('#form_filtrosetac').serialize(),
       success: function(msm) {
         $('#componente_central').html(msm);
@@ -127,7 +131,11 @@
       var $column = $(this).attr('id'); // assign the ID of the column
       with (document.listadoAcondicionamientos) {
         var registro = $("#acondicionamiento"+$column).val();
+<<<<<<< HEAD
         url = 'index.php?component=acondicionamientos&method=mostrarEtiquetarAcondicionamiento&id_registro='+registro;
+=======
+        url = 'index.php?component=Acondicionamientos&method=mostrarEtiquetarAcondicionamiento&id_registro='+registro;
+>>>>>>> c84d7f852dc1161bb99d4defb1e87bd0e109f0aa
       }
 
       $.ajax({

@@ -220,6 +220,7 @@ class acondicionaDatos extends BDControlador {
                       $arreglo[peso_naci],$arreglo[peso_nonac],$arreglo[cantidad_naci],
                       $arreglo[cantidad_nonac],$arreglo[cif],$arreglo[fob_nonac],0)";
           $db->query($query);
+<<<<<<< HEAD
           //Inserta el movimiento el Comodin de Devolución en inventario_movimientos
           $query = "INSERT INTO inventario_movimientos(inventario_entrada,fecha,tipo_movimiento,
                       cod_maestro,peso_naci,peso_nonac,cantidad_naci,cantidad_nonac,cif,fob_nonac,
@@ -228,6 +229,8 @@ class acondicionaDatos extends BDControlador {
                       $arreglo[peso_naci]*-1,$arreglo[peso_nonac]*-1,$arreglo[cantidad_naci]*-1,
                       $arreglo[cantidad_nonac]*-1,$arreglo[cif]*-1,$arreglo[fob_nonac]*-1,0)";
           $db->query($query);          
+=======
+>>>>>>> c84d7f852dc1161bb99d4defb1e87bd0e109f0aa
         }
         break;
       }

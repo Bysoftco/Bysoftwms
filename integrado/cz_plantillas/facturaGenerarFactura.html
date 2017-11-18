@@ -157,6 +157,9 @@
 				   var t_rte_cree       =0;
                    var total            =0;
 				   //regimen
+				   //if($('input[name="en_dolares"]').is(":checked")){
+				//	return false;
+					//}
 				   
 				    switch($('#regimen').val()/1)
 		   			{
@@ -215,6 +218,15 @@
 						 $('#rte_ica').val(0);
 						 t_rte_fuente=0;
 						 t_rte_icas	 =0;
+				   }
+				   if($('input[name="en_dolares"]').is(":checked"))
+				   {
+				   		$('#rte_fuente').val(0);
+						 $('#rte_iva').val(0);
+						 $('#rte_ica').val(0);
+						 t_rte_fuente=0;
+						 t_rte_icas	 =0;
+					
 				   }
 			
 				   if($('#regimen').val()/1==2){ // Regimen Comun

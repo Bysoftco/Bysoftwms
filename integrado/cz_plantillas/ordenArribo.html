@@ -115,7 +115,22 @@
 		
 		//formulario = formulario / 1;
     formulario = parseInt(formulario);
-		$("#formArribo"+formulario).validate();
+		//$("#formArribo"+formulario).validate();
+		
+		$("#formArribo"+formulario).validate({
+			rules: 
+				{peso_planilla: "mayor_cero",peso_bruto:"mayor_cero",repeso:"mayor_cero",cantidad:"mayor_cero"}
+				
+	    });
+		
+		$.validator.addMethod("mayor_cero", function(value){
+		if(value > 0 ){
+			return true;	
+		}else{
+			return false;
+		}
+	}, '* El valor indicado no puede ser cero!');
+		
 		
 		$( "#btnGuardar{id_form}" ).button({
 			text: true,

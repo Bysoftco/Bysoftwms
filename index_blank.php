@@ -7,7 +7,7 @@ require_once(CLASSES_PATH.'DatabaseMySQL.php');
 require_once(CLASSES_PATH.'adicionales.php');
 
 //LOCAL
-$_SESSION['conexion'] = new Database(array('DB_HOST'=>'localhost','DB_SOCK'=>'','DB_USER'=>'root','DB_PASS'=>'bysoft','DB_NAME'=>'nbysoft_db'));
+$_SESSION['conexion'] = new Database(array('DB_HOST'=>'localhost','DB_SOCK'=>'','DB_USER'=>'root','DB_PASS'=>'Bysoft97','DB_NAME'=>'nbysoft_db'));
 
 //SERVIDOR
 //$_SESSION['conexion'] = new Database(array('DB_HOST'=>'grupobysoft.com','DB_SOCK'=>'','DB_USER'=>'isamis_uwbysoft','DB_PASS'=>'pwbysoft','DB_NAME'=>'isamis_wmsbysoft'));
