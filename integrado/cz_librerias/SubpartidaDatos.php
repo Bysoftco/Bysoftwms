@@ -78,7 +78,19 @@ class Subpartida extends MYDB {
 			return TRUE;
 		}
 	}
-	function nuevaSubpartida($arregloDatos) {
+	function getFormaNueva($arregloDatos) {
+		
+	}
+	
+	function addSubpartida($arregloDatos){
+		$sql = "INSERT INTO subpartidas (subpartida, descripcion, arancel, detalle, obs)
+				VALUES ('$arregloDatos[subpartida]', '$arregloDatos[descripcion]', $arregloDatos[arancel], '$arregloDatos[detalle]', '$arregloDatos[obs]')";
+		
+		$this->query($sql);
+		if($this->_lastError) {
+			echo $sql;
+			return TRUE;
+		}
 		
 	}
   }

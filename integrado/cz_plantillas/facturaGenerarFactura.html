@@ -156,10 +156,9 @@
 				   var vrte_cree        =0;
 				   var t_rte_cree       =0;
                    var total            =0;
-				   //regimen
-				   //if($('input[name="en_dolares"]').is(":checked")){
-				//	return false;
-					//}
+				   
+				   
+				  
 				   
 				    switch($('#regimen').val()/1)
 		   			{
@@ -219,15 +218,26 @@
 						 t_rte_fuente=0;
 						 t_rte_icas	 =0;
 				   }
+<<<<<<< HEAD
+				   
+				   if($('input[name="en_dolares"]').is(":checked")){
+=======
 				   if($('input[name="en_dolares"]').is(":checked"))
 				   {
+>>>>>>> 4134b6ff10e2684bc15c3038d8ca76683d9a507e
 				   		$('#rte_fuente').val(0);
 						 $('#rte_iva').val(0);
 						 $('#rte_ica').val(0);
 						 t_rte_fuente=0;
 						 t_rte_icas	 =0;
+<<<<<<< HEAD
+						 //alert("quitar retenciones")
+				   }
+				   //alert()
+=======
 					
 				   }
+>>>>>>> 4134b6ff10e2684bc15c3038d8ca76683d9a507e
 			
 				   if($('#regimen').val()/1==2){ // Regimen Comun
 						$('#rte_iva').val(0);
