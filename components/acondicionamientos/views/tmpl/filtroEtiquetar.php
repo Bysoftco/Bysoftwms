@@ -15,13 +15,13 @@
 </style>
 {COMODIN}
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
-<div id="winfiltroeac" title="Etiquetar Acondicionamientos">
+<div id="winfiltroeac" title="Formulario de Acondicionados">
   <div id="frmfiltroeac">
     <p id="msgfiltroe">Seleccione uno o varios filtros para delimitar resultados.</p>
     <form name="frmfiltroetac" id="frmfiltroetac" method="post" action="">
       <fieldset class="ui-widget ui-widget-content ui-corner-all">
         <legend class="ui-widget ui-widget-header ui-corner-all">
-          <div id="filtroetiquetarac">Parámetros de Búsqueda</div>
+          <div id="filtroetiquetarac">Filtro de Acondicionados</div>
         </legend>  
         <p>
           <label>Por Cuenta de:</label>
@@ -63,7 +63,7 @@
 					else {
 						//Parámetros de envío de información
 						$.ajax({
-							url: 'index_blank.php?component=Acondicionamientos&method=listadoEtiquetar',
+							url: 'index_blank.php?component=acondicionamientos&method=listadoEtiquetar',
 							type: "POST",
 							async: false,
 							data: $('#frmfiltroetac').serialize(),

@@ -60,7 +60,7 @@
     </tr>
     <tr>
       <td colspan="5" style="text-align:center;border-bottom:none;font-size:14px;">
-        <b>ORDEN DE ACONDICIONAMIENTO</b>
+        <b>ORDEN DE ACONDICIONAMIENTO No. {codigo_operacion}</b>
       </td>
     </tr>
     <tr><td colspan="5"></td></tr>
@@ -87,7 +87,7 @@
       <td class="tituloForm" style="width: 12%">Fecha de Operaci&oacute;n</td>
       <td style="width: 13%">{fecha}</td>
       <td class="tituloForm" style="width: 12%">Pedido</td>
-      <td style="width: 13%">{pedido}</td>
+      <td style="width: 13%"><b>{pedido}</b></td>
       <td class="tituloForm" style="width: 8%">No. Gu&iacute;a</td>
       <td style="width: 17%"></td>
     <tr>

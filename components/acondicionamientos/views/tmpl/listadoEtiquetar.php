@@ -4,7 +4,7 @@
     <table align="right" cellpadding="0" cellspacing="0" border="0">
       <tr>
         <td>
-          LISTADO PARA ETIQUETAR ACONDICIONAMIENTOS
+          LISTADO DE ACONDICIONADOS
         </td>
         <td align="right" height="30px" style="padding-left: 20px;">
           <a href="javascript:buscarCoincidencias()"><img src="img/acciones/buscar.png" title="Buscar" width="17" height="20" border="0" /></a>
@@ -22,7 +22,7 @@
 <form id="listadoAcondicionamientos" name="listadoAcondicionamientos">
 <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general">
   <tr>
-    <th colspan="7">ACONDICIONAMIENTOS</th>
+    <th colspan="7">ACONDICIONADOS</th>
   </tr>
   <tr>
     <th>No.</th>
