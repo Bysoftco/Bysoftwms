@@ -202,7 +202,7 @@
         }
         else $("#cantidad_nonac").val($("#acondicionadas").val());
         $.ajax({
-          url: 'index_blank.php?component=Acondicionamientos&method=registrarAcondicionamiento',
+          url: 'index_blank.php?component=acondicionamientos&method=registrarAcondicionamiento',
           type: "POST",
           data: {
             codigo_operacion: $("#codigo_operacion").attr("value"),
@@ -240,7 +240,7 @@
 	.click(function() {
     if(confirm("\u00BFRealmente desea Cerrar la Operación?")) {
       $.ajax({
-        url: 'index_blank.php?component=Acondicionamientos&method=cerrarAcondicionamiento',
+        url: 'index_blank.php?component=acondicionamientos&method=cerrarAcondicionamiento',
         type: "POST",
         data: {
           codigo_operacion: $("#codigo_operacion").attr("value"),
@@ -286,7 +286,7 @@
     }
   })
 	.click(function() {
-    window.open("index_blank.php?component=Acondicionamientos&method=generarPackingList&codigoMaestro="+$("#codigoMaestro").attr("value"));
+    window.open("index_blank.php?component=acondicionamientos&method=generarPackingList&codigoMaestro="+$("#codigoMaestro").attr("value"));
     return false;
   });
   

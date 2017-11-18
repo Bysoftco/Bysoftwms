@@ -109,7 +109,7 @@
     var busqueda = trim($('#campoBuscar').attr('value'));
     $('#buscar').attr('value', busqueda);
     $.ajax({
-      url: 'index_blank.php?component=Acondicionamientos&method=listadoEtiquetar',
+      url: 'index_blank.php?component=acondicionamientos&method=listadoEtiquetar',
       data: $('#form_filtrosetac').serialize(),
       success: function(msm) {
         $('#componente_central').html(msm);
@@ -127,7 +127,7 @@
       var $column = $(this).attr('id'); // assign the ID of the column
       with (document.listadoAcondicionamientos) {
         var registro = $("#acondicionamiento"+$column).val();
-        url = 'index.php?component=Acondicionamientos&method=mostrarEtiquetarAcondicionamiento&id_registro='+registro;
+        url = 'index.php?component=acondicionamientos&method=mostrarEtiquetarAcondicionamiento&id_registro='+registro;
       }
 
       $.ajax({

@@ -65,9 +65,9 @@
     </tr>
     <tr><td colspan="5"></td></tr>
     <tr>
-      <th><b>Código</b></th>
-      <th><b>Versión</b></th>
-      <th colspan="3"><b>Página</b></th>
+      <th><b>C&oacute;digo</b></th>
+      <th><b>Versi&oacute;n</b></th>
+      <th colspan="3"><b>P&aacute;gina</b></th>
     </tr>
     <tr>
       <td style="text-align:center;">PGP-01-F1</td>
@@ -79,16 +79,16 @@
   </table>
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_packinglist">
     <tr>
-      <th colspan="8"><b>INFORMACIÓN GENERAL</b></th>
+      <th colspan="8"><b>INFORMACI&Oacute;N GENERAL</b></th>
     </tr>
     <tr>
       <td style="width: 12%;" class="tituloForm">No. Orden</td>
       <td style="width: 13%"><b>{orden}</b></td>
-      <td class="tituloForm" style="width: 12%">Fecha de Operación</td>
+      <td class="tituloForm" style="width: 12%">Fecha de Operaci&oacute;n</td>
       <td style="width: 13%">{fecha}</td>
       <td class="tituloForm" style="width: 12%">Pedido</td>
       <td style="width: 13%">{pedido}</td>
-      <td class="tituloForm" style="width: 8%">No. Guía</td>
+      <td class="tituloForm" style="width: 8%">No. Gu&iacute;a</td>
       <td style="width: 17%"></td>
     <tr>
       <td style="width: 10%;" class="tituloForm">Nombre Cliente</td>
@@ -185,7 +185,7 @@
       <th><b>Fecha Exp.</b></th>
       <th><b>M/L/C</b></th>
       <th><b>Fecha Ing.</b></th>
-      <th><b>Ubicación</b></th>
+      <th><b>Ubicaci&oacute;n</b></th>
       <th><b>Movimiento</b></th>
       <th><b>Piezas Nal.</b></th>
       <th><b>Peso Nal.</b></th>
@@ -196,7 +196,7 @@
     <tr>
       <td style="padding: 2.5px;">{orden_detalle}</td>
       <td style="text-align: center;padding: 2.5px;">
-        <img src="components/Alistamientos/views/tmpl/generar.php?serial={codigo_referen}" />
+        <img src="components/acondicionamientos/views/tmpl/generar.php?serial={codigo_referen}" />
       </td>
       <td style="padding-left: 5px;">{nombre_referencia}</td>
       <td style="text-align:center;color: red;">{fecha_expira}</td>
@@ -235,11 +235,11 @@
       <td style="width: 3%;font-size:12px;text-align: center;">EMBALAJE</td>
       <td style="width: 7%;font-size:12px;text-align: center;">TOTAL UND</td>
       <td style="width: 10%;font-size:12px;text-align: center;">FECHA</td>
-      <td style="width: 7%;font-size:12px;text-align: center;">ENTREGÓ</td>
-      <td style="width: 7%;font-size:12px;text-align: center;">RECIBIÓ</td>
+      <td style="width: 7%;font-size:12px;text-align: center;">ENTREG&Oacute;</td>
+      <td style="width: 7%;font-size:12px;text-align: center;">RECIBI&Oacute;</td>
       <td style="width: 7%;font-size:12px;text-align: center;">LIBERADO</td>
       <td style="width: 7%;font-size:12px;text-align: center;">TOTAL ENTREGA</td>
-      <td style="width: 7%;font-size:12px;text-align: center;">RESPONSABLE DE PRODUCCIÓN</td>
+      <td style="width: 7%;font-size:12px;text-align: center;">RESPONSABLE DE PRODUCCI&Oacute;N</td>
     </tr>
     <tr>
       <td style="width: 3%;font-size:12px;text-align: center;"><img src="img/acciones/embalaje.png" /></td>
@@ -269,7 +269,7 @@
       <td style="width: 7%;font-size:12px;text-align: center;"></td>
       <td style="width: 7%;font-size:12px;text-align: center;"></td>
       <td style="width: 7%;font-size:12px;text-align: center;">% RENDIMIENTO (MIN 98%)</td>
-      <td style="width: 7%;font-size:12px;text-align: center;">APROBADO DT. TÉCNICA/CALIDAD</td>
+      <td style="width: 7%;font-size:12px;text-align: center;">APROBADO DT. T&Eacute;CNICA/CALIDAD</td>
     </tr>
     <tr>
       <td style="width: 3%;font-size:12px;text-align: center;"><img src="img/acciones/embalaje.png" /></td>
