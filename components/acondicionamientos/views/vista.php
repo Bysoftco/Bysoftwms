@@ -24,60 +24,53 @@ class acondicionaVista {
     $this->template->show();
   }
   
-	function filtroEtiquetar($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/filtroEtiquetar.php' );
+	function filtroRechazadas($arreglo) {
+    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/filtroRechazadas.php' );
     $this->template->setVariable('COMODIN', '');
+    $this->template->setVariable('select_tiporechazo', $arreglo['select_tiporechazo']);
     $this->template->show();
 	}
 
-  function listadoEtiquetar($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/listadoEtiquetar.php' );
+  function listadoRechazadas($arreglo) {
+    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/listadoRechazadas.php' );
     $this->template->setVariable('COMODIN', '');
-    $this->template->setVariable('paginacion', $arreglo['datos']['paginacion']);
-    $this->template->setVariable('pagina', $arreglo['pagina']);
-    $this->template->setVariable('verAlerta', 'none');
-	
-    $this->template->setVariable('orden', $arreglo['orden']);
-    $this->template->setVariable('id_orden', $arreglo['id_orden']);
-    $this->template->setVariable('campoBuscar', $arreglo['buscar']);
-        	
-    if(isset($arreglo['alerta_accion'])) {
-      $this->template->setVariable('alerta_accion', $arreglo['alerta_accion']);
-      $this->template->setVariable('verAlerta', 'block');
-    }
+    
+    //Datos de Filtro para Impresión
+    $this->template->setVariable('buscarClientefr', $arreglo['buscarClientefr']);
+    $this->template->setVariable('nitfr', $arreglo['nitfr']);
+    $this->template->setVariable('fechadesdefr', $arreglo['fechadesdefr']);
+    $this->template->setVariable('fechahastafr', $arreglo['fechahastafr']);
+    $this->template->setVariable('doasignadofr', $arreglo['doasignadofr']);
+    $this->template->setVariable('tiporechazofr', $arreglo['tiporechazofr']);
 
-    //Configura datos del filtro
-    $this->template->setVariable('niteac', $arreglo['niteac']);
-    $this->template->setVariable('fechadesdeeac', $arreglo['fechadesdeeac']);
-    $this->template->setVariable('fechahastaeac', $arreglo['fechahastaeac']);
-    $this->template->setVariable('nalista', $arreglo['nalista']);
-    //+-----------------------------------------------------------------------------------------------------------+
-    $numRegistro = count($arreglo['datos']['datos']);
-    if($numRegistro == 0) {
-      $this->template->setVariable(mensaje, "&nbsp;No hay Acondicionamientos para Etiquetar");
-      $this->template->setVariable(estilo, "ui-state-error");
-    } else {
-      $codbagcolor = 1; $n = $arreglo['pagina'] == '1' ? 0 : (((int) $arreglo['pagina'] - 1) * 10);
-      foreach($arreglo['datos']['datos'] as $value) {
-        $this->template->setCurrentBlock("ROW");
-        if($codbagcolor == 1) {
-          $this->template->setVariable('id_tr_estilo','tr_blanco');
-          $codbagcolor = 2;
-        } else {
-          $this->template->setVariable('id_tr_estilo','tr_gris_cla');	
-          $codbagcolor = 1;
-        }
-        $n++;
-        $this->template->setVariable('n', $n);
-        $this->template->setVariable('acondicionamiento', $value['acondicionamiento']);
-        $this->template->setVariable('nombre_cliente', $value['nombre_cliente']);
-        $fecha = date_create($value['fecha']);
-        $this->template->setVariable('fecha',date_format($fecha,'Y-m-d H:i'));
-        $this->template->setVariable('pedido', $value['pedido']);
-        $this->template->setVariable('fmm', $value['fmm']);
-        $this->template->parseCurrentBlock("ROW");
-      }
+    $n = 1; $tpiezas_nal = $tpeso_nal = $tpiezas_ext = $tpeso_ext = 0;
+    foreach($arreglo['datos'] as $value) {
+      $this->template->setCurrentBlock("ROW");
+      $this->template->setVariable('n', $n);
+      $this->template->setVariable('doc_cliente', $value['numero_documento']);
+      $this->template->setVariable('nombre_cliente', $value['razon_social']);
+      $this->template->setVariable('orden', $value['orden']);
+      $this->template->setVariable('doc_transporte', $value['doc_tte']);
+      $this->template->setVariable('codigo_referencia', $value['codigo_ref']);
+      $this->template->setVariable('nombre_referencia', $value['nombre_referencia']);
+      $this->template->setVariable('modelo', $value['modelo']);
+      //Captura únicamente la fecha
+      $this->template->setVariable('fecha_rechazo', date_format(new DateTime($value['fecha_rechazo']),'Y-m-d'));
+      $this->template->setVariable('nombre_ubicacion', isset($value['nombre_ubicacion'])?$value['nombre_ubicacion']:'POR ASIGNAR');
+      $this->template->setVariable('tipo_rechazo', $value['tipo_rechazo']);
+      $this->template->setVariable('piezas_nal', number_format(abs($value['tc_nal']),2,".",","));
+      $this->template->setVariable('peso_nal', number_format(abs($value['tp_nal']),2,".",","));
+      $this->template->setVariable('piezas_ext', number_format(abs($value['tc_ext']),2,".",","));
+      $this->template->setVariable('peso_ext', number_format(abs($value['tp_ext']),2,".",","));
+      //Acumula Totales
+      $tpiezas_nal += $value['tc_nal']; $tpiezas_ext += $value['tc_ext'];
+      $tpeso_nal += $value['tp_nal']; $tpeso_ext += $value['tp_ext']; $n++;
+      $this->template->parseCurrentBlock("ROW");
     }
+    $this->template->setVariable('total_piezas_nal', number_format(abs($tpiezas_nal),2));
+    $this->template->setVariable('total_peso_nal', number_format(abs($tpeso_nal),2));
+    $this->template->setVariable('total_piezas_ext', number_format(abs($tpiezas_ext),2));
+    $this->template->setVariable('total_peso_ext', number_format(abs($tpeso_ext),2));
     
     $this->template->show();
   }
@@ -379,109 +372,38 @@ class acondicionaVista {
     $this->template->show();
   }
   
-  function mostrarEtiquetarAcondicionamiento($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/detalleEtiquetarAcondicionamiento.php' );
-    $this->template->setVariable('COMODIN', '' );
+  function imprimeListadoRechazadas($arreglo) {
+    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/verListadoRechazadas.php' );
+    $this->template->setVariable('COMODIN', '');
 
-    //Captura fecha de etiqueta y sede
-    $this->template->setVariable('fecha', date('Y-m-d H:i'));
-    $this->template->setVariable('nombre_sede', $_SESSION['nombre_sede']);    
-    $datosMaestro = $this->datos->retornarMaestroAcondicionamiento($arreglo['id_registro']);
-    
-    $this->template->setVariable('mostrar_botones', 'block');
-    $this->template->setVariable('mostrar_mensaje', 'none');
-    if($datosMaestro->cierre==1) {
-      $this->template->setVariable('mostrar_botones', 'none');
-      $this->template->setVariable('mostrar_mensaje', 'block');
-    }
-
-    $this->template->setVariable('tipo_mercancia', $arreglo['tipo_mercancia']);
-        
-    $this->template->setVariable('razon_social', $datosMaestro->razon_social);
-    $this->template->setVariable('numero_documento', $datosMaestro->numero_documento);
-    $this->template->setVariable('codigo_operacion', $datosMaestro->codigo);
-    $this->template->setVariable('destinatario', $datosMaestro->destinatario);
-    $this->template->setVariable('ciudad', $datosMaestro->ciudad);
-    $this->template->setVariable('direccion', $datosMaestro->direccion);
-    $this->template->setVariable('conductor_nombre', $datosMaestro->conductor_nombre);
-    $this->template->setVariable('conductor_identificacion', $datosMaestro->conductor_identificacion);
-    $this->template->setVariable('placa', $datosMaestro->placa);
-    $this->template->setVariable('empresa', $datosMaestro->empresa);
-    $this->template->setVariable('cantidad', number_format($datosMaestro->cantidad,2,".",","));
-    $this->template->setVariable('cantidad_nac', number_format($datosMaestro->cantidad_nac,2,".",","));
-    $this->template->setVariable('cantidad_ext', number_format($datosMaestro->cantidad_ext,2,".",","));
-    
-    $detalleAlistamiento = $this->datos->retornarDetalleAcondicionamiento($arreglo['id_registro']);
-    foreach($detalleAlistamiento as $valueDetalle) {
+    $n = 1; $tpiezas_nal = $tpeso_nal = $tpiezas_ext = $tpeso_ext = 0;
+    foreach($arreglo['datos'] as $value) {
       $this->template->setCurrentBlock("ROW");
-      $this->template->setVariable('codigo_referen', $valueDetalle['codigo_ref']);
-      $this->template->setVariable('nombre_referencia', $valueDetalle['nombre_referencia']);
-      $this->template->setVariable('nombre_ubicacion', isset($valueDetalle['nombre_ubicacion'])?$valueDetalle['nombre_ubicacion']:'POR ASIGNAR');
-      $this->template->setVariable('modelo', !empty($valueDetalle['modelo'])?$valueDetalle['modelo']:'POR ASIGNAR');
-      $this->template->setVariable('cantidad_nacional', number_format(abs($valueDetalle['cantidad_naci']),2,".",","));
-      $this->template->setVariable('cantidad_extranjera', number_format(abs($valueDetalle['cantidad_nonac']),2,".",","));
+      $this->template->setVariable('n', $n);
+      $this->template->setVariable('doc_cliente', $value['numero_documento']);
+      $this->template->setVariable('nombre_cliente', $value['razon_social']);
+      $this->template->setVariable('orden', $value['orden']);
+      $this->template->setVariable('doc_transporte', $value['doc_tte']);
+      $this->template->setVariable('codigo_referencia', $value['codigo_ref']);
+      $this->template->setVariable('nombre_referencia', $value['nombre_referencia']);
+      $this->template->setVariable('modelo', $value['modelo']);
+      //Captura únicamente la fecha
+      $this->template->setVariable('fecha_rechazo', date_format(new DateTime($value['fecha_rechazo']),'Y-m-d'));
+      $this->template->setVariable('nombre_ubicacion', isset($value['nombre_ubicacion'])?$value['nombre_ubicacion']:'POR ASIGNAR');
+      $this->template->setVariable('tipo_rechazo', $value['tipo_rechazo']);
+      $this->template->setVariable('piezas_nal', number_format(abs($value['tc_nal']),2,".",","));
+      $this->template->setVariable('peso_nal', number_format(abs($value['tp_nal']),2,".",","));
+      $this->template->setVariable('piezas_ext', number_format(abs($value['tc_ext']),2,".",","));
+      $this->template->setVariable('peso_ext', number_format(abs($value['tp_ext']),2,".",","));
+      //Acumula Totales
+      $tpiezas_nal += $value['tc_nal']; $tpiezas_ext += $value['tc_ext'];
+      $tpeso_nal += $value['tp_nal']; $tpeso_ext += $value['tp_ext']; $n++;
       $this->template->parseCurrentBlock("ROW");
     }
-    
-    $this->template->show();
-  }
-  
-  function mostrarEtiqueta($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/detalleEtiqueta.php' );
-    $this->template->setVariable('COMODIN', '' );
-
-    //Captura fecha de etiqueta y sede
-    $this->template->setVariable('fecha', date('Y-m-d H:i'));
-    $this->template->setVariable('nombre_sede', $_SESSION['nombre_sede']);  
-    $datosMaestro = $this->datos->retornarMaestroAlistamiento($arreglo['id_registro']);
-    
-    $this->template->setVariable('mostrar_botones', 'block');
-    $this->template->setVariable('mostrar_mensaje', 'none');
-    if($datosMaestro->cierre==1) {
-      $this->template->setVariable('mostrar_botones', 'none');
-      $this->template->setVariable('mostrar_mensaje', 'block');
-    }
-
-    $this->template->setVariable('tipo_mercancia', $arreglo['tipo_mercancia']);
-        
-    $this->template->setVariable('razon_social', $datosMaestro->razon_social);
-    $this->template->setVariable('numero_documento', $datosMaestro->numero_documento);
-    $this->template->setVariable('codigo_operacion', $datosMaestro->codigo);
-    $this->template->setVariable('destinatario', $datosMaestro->destinatario);
-    $this->template->setVariable('ciudad', $datosMaestro->ciudad);
-    $this->template->setVariable('direccion', $datosMaestro->direccion);
-    $this->template->setVariable('conductor_nombre', $datosMaestro->conductor_nombre);
-    $this->template->setVariable('conductor_identificacion', $datosMaestro->conductor_identificacion);
-    $this->template->setVariable('placa', $datosMaestro->placa);
-    $this->template->setVariable('empresa', $datosMaestro->empresa);
-    $this->template->setVariable('cantidad', number_format($datosMaestro->cantidad,2,".",","));
-    $this->template->setVariable('cantidad_nac', number_format($datosMaestro->cantidad_nac,2,".",","));
-    $this->template->setVariable('cantidad_ext', number_format($datosMaestro->cantidad_ext,2,".",","));
-    
-    $detalleAlistamiento = $this->datos->retornarDetalleAlistamiento($arreglo['id_registro']);
-    $n = 0;
-    foreach($detalleAlistamiento as $valueDetalle) {
-      $this->template->setCurrentBlock("ROW");
-      $n++;
-      $buscar = (string) $n;
-      $resultado = strpos($arreglo['codigos'],$buscar);
-      if($resultado !== FALSE) {
-        $this->template->setVariable('codigo_referen', $valueDetalle['codigo_ref']);
-        $this->template->setVariable('nombre_referencia', $valueDetalle['nombre_referencia']);
-        $this->template->setVariable('nombre_ubicacion', isset($valueDetalle['nombre_ubicacion'])?$valueDetalle['nombre_ubicacion']:'POR ASIGNAR');
-        $this->template->setVariable('modelo', !empty($valueDetalle['modelo'])?$valueDetalle['modelo']:'POR ASIGNAR');
-        $this->template->setVariable('cantidad_nacional', number_format(abs($valueDetalle['cantidad_naci']),2,".",","));
-        $this->template->setVariable('cantidad_extranjera', number_format(abs($valueDetalle['cantidad_nonac']),2,".",","));
-        /*************************************************************************************************/
-        // Registro de Totales
-        $tot_piezas_naci += abs($valueDetalle['cantidad_naci']); $tot_piezas_ext += abs($valueDetalle['cantidad_nonac']);
-        /*************************************************************************************************/
-        $this->template->parseCurrentBlock("ROW");
-      }
-    }
-    // Captura los totales registrados
-    $this->template->setVariable('tot_piezas_naci', number_format($tot_piezas_naci,2,".",","));
-    $this->template->setVariable('tot_piezas_ext', number_format($tot_piezas_ext,2,".",","));
+    $this->template->setVariable('total_piezas_nal', number_format(abs($tpiezas_nal),2));
+    $this->template->setVariable('total_peso_nal', number_format(abs($tpeso_nal),2));
+    $this->template->setVariable('total_piezas_ext', number_format(abs($tpiezas_ext),2));
+    $this->template->setVariable('total_peso_ext', number_format(abs($tpeso_ext),2));
     
     $this->template->show();
   }
