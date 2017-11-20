@@ -6,13 +6,14 @@
  * @date    10-Octubre-2017 
  */
 if(!defined('entrada_valida')) die('Acceso directo no permitido');
-require_once COMPONENTS_PATH . 'acondicionamientos/views/vista.php';
-require_once COMPONENTS_PATH . 'acondicionamientos/model/acondicionamientos.php';
+require_once COMPONENTS_PATH.'acondicionamientos/views/vista.php';
+require_once COMPONENTS_PATH.'acondicionamientos/model/acondicionamientos.php';
+require_once(COMPONENTS_PATH.'acondicionamientos/views/tmpl/reporteExcel.php');
 
-require_once COMPONENTS_PATH . 'Entidades/Clientes.php';
-require_once COMPONENTS_PATH . 'Entidades/InventarioMaestroMovimientos.php';
-require_once COMPONENTS_PATH . 'Entidades/InventarioEntradas.php';
-require_once COMPONENTS_PATH . 'Entidades/InventarioMovimientos.php';
+require_once COMPONENTS_PATH.'Entidades/Clientes.php';
+require_once COMPONENTS_PATH.'Entidades/InventarioMaestroMovimientos.php';
+require_once COMPONENTS_PATH.'Entidades/InventarioEntradas.php';
+require_once COMPONENTS_PATH.'Entidades/InventarioMovimientos.php';
 
 class acondicionamientos {
   var $vista;
@@ -27,10 +28,32 @@ class acondicionamientos {
     $this->vista->filtroClientes();
   }
   
-  function filtroEtiquetar($arreglo) {
-		$this->vista->filtroEtiquetar($arreglo);
+  function filtroRechazadas($arreglo) {
+    //Carga el cuadro de lista Tipo de Rechazo - Tabla: estados_mcia
+    $lista_tiporechazo = $this->datos->build_list("estados_mcia", "codigo", "nombre", "WHERE codigo>1");
+    $arreglo['select_tiporechazo'] = $this->datos->armSelect($lista_tiporechazo, 'Seleccionar...', 1);
+		$this->vista->filtroRechazadas($arreglo);
 	}
+  
+  function listadoRechazadas($arreglo) {
+    $arreglo['datos'] = $this->datos->listadoRechazadas($arreglo);
+    
+    $this->vista->listadoRechazadas($arreglo);
+  }
 
+  function imprimeListadoRechazadas($arreglo) {
+    $arreglo['datos'] = $this->datos->listadoRechazadas($arreglo);
+    
+    $this->vista->imprimeListadoRechazadas($arreglo);
+  }
+  
+  function exportarExcel($arreglo) {
+    $arreglo['datos'] = $this->datos->listadoRechazadas($arreglo);
+    
+    $datosExcel = new reporteExcel();
+    $datosExcel->generarExcel($arreglo);
+  }
+  
   function mostrarListadoReferencias($arreglo) {
     $this->vista->mostrarListadoReferencias($arreglo);
   }
