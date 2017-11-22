@@ -1,0 +1,765 @@
+<script>
+
+
+
+
+
+
+
+    $(function() {
+
+
+
+        
+
+        //$('#btnImprimir').show();
+
+        $('#tabs').tabs();
+
+                //$('#tabs').tabs("select", {tab_seleccionado});
+								$('#tabs').tabs("select", 0);
+
+                $("#tabs").tabs({
+
+            select: function(event, ui)
+
+
+
+            {
+
+
+
+
+
+
+
+                var n = ui.index + 1
+
+
+
+                switch (n)
+
+
+
+                {
+
+
+
+                    case 1: 	//Levante
+
+
+
+
+
+
+
+                        if ($('#id_levante').val() != "")
+
+
+
+                        {
+
+
+
+                            $("div#htmlLevante").load("./scripts_index.php", {clase: 'Levante', metodo: 'getCabezaLevante', mostrar: '1', id_levante: $('#id_levante').val(), tipo_movimiento: $('#tipo_movimiento').val()}, function(datos) {
+
+								
+
+                            });
+
+							
+
+                            $("div#htmlCuerpo").load("./scripts_index.php", {clase: 'Levante', metodo: 'getCuerpoLevante',   mostrar: '1', id_levante: $('#id_levante').val(), tipo_movimiento: $('#tipo_movimiento').val(), tipo_retiro: $('#tipo_retiro_filtro').val()}, function(datos) {
+
+								//alert(datos)
+
+                            });
+
+                        }
+
+
+
+                        //$("div#contenedor_opciones").load("./scripts_index.php", {clase:'Inventario',metodo:'getOrdenToolbar',mostrar:'1',do_asignado:{do_asignado}}, function(datos){});
+
+
+
+                        $('#btnBuscar').hide();
+
+                        break;
+
+                    case 2:    //  Arribo  Listado de mercancia no se recarga
+
+
+
+                        // var por_cuenta_filtro={por_cuenta_filtro}
+
+
+
+                        //$("div#htmlMercancia").load("./scripts_index.php", {clase:'Levante',metodo:'getMercancia',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val(),por_cuenta_filtro:por_cuenta_filtro}, function(datos){
+
+
+
+                        //});
+
+
+
+                        //Crear Boton Actualizar para esta opcion
+
+
+
+                        if ($('#tipo_movimiento').val() == 3)
+
+
+
+                        {
+
+
+
+                            $('#btnBuscar').show();
+
+                        }
+
+
+
+                        //$('#btnBuscar').show();
+
+
+
+                        break;
+
+                }
+
+
+
+            }
+
+
+
+        });
+
+		        $('#btnAdicionales').hide();
+
+        $('#btnMatriz').hide();
+
+        switch ($('#tipo_movimiento').val() / 1)
+
+
+
+        {
+
+
+
+            case 3: // Retiro
+
+
+
+
+
+
+
+                break;
+
+            case 8://Proceso
+
+                
+
+                 
+
+
+
+                break;
+
+            case 9://Ensable
+
+			
+
+                $('#btnAdicionales').show();
+
+                $('#btnMatriz').hide();
+
+                break;
+
+        }
+
+
+
+    });
+
+    $(function()
+
+
+
+    {
+
+
+
+
+
+
+
+        //$("#accordion").accordion({ header: "h3",active: false ,autoHeight:false});
+
+
+
+        /*Ventana*********************************************/
+
+
+
+        $("#dialog-form-levante{metodo}").dialog(
+
+                {
+
+                    autoOpen: false,
+
+                    height: 520,
+
+                    width: 650,
+
+                    modal: true,
+
+                    buttons:
+
+                            {
+
+                                "Aceptar {metodoX}": function()
+
+
+
+                                {
+									//alert("{metodo}");
+									//replicar();
+
+                                    var bValid = true;
+									  $("#dialog-form-levante{metodo}").dialog("close");
+                                    $("#{metodo}").submit();
+
+                                },
+
+                                Cancelar: function()
+
+
+
+                                {
+
+
+
+                                    $("#dialog-form-levante{metodo}").dialog("close");
+
+                                }
+
+
+
+                            },
+
+                    close: function()
+
+
+
+                    {
+
+
+
+                    }
+
+
+
+                }); /*Fin Ventana*********************************************/
+
+
+
+
+
+
+
+        $("#dialog-form-hacer-levante").dialog(
+
+                {
+
+                    autoOpen: false,
+
+                    height: 540,
+
+                    width: 1050,
+
+                    modal: true,
+
+                    buttons:
+
+                            {
+
+                                "Aceptar": function()
+
+
+
+                                {
+
+									
+									//alert( $("#un_formulario").val())
+
+
+                                    var bValid = true;
+
+                                    $("#" + $("#un_formulario").val()).submit();
+
+                                },
+
+                                Cancelar: function()
+
+
+
+                                {
+
+
+
+                                    $("#dialog-form-hacer-levante").dialog("close");
+
+                                }
+
+
+
+                            },
+
+                    close: function()
+
+
+
+                    {
+
+
+
+                    }
+
+
+
+                }); /*Fin Ventana*********************************************/
+
+
+
+
+
+
+
+        $("#window_filtro").dialog(
+
+                {
+
+                    autoOpen: false,
+
+                    height: 420,
+
+                    width: 650,
+
+                    modal: true,
+
+                    buttons:
+
+                            {
+
+                                "Aceptar": function()
+
+
+
+                                {
+									 var bValid = true;
+                                   $("#formularioTransportadorNuevo").submit();
+
+                                    //$("#filtroMovimientoFiltro").submit();
+
+                                },
+
+                                Cancelar: function()
+
+
+
+                                {
+
+
+
+                                    $("#window_filtro").dialog("close");
+
+                                }
+
+
+
+                            },
+
+                    close: function()
+
+
+
+                    {
+
+
+
+                    }
+
+
+
+                }); /*Fin Ventana*********************************************/
+
+
+
+        $("#dialog-addCamion").dialog(
+
+                {
+
+                    autoOpen: false,
+
+                    height: 450,
+
+                    width: 650,
+
+                    modal: true,
+
+                    buttons:
+
+                            {
+
+                                "Aceptar": function()
+
+                                {
+
+
+
+                                    var bValid = true;
+
+                                    $("#formularioAddCamion").submit();
+
+                                },
+
+                                Cancelar: function()
+
+                                {
+
+                                    $("#dialog-addCamion").dialog("close");
+
+                                }
+
+                            },
+
+                    close: function()
+
+                    {
+
+                    }
+
+                }); /*Fin Ventana*********************************************/
+
+
+
+
+
+
+
+
+
+    });
+
+            if ({abre_ventana})
+
+
+
+    {    // Abre la ventana por defecto
+
+
+
+
+
+
+
+    $("#dialog-form-levante{metodo}").dialog("open");
+
+    } else{
+
+
+
+    $("#dialog-form-levante{metodo}").dialog("close");
+
+    }
+
+
+
+
+
+
+
+</script>
+
+
+
+<style>
+
+
+
+    body { font-size: 62.5%; }
+
+
+
+    label { display: inline-block; width: 100px; }
+
+
+
+    legend { padding: 0.5em; }
+
+
+
+    fieldset fieldset label { display: block; }
+
+
+
+    #formulario label { width: 160px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
+
+
+
+    h1 { font-size: 1.2em; margin: .6em 0; }
+
+
+
+    div#users-contain { width: 100%; margin: 5px 0; margin-left: 0%; }
+
+
+
+    div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+
+
+
+    div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+
+
+
+    .ui-dialog .ui-state-error { padding: .3em; }
+
+
+
+    tbody tr.odd th,tbody tr.odd td {border-color:#EBE5D9;background:#F7F4EE;}
+
+
+
+    tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
+
+
+
+</style>
+
+
+
+<div class="div_barra">
+
+
+
+    <div id="titulo_ruta">
+
+
+
+        <table align="right" cellpadding="5" cellspacing="0" border="0">
+
+
+
+            <tr>
+
+
+
+                
+
+        <td>{titulo}
+<input type="hidden" name="tipo_movimiento_fijo" id="tipo_movimiento_fijo" value="{tipo_movimiento}"></td>
+
+
+
+            </tr>
+
+
+
+        </table></div>
+
+
+
+    <div id="contenedor_opciones"> {toolbarLevante} </div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<div style="padding-top:43px;"> </div>
+
+
+
+<div id="mensaje" class="{estilo}">{mensaje}</div>
+
+
+
+<!-- Tabs -->
+
+
+
+
+
+
+
+<div id="tabs"> 
+  <ul>
+    <li><a href="#tabs-1">Transportador</a>
+<input name="marca_matriz" type="hidden" id="marca_matriz" value="{tipo_retiro}" />
+ 
+  </ul>
+
+
+
+
+
+
+
+    <div id="tabs-1">
+
+
+
+        <div id="htmlLevante">{htmlLevante}</div>
+
+
+
+        <div id="htmlCuerpo">{htmlCuerpo}</div>    
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <div id="tabs-2">
+
+
+
+        <div id="htmlMercancia">{htmlMercancia}</div>   
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div id="dialog-form-levante{metodo}" title="Filtro">
+
+
+
+    <div id="contenedor1"> {filtro} </div>
+
+
+
+    <!-- End contenedor -->
+
+
+
+</div><!-- End ventana -->
+
+
+
+
+
+
+
+<div id="dialog-form-hacer-levante" title="Subpartida">
+
+
+
+    <div id="ventana_levante"> </div>
+
+
+
+    <!-- End contenedor -->
+
+
+
+</div><!-- End ventana -->
+
+
+
+
+
+
+
+<div id="window_filtro" title="Filtro">
+
+
+
+    <div id="cuerpo_filtro"> {filtroFiltro}</div>
+
+
+
+    <!-- End contenedor -->
+
+
+
+</div><!-- End ventana -->
+
+
+
+<div id="dialog-addCamion" title="Camion">
+
+    <div id="ventana_addcamion"> </div>
+
+    <!-- End contenedor -->
+
+</div><!-- End ventana -->
+
+
+
+<input name="por_cuenta_aux" type="hidden" id="por_cuenta_aux" value="{por_cuenta_filtro}">
+
+
+
+<input name="doc_filtro" type="hidden" id="doc_filtro_aux" value="{doc_filtro}">
+
+
+
+<input name="orden_filtro" type="hidden" id="orden_maestro" value="{orden_filtro}">
+
+
+
+<input name="metodo_aux" type="hidden" id="metodo_aux" value="{metodo}">
+
+
+
+<input name="metodo_mov" type="hidden" id="metodo_mov" value="{metodo}">
+
+
+
+<input name="tipo_retiro_filtro" type="hidden" id="tipo_retiro_filtro" value="{tipo_retiro}">
+
+
+
+<input name="id_levante" type="hidden" id="id_levante" value="{id_levante}">
+
+
+
+<input name="tipo_movimiento" type="hidden" id="tipo_movimiento" value="{tipo_movimiento} ">
+
+
+
+<input name="titulo_aux" type="hidden" id="titulo_aux" value="{titulo} ">
+<input name="es_matriz" type="hidden" id="una_matriz" value="{tipo_retiro_label}" />
