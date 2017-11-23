@@ -256,6 +256,39 @@ class acondicionaDatos extends BDControlador {
     $db->query($query);
   }
   
+  function listadoRechazadas($arreglo) {
+    $db = $_SESSION['conexion'];
+
+    $arreglo[GroupBy] = "orden,codigo_ref,tipo_rechazo";
+
+		//Prepara la condición del filtro
+    if(!empty($arreglo[nitfr])) $arreglo[where] .= " AND da.por_cuenta = '$arreglo[nitfr]'";
+    if(!empty($arreglo[fechadesdefr])) $arreglo[where] .= " AND DATE(im.fecha) >= '$arreglo[fechadesdefr]'";
+    if(!empty($arreglo[fechahastafr])) $arreglo[where] .= " AND DATE(im.fecha) <= '$arreglo[fechahastafr]'";
+    if(!empty($arreglo[doasignadofr])) $arreglo[where] .= " AND da.do_asignado = '$arreglo[doasignadofr]'";
+    if(!empty($arreglo[tiporechazofr])) $arreglo[where] .= " AND im.estado_mcia = '$arreglo[tiporechazofr]'";
+    
+    $query = "SELECT im.*,im.fecha AS fecha_rechazo,ie.*,ref.nombre AS nombre_referencia,
+                ref.codigo_ref,p.nombre AS nombre_ubicacion,em.nombre AS tipo_rechazo,
+                imm.doc_tte, cl.numero_documento,cl.razon_social,
+                SUM(cantidad_naci) AS tc_nal,SUM(peso_naci) tp_nal,SUM(cantidad_nonac) AS tc_ext,
+                SUM(peso_nonac) AS tp_ext
+              FROM inventario_movimientos im
+                INNER JOIN inventario_entradas ie ON ie.codigo = im.inventario_entrada
+                INNER JOIN referencias ref ON ref.codigo = ie.referencia
+                INNER JOIN inventario_maestro_movimientos imm ON imm.codigo = im.cod_maestro
+                INNER JOIN do_asignados da ON da.do_asignado = imm.orden
+                INNER JOIN clientes cl ON cl.numero_documento = da.por_cuenta
+                INNER JOIN estados_mcia em ON em.codigo = im.estado_mcia
+                LEFT JOIN posiciones p ON p.codigo = ie.posicion
+              WHERE tipo_movimiento = 16
+                AND estado_mcia > 1 $arreglo[where]
+              GROUP BY $arreglo[GroupBy] ORDER BY im.codigo";    
+
+    $db->query($query);
+    return $db->getArray();
+  }
+  
   function retornarIdNuevoIngreso($codigo) {
     $db = $_SESSION['conexion'];
     $query = "SELECT * FROM inventario_movimientos WHERE cod_maestro = $codigo AND tipo_movimiento = 1";
