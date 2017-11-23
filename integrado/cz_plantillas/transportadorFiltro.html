@@ -16,7 +16,7 @@
 	}
 	
 	$(function(){
-		$("#buscarClienteretiros").autocomplete("./scripts_index.php?clase=Subpartida&metodo=findSupartida", {
+		$("#buscarClienteretiros").autocomplete("./scripts_index.php?clase=Transportador&metodo=findTransportador", {
 				width: 260,
 				selectFirst: false
 	});
@@ -164,20 +164,16 @@
 
             </div> 
 
-      </legend>
-	  
-	<b>POR ARREGLAR</b>  
+      </legend> 
 	<p>	
 		<label>Nombre:</label>
 		<input name="nombre" type="text" id="buscarClienteretiros" size="50" />
 	</p>
 	<p> 
-		<label>Subpartida: </label>
-		<input name="subpartida" type="text" class="     ui-widget-content" id="por_cuenta_filtro_retiros" />
 		<input name="tipo_movimiento_filtro" type="hidden" id="tipo_movimiento_filtro" value="1">
 	</p> 
 </fieldset>  
-  <input name="clase" type="hidden" id="clase" value="Subpartida">
+  <input name="clase" type="hidden" id="clase" value="Transportador">
   <input name="metodo" type="hidden" id="metodoReporte" value="getListado">
   <input name="un_formulario" type="hidden"  id="un_formulario" value="formularioSubpartidaNueva">
 

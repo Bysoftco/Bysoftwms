@@ -38,27 +38,27 @@ class TransportadorLogica  {
                 $this->pantalla->setFuncion($arregloDatos,&$this->datos);
                 
             }
-			function getUnaSubpartida($arregloDatos){
+			function getUnTransportador($arregloDatos){
                 $arregloDatos[mostrar] = 1;
     			$arregloDatos[plantilla] = 'transportadorFormulario.html';
-   				$arregloDatos[thisFunction] = 'getUnaSubpartida';
+   				$arregloDatos[thisFunction] = 'getUnTransportador';
     			$this->pantalla->setFuncion($arregloDatos,&$this->datos);
                 
             }
-			function updateSubpartida($arregloDatos){
-              $this->datos->updateSubpartida($arregloDatos); 
+			function updateTransportador($arregloDatos){
+              $this->datos->updateTransportador($arregloDatos); 
                 
             }
 			
-		function findSupartida($arregloDatos) {
-		$unaConsulta = new Subpartida();
+		function findTransportador($arregloDatos) {
+		$unaConsulta = new Transportador();
 
 		$unaConsulta->findCliente($arregloDatos);
 		$arregloDatos[q] = strtolower($_GET["q"]);
 
 		while($unaConsulta->fetch()) {
-			$nombre = utf8_encode(trim($unaConsulta->descripcion));
-			echo "$nombre|$unaConsulta->subpartida|	$nombre\n";
+			$nombre = utf8_encode(trim($unaConsulta->nombre));
+			echo "$nombre|$unaConsulta->transportador|	$nombre\n";
 		}
 		if($unaConsulta->N == 0) {
 			echo "No hay Resultados|0\n";
@@ -68,7 +68,7 @@ class TransportadorLogica  {
             function generaExcel ($arregloDatos) 
             {
                 $arregloDatos[excel]=1;
-                $arregloDatos['titulo']='Subpartida '.$arregloDatos[titulo];
+                $arregloDatos['titulo']='Transportador '.$arregloDatos[titulo];
                 $arregloDatos['sql']=$this->datos->getInventario($arregloDatos);
                // echo $arregloDatos['sql'];die();
                 $unExcel = new SubpartidaExcel($arregloDatos);

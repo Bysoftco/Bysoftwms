@@ -314,7 +314,7 @@ class TransportadorPresentacion {
     }
 
 
-     function  getUnaSubpartida($arregloDatos,$unDatos){
+     function  getUnTransportador($arregloDatos,$unDatos){
 			//var_dump($unDatos);
      }
 	 function getFormaNueva($arregloDatos) {

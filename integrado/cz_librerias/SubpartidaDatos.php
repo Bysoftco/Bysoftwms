@@ -42,7 +42,6 @@ class Subpartida extends MYDB {
 	   }
 	   
        $this->query($sql);
-      // echo $sql;
 		if ($this->_lastError) 
         {
           	echo "<div class=error align=center> :( Error al listar Subpartidas <br>$sql</div>.";  

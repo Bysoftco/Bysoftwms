@@ -13,64 +13,62 @@ class Transportador extends MYDB {
       $fecha=date('Y-m-d:a');
       $sede=$_SESSION['sede'];
       
-      $sql="select * from subpartidas  ";
-       if(!empty($arregloDatos[subpartida])){
-	   		$sql.=" where subpartida like '%$arregloDatos[subpartida]%'";		
+      $sql="select * from transportador  ";
+       if(!empty($arregloDatos[nombre])){
+	   		$sql.=" where nombre like '%$arregloDatos[nombre]%'";		
 	   }
-	   if(!empty($arregloDatos[nombre]) and empty($arregloDatos[subpartida]) ){
-	   		$sql.=" where descripcion like '%$arregloDatos[nombre]%'";		
-	   }
+	   
        $this->query($sql);
        //echo $sql;
 		if ($this->_lastError) 
         {
-          	echo "<div class=error align=center> :( Error al listar Subpartidas <br>$sql</div>.";  
+          	echo "<div class=error align=center> :( Error al listar Transportador <br>$sql</div>.";  
             return FALSE;
         }
  
        
     }
 	
-	 function getUnaSubpartida($arregloDatos)
+	 function getUnTransportador($arregloDatos)
     {
       $fecha=date('Y-m-d:a');
       $sede=$_SESSION['sede'];
       
-      $sql="select * from subpartidas  ";
-       if(!empty($arregloDatos[subpartida])){
-	   		$sql.=" where subpartida like '%$arregloDatos[subpartida]%'";		
+      $sql="select * from transportador  ";
+       if(!empty($arregloDatos[codigo])){
+	   		$sql.=" where codigo like '%$arregloDatos[codigo]%'";		
 	   }
-	   
        $this->query($sql);
       // echo $sql;
 		if ($this->_lastError) 
         {
-          	echo "<div class=error align=center> :( Error al listar Subpartidas <br>$sql</div>.";  
+          	echo "<div class=error align=center> :( Error al listar Transportador <br>$sql</div>.";  
             return FALSE;
         }
  
        
     }
 	
-	 function updateSubpartida($arregloDatos)
+	 function updateTransportador($arregloDatos)
     {
       $fecha=date('Y-m-d:a');
       $sede=$_SESSION['sede'];
-      $subpartida=trim($arregloDatos[subpartida]);
-      $sql="update  subpartidas set arancel=$arregloDatos[arancel], descripcion='$arregloDatos[descripcion]' where TRIM(subpartida) = '$subpartida'";
+      $codigo=trim($arregloDatos[codigo]);
+      $sql="update transportador set codigo='$arregloDatos[codigo]', nombre='$arregloDatos[nombre]', contacto='$arregloDatos[contacto]',
+	  		telefono='$arregloDatos[telefono]', tipo_transporte='$arregloDatos[tipo_transporte]' where TRIM(codigo) = '$codigo'";
       $this->query($sql);
        //echo $sql;
 		if ($this->_lastError) 
         {
-          	echo "<div class=error align=center> :( Error al listar Subpartidas <br>$sql</div>.";  
+          	echo "<div class=error align=center> :( Error al listar Transportador <br>$sql</div>.";  
             return FALSE;
         }
  
        
     }
 	function findCliente($arregloDatos) {
-		$sql = "SELECT subpartida,descripcion
-						FROM subpartidas  WHERE (descripcion LIKE '%$arregloDatos[q]%') OR (subpartida  LIKE '%$arregloDatos[q]%')";
+		$sql = "SELECT nombre
+						FROM transportador  WHERE (nombre LIKE '%$arregloDatos[q]%')";
 
 		$this->query($sql);
 		if($this->_lastError) {

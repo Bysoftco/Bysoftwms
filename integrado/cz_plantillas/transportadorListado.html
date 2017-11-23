@@ -1,9 +1,8 @@
     <script>
-	function abrir (subpartida){
-		
+	function abrir (codigo){
 		 $( "#dialog-form-hacer-levante" ).dialog( "open" );
 		 $("div#ventana_levante").load("./scripts_index.php", {
-	    	clase:'Subpartida',metodo:'getUnaSubpartida',subpartida:subpartida },
+	    	clase:'Transportador',metodo:'getUnTransportador',codigo:codigo },
 			function(data) {
 				
             
@@ -67,10 +66,11 @@
       <thead>
         <tr class="ui-widget-header "> 
           <th >#</th>
-          <th width="11%" >Subpartida</th>
-          <th width="11%" >Arancel</th>
-          <th width="29%" >Descripci&oacute;n</th>
-          <th width="36%" >Detalle</th>
+          <th width="11%" >Codigo</th>
+          <th width="11%" >Nombre</th>
+          <th width="29%" >Contacto</th>
+          <th width="36%" >Telefono</th>
+		  <th width="36%" >Tipo transporte</th>
           <th width="8%" >Acci&oacute;n</th>
         </tr>
       </thead>
@@ -79,13 +79,14 @@
       <!-- BEGIN ROW -->
       <tr class="{odd}"> 
         <td width="5%" >{n}</td>
-        <td> <div id="label_concepto{n}">{subpartida} <a href="#" class="signup id_mercancia" title="Nuevo Levante {n}" id="{n}" cursor> 
+        <td> <div id="label_concepto{n}">{codigo} <a href="#" class="signup id_mercancia" title="Nuevo Levante {n}" id="{n}" cursor> 
             </a> </div></td>
-        <td>{arancel}</td>
-        <td> {descripcion} </td>
-        <td>{detalle} </td>
+        <td>{nombre}</td>
+        <td> {contacto} </td>
+        <td>{telefono} </td>
+		<td>{tipo_transporte} </td>
         <td><a href="javascript:abrir(1)" class="signup documento_id" title="Abrir registros {do_asignado}" id="{n}" cursor> 
-          </a>&nbsp;<a href="javascript: abrir('{subpartida}')">Editar</a></td>
+          </a>&nbsp;<a href="javascript: abrir('{codigo}')">Editar</a></td>
       </tr>
       <!-- END ROW -->
       <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}">
