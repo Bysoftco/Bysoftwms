@@ -1,18 +1,6 @@
 <script>
-
-
-
-
-
-
-
-    $(function() {
-
-
-
-        
-
-        //$('#btnImprimir').show();
+$(function() {
+		//$('#btnImprimir').show();
 
         $('#tabs').tabs();
 
@@ -26,38 +14,11 @@
 
 
             {
+				var n = ui.index + 1
 
-
-
-
-
-
-
-                var n = ui.index + 1
-
-
-
-                switch (n)
-
-
-
-                {
-
-
-
-                    case 1: 	//Levante
-
-
-
-
-
-
-
-                        if ($('#id_levante').val() != "")
-
-
-
-                        {
+				switch (n){
+					case 1: 	//Levante
+						if ($('#id_levante').val() != ""){
 
 
 
@@ -298,7 +259,7 @@
 
 
                                     var bValid = true;
-                                    $("#" + $("#un_formulario_transportador").val()).submit();
+                                    $("#formularioTransportador").submit();
 
                                 },
 
@@ -338,7 +299,7 @@
 
 
 
-        $("#window_filtro").dialog(
+        $("#window_filtro_transportador").dialog(
 
                 {
 
@@ -374,7 +335,7 @@
 
 
 
-                                    $("#window_filtro").dialog("close");
+                                    $("#window_filtro_transportador").dialog("close");
 
                                 }
 
@@ -466,13 +427,13 @@
 
 
 
-    $("#dialog-form-levante{metodo}").dialog("open");
+    $("#window_filtro_transportador").dialog("open");
 
     } else{
 
 
 
-    $("#dialog-form-levante{metodo}").dialog("close");
+    $("#window_filtro_transportador").dialog("close");
 
     }
 
@@ -702,7 +663,7 @@
 
 
 
-<div id="window_filtro" title="Filtro">
+<div id="window_filtro_transportador" title="Filtro">
 
 
 

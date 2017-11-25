@@ -38,7 +38,7 @@
 
          	
 
-        $("#buscarClienteretiros").autocomplete("./scripts_index.php?clase=Subpartida&metodo=findSupartida", {
+        $("#buscarSubpartidas").autocomplete("./scripts_index.php?clase=Subpartida&metodo=findSupartida", {
 
                 width: 260,
 
@@ -52,7 +52,7 @@
 
 
 
-        $("#buscarClienteretiros").result(function(event, data, formatted) 
+        $("#buscarSubpartidas").result(function(event, data, formatted) 
 
      	{
 
@@ -120,7 +120,7 @@
 
     {
 
-	$("#maestro").validate(
+	$("#maestroSubpartida").validate(
 
         {
 
@@ -156,13 +156,11 @@
 
                                 async:false,
 
-                                data:$('#maestro').serialize(),
+                                data:$('#maestroSubpartida').serialize(),
 
-                                success: function (msm)
+                                success: function (msm){
 
-                                {
-
-                                    $( "#ventana_reporte" ).dialog( "close" );
+                                    $( "#window_filtro" ).dialog( "close" );
 
                                                                 //$( "#num_levante" ).val( " ");
 
@@ -234,7 +232,7 @@
 
 
 
-<form class="formularioReporte" id="maestro" method="post" action="javascript:EnviarFormulario()" name="maestro">
+<form class="formularioReporte" id="maestroSubpartida" method="post" action="javascript:EnviarFormulario()" name="maestroSubpartida">
 
     <fieldset class="ui-widget ui-widget-content ui-corner-all">
 
@@ -260,7 +258,7 @@
     <label>Nombre:</label>
 
             
-    <input name="nombre" type="text" id="buscarClienteretiros" size="50" />
+    <input name="nombre" type="text" id="buscarSubpartidas" size="50" />
 
 	</p>
 

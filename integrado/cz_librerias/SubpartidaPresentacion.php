@@ -286,10 +286,11 @@ class SubpartidaPresentacion {
 
     if(empty($arregloDatos[por_cuenta_filtro])) {
        $this->plantilla->setVariable('abre_ventana', 1);
-	   $arregloDatos[mostar] = "0";
-       $arregloDatos[plantilla] = 'subpartidaFiltro.html';
-       $arregloDatos[thisFunction] = 'getToolbar';
-       $this->plantilla->setVariable('filtro', $this->setFuncion($arregloDatos, &$this->datos));
+	   $arregloDatos[thisFunction] = 'filtro';
+    $arregloDatos[plantilla] = 'subpartidaFiltro.html';
+    $arregloDatos[mostrar] = 0;
+    $htmlFiltro = $this->cargaPlantilla($arregloDatos);
+    $this->plantilla->setVariable('filtroFiltro', $htmlFiltro);
 	
     } else {
       $this->plantilla->setVariable('abre_ventana', 0);
@@ -303,14 +304,7 @@ class SubpartidaPresentacion {
 
     
     }
-
-
-
-    $arregloDatos[thisFunction] = 'filtro';
-    $arregloDatos[plantilla] = 'levanteFiltroBusca.html';
-    $arregloDatos[mostrar] = 0;
-    $htmlFiltro = $this->cargaPlantilla($arregloDatos);
-    $this->plantilla->setVariable('filtroFiltro', $htmlFiltro);
+    
     $this->plantilla->show();
   }  
 
