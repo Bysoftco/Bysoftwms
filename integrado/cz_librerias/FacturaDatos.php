@@ -1,6 +1,6 @@
 <?php
 require_once("MYDB.php"); 
-
+require_once("LevanteDatos.php"); 
 class Factura extends MYDB {
   function Factura() { 
     $this->estilo_error = "ui-state-error";
@@ -721,22 +721,7 @@ class Factura extends MYDB {
 		return $this->total_anticipos;
 	}
   
-  function getDatosRemesa($arregloDatos) {
-    if(empty($arregloDatos[datos_remesa])) { $arregloDatos[datos_remesa]=-1; }
-    $sql = "SELECT ABS(SUM(peso_naci)) AS peso_naci, ABS(SUM( peso_nonac)) AS peso_nonac, ABS(SUM( cantidad_naci)) AS cantidad_naci,
-              ABS( SUM( cantidad_nonac)) AS cantidad_nonac, ABS(SUM( cif)) AS cif , ABS( SUM( fob_nonac)) AS fob_nonac
-            FROM inventario_maestro_movimientos imm, inventario_movimientos im
-            WHERE imm.codigo = im.cod_maestro
-              AND imm.codigo = $arregloDatos[datos_remesa]
-            GROUP BY imm.codigo
-              LIMIT 0, 30";
-     //echo    $sql ;       
-    $this->query($sql);
-    if($this->_lastError) {
-      echo "<div class=error align=center> :( Error al Consultar Datos de la remesa <br>$sql</div>.";
-      return FALSE;
-    }
-  }
+ 
   
   function getDatosUnaOrden($arregloDatos) {
     $sql = "SELECT SUM(cantidad) AS cantidad, SUM(peso_bruto) AS peso, SUM(valor_fob) AS valor
@@ -821,5 +806,59 @@ class Factura extends MYDB {
 			
 			return 	$this->nuevo_consecutivo;
     	}
+	
+	function saldoInventario(&$arregloDatos) {
+		$unLevante = new Levante();
+		$unLevante->getInvParaProceso($arregloDatos);
+		$unLevante->fetch();
+		
+		$arregloDatos[datos_remesa] .= "Piezas:";
+		
+		if($unLevante->cantidad_nonac > 0){ $arregloDatos[datos_remesa] .= "E:".number_format($unLevante->cantidad_nonac,2,',','.'); }
+		if($unLevante->cantidad_naci > 0){ $arregloDatos[datos_remesa] .= "N:".number_format($unLevante->cantidad_naci,2,',','.'); }
+		
+		$arregloDatos[datos_remesa] .= "Peso:";
+		if($unLevante->peso_nonac > 0){ $arregloDatos[datos_remesa] .= "E:".number_format($unLevante->peso_nonac,2,',','.'); }
+		if($unLevante->peso_naci > 0){ $arregloDatos[datos_remesa] .= "N:".number_format($unLevante->peso_naci,2,',','.'); }
+		
+		$arregloDatos[datos_remesa] .= "Valor:";
+		if($unLevante->fob_nonac > 0){ $arregloDatos[datos_remesa] .= "U$:".number_format($unLevante->fob_nonac,2,',','.'); }
+		if($unLevante->cif > 0){ $arregloDatos[datos_remesa] .= "$:".number_format($unLevante->cif,2,',','.'); }
+	
+		
+  }
+  	 function getDatosRemesa($arregloDatos) {
+    if(empty($arregloDatos[datos_remesa])) { $arregloDatos[datos_remesa]=-1; }
+    $sql = "SELECT ABS(SUM(peso_naci)) AS peso_naci, ABS(SUM( peso_nonac)) AS peso_nonac, ABS(SUM( cantidad_naci)) AS cantidad_naci,
+              ABS( SUM( cantidad_nonac)) AS cantidad_nonac, ABS(SUM( cif)) AS cif , ABS( SUM( fob_nonac)) AS fob_nonac
+            FROM inventario_maestro_movimientos imm, inventario_movimientos im
+            WHERE imm.codigo = im.cod_maestro
+              AND imm.codigo = $arregloDatos[datos_remesa]
+            GROUP BY imm.codigo
+              LIMIT 0, 30";
+     //echo    $sql ;       
+    $this->query($sql);
+	$this->fetch();
+	$arregloDatos[datos_remesa] .= "Piezas:";
+		
+		if($this->cantidad_nonac > 0){ $arregloDatos[datos_remesa] .= "E:". number_format($this->cantidad_nonac,2,',','.'); }
+		if($unLevante->cantidad_naci > 0){ $arregloDatos[datos_remesa] .= "N:".number_format($this->cantidad_naci,2,',','.'); }
+		
+		$arregloDatos[datos_remesa] .= "Peso:";
+		if($this->peso_nonac > 0){ $arregloDatos[datos_remesa] .= "E:".number_format($this->peso_nonac,2,',','.'); }
+		if($this->peso_naci > 0){ $arregloDatos[datos_remesa] .= "N:".number_format($this->peso_naci,2,',','.'); }
+		
+		$arregloDatos[datos_remesa] .= "Valor:";
+		if($this->fob_nonac > 0){ $arregloDatos[datos_remesa] .= "U$:".number_format($this->fob_nonac,2,',','.'); }
+		if($this->cif > 0){ $arregloDatos[datos_remesa] .= "$:".number_format($this->cif,2,',','.'); }
+	
+		echo $arregloDatos[datos_remesa];
+	
+    if($this->_lastError) {
+      echo "<div class=error align=center> :( Error al Consultar Datos de la remesa <br>$sql</div>.";
+      return FALSE;
+    }
+  }
+  
 }  
 ?>

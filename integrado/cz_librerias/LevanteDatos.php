@@ -162,7 +162,7 @@ class Levante extends MYDB {
 		
 		$this->_lastError = NULL;
 		$this->query($sql);
-		//echo $sql;
+		
 		if($this->_lastError) {
 			echo "Error" . $arregloDatos[metodo] . $sql . "<BR>";
 			$this->mensaje = "Error al consultar Inventario1 ";

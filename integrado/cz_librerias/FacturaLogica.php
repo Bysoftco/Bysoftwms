@@ -330,5 +330,31 @@ class FacturaLogica {
 		$arregloDatos[thisFunction]	= 'getFacturaPreliquidacion';
     	$this->pantalla->setFuncion($arregloDatos,$this->datos);
    }
+   function  getDatosUnaOrden($arregloDatos){
+   		$this->datos->getDatosUnaOrden($arregloDatos);
+		$this->datos->fetch();
+		$arregloDatos[datos_remesa] = "Piezas : " . trim(abs($this->datos->cantidad));
+    	$arregloDatos[datos_remesa] .= "  Peso : " . trim(abs($this->datos->peso) );
+    	$arregloDatos[datos_remesa] .= "  Valor : " . round($this->datos->valor);
+  		echo $arregloDatos[datos_remesa];
+		
+  }
+     function  saldoInventario($arregloDatos){
+	
+	 	$arregloDatos[having] = " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
+		$arregloDatos[where] .=" AND  ie.orden='$arregloDatos[una_orden]'"; // filtro por referencia
+		$arregloDatos[GroupBy] = "orden";  // 
+		$arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
+		
+		$this->datos->saldoInventario($arregloDatos);
+		//$this->datos->fetch();
+		
+  		echo $arregloDatos[datos_remesa];
+		
+  }
+  
+   function  getDatosRemesa($arregloDatos){
+   		$this->datos->getDatosRemesa($arregloDatos);
+   }
 }
 ?>

@@ -428,7 +428,7 @@ class FacturaPresentacion {
 
   function impresion($arregloDatos,$unDatos,$unaPlantilla) {
     $unDato = new Factura();
-    
+    /*
     $arregloDatos[datos_remesa] = $unDatos->remesa; // Averigua la cantidad de la remesa
     $unDato->getDatosRemesa($arregloDatos);
     $unDato->fetch();
@@ -444,7 +444,7 @@ class FacturaPresentacion {
     	$arregloDatos[datos_remesa] .= "  Peso : " . trim(abs($datosOrden->peso));
     	$arregloDatos[datos_remesa] .= "  Valor : " . number_format(round($datosOrden->valor),0,',','.');
     }
-    
+    */
     $this->conceptos($arregloDatos,$unDatos,$unaPlantilla);
   }
 
@@ -523,5 +523,7 @@ class FacturaPresentacion {
 	//echo $arregloDatos[conceptos];
 	$this->mantenerDatos($arregloDatos,$unaPlantilla);
   }
+  
+  
 }
 ?>
