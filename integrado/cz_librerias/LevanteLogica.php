@@ -464,13 +464,24 @@ class LevanteLogica {
       si no queda con inventario se RETIRAN LAS UBICACIONES AUTOMATICAMETE 15052017/
     */
     $verificaInventario = new Levante();
-    $verificaInventario->getInvParaRetiro($arregloDatos);
+
+	$arregloDatos[having] = " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
+		$arregloDatos[where] .=" AND  ie.orden='$arregloDatos[orden]'"; // filtro por referencia
+		$arregloDatos[GroupBy] = "orden";  // 
+		$arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
+	
+    $verificaInventario->getInvParaProceso($arregloDatos);
     $verificaInventario->fetch();
     $cantidad_retirada_naci=$verificaInventario->cantidad_naci; //-$arregloDatos[cantidad_naci_para];
     $cantidad_retirada_ext=$verificaInventario->cantidad_nonac; //-$arregloDatos[cantidad_nonaci_para];
-    if($cantidad_retirada_naci <=0 && $cantidad_retirada_ext <=0) {
-      $unRetiroUbicacion = new Levante();
-      $unRetiroUbicacion->borrarUbicaciones($arregloDatos);
+	$arregloDatos[cantidad_retirada_naci]=$verificaInventario->cantidad_naci;
+	$arregloDatos[cantidad_retirada_ext]=$verificaInventario->cantidad_nonac;
+	 $unRetiroUbicacion = new Levante();
+     
+
+    //if($cantidad_retirada_naci <=0 && $cantidad_retirada_ext <=0) {
+	if($verificaInventario->N==0) {
+		$unRetiroUbicacion->borrarUbicacionesInventario($arregloDatos); 
     }
     unset($arregloDatos[cod_ref]);
     unset($arregloDatos[orden_retiro]);

@@ -162,7 +162,7 @@ class Levante extends MYDB {
 		
 		$this->_lastError = NULL;
 		$this->query($sql);
-		
+		//echo $sql."<br>";
 		if($this->_lastError) {
 			echo "Error" . $arregloDatos[metodo] . $sql . "<BR>";
 			$this->mensaje = "Error al consultar Inventario1 ";
@@ -1936,7 +1936,12 @@ class Levante extends MYDB {
       return false;
     }
   }
-	 
+  function borrarUbicacionesInventario($arregloDatos) {
+  	$sql = "DELETE FROM  referencias_ubicacion 
+		    WHERE item=$arregloDatos[id_item]";
+			$this->query($sql);
+		
+   } 
   function borrarUbicaciones($arregloDatos) {
 	 	$fecha = date('Y-m-d');
 	 	$sql = "UPDATE referencias_ubicacion INNER JOIN inventario_entradas ON
