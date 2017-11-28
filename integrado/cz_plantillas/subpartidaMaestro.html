@@ -292,14 +292,9 @@
 
 
                                 {
-
-									
-									//alert( $("#un_formulario").val())
-
-
                                     var bValid = true;
 
-                                    $("#formularioSubpartida").submit();
+                                    $("#" + $("#un_formulario_editar").val()).submit();
 
                                 },
 
@@ -357,24 +352,12 @@
 
                                 "Aceptar": function()
 
-
+									
 
                                 {
+								   var bValid = true;
 
-
-
-
-
-
-
-
-
-
-
-                                    var bValid = true;
-
-                                   $("#maestroSubpartida").submit();
-
+								   $("#" + $("#un_formulario").val()).submit();
                                     //$("#filtroMovimientoFiltro").submit();
 
                                 },
@@ -467,27 +450,12 @@
 
     });
 
-            if ({abre_ventana})
-
-
-
-    {    // Abre la ventana por defecto
-
-
-
-
-
-
-
-    $("#window_filtro").dialog("open");
+    if ({abre_ventana}) {    // Abre la ventana por defecto
+		$("#window_filtro").dialog("open");
 
     } else{
-
-
-
-    $("#window_filtro").dialog("close");
-
-    }
+		 $("#window_filtro").dialog("close");
+	}
 
 
 

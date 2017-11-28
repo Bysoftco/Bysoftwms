@@ -1,5 +1,5 @@
 <?php
-  /* header ("Expires: Thu, 27 Mar 1980 23:59:00 GMT"); //La p?gina expira en una fecha pasada
+  /* header ("Expires: Thu, 27 Mar 1980 23:59:00 GMT"); //La página expira en una fecha pasada
   header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); //ultima actualizacion ahora cuando la cargamos
   header ("Cache-Control: no-cache, must-revalidate"); //No guardar en CACHE
   header ("Pragma: no-cache"); */
@@ -38,7 +38,7 @@
 
          	
 
-        $("#buscarSubpartidas").autocomplete("./scripts_index.php?clase=Subpartida&metodo=findSupartida", {
+        $("#buscarSubpartida").autocomplete("./scripts_index.php?clase=Subpartida&metodo=findSupartida", {
 
                 width: 260,
 
@@ -52,7 +52,7 @@
 
 
 
-        $("#buscarSubpartidas").result(function(event, data, formatted) 
+        $("#buscarSubpartida").result(function(event, data, formatted) 
 
      	{
 
@@ -120,7 +120,7 @@
 
     {
 
-	$("#maestroSubpartida").validate(
+	$("#formularioSubpartidaFiltro").validate(
 
         {
 
@@ -156,9 +156,11 @@
 
                                 async:false,
 
-                                data:$('#maestroSubpartida').serialize(),
+                                data:$('#formularioSubpartidaFiltro').serialize(),
 
-                                success: function (msm){
+                                success: function (msm)
+
+                                {
 
                                     $( "#window_filtro" ).dialog( "close" );
 
@@ -208,7 +210,7 @@
 
         tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
         
-        .ui-datepicker-trigger { position:relative; top: 5px; right: 1px; height:22px; } /* Configuraci?n tama?o imagen del DatePicker */
+        .ui-datepicker-trigger { position:relative; top: 5px; right: 1px; height:22px; } /* Configuración tamaño imagen del DatePicker */
 
 </style>	
 
@@ -232,7 +234,7 @@
 
 
 
-<form class="formularioReporte" id="maestroSubpartida" method="post" action="javascript:EnviarFormulario()" name="maestroSubpartida">
+<form class="formularioSubpartidaFiltro" id="formularioSubpartidaFiltro" method="post" action="javascript:EnviarFormulario()" name="formularioSubpartidaFiltro">
 
     <fieldset class="ui-widget ui-widget-content ui-corner-all">
 
@@ -258,7 +260,7 @@
     <label>Nombre:</label>
 
             
-    <input name="nombre" type="text" id="buscarSubpartidas" size="50" />
+    <input name="nombre" type="text" id="buscarSubpartida" size="50" />
 
 	</p>
 
@@ -289,7 +291,7 @@
   <input name="metodo" type="hidden" id="metodoReporte" value="getListado">
 
      
- <input name="un_formulario" type="hidden"  id="un_formulario" value="formularioSubpartidaNueva">
+ <input name="un_formulario" type="hidden"  id="un_formulario" value="formularioSubpartidaFiltro">
 
      
 
