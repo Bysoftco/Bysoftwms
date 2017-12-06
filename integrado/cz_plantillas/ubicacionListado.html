@@ -1,8 +1,8 @@
     <script>
 	function abrir (codigo){
-		 $( "#dialog-form-hacer-levante_transportador" ).dialog( "open" );
+		 $( "#dialog-form-hacer-levante_ubicacion" ).dialog( "open" );
 		 $("div#ventana_levante").load("./scripts_index.php", {
-	    	clase:'Transportador',metodo:'getUnTransportador',codigo:codigo },
+	    	clase:'Ubicacion',metodo:'getUnaUbicacion',codigo:codigo },
 			function(data) {
 				
             
@@ -34,7 +34,7 @@
                         }else{
                                 //alert("error")
                         }
-                        $( "#dialog-form-hacer-levante_transportador" ).dialog( "close" );
+                        $( "#dialog-form-hacer-levante_ubicacion" ).dialog( "close" );
                                                     //$( "#num_levante" ).val( " ");
 
                     }
@@ -67,10 +67,9 @@
         <tr class="ui-widget-header "> 
           <th >#</th>
           <th width="11%" >Codigo</th>
-          <th width="11%" >Nombre</th>
-          <th width="29%" >Contacto</th>
-          <th width="36%" >Telefono</th>
-		  <th width="36%" >Tipo transporte</th>
+          <th width="11%" >Tipo</th>
+          <th width="29%" >Nombre</th>
+          <th width="36%" >Descripci&oacute;n</th>
           <th width="8%" >Acci&oacute;n</th>
         </tr>
       </thead>
@@ -81,10 +80,9 @@
         <td width="5%" >{n}</td>
         <td> <div id="label_concepto{n}">{codigo} <a href="#" class="signup id_mercancia" title="Nuevo Levante {n}" id="{n}" cursor> 
             </a> </div></td>
-        <td>{nombre}</td>
-        <td> {contacto} </td>
-        <td>{telefono} </td>
-		<td>{tipo_transporte} </td>
+        <td>{tipo}</td>
+        <td> {nombre} </td>
+        <td>{descripcion} </td>
         <td><a href="javascript:abrir(1)" class="signup documento_id" title="Abrir registros {do_asignado}" id="{n}" cursor> 
           </a>&nbsp;<a href="javascript: abrir('{codigo}')">Editar</a></td>
       </tr>

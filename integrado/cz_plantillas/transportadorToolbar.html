@@ -65,7 +65,7 @@
 
 
 		
-        $("#window_filtro").dialog("open");
+        $("#window_filtro_transportador").dialog("open");
 		//$("#cuerpo_filtro").html("cambio contenido de la ventana");
 		 $("div#cuerpo_filtro").load("./scripts_index.php", {clase:'Transportador',metodo:'getFormaNueva',mostrar:'1'}, function(datos){
           });
@@ -74,39 +74,11 @@
 
 
 // filtro
-    $('.popupsAgregar a').click(function()
-
-    {
-
-
-
-        switch ($("#metodo_mov").val())
-
-        {
-
-            case 'newRetiro':
-
-                $("#oculta_doc").show();
-
-                $("#metodo_mov").val("retiros");
-
-                break;
-
-            case 'newLevante':
-
-                $("#oculta_doc").hide();
-
-                $("#metodo_mov").val("nacionalizar");
-
-                break;
-
-        }
-
-        $("#dialog-form-levante" + $("#metodo_mov").val()).dialog("open");
-
-
-
-    });
+    $('.popupsAgregar a').click(function(){
+	        $("#window_filtro_transportador").dialog("open");
+			$("div#cuerpo_filtro").load("./scripts_index.php", {clase:'Transportador',metodo:'filtro',mostrar:'1'}, function(datos){
+          });
+	});
 
 
 

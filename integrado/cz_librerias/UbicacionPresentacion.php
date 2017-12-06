@@ -20,7 +20,7 @@ require_once ("Funciones.php");
 
 
 
-class TransportadorPresentacion {
+class UbicacionPresentacion {
 
     
 
@@ -42,7 +42,7 @@ class TransportadorPresentacion {
 	var $total_cif;
 	var $total_fob;
 
-    function TransportadorPresentacion (&$datos) {
+    function UbicacionPresentacion (&$datos) {
 
         $this->datos = &$datos;
 
@@ -104,7 +104,7 @@ class TransportadorPresentacion {
 
 
 
-        $unaLista 	= new Transportador();
+        $unaLista 	= new Ubicacion();
 
         $lista		= $unaLista->lista($arregloDatos[tabla],$arregloDatos[condicion],$arregloDatos[campoCondicion]);
 
@@ -122,7 +122,7 @@ class TransportadorPresentacion {
 
 
 
-        $unAplicaciones = new Transportador();
+        $unAplicaciones = new Ubicacion();
 
         $formularioPlantilla = new HTML_Template_IT();
 
@@ -164,7 +164,7 @@ class TransportadorPresentacion {
 
 		
 
-                $unDatos = new Transportador();
+                $unDatos = new Ubicacion();
 
 		if(!empty($arregloDatos[setCharset])){
 
@@ -272,7 +272,7 @@ class TransportadorPresentacion {
     if($arregloDatos[tipo_retiro_label] == "Matriz") {
       $this->plantilla->setVariable('tipo_retiro_label', 'Matriz');
     }
-    $this->plantilla->loadTemplateFile(PLANTILLAS . 'transportadorMaestro.html', true, true);
+    $this->plantilla->loadTemplateFile(PLANTILLAS . 'ubicacionMaestro.html', true, true);
     $this->plantilla->setVariable('comodin', ' ');
 
     $arregloDatos[tab_index] = 2;
@@ -280,14 +280,14 @@ class TransportadorPresentacion {
     $this->mantenerDatos($arregloDatos, &$this->plantilla);
 
     $arregloDatos[mostar] = "0";
-    $arregloDatos[plantilla] = 'transportadorToolbar.html';
+    $arregloDatos[plantilla] = 'ubicacionToolbar.html';
     $arregloDatos[thisFunction] = 'getToolbar';
     $this->plantilla->setVariable('toolbarLevante', $this->setFuncion($arregloDatos, &$this->datos));
 
     if(empty($arregloDatos[por_cuenta_filtro])) {
        $this->plantilla->setVariable('abre_ventana', 1);
 	   $arregloDatos[thisFunction] = 'filtro';
-    $arregloDatos[plantilla] = 'transportadorFiltro.html';
+    $arregloDatos[plantilla] = 'ubicacionFiltro.html';
     $arregloDatos[mostrar] = 0;
     $htmlFiltro = $this->cargaPlantilla($arregloDatos);
     $this->plantilla->setVariable('filtroFiltro', $htmlFiltro);
@@ -316,7 +316,7 @@ class TransportadorPresentacion {
      function filtro($arregloDatos,$unDatos,$plantilla)
 	{
 
-        $unaLista 	= new Transportador();
+        $unaLista 	= new Ubicacion();
 
         //$lista		= $unaLista->lista("tipos_remesas");
 
@@ -327,7 +327,7 @@ class TransportadorPresentacion {
     }
 
 
-     function  getUnTransportador($arregloDatos,$unDatos){
+     function  getUnaUbicacion($arregloDatos,$unDatos){
 			//var_dump($unDatos);
      }
 	 function getFormaNueva($arregloDatos) {

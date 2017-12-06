@@ -271,7 +271,7 @@
 
 
 
-        $("#dialog-form-hacer-levante_transportador").dialog(
+        $("#dialog-form-hacer-levante_ubicacion").dialog(
 
                 {
 
@@ -293,7 +293,7 @@
                                 {
                                     var bValid = true;
 	
-                                    $("#" + $("#un_formulario_editar_transportador").val()).submit();
+                                    $("#" + $("#un_formulario_editar_ubicacion").val()).submit();
 
                                 },
 
@@ -305,7 +305,7 @@
 
 
 
-                                    $("#dialog-form-hacer-levante_transportador").dialog("close");
+                                    $("#dialog-form-hacer-levante_ubicacion").dialog("close");
 
                                 }
 
@@ -333,7 +333,7 @@
 
 
 
-        $("#window_filtro_transportador").dialog(
+        $("#window_filtro_ubicacion").dialog(
 
                 {
 
@@ -356,7 +356,7 @@
                                 {
 								   var bValid = true;
 
-								   $("#" + $("#un_formulario_transportador").val()).submit();
+								   $("#" + $("#un_formulario_ubicacion").val()).submit();
                                     //$("#filtroMovimientoFiltro").submit();
 
                                 },
@@ -369,7 +369,7 @@
 
 
 
-                                    $("#window_filtro_transportador").dialog("close");
+                                    $("#window_filtro_ubicacion").dialog("close");
 
                                 }
 
@@ -450,10 +450,10 @@
     });
 
     if ({abre_ventana}) {    // Abre la ventana por defecto
-		$("#window_filtro_transportador").dialog("open");
+		$("#window_filtro_ubicacion").dialog("open");
 
     } else{
-		 $("#window_filtro_transportador").dialog("close");
+		 $("#window_filtro_ubicacion").dialog("close");
 	}
 
 
@@ -587,7 +587,7 @@
 
 <div id="tabs"> 
   <ul>
-    <li><a href="#tabs-1">Transportador</a>
+    <li><a href="#tabs-1">Ubicación</a>
 <input name="marca_matriz" type="hidden" id="marca_matriz" value="{tipo_retiro}" />
  
   </ul>
@@ -662,7 +662,7 @@
 
 
 
-<div id="dialog-form-hacer-levante_transportador" title="Transportador">
+<div id="dialog-form-hacer-levante_ubicacion" title="Ubicacion">
 
 
 
@@ -682,7 +682,7 @@
 
 
 
-<div id="window_filtro_transportador" title="Filtro">
+<div id="window_filtro_ubicacion" title="Filtro">
 
 
 

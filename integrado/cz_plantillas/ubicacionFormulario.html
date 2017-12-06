@@ -71,7 +71,7 @@
 
     {
 
-	$("#formularioTransportador").validate(
+	$("#formularioUbicacion").validate(
 
         {
 			submitHandler: function(form){
@@ -91,13 +91,13 @@
 
                                 async:false,
 
-                                data:$('#formularioTransportador').serialize(),
+                                data:$('#formularioUbicacion').serialize(),
 
                                 success: function (msm)
 
                                 {
 									alert(msm)
-                                    $( "#dialog-form-hacer-levante_transportador" ).dialog( "close" );
+                                    $( "#dialog-form-hacer-levante_ubicacion" ).dialog( "close" );
 
                                                                 //$( "#num_levante" ).val( " ");
 
@@ -169,7 +169,7 @@
 
 
 
-<form class="formularioTransportador" id="formularioTransportador" method="post" action="javascript:EnviarFormulario()" name="formularioTransportador">
+<form class="formularioUbicacion" id="formularioUbicacion" method="post" action="javascript:EnviarFormulario()" name="formularioUbicacion">
 
     <fieldset class="ui-widget ui-widget-content ui-corner-all">
 
@@ -189,24 +189,20 @@
   <input name="nombre" type="text" class=" required   ui-widget-content" id="nombre" value="{nombre}" />
   </p>
   <p> 
-    <label>Contacto:</label>
-	<input name="contacto" type="text" class=" required   ui-widget-content" id="contacto" value="{contacto}" />
+    <label>Tipo:</label>
+	<input name="tipo" type="text" class=" required   ui-widget-content" id="tipo" value="{tipo}" />
   </p>
   <p> 
-    <label>Telefono:</label>
-	<input name="telefono" type="text" class=" required   ui-widget-content" id="telefono" value="{telefono}" />
-  </p>
-  <p> 
-    <label>Tipo transporte:</label>
-	<input name="tipo_transporte" type="text" class=" required   ui-widget-content" id="tipo_transporte" value="{tipo_transporte}" />
-  </p>  	
+    <label>Descripcion:</label>
+	<input name="descripcion" type="text" class=" required   ui-widget-content" id="descripcion" value="{descripcion}" />
+  </p>	
 	</fieldset>  
-  <input name="clase" type="hidden" id="clase" value="Transportador">
+  <input name="clase" type="hidden" id="clase" value="Ubicacion">
 
      
-  <input name="metodo" type="hidden" id="metodoReporte" value="updateTransportador">
+  <input name="metodo" type="hidden" id="metodoReporte" value="updateUbicacion">
 
-     <input name="un_formulario_editar_transportador" type="hidden"  id="un_formulario_editar_transportador" value="formularioTransportador">
+     <input name="un_formulario_editar_ubicacion" type="hidden"  id="un_formulario_editar_ubicacion" value="formularioUbicacion">
 
      
 

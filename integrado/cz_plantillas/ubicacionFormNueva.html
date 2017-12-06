@@ -11,18 +11,56 @@
   }
 ?> 
 <script>
-	function EnviarFormulario(){
-		alert("EnviarFormulario");
-	}
 
-	$(function(){
-		$("#buscarClienteretiros").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
-			width: 260,
-			selectFirst: false
-		});
-		$("#buscarClienteretiros").result(function(event, data, formatted){
-			$("#por_cuenta_filtro_retiros").val(data[1]);                         
-		});
+    
+
+
+
+    function EnviarFormulario()
+
+    {
+
+        alert("EnviarFormulario");
+
+        
+
+	
+
+    }
+
+	
+
+    $(function() 
+
+    {
+
+	
+
+         	
+
+        $("#buscarClienteretiros").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
+
+                width: 260,
+
+                selectFirst: false
+
+
+
+        });
+
+
+
+
+
+        $("#buscarClienteretiros").result(function(event, data, formatted) 
+
+     	{
+
+            $("#por_cuenta_filtro_retiros").val(data[1]);                         
+
+          
+
+        });
 
         
 
@@ -41,7 +79,15 @@
 				  buttonImage: 'integrado/imagenes/calendar.png',
 
 				  buttonImageOnly: true
-		});
+
+				 
+
+         });
+
+		  
+
+		
+
 		$("#fecha_finr").datepicker();
 
 		$("#fecha_finr").datepicker('option', 
@@ -57,7 +103,10 @@
 				  buttonImage: 'integrado/imagenes/calendar.png',
 
 				  buttonImageOnly: true
-		});
+
+				 
+
+         });
 
 		
 
@@ -71,42 +120,34 @@
 
     {
 
-	$("#formularioTransportador").validate(
+	$("#formularioUbicacionNueva").validate(
 
         {
-			submitHandler: function(form){
-                //form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text;
-                    var bValid = true;
-                    if (bValid) 
 
-                    {
+            
 
-                        $.ajax(
+            submitHandler: function(form) 
 
-                        {
+            {
+                //form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text;      
 
-                                url:'scripts_index.php',
+                    var bValid = true;                 
 
-                                type: "POST",
-
-                                async:false,
-
-                                data:$('#formularioTransportador').serialize(),
-
-                                success: function (msm)
-
-                                {
+                    if (bValid){ 
+						$.ajax({
+							url:'scripts_index.php',
+							type: "POST",
+							async:false,
+							data:$('#formularioUbicacionNueva').serialize(),
+							success: function (msm) {
 									alert(msm)
-                                    $( "#dialog-form-hacer-levante_transportador" ).dialog( "close" );
-
+                                    $( "#window_filtro_ubicacion" ).dialog( "close" );
                                                                 //$( "#num_levante" ).val( " ");
 
                                    // $('#componente_central').html(msm);
 
                                 }
-
                         });
-
                      }   
 
                
@@ -154,59 +195,52 @@
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
 
      <div align="center"></div>
-
-
-
-
-
-
-
-     
-
 <p class="validateTips" id="msgbox_filtro">Seleccione uno o varios filtros para 
 
   delimitar resultados</p>
-
-
-
-<form class="formularioTransportador" id="formularioTransportador" method="post" action="javascript:EnviarFormulario()" name="formularioTransportador">
+<form class="formularioUbicacionNueva" id="formularioUbicacionNueva" method="post" action="javascript:EnviarFormulario()" name="formularioUbicacionNueva">
 
     <fieldset class="ui-widget ui-widget-content ui-corner-all">
 
 	<legend class="ui-widget ui-widget-header ui-corner-all">
 
-            <div id="nombre_reporte">Formulario de Consulta 
-
-            <input name="filtro_levante" type="hidden" id="filtro_levante" value="1">
+            
+  <div id="nombre_reporte"> Nueva Ubicacion
+<input name="filtro_levante" type="hidden" id="filtro_levante" value="1">
 
             <input name="comodin" type="hidden" id="comodin" value="{comodin}">
 
             </div> 
 
       </legend>
-	  <input name="codigo" type="hidden" id="codigo" value="{codigo}">
-  <p><label>Nombre:</label>
-  <input name="nombre" type="text" class=" required   ui-widget-content" id="nombre" value="{nombre}" />
-  </p>
   <p> 
-    <label>Contacto:</label>
-	<input name="contacto" type="text" class=" required   ui-widget-content" id="contacto" value="{contacto}" />
-  </p>
-  <p> 
-    <label>Telefono:</label>
-	<input name="telefono" type="text" class=" required   ui-widget-content" id="telefono" value="{telefono}" />
-  </p>
-  <p> 
-    <label>Tipo transporte:</label>
-	<input name="tipo_transporte" type="text" class=" required   ui-widget-content" id="tipo_transporte" value="{tipo_transporte}" />
-  </p>  	
+  		<p>
+			<label>Codigo:</label> 
+    		<input name="codigo" type="text" class="ui-widget-content" id="codigo" value="{codigo}" />
+    	</p>
+   		<p>
+			<label>Tipo:</label> 
+    		<input name="tipo" type="text" class="required   ui-widget-content" id="tipo" value="{tipo}" />
+    	</p>
+  			<label>Nombre:</label>		 
+  			<input name="nombre" type="text" class="required   ui-widget-content" id="nombre" value="{nombre}" />
+  		<p>    	
+    	<p>
+			<label>Descripcion: </label>
+			<input name="descripcion" type="text" class="required   ui-widget-content" id="descripcion" value="{descripcion}" />
+		</p>	
+		<p>
+			<label>Sede: </label>
+    		<input name="sede" type="text" class="required   ui-widget-content" id="sede" value="{sede}" />
+		</p>
+ </p> 
+
+	   	
+
 	</fieldset>  
-  <input name="clase" type="hidden" id="clase" value="Transportador">
-
-     
-  <input name="metodo" type="hidden" id="metodoReporte" value="updateTransportador">
-
-     <input name="un_formulario_editar_transportador" type="hidden"  id="un_formulario_editar_transportador" value="formularioTransportador">
+  <input name="clase" type="hidden" id="clase" value="Ubicacion">
+  <input name="metodo" type="hidden" id="metodoReporte" value="addUbicacion">
+  <input name="un_formulario_ubicacion" type="hidden"  id="un_formulario_ubicacion" value="formularioUbicacionNueva">
 
      
 

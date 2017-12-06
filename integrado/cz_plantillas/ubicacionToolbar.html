@@ -65,9 +65,9 @@
 
 
 		
-        $("#window_filtro").dialog("open");
+        $("#window_filtro_ubicacion").dialog("open");
 		//$("#cuerpo_filtro").html("cambio contenido de la ventana");
-		 $("div#cuerpo_filtro").load("./scripts_index.php", {clase:'Subpartida',metodo:'getFormaNueva',mostrar:'1'}, function(datos){
+		 $("div#cuerpo_filtro").load("./scripts_index.php", {clase:'Ubicacion',metodo:'getFormaNueva',mostrar:'1'}, function(datos){
           });
 
     });
@@ -75,8 +75,8 @@
 
 // filtro
     $('.popupsAgregar a').click(function(){
-        $("#window_filtro").dialog("open");
-		$("div#cuerpo_filtro").load("./scripts_index.php", {clase:'Subpartida',metodo:'filtro',mostrar:'1'}, function(datos){
+	        $("#window_filtro_ubicacion").dialog("open");
+			$("div#cuerpo_filtro").load("./scripts_index.php", {clase:'Ubicacion',metodo:'filtro',mostrar:'1'}, function(datos){
           });
 	});
 
