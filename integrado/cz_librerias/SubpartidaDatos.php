@@ -21,7 +21,7 @@ class Subpartida extends MYDB {
 	   		$sql.=" where descripcion like '%$arregloDatos[nombre]%'";		
 	   }
        $this->query($sql);
-       echo $sql;
+       //echo $sql;
 		if ($this->_lastError) 
         {
           	echo "<div class=error align=center> :( Error al listar Subpartidas <br>$sql</div>.";  

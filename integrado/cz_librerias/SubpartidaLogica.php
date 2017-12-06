@@ -51,11 +51,7 @@ require_once("SubpartidaPresentacion.php");
                 
             }
 			function updateSubpartida($arregloDatos){
-              $this->datos->updateSubpartida($arregloDatos); 
-                $arregloDatos[mostrar]          =1;
-                $arregloDatos[plantilla]        ='subpartidaListado.html';
-                $arregloDatos[thisFunction]     ='getListado';
-                $this->pantalla->setFuncion($arregloDatos,&$this->datos);
+              $this->datos->updateSubpartida($arregloDatos);
             }
 			
 		function findSupartida($arregloDatos) {
