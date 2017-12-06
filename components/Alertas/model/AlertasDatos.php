@@ -9,28 +9,28 @@ class AlertasDatos extends BDControlador {
   
   function retornarprocParcial() {
     $db = $_SESSION['conexion'];
-    
+    //antes sumaba con la 9 ahora con la 30
     $sql = "SELECT orden, doc_tte, inventario_entrada, inventario_entrada AS item, arribo, nombre_referencia, cod_referencia, codigo_referencia,
               cant_declaraciones, cantidad, peso, valor, modelo, SUM(peso_nonac) AS peso_nonac, SUM(peso_naci) AS peso_naci, SUM(cantidad_naci) AS cantidad_naci,
               SUM(cantidad_nonac) AS cantidad_nonac, SUM(fob_nonac) AS fob_nonac, SUM(cif) AS cif, cod_maestro, MIN(num_levante) AS num_levante, un_grupo,
               por_cuenta, fecha_operacion, fecha_manifiesto, DATE_ADD(fecha_manifiesto, INTERVAL 1 MONTH) AS fecha_limite, fmm
             FROM (SELECT im.codigo, im.fecha AS fecha_operacion, arribos.fecha_manifiesto,
-                    CASE WHEN im.tipo_movimiento IN (8,9) THEN 1 ELSE 0
+                    CASE WHEN im.tipo_movimiento IN (8,30) THEN 1 ELSE 0
                     END AS movimiento, do_asignados.do_asignado AS orden, do_asignados.doc_tte AS doc_tte, ie.arribo, ref.nombre AS nombre_referencia,
                     ref.ref_prove AS cod_referencia, ref.codigo AS codigo_referencia, ie.cant_declaraciones, ie.cantidad AS cantidad, ie.peso AS peso,
                     ie.valor AS valor, ie.modelo AS modelo, ie.fmm, im.inventario_entrada, im.cod_maestro, im.num_levante, im.tipo_movimiento,
                     id.grupo AS un_grupo, do_asignados.por_cuenta,
-                    CASE WHEN im.tipo_movimiento IN (8,9) THEN peso_nonac  ELSE 0
+                    CASE WHEN im.tipo_movimiento IN (8,30) THEN peso_nonac  ELSE 0
                     END AS peso_nonac,
-                    CASE WHEN im.tipo_movimiento IN (8,9) THEN peso_naci	ELSE 0
+                    CASE WHEN im.tipo_movimiento IN (8,30) THEN peso_naci	ELSE 0
                     END AS peso_naci,
-                    CASE WHEN im.tipo_movimiento IN (8,9) THEN cantidad_naci ELSE 0
+                    CASE WHEN im.tipo_movimiento IN (8,30) THEN cantidad_naci ELSE 0
                     END AS cantidad_naci,
-                    CASE WHEN im.tipo_movimiento IN (8,9) THEN cantidad_nonac ELSE 0
+                    CASE WHEN im.tipo_movimiento IN (8,30) THEN cantidad_nonac ELSE 0
                     END AS cantidad_nonac,
-                    CASE WHEN im.tipo_movimiento IN (8,9) THEN fob_nonac ELSE 0
+                    CASE WHEN im.tipo_movimiento IN (8,30) THEN fob_nonac ELSE 0
                     END AS fob_nonac,
-                    CASE WHEN im.tipo_movimiento IN (8,9) THEN cif ELSE 0
+                    CASE WHEN im.tipo_movimiento IN (8,30) THEN cif ELSE 0
                     END AS cif
                   FROM inventario_movimientos im
                     LEFT JOIN inventario_maestro_movimientos imm ON im.cod_maestro = imm.codigo
@@ -42,9 +42,10 @@ class AlertasDatos extends BDControlador {
                     AND arribos.orden = do_asignados.do_asignado
                     AND clientes.numero_documento = do_asignados.por_cuenta
                     AND ie.referencia = ref.codigo) AS inv
-                  GROUP BY por_cuenta, cod_referencia 
+                  GROUP BY orden,por_cuenta, cod_referencia 
                   HAVING peso_nonac > 0 OR peso_naci > 0";
-                
+				  
+           //echo   $sql;   
     $db->query($sql);
     return $db->getArray();
   }
@@ -76,8 +77,11 @@ class AlertasDatos extends BDControlador {
               WHERE im.tipo_movimiento IN (".$arregloDatos['movimiento'].")
               GROUP BY ie.orden, ie.arribo, ref.codigo) AS nacional
             WHERE nacional.sum_cantidad_nonac > 0 ORDER BY nacional.fecha_limite";
+			
+		
 
     $db->query($query);
+	
     return $db->getArray();
   }
   
