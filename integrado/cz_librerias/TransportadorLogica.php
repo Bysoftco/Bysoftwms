@@ -58,7 +58,7 @@ class TransportadorLogica  {
 
 		while($unaConsulta->fetch()) {
 			$nombre = utf8_encode(trim($unaConsulta->nombre));
-			echo "$nombre|$unaConsulta->transportador|	$nombre\n";
+			echo "$nombre|$unaConsulta->codigo|	$nombre\n";
 		}
 		if($unaConsulta->N == 0) {
 			echo "No hay Resultados|0\n";

@@ -17,8 +17,8 @@ class Subpartida extends MYDB {
        if(!empty($arregloDatos[subpartida])){
 	   		$sql.=" where subpartida like '%$arregloDatos[subpartida]%'";		
 	   }
-	   if(!empty($arregloDatos[nombre]) and empty($arregloDatos[subpartida]) ){
-	   		$sql.=" where descripcion like '%$arregloDatos[nombre]%'";		
+	   if(!empty($arregloDatos[descripcion]) and empty($arregloDatos[subpartida]) ){
+	   		$sql.=" where descripcion like '%$arregloDatos[descripcion]%'";		
 	   }
        $this->query($sql);
        //echo $sql;
