@@ -41,7 +41,9 @@ class AlertasDatos extends BDControlador {
                     AND arribos.arribo = ie.arribo
                     AND arribos.orden = do_asignados.do_asignado
                     AND clientes.numero_documento = do_asignados.por_cuenta
-                    AND ie.referencia = ref.codigo) AS inv
+                    AND ie.referencia = ref.codigo
+					AND ref.tipo NOT IN(60,80)
+					) AS inv
                   GROUP BY orden,por_cuenta, cod_referencia 
                   HAVING  TRUNCATE(peso_nonac,2) > 0 OR TRUNCATE(peso_naci,2) > 0 ";
 				  
