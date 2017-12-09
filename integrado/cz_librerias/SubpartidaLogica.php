@@ -3,10 +3,7 @@ require_once("ReporteExcel.php");
 require_once("SubpartidaDatos.php");
 require_once("SubpartidaPresentacion.php");
 
-
-
-	
-	class SubpartidaLogica  {
+class SubpartidaLogica  {
   		var $datos;
 		var $pantalla;
 		

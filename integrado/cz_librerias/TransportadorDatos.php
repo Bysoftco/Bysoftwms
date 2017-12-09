@@ -14,12 +14,10 @@ class Transportador extends MYDB {
       $sede=$_SESSION['sede'];
       
       $sql="select * from transportador  ";
-       if(!empty($arregloDatos[codigo])){
-	   		$sql.=" where codigo like '%$arregloDatos[codigo]%'";		
-	   }
-	   if(!empty($arregloDatos[nombre]) and empty($arregloDatos[codigo]) ){
+       if(!empty($arregloDatos[nombre])){
 	   		$sql.=" where nombre like '%$arregloDatos[nombre]%'";		
 	   }
+	   
        $this->query($sql);
        //echo $sql;
 		if ($this->_lastError) 
