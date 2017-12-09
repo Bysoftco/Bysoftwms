@@ -16,7 +16,8 @@ class SubpartidaLogica  {
            
             
               function filtro($arregloDatos){
-                $arregloDatos[plantilla]        ='SubpartidaFiltro.html';
+			  	$arregloDatos[mostrar]          =1;
+                $arregloDatos[plantilla]        ='subpartidaFiltro.html';
                 $arregloDatos[thisFunction]     ='filtro';
                 $this->pantalla->setFuncion($arregloDatos,&$this->datos);
             }
