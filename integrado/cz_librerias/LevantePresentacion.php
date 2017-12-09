@@ -582,8 +582,8 @@ class LevantePresentacion {
         break;
     }
 	
-		// Garantiza mostrar valores y etiquetas de Extranjero cuando aplique 23/11/2016
-		if(($this->tot_peso_nonac <> 0 or  $this->tot_cant_nonac <> 0) && $arregloDatos[tipo_retiro_filtro] <> 1) {
+		// Garantiza mostrar valores y etiquetas de Extranjero cuando aplique 23/11/2016, se agrego  or $this->tot_peso_nac <> 0 09122017
+		if(($this->tot_peso_nonac <> 0 or  $this->tot_cant_nonac <> 0 or $this->tot_peso_nac <> 0) && $arregloDatos[tipo_retiro_filtro] <> 1) {
 			
 			$arregloDatos[sn] = " | [EXT] ";
 			$arregloDatos[snt] = " | [EXT] ";
