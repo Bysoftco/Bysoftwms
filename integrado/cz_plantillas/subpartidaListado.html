@@ -2,7 +2,7 @@
 	function abrir (subpartida){
 		
 		 $( "#dialog-form-hacer-levante" ).dialog( "open" );
-		 $("div#ventana_levante").load("./scripts_index.php", {
+		 $("div#ventana_levante_subpartida").load("./scripts_index.php", {
 	    	clase:'Subpartida',metodo:'getUnaSubpartida',subpartida:subpartida },
 			function(data) {
 				

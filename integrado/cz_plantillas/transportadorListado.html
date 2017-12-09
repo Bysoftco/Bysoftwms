@@ -1,7 +1,7 @@
     <script>
 	function abrir (codigo){
 		 $( "#dialog-form-hacer-levante_transportador" ).dialog( "open" );
-		 $("div#ventana_levante").load("./scripts_index.php", {
+		 $("div#ventana_levante_transportador").load("./scripts_index.php", {
 	    	clase:'Transportador',metodo:'getUnTransportador',codigo:codigo },
 			function(data) {
 				
