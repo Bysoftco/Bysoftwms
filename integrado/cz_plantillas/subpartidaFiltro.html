@@ -11,56 +11,21 @@
   }
 ?> 
 <script>
-
-    
-
-
-
-    function EnviarFormulario()
-
-    {
-
-        alert("EnviarFormulario");
-
-        
-
-	
-
-    }
-
-	
-
-    $(function() 
-
-    {
-
-	
-
-         	
-
+ function EnviarFormulario(){
+		alert("EnviarFormulario");
+	}
+$(function(){
         $("#buscarSubpartida").autocomplete("./scripts_index.php?clase=Subpartida&metodo=findSupartida", {
 
                 width: 260,
+			    selectFirst: false
 
-                selectFirst: false
-
-
-
-        });
+});
 
 
-
-
-
-        $("#buscarSubpartida").result(function(event, data, formatted) 
-
-     	{
-
-            $("#por_cuenta_filtro_retiros").val(data[1]);                         
-
-          
-
-        });
+$("#buscarSubpartida").result(function(event, data, formatted){
+		$("#por_cuenta_filtro_retiros").val(data[1]);                         
+});
 
         
 
@@ -120,35 +85,15 @@
 
     {
 
-	$("#formularioSubpartidaFiltro").validate(
-
-        {
-
-            
-
-            submitHandler: function(form) 
-
-            {
+	$("#formularioSubpartidaFiltro").validate({
+			submitHandler: function(form) {
 
                  //alert("test ready");
 
                 //form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text;
-
-             
-
-                    var bValid = true;
-
-                   
-
-                    
-
-                    if (bValid) 
-
-                    {
-
-                        $.ajax(
-
-                        {
+					var bValid = true;
+					if (bValid){
+						$.ajax({
 
                                 url:'scripts_index.php',
 
@@ -158,9 +103,7 @@
 
                                 data:$('#formularioSubpartidaFiltro').serialize(),
 
-                                success: function (msm)
-
-                                {
+                                success: function (msm){
 
                                     $( "#window_filtro_subpartida" ).dialog( "close" );
 
@@ -173,10 +116,7 @@
                         });
 
                      }   
-
-               
-
-            }
+			}
 
 	});	
 
