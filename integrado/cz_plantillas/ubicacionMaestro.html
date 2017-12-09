@@ -448,7 +448,13 @@
 
 
     });
-
+	if ({abre_ventana}) {    // Abre la ventana por defecto
+ 		$("#window_filtro_ubicacion").dialog("open");
+  
+      } else{
+ 
+ 		 $("#window_filtro_ubicacion").dialog("close");
+ 	}
 </script>
 
 

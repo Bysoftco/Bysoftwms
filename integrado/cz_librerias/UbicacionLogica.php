@@ -80,6 +80,11 @@ class UbicacionLogica  {
 			} 
 			function getListado($arregloDatos) {
 				                //$this->titulo(&$arregloDatos);
+				$arregloDatos[mostar] = "0";
+    			$arregloDatos[plantilla] = 'ubicacionToolbar.html';
+    			$arregloDatos[thisFunction] = 'getToolbar';
+    			$arregloDatos[toolbarLevante]= $this->pantalla->setFuncion($arregloDatos, &$this->datos);				
+								
                 $arregloDatos[mostrar]          =1;
                 $arregloDatos[plantilla]        ='ubicacionListado.html';
                 $arregloDatos[thisFunction]     ='getListado';
