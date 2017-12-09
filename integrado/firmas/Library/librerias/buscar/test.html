@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>Autocempletar con prototype.js 1.5.1 </title>
+
+<link rel="stylesheet" href="css/autocomplete.css" type="text/css" media="screen" charset="utf-8" />
+
+<style type="text/css">
+
+	body {
+		font-family: Lucida Grande, Arial, sans-serif;
+		font-size: 10px;
+		text-align: center;
+		margin: 0;
+		padding: 0;
+		position: relative;
+	}
+	
+	#autocom {
+		width: 600px;
+		margin: 10px auto;
+		text-align: left;
+	}
+	
+	#content {
+		font-size: 1.2em;
+		line-height: 1.8em;
+	}
+	#content h1 {	
+		margin-left:85px;	
+	}
+
+	#content h3 {
+		font-size: 1.1em;
+		margin-top: 3em;
+		margin-left:120px;
+
+	}
+</style>
+</head>
+<script type="text/javascript" src="js/prototype.js"></script>
+<script type="text/javascript" src="js/autocomplete.js"></script>
+
+<body>
+
+<div id="autocom">
+<div id="content">
+	<div>
+		<h1>Micodigobeta.com.arabc</h1>
+		<h3>Ejemplo de Autocompletar</h3>
+		<span class="ac_holder" style="margin-left:100px">
+        <input name="text" type="text" id="test_xml" style="width: 200px" onFocus="javascript:
+		var opcion = {script: function (input) { return ('test.php?input='+input); }, callback: function (obj) { $('xml_info').update('Se ha seleccionado: '+obj.id + ' ' + obj.value + ' (' + obj.info + ')'); }
+		};
+			var xml=new AutoComplete('test_xml',opcion);return true;" value="" />
+        </span><span id='xml_info'></span>	
+	</div>
+</div>
+</div>
+ashSHKajhsj haJSHAjhsjA SJHJKAhsjka HJAhsjkaHS HJKAHs  hjhjkaHSJK A shjkaHSK As hajSHJAhs   jaHSJKAhs   jkhaj S  HJHJKHKas
+</body>
+</html>

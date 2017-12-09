@@ -442,6 +442,11 @@ class LevanteLogica {
     $this->controlarTransaccion($arregloDatos);
     $arregloDatos[tipo_movimiento] = 9;
     $this->datos->addItemRetiro($arregloDatos);
+	
+	var_dump($arregloDatos);
+	// se crea registro que da de baja la mercancia 09122017
+	 //$arregloDatos[tipo_movimiento] = 3;
+    //$this->datos->addItemRetiro($arregloDatos);
     
     unset($arregloDatos[orden]);
     $arregloDatos[mostrar] = 1;
