@@ -73,7 +73,7 @@
 
     $(document).ready(function(){
 
-	$("#maestro").validate({
+	$("#formularioUbicacionFiltro").validate({
 			submitHandler: function(form){
 
                  //alert("test ready");
@@ -85,7 +85,7 @@
 						url:'scripts_index.php',
 						type: "POST",
 						async:false,
-						data:$('#maestro').serialize(),
+						data:$('#formularioUbicacionFiltro').serialize(),
 						success: function (msm){
 							$( "#window_filtro_ubicacion" ).dialog( "close" );
 						//$( "#num_levante" ).val( " ");
@@ -136,21 +136,13 @@
 
      <div align="center"></div>
 
-
-
-
-
-
-
-     
-
 <p class="validateTips" id="msgbox_filtro">Seleccione uno o varios filtros para 
 
   delimitar resultados</p>
 
 
 
-<form class="formularioReporte" id="maestro" method="post" action="javascript:EnviarFormulario()" name="maestro">
+<form class="formularioReporte" id="formularioUbicacionFiltro" method="post" action="javascript:EnviarFormulario()" name="formularioUbicacionFiltro">
 
     <fieldset class="ui-widget ui-widget-content ui-corner-all">
 
@@ -175,7 +167,7 @@
 </fieldset>  
   <input name="clase" type="hidden" id="clase" value="Ubicacion">
   <input name="metodo" type="hidden" id="metodoReporte" value="getListado">
-  <input name="un_formulario_ubicacion" type="hidden"  id="un_formulario_ubicacion" value="maestro">
+  <input name="un_formulario_ubicacion" type="hidden"  id="un_formulario_ubicacion" value="formularioUbicacionFiltro">
 
      
 

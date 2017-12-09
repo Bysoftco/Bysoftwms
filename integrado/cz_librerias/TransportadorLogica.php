@@ -80,10 +80,16 @@ class TransportadorLogica  {
 			} 
 			function getListado($arregloDatos) {
 				                //$this->titulo(&$arregloDatos);
+				$arregloDatos[mostar] = "0";
+    			$arregloDatos[plantilla] = 'transportadorToolbar.html';
+    			$arregloDatos[thisFunction] = 'getToolbar';
+    			$arregloDatos[toolbarLevante]= $this->pantalla->setFuncion($arregloDatos, &$this->datos);
+				
                 $arregloDatos[mostrar]          =1;
                 $arregloDatos[plantilla]        ='transportadorListado.html';
                 $arregloDatos[thisFunction]     ='getListado';
                 $this->pantalla->setFuncion($arregloDatos,&$this->datos);
+				
 			 	 //$this->pantalla->maestro($arregloDatos);
 			}
 			function getFormaNueva($arregloDatos){
