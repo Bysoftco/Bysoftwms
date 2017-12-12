@@ -140,11 +140,11 @@
 							async:false,
 							data:$('#formularioTransportadorNuevo').serialize(),
 							success: function (msm) {
-									alert(msm)
+									alert('Se creo correctamente el transportador')
                                     $( "#window_filtro_transportador" ).dialog( "close" );
                                                                 //$( "#num_levante" ).val( " ");
 
-                                   // $('#componente_central').html(msm);
+                                   $('#componente_central').html(msm);
 
                                 }
                         });

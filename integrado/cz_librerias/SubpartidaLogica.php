@@ -101,6 +101,30 @@ class SubpartidaLogica  {
 			
 			function addSubpartida($arregloDatos){
 				$this->datos->addSubpartida($arregloDatos);
+				
+				$arregloDatos[mostar] = "0";
+    			$arregloDatos[plantilla] = 'subPartidaToolbar.html';
+    			$arregloDatos[thisFunction] = 'getToolbar';
+    			$arregloDatos[toolbarLevante]= $this->pantalla->setFuncion($arregloDatos, &$this->datos);
+				
+				$arregloDatos[mostar] = "1";
+				$arregloDatos[plantilla] = 'subpartidaListado.html';
+    			$arregloDatos[thisFunction] = 'getListado';
+    			echo $this->pantalla->setFuncion($arregloDatos,$this->datos);
+			}
+			function deleteSubpartida($arregloDatos){
+				$this->datos->deleteSubpartida($arregloDatos);
+                
+				$arregloDatos[mostar] = "0";
+    			$arregloDatos[plantilla] = 'subPartidaToolbar.html';
+    			$arregloDatos[thisFunction] = 'getToolbar';
+    			$arregloDatos[toolbarLevante]= $this->pantalla->setFuncion($arregloDatos, &$this->datos);
+					
+				$arregloDatos[mostar] = "1";
+				$arregloDatos[plantilla] = 'subpartidaListado.html';
+    			$arregloDatos[thisFunction] = 'getListado';
+    			echo $this->pantalla->setFuncion($arregloDatos,$this->datos);
+				 				
 			}
           
 	}		

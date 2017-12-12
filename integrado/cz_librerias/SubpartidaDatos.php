@@ -95,5 +95,15 @@ class Subpartida extends MYDB {
 		}
 		
 	}
+	function deleteSubpartida($arregloDatos) {
+    	$sql = "DELETE FROM subpartidas WHERE subpartida = '$arregloDatos[subpartida]'";
+
+    	$this->query($sql);
+    	if($this->_lastError) {
+     		 $this->mensaje = "error al borrar subpartida";
+      		$this->estilo = $this->estilo_error;
+      		return TRUE;
+    	}
+  	}
   }
 ?>

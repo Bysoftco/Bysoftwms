@@ -17,7 +17,9 @@ class Transportador extends MYDB {
        if(!empty($arregloDatos[nombre])){
 	   		$sql.=" where nombre like '%$arregloDatos[nombre]%'";		
 	   }
-	   
+	   if(!empty($arregloDatos[codigo]) and empty($arregloDatos[nombre]) ){
+	   		$sql.=" where codigo like '%$arregloDatos[codigo]%'";		
+	   }
        $this->query($sql);
        //echo $sql;
 		if ($this->_lastError) 
@@ -91,5 +93,15 @@ class Transportador extends MYDB {
 		}
 		
 	}
+	function deleteTransportador($arregloDatos) {
+    	$sql = "DELETE FROM transportador WHERE codigo = '$arregloDatos[codigo]'";
+
+    	$this->query($sql);
+    	if($this->_lastError) {
+     		 $this->mensaje = "error al borrar transportador";
+      		$this->estilo = $this->estilo_error;
+      		return TRUE;
+    	}
+  	}
   }
 ?>

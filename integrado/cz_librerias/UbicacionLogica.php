@@ -100,6 +100,30 @@ class UbicacionLogica  {
 			
 			function addUbicacion($arregloDatos){
 				$this->datos->addUbicacion($arregloDatos);
+				
+				$arregloDatos[mostar] = "0";
+    			$arregloDatos[plantilla] = 'ubicacionToolbar.html';
+    			$arregloDatos[thisFunction] = 'getToolbar';
+    			$arregloDatos[toolbarLevante]= $this->pantalla->setFuncion($arregloDatos, &$this->datos);
+				
+				$arregloDatos[mostar] = "1";
+				$arregloDatos[plantilla] = 'ubicacionListado.html';
+    			$arregloDatos[thisFunction] = 'getListado';
+    			echo $this->pantalla->setFuncion($arregloDatos,$this->datos);
+			}
+			function deleteUbicacion($arregloDatos){
+				$this->datos->deleteUbicacion($arregloDatos);
+                
+				$arregloDatos[mostar] = "0";
+    			$arregloDatos[plantilla] = 'ubicacionToolbar.html';
+    			$arregloDatos[thisFunction] = 'getToolbar';
+    			$arregloDatos[toolbarLevante]= $this->pantalla->setFuncion($arregloDatos, &$this->datos);
+					
+				$arregloDatos[mostar] = "1";
+				$arregloDatos[plantilla] = 'ubicacionListado.html';
+    			$arregloDatos[thisFunction] = 'getListado';
+    			echo $this->pantalla->setFuncion($arregloDatos,$this->datos);
+				 				
 			}
           
 	}		

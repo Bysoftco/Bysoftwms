@@ -44,6 +44,15 @@
             }
 	});	
    });
+   function eliminar (codigo){
+   		 $("div#ventana_levante_transportador").load("./scripts_index.php", {
+	    	clase:'Transportador',metodo:'deleteTransportador',codigo:codigo },
+			function(data) {
+				alert('Se elimino el transportador correctamente');
+				$('#componente_central').html(data);
+            });
+			
+	}
 	
     </script>
 
@@ -82,7 +91,7 @@
           <th width="29%" >Contacto</th>
           <th width="36%" >Telefono</th>
 		  <th width="36%" >Tipo transporte</th>
-          <th width="8%" >Acci&oacute;n</th>
+          <th width="8%" colspan='2'>Acci&oacute;n</th>
         </tr>
       </thead>
       <tbody>
@@ -98,6 +107,8 @@
 		<td>{tipo_transporte} </td>
         <td><a href="javascript:abrir(1)" class="signup documento_id" title="Abrir registros {do_asignado}" id="{n}" cursor> 
           </a>&nbsp;<a href="javascript: abrir('{codigo}')">Editar</a></td>
+		<td id="delOption" style="text-align:center;"> <a href="javascript: eliminar('{codigo}')" class="signup documento_id" title="Eliminar transportador {codigo}" id="{codigo}" cursor> 
+          <img src="integrado/imagenes/borrar.gif" border="1" /> </a> </td>  
       </tr>
       <!-- END ROW -->
       <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}">

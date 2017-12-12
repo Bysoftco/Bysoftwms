@@ -45,7 +45,16 @@
             }
 	});	
    });
-	
+   
+   function eliminar (subpartida){
+		 $("div#ventana_levante_subpartida").load("./scripts_index.php", {
+	    	clase:'Subpartida',metodo:'deleteSubpartida',subpartida:subpartida },
+			function(data) {
+				alert('Se elimino la subpartida correctamente');
+				$('#componente_central').html(data);
+            });
+			
+	}
     </script>
 
     <style>
@@ -54,6 +63,7 @@
 	.ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; width:200px;}
 	#formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
     </style>
+	{comodin}
 <div class="div_barra">
 	<div id="titulo_ruta">
 		<table align="right" cellpadding="5" cellspacing="0" border="0">
@@ -82,7 +92,7 @@
           <th width="11%" >Arancel</th>
           <th width="29%" >Descripci&oacute;n</th>
           <th width="36%" >Detalle</th>
-          <th width="8%" >Acci&oacute;n</th>
+          <th width="8%" colspan="2">Acci&oacute;n</th>
         </tr>
       </thead>
       <tbody>
@@ -96,7 +106,11 @@
         <td> {descripcion} </td>
         <td>{detalle} </td>
         <td><a href="javascript:abrir(1)" class="signup documento_id" title="Abrir registros {do_asignado}" id="{n}" cursor> 
-          </a>&nbsp;<a href="javascript: abrir('{subpartida}')">Editar</a></td>
+          </a>&nbsp;<a href="javascript: abrir('{subpartida}')">Editar</a>
+		</td>
+		  <td id="delOption" style="text-align:center;"> <a href="javascript: eliminar('{subpartida}')" class="signup documento_id" title="Eliminar subpartida {subpartida}" id="{subpartida}" cursor> 
+          <img src="integrado/imagenes/borrar.gif" border="1" /> </a> </td>
+      </tr>
       </tr>
       <!-- END ROW -->
       <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}">
