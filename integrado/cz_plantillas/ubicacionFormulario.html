@@ -67,55 +67,28 @@
 
   
 
-    $(document).ready(function()
-
-    {
-
-	$("#formularioUbicacion").validate(
-
-        {
+    $(document).ready(function(){
+		$("#formularioUbicacion").validate({
 			submitHandler: function(form){
                 //form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text;
                     var bValid = true;
-                    if (bValid) 
-
-                    {
-
-                        $.ajax(
-
-                        {
-
-                                url:'scripts_index.php',
-
-                                type: "POST",
-
-                                async:false,
-
-                                data:$('#formularioUbicacion').serialize(),
-
-                                success: function (msm)
-
-                                {
-									alert(msm)
+                    if (bValid){
+						$.ajax({
+							url:'scripts_index.php',
+							type: "POST",
+							async:false,
+							data:$('#formularioUbicacion').serialize(),
+							success: function (msm){
+									alert('Se edito correctamente la ubicacion')
                                     $( "#dialog-form-hacer-levante_ubicacion" ).dialog( "close" );
-
-                                                                //$( "#num_levante" ).val( " ");
-
-                                   // $('#componente_central').html(msm);
-
-                                }
-
-                        });
-
-                     }   
-
-               
-
-            }
-
-	});	
-
-    });
+														//$( "#num_levante" ).val( " ");
+									$('#componente_central').html(msm);
+							}
+						});
+					}   
+			}
+		});	
+	});
 
 </script>
 

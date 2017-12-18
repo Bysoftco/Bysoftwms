@@ -67,55 +67,28 @@
 
   
 
-    $(document).ready(function()
-
-    {
-
-	$("#formularioTransportador").validate(
-
-        {
+    $(document).ready(function(){
+		$("#formularioTransportador").validate({
 			submitHandler: function(form){
                 //form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text;
                     var bValid = true;
-                    if (bValid) 
-
-                    {
-
-                        $.ajax(
-
-                        {
-
-                                url:'scripts_index.php',
-
-                                type: "POST",
-
-                                async:false,
-
-                                data:$('#formularioTransportador').serialize(),
-
-                                success: function (msm)
-
-                                {
-									alert(msm)
+                    if (bValid){
+						$.ajax({
+							url:'scripts_index.php',
+							type: "POST",
+							async:false,
+							data:$('#formularioTransportador').serialize(),
+							success: function (msm){
+									alert('Se edito correctamente al transportador')
                                     $( "#dialog-form-hacer-levante_transportador" ).dialog( "close" );
-
-                                                                //$( "#num_levante" ).val( " ");
-
-                                   // $('#componente_central').html(msm);
-
-                                }
-
-                        });
-
-                     }   
-
-               
-
-            }
-
-	});	
-
-    });
+									//$( "#num_levante" ).val( " ");
+									 $('#componente_central').html(msm);
+							}
+						});
+					}   
+			}
+		});	
+	});
 
 </script>
 
