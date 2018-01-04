@@ -80,6 +80,7 @@ class acondicionaDatos extends BDControlador {
                   AND ref.codigo = $codigo_ref
                   AND clientes.numero_documento = '$docCliente') AS inv
                 GROUP BY codigo_referencia";
+				
 
     $db->query($query);
     return $db->fetch();
@@ -110,7 +111,7 @@ class acondicionaDatos extends BDControlador {
                 AND clientes.numero_documento = '$docCliente'
                 AND im.tipo_movimiento IN (".$arregloDatos['movimiento'].")
               GROUP BY inventario_entrada";
-    
+   
     $db->query($query);
     return $db->getArray();
   }
@@ -138,7 +139,7 @@ class acondicionaDatos extends BDControlador {
                 LEFT JOIN camiones cm ON imm.id_camion = cm.codigo
                 LEFT JOIN ciudades ci ON imm.ciudad = ci.codigo
               WHERE imm.codigo = $idRegistro";
-    
+
     $db->query($query);
     return $db->fetch();
   }
@@ -154,7 +155,7 @@ class acondicionaDatos extends BDControlador {
                 INNER JOIN estados_mcia em ON em.codigo = im.estado_mcia
                 LEFT JOIN posiciones p ON p.codigo = ie.posicion
               WHERE cod_maestro = $idRegistro AND tipo_movimiento = 16";
-
+     
     $db->query($query);
     return $db->getArray();
   }
@@ -268,20 +269,22 @@ class acondicionaDatos extends BDControlador {
     if(!empty($arreglo[doasignadofr])) $arreglo[where] .= " AND da.do_asignado = '$arreglo[doasignadofr]'";
     if(!empty($arreglo[tiporechazofr])) $arreglo[where] .= " AND im.estado_mcia = '$arreglo[tiporechazofr]'";
     
-    $query = "SELECT im.*,im.fecha AS fecha_rechazo,ie.*,ref.nombre AS nombre_referencia,
+    $query = "SELECT min(im.fecha) AS fecha_rechazo,ie.orden,ref.nombre AS nombre_referencia,
                 ref.codigo_ref,p.nombre AS nombre_ubicacion,em.nombre AS tipo_rechazo,
-                imm.doc_tte, cl.numero_documento,cl.razon_social,
+                da.doc_tte, cl.numero_documento,cl.razon_social,
                 SUM(cantidad_naci) AS tc_nal,SUM(peso_naci) tp_nal,SUM(cantidad_nonac) AS tc_ext,
                 SUM(peso_nonac) AS tp_ext
               FROM inventario_movimientos im
                 INNER JOIN inventario_entradas ie ON ie.codigo = im.inventario_entrada
                 INNER JOIN referencias ref ON ref.codigo = ie.referencia
                 INNER JOIN inventario_maestro_movimientos imm ON imm.codigo = im.cod_maestro
-                INNER JOIN do_asignados da ON da.do_asignado = imm.orden
+				
+                INNER JOIN do_asignados da ON da.do_asignado = ie.orden
+				
                 INNER JOIN clientes cl ON cl.numero_documento = da.por_cuenta
                 INNER JOIN estados_mcia em ON em.codigo = im.estado_mcia
                 LEFT JOIN posiciones p ON p.codigo = ie.posicion
-              WHERE tipo_movimiento = 16
+              WHERE tipo_movimiento in (16,17)
                 AND estado_mcia > 1 $arreglo[where]
               GROUP BY $arreglo[GroupBy] ORDER BY im.codigo";    
 

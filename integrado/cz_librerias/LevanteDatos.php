@@ -1136,9 +1136,17 @@ class Levante extends MYDB {
     //Captura automática de fecha y hora 
     $fecha = new DateTime();
     $fecha = $fecha->format('Y-m-d H:i');
+	
+	// el retiro debe tener el mismo agrupamiento
+	$unaConsulta= new Levante();
+	$sql="SELECT MIN(estado_mcia) as estado_mcia FROM inventario_movimientos WHERE inventario_entrada=$arregloDatos[id_item] AND tipo_movimiento=16 AND estado_mcia NOT IN(0,1)  ";
+
+	$unaConsulta->query($sql);
+	$unaConsulta->fetch();
+	$arregloDatos[estado_mcia]=$unaConsulta->estado_mcia;
     $sql = "INSERT INTO inventario_movimientos
               (fecha,inventario_entrada,tipo_movimiento,peso_naci,peso_nonac,cantidad_naci,cantidad_nonac,cif,fob_nonac,cod_maestro,num_levante,estado_mcia)
-            VALUES('$fecha',$arregloDatos[id_item],$arregloDatos[tipo_movimiento],$arregloDatos[peso_naci_para],$arregloDatos[peso_nonaci_para],$arregloDatos[cantidad_naci_para],$arregloDatos[cantidad_nonaci_para],$arregloDatos[cif_ret],$arregloDatos[fob_ret] ,$arregloDatos[id_levante],'$arregloDatos[num_levante]',2)";
+            VALUES('$fecha',$arregloDatos[id_item],$arregloDatos[tipo_movimiento],$arregloDatos[peso_naci_para],$arregloDatos[peso_nonaci_para],$arregloDatos[cantidad_naci_para],$arregloDatos[cantidad_nonaci_para],$arregloDatos[cif_ret],$arregloDatos[fob_ret] ,$arregloDatos[id_levante],'$arregloDatos[num_levante]','$arregloDatos[estado_mcia]')";
 //echo $sql;
     $this->query($sql);
     if($this->_lastError) {
