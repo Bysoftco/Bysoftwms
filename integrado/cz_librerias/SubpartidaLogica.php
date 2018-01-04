@@ -49,6 +49,16 @@ class SubpartidaLogica  {
             }
 			function updateSubpartida($arregloDatos){
               $this->datos->updateSubpartida($arregloDatos);
+			  
+			  	$arregloDatos[mostar] = "0";
+    			$arregloDatos[plantilla] = 'subPartidaToolbar.html';
+    			$arregloDatos[thisFunction] = 'getToolbar';
+    			$arregloDatos[toolbarLevante]= $this->pantalla->setFuncion($arregloDatos, &$this->datos);
+				
+				$arregloDatos[mostar] = "1";
+				$arregloDatos[plantilla] = 'subpartidaListado.html';
+    			$arregloDatos[thisFunction] = 'getListado';
+    			echo $this->pantalla->setFuncion($arregloDatos,$this->datos);
             }
 			
 		function findSupartida($arregloDatos) {

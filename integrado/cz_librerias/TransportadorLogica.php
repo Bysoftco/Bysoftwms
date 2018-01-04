@@ -47,7 +47,16 @@ class TransportadorLogica  {
             }
 			function updateTransportador($arregloDatos){
               $this->datos->updateTransportador($arregloDatos); 
-                
+			  
+			  $arregloDatos[mostar] = "0";
+    		  $arregloDatos[plantilla] = 'transportadorToolbar.html';
+    		  $arregloDatos[thisFunction] = 'getToolbar';
+			  $arregloDatos[toolbarLevante]= $this->pantalla->setFuncion($arregloDatos, &$this->datos);
+			  
+			  $arregloDatos[mostar] = "1";
+			  $arregloDatos[plantilla] = 'transportadorListado.html';
+			  $arregloDatos[thisFunction] = 'getListado';
+			  echo $this->pantalla->setFuncion($arregloDatos,$this->datos);                
             }
 			
 		function findTransportador($arregloDatos) {

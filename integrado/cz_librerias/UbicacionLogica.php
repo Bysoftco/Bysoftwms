@@ -47,7 +47,16 @@ class UbicacionLogica  {
             }
 			function updateUbicacion($arregloDatos){
               $this->datos->updateUbicacion($arregloDatos); 
-                
+              
+			  $arregloDatos[mostar] = "0";
+			  $arregloDatos[plantilla] = 'ubicacionToolbar.html';
+    		  $arregloDatos[thisFunction] = 'getToolbar';
+    		  $arregloDatos[toolbarLevante]= $this->pantalla->setFuncion($arregloDatos, &$this->datos);
+			  
+			  $arregloDatos[mostar] = "1";
+			  $arregloDatos[plantilla] = 'ubicacionListado.html';
+			  $arregloDatos[thisFunction] = 'getListado';
+			  echo $this->pantalla->setFuncion($arregloDatos,$this->datos);  
             }
 			
 		function findUbicacion($arregloDatos) {
