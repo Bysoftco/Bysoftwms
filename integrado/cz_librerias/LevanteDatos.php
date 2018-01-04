@@ -94,6 +94,13 @@ class Levante extends MYDB {
                               AND do_asignados.sede='$sede'
                               AND da.por_cuenta='$arregloDatos[por_cuenta_filtro]')";
 		}
+		//var_dump($arregloDatos);
+		if(($arregloDatos[tipo_retiro]==17) OR $arregloDatos[tipo_retiro_filtro]==17){ // retiro de alistamientos
+			$sql_alistamiento=" AND  im.estado_mcia NOT IN(0,1)";
+			$arregloDatos[having] = " HAVING peso_nonac  <> 0 OR peso_naci <> 0 ";
+			
+			//$arregloDatos[having]="";
+		}
 		// Si las cifras son negativas se convierte el valor en cero porque significa que ya se retiró toda la mercancía
 		$sql = "SELECT orden,
 									 doc_tte,
@@ -157,7 +164,8 @@ class Levante extends MYDB {
 										AND arribos.orden = do_asignados.do_asignado
 										AND clientes.numero_documento = do_asignados.por_cuenta
 										AND ie.referencia = ref.codigo
-										AND ie.cantidad > 0 $arregloDatos[where]) AS inv 
+										AND ie.cantidad > 0 $arregloDatos[where]
+										$sql_alistamiento) AS inv 
 									GROUP BY $arregloDatos[GroupBy] $arregloDatos[having] $arregloDatos[orderBy]";
 		
 		$this->_lastError = NULL;
@@ -768,7 +776,7 @@ class Levante extends MYDB {
   // Lista la mercancía ya retirada
   function getCuerpoRetiro($arregloDatos) {
     if(empty($arregloDatos[este_movimiento])) {
-      $arregloDatos[este_movimiento] = "3,7,8,9,13";
+      $arregloDatos[este_movimiento] = "3,7,8,9,13,17";
     }
     $sql = "SELECT im.codigo AS id_retiro,inventario_entrada AS id_item,
               MAX(tipo_movimiento) AS tipo_movimiento,SUM(peso_naci) AS peso_naci,
@@ -791,7 +799,7 @@ class Levante extends MYDB {
               AND im.tipo_movimiento IN($arregloDatos[este_movimiento])";
     
     $sql .= " GROUP BY ie.orden,ref.codigo"; //inventario_entrada 
-//echo $sql ;
+
     $this->query($sql);
     if($this->_lastError) {
       $this->mensaje = "error al consultar Inventario " . $sql;
@@ -1072,15 +1080,22 @@ class Levante extends MYDB {
         break;
       case 2: // Reexportación
         break;
+	  
     }
-
+	if($arregloDatos[tipo_movimiento]==17){
+		//$arregloDatos[peso_naci_para]=$arregloDatos[peso_naci_para]/1*-1;
+		//$arregloDatos[peso_nonaci_para]=$arregloDatos[peso_nonaci_para]/1*-1;
+		//$arregloDatos[cantidad_naci_para]=$arregloDatos[cantidad_naci_para]/1*-1;
+		//$arregloDatos[cantidad_nonaci_para]=$arregloDatos[cantidad_nonaci_para]/1*-1;
+		//$arregloDatos[fob_ret]=$arregloDatos[fob_ret]/1*-1;
+	}
     //Captura automática de fecha y hora 
     $fecha = new DateTime();
     $fecha = $fecha->format('Y-m-d H:i');
     $sql = "INSERT INTO inventario_movimientos
               (fecha,inventario_entrada,tipo_movimiento,peso_naci,peso_nonac,cantidad_naci,cantidad_nonac,cif,fob_nonac,cod_maestro,num_levante)
             VALUES('$fecha',$arregloDatos[id_item],$arregloDatos[tipo_movimiento],-$arregloDatos[peso_naci_para],-$arregloDatos[peso_nonaci_para],-$arregloDatos[cantidad_naci_para],-$arregloDatos[cantidad_nonaci_para],-$arregloDatos[cif_ret],- $arregloDatos[fob_ret] ,$arregloDatos[id_levante],'$arregloDatos[num_levante]')";
-
+//echo $sql;
     $this->query($sql);
     if($this->_lastError) {
       $arregloDatos[mensaje] = "error al retirar la mercancia "; //$arregloDatos[mensaje] = "error al retirar la mercancia ";//
@@ -1092,6 +1107,51 @@ class Levante extends MYDB {
     $arregloDatos[mensaje] = "se retiro correctamente la mercancia ";
     $arregloDatos[estilo] = $this->estilo_ok;
   }
+
+// Agrega registro de mercancia retirada
+  function addItemRetiroAlistamiento($arregloDatos) {
+    //si no existe un levante se deja como levante el id del movimiento esto permite borrar movimientos con varios registros 
+    if(empty($arregloDatos[num_levante])) {
+      $arregloDatos[num_levante] = $arregloDatos[id_levante];
+    }
+
+    switch($arregloDatos[tipo_retiro_filtro]) {
+      case 1: // Mercancia Nacional
+
+        $arregloDatos[peso_nonaci_para] = 0;
+        $arregloDatos[cantidad_nonaci_para] = 0;
+        $arregloDatos[fob_nonaci_para] = 0;
+        break;
+      case 2: // Reexportación
+        break;
+	  
+    }
+	if($arregloDatos[tipo_movimiento]==17){
+		//$arregloDatos[peso_naci_para]=$arregloDatos[peso_naci_para]/1*-1;
+		//$arregloDatos[peso_nonaci_para]=$arregloDatos[peso_nonaci_para]/1*-1;
+		//$arregloDatos[cantidad_naci_para]=$arregloDatos[cantidad_naci_para]/1*-1;
+		//$arregloDatos[cantidad_nonaci_para]=$arregloDatos[cantidad_nonaci_para]/1*-1;
+		//$arregloDatos[fob_ret]=$arregloDatos[fob_ret]/1*-1;
+	}
+    //Captura automática de fecha y hora 
+    $fecha = new DateTime();
+    $fecha = $fecha->format('Y-m-d H:i');
+    $sql = "INSERT INTO inventario_movimientos
+              (fecha,inventario_entrada,tipo_movimiento,peso_naci,peso_nonac,cantidad_naci,cantidad_nonac,cif,fob_nonac,cod_maestro,num_levante,estado_mcia)
+            VALUES('$fecha',$arregloDatos[id_item],$arregloDatos[tipo_movimiento],$arregloDatos[peso_naci_para],$arregloDatos[peso_nonaci_para],$arregloDatos[cantidad_naci_para],$arregloDatos[cantidad_nonaci_para],$arregloDatos[cif_ret],$arregloDatos[fob_ret] ,$arregloDatos[id_levante],'$arregloDatos[num_levante]',2)";
+//echo $sql;
+    $this->query($sql);
+    if($this->_lastError) {
+      $arregloDatos[mensaje] = "error al retirar la mercancia "; //$arregloDatos[mensaje] = "error al retirar la mercancia ";//
+      $arregloDatos[estilo] = $this->estilo_error;
+      echo "error" . $sql;
+      return TRUE;
+    }
+    $this->updateUltimoDo($arregloDatos);
+    $arregloDatos[mensaje] = "se retiro correctamente la mercancia ";
+    $arregloDatos[estilo] = $this->estilo_ok;
+  }
+
 
   function addItemAdicional(&$arregloDatos) {
     //El valor no tiene sentido restarse  peso_nonac

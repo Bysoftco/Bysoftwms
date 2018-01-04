@@ -134,6 +134,24 @@ class LevanteLogica {
         //Metodos para enviar formulario despues
         $arregloDatos[setMetodo] = "addItemEnsamble";
         break;
+		 case 17: // Retiro de Alistamientos
+		 	//echo "XXXX".$arregloDatos[tipo_movimiento];die();
+		 	$arregloDatos[movimiento] = "16,17"; 
+        	$arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
+        	$arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
+			
+        
+        	$arregloDatos[plantillaCabeza] = "levanteCabezaRetiro.html";
+        	$arregloDatos[metodoCabeza] = "getCabezaLevante";
+        	$arregloDatos[metodoCabezaEnvia] = "updateRetiroCabeza";
+        
+        	$arregloDatos[plantillaCuerpo] = "levanteCuerpoRetiro.html";
+        	$arregloDatos[metodoCuerpo] = "getCuerpoRetiro";
+        	//Metodos para enviar formulario despues
+        	$arregloDatos[setMetodo] = "addItemRetiro";
+        	$arregloDatos[type_nonac] = "hidden"; // No deja selecionar piezas  nacionales
+        	$arregloDatos[v_aux_nonac] = "0";
+		break;
       default: // Cualquier movimiento que no este definido se presenta como retiro
         $arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
@@ -271,6 +289,10 @@ class LevanteLogica {
         break;
       case 8: // procesogetToolbar //Salida para Proceso a Transformar
         $arregloDatos[tipo_movimiento] = 8;
+        $arregloDatos[tipo_retiro_filtro] = 8;// para que muestre extrangero
+        break;
+		case 17: // procesogetToolbar //Salida para Proceso a Transformar
+        $arregloDatos[tipo_movimiento] = 17;
         $arregloDatos[tipo_retiro_filtro] = 8;// para que muestre extrangero
         break;
     }
@@ -453,13 +475,19 @@ class LevanteLogica {
   }
   
   function addItemRetiro($arregloDatos) {
+ 
     // Si es endoso se procede a obtener el do anterior
     if($arregloDatos[tipo_movimiento] == 13) {
       $this->datos->addIDOAnt($arregloDatos);
       $this->datos->updateDoc($arregloDatos);
     }
     $this->controlarTransaccion($arregloDatos);
-    $this->datos->addItemRetiro($arregloDatos);
+	if($arregloDatos[tipo_movimiento]==17){
+		
+    	$this->datos->addItemRetiroAlistamiento($arregloDatos);
+	}else{
+		$this->datos->addItemRetiro($arregloDatos);
+	}
     /*
       Inmediatamente despues de hacer el retiro, se verifica si el registro  queda o no con inventario
       si no queda con inventario se RETIRAN LAS UBICACIONES AUTOMATICAMETE 15052017/
@@ -467,9 +495,13 @@ class LevanteLogica {
     $verificaInventario = new Levante();
 
 	$arregloDatos[having] = " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
-		$arregloDatos[where] .=" AND  ie.orden='$arregloDatos[orden]'"; // filtro por referencia
-		$arregloDatos[GroupBy] = "orden";  // 
-		$arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
+	$arregloDatos[where] .=" AND  ie.orden='$arregloDatos[orden]'"; // filtro por referencia
+	$arregloDatos[GroupBy] = "orden";  // 
+	$arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
+		
+	if($arregloDatos[tipo_movimiento]==17){
+		$arregloDatos[movimiento] = "16,17"; 
+	}
 	
     $verificaInventario->getInvParaProceso($arregloDatos);
     $verificaInventario->fetch();
