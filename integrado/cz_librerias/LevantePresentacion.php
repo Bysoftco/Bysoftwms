@@ -578,6 +578,12 @@ class LevantePresentacion {
         $arregloDatos[fob_nonaci_aux] = $datos->fob_nonaci;
         $arregloDatos[ext] = "/FOB";
         break;
+		case 17: // garantiza valores positivos en rechazados
+			  $arregloDatos[cantidad_naci] = abs($datos->cantidad_naci);
+        	$arregloDatos[peso_naci] = abs($datos->peso_naci);
+        	$arregloDatos[cif] = abs($datos->cif);
+		break;
+		
       default:
         break;
     }
@@ -594,7 +600,7 @@ class LevantePresentacion {
 			$arregloDatos[fob_nonaci_aux] = $datos->fob_nonaci;
 			$arregloDatos[ext] = "/FOB";
 			$arregloDatos[mostrarCaptura]='none';
-			
+			// se garantizan  valores positivos 04/01/2018
 		} else {
 			
 			$arregloDatos[tot_cant_nonac] = "";
@@ -607,6 +613,10 @@ class LevantePresentacion {
 			$arregloDatos[snt] = "";
 			$arregloDatos[mostrarCaptura]='block';
 		}
+		// se garantizan valores positivos
+	
+		
+		
   }
 
   function listaInventario($arregloDatos, $datos, $plantilla) {
