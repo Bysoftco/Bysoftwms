@@ -34,14 +34,17 @@
 <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general_z" class="display">
   <thead>
     <tr> 
-      <th width="15%">Cliente</th>
-      <th width="5%">Orden</th>
-      <th width="8%">Documento TTE</th>
+      <th width="10%">Cliente</th>
+      <th width="10%">Orden</th>
+      <th width="10%">Documento TTE</th>
       <th width="10%">Referencia</th>
-      <th width="14%">Nombre Referencia</th>
-      <th width="13%">Cantidad</th>
-      <th width="18%">Peso</th>
-      <th width="17%">Cif/FOB</th>
+      <th width="20%">Nombre Referencia</th>
+      <th width="5%">Piezas Nal.</th>
+      <th width="5%">Peso Nal.</th>
+      <th width="5%">Piezas Ext.</th>
+      <th width="5%">Peso Ext.</th>
+      <th width="5%">Cif</th>
+      <th width="5%">FOB</th>
     </tr>
   </thead>
   <tbody>
@@ -52,10 +55,12 @@
       <td style="text-align: center;">{doc_tte}</td>
       <td style="text-align: center;">{cod_referencia}</td>
       <td>{nombre_referencia}</td>
-      <td style="text-align: center;">{cant_naci_f} {sn}{cant_nonac_f} {cantidad_nacix} 
-      </td>
-      <td style="text-align: center;">{peso_naci_f} {sn}{peso_nonac_f}</td>
-      <td style="text-align: center;">{cif_f} {sn}{fob_nonac_f}</td>
+      <td style="text-align: center;">{cant_naci_f} </td>
+      <td style="text-align: center;">{peso_naci_f}</td>
+      <td style="text-align: center;">{cant_nonac_f}</td>
+      <td style="text-align: center;">{peso_nonac_f}</td>
+      <td style="text-align: center;">{cif_f}</td>
+      <td style="text-align: center;"> {fob_nonac_f}</td>
     </tr>
     <!-- END ROW  -->
   </tbody>
@@ -65,9 +70,12 @@
       <th></th>
       <th></th>
       <th></th>
-      <th>{tot_cant_nac}{snt}{tot_cant_nonac}</th>
-      <th>{tot_peso_nacf}{snt}{tot_peso_nonacf}</th>
-      <th>{tot_cif}{snt}{total_fob}</th>
+      <th>{tot_cant_nac}</th>
+      <th>{tot_peso_nacf}</th>
+      <th>{tot_cant_nonac}</th>
+      <th>{tot_peso_nonacf}</th>
+      <th>{tot_cif}</th>
+      <th>{total_fob}</th>
     </tr>
   </tfoot>
 </table>
