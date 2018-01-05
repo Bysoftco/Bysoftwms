@@ -76,6 +76,10 @@ class Levante extends MYDB {
       $documentos_varios = preg_replace('/\\s+/', "','", $arregloDatos[un_doc_filtro]);
       $arregloDatos[where] .= " AND do_asignados.doc_tte IN ('$documentos_varios')";
     }
+	if(!empty($arregloDatos[una_orden])) {
+      $ordenes_varios = preg_replace('/\\s+/', "','", $arregloDatos[una_orden]); 
+      $arregloDatos[where] .= " AND arribos.orden  IN ('$ordenes_varios')";
+    }
     if(!empty($arregloDatos[guia_filtro])) {
       $documentos_varios = str_replace( "*" , "','" , $arregloDatos[guia_filtro] ) ;
       $arregloDatos[where] .= " AND do_asignados.doc_tte IN ('$documentos_varios')";
@@ -104,7 +108,7 @@ class Levante extends MYDB {
 		// Si las cifras son negativas se convierte el valor en cero porque significa que ya se retiró toda la mercancía
 		$sql = "SELECT orden,
 									 doc_tte,
-                   doc_tte AS doc_tte_aux,
+                   					 doc_tte AS doc_tte_aux,
 									 inventario_entrada,
 									 inventario_entrada AS item,
 									 arribo, 
@@ -124,7 +128,9 @@ class Levante extends MYDB {
 									 SUM(cif) AS cif,
 									 cod_maestro,
 									 MIN(num_levante) AS num_levante,
-									 un_grupo
+									 un_grupo,
+									 numero_documento,
+									 razon_social
 						FROM (SELECT im.codigo,
 										CASE WHEN im.tipo_movimiento IN($arregloDatos[movimiento]) THEN 1 ELSE 0
 										END AS movimiento,
@@ -155,7 +161,9 @@ class Levante extends MYDB {
 										CASE WHEN im.tipo_movimiento IN($arregloDatos[movimiento]) THEN fob_nonac	ELSE 0
 										END AS fob_nonac,
 										CASE WHEN im.tipo_movimiento IN($arregloDatos[movimiento]) THEN cif	ELSE 0
-										END AS cif
+										END AS cif,
+										numero_documento,
+										razon_social
 									FROM  do_asignados, inventario_entradas ie,arribos,clientes,referencias ref,inventario_movimientos im
 									LEFT JOIN inventario_maestro_movimientos imm ON im.cod_maestro = imm.codigo
 									LEFT JOIN inventario_declaraciones id ON im.num_levante = id.num_levante
@@ -171,6 +179,7 @@ class Levante extends MYDB {
 		$this->_lastError = NULL;
 		$this->query($sql);
 		//echo $sql."<br>";
+		
 		if($this->_lastError) {
 			echo "Error" . $arregloDatos[metodo] . $sql . "<BR>";
 			$this->mensaje = "Error al consultar Inventario1 ";

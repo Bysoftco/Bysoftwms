@@ -1,5 +1,6 @@
 <?php
 require_once("MYDB.php");// Se debe Apuntar a una tabla cualquiera  
+require_once("LevanteDatos.php");// Se debe Apuntar a una tabla cualquiera 
 
 class Reporte extends MYDB {
   function Reporte() {
@@ -151,6 +152,10 @@ class Reporte extends MYDB {
 		}
     $this->fetch();
     return $this->razon_social;
+	}
+	function listarMercanciaRechazada($arregloDatos) {
+		
+		
 	}
 }
 ?>

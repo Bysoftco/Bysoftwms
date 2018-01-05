@@ -10,6 +10,7 @@
 require_once("HTML/Template/IT.php");
 require_once("Funciones.php");
 
+
 class ReportePresentacion {
   var $datos;
   var $plantilla;
@@ -262,5 +263,277 @@ class ReportePresentacion {
     $lista		= armaSelect($lista,'[seleccione]',NULL);
     $plantilla->setVariable("listaTiposRemesa", $lista);
   }
+  function filtroDefectuosas($arregloDatos,$unDatos,$plantilla) {
+   
+  }
+  
+  function maestroDefectuosa($arregloDatos) {
+
+    $this->plantilla->loadTemplateFile(PLANTILLAS . 'reporteMaestroConsulta.html', true, true);
+    //$this->mantenerDatos($arregloDatos, $this->plantilla);
+    //$this->plantilla->setVariable('comodin', '');
+	 if(!empty($arregloDatos[filtro])) {
+      //$arregloDatos[mostrar] = 0;
+      //$arregloDatos[plantilla] = 'reporteListadoDefectuosas.html';
+      //$arregloDatos[thisFunction] = 'listarMercanciaRechazada';
+      //$htmlListado = $this->setFuncion($arregloDatos, $unDatos);
+      //$this->plantilla->setVariable('htmlListado', $htmlListado);
+	  
+	  $this->datos =& new Levante();
+		$arregloDatos[tipo_retiro]=17;
+		$arregloDatos[having] = " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
+		//$arregloDatos[where] .=" AND  ie.orden='$arregloDatos[orden]'"; // filtro por referencia
+		$arregloDatos[GroupBy] = "orden,codigo_referencia";  // 
+		$arregloDatos[movimiento] = "16,17";
+		$this->datos->getInvParaProceso($arregloDatos) ;
+	
+	
+		$unaPlantilla = new HTML_Template_IT();
+    	$unaPlantilla->loadTemplateFile(PLANTILLAS . 'reporteListadoDefectuosas.html',true,true);
+    	$unaPlantilla->setVariable('comodin'	,' ');
+		
+		
+		while($this->datos->fetch()) {
+			$odd = ($arregloDatos[n] % 2) ? 'odd' : '';
+      		$arregloDatos[n] = $arregloDatos[n] + 1;
+			$unaPlantilla->setCurrentBlock('ROW');
+     		
+			$this->setValores($arregloDatos, $this->datos, $unaPlantilla);
+			$this->mantenerDatos($arregloDatos, $unaPlantilla);
+			$this->setDatos($arregloDatos,$this->datos,$unaPlantilla);
+			
+			$unaPlantilla->setVariable('n', $arregloDatos[n]);
+     		$unaPlantilla->setVariable('odd', $odd);
+      		$unaPlantilla->parseCurrentBlock();
+		} 
+	   $unaPlantilla->show();
+	  //$this->datos->listarMercanciaRechazada($arregloDatos);
+	  //echo "XXX".$this->datos->N;
+    } else {
+		  
+      $arregloDatos[thisFunction] = 'filtroDefectuosas';
+      $arregloDatos[plantilla] = 'reporteFiltroDefectuosas.html';
+      $arregloDatos[mostrar] = 0;
+	  
+	  $htmlFiltro = $this->cargaPlantilla($arregloDatos);
+      $this->plantilla->setVariable('filtroEntrada', $htmlFiltro);
+	 } 
+	$this->plantilla->show();
+    // Carga información del Perfil
+  }	
+  	function setValores(&$arregloDatos, &$datos, $plantilla) {  
+    // Si los valores son negativos significa que  ya se retiró la mercancía por lo tanto se forza a cero
+    if($arregloDatos[tipo_ajuste] == 15) {
+      $arregloDatos[tipo_retiro_filtro] = 7;
+    }
+		if($datos->cod_referencia <> 4){ // No se formatean los datos cuando es ajuste pues aplican valores negativos
+      $arregloDatos[cantidad_nonac] = number_format(abs($datos->cantidad_nonac), DECIMALES, ".", ""); // se formatea para evitar error de validacion javascript
+      $arregloDatos[peso_nonac] = number_format(abs($datos->peso_nonac), DECIMALES, ".", "");
+      $arregloDatos[fob_nonac] = number_format(abs($datos->fob_nonac), DECIMALES, ".", "");
+		} else {
+			$arregloDatos[cantidad_nonac] = number_format($datos->cantidad_nonac, DECIMALES, ".", ""); // se formatea para evitar error de validacion javascript
+      $arregloDatos[peso_nonac] = number_format($datos->peso_nonac, DECIMALES, ".", "");
+      $arregloDatos[fob_nonac] = number_format($datos->fob_nonac, DECIMALES, ".", "");
+		}
+    // Variables de pesos cantidad y fob formateadas
+		if($datos->cod_referencia <> 4){
+			$arregloDatos[peso_naci_f] = number_format(abs($datos->peso_naci), DECIMALES, ".", ",");
+			$arregloDatos[peso_nonac_f] = number_format(abs($datos->peso_nonac), DECIMALES, ".", ",");	
+
+			$arregloDatos[cant_naci_f] = number_format(abs($datos->cantidad_naci), DECIMALES, ".", ",");
+			$arregloDatos[cant_nonac_f] = number_format(abs($datos->cantidad_nonac), DECIMALES, ".", ",");
+
+			$arregloDatos[fob_naci_f] = number_format(abs($datos->fob_naci), DECIMALES, ".", ",");
+		} else {
+			$arregloDatos[peso_naci_f] = number_format($datos->peso_naci, DECIMALES, ".", ",");
+			$arregloDatos[peso_nonac_f] = number_format($datos->peso_nonac, DECIMALES, ".", ",");	
+
+			$arregloDatos[cant_naci_f] = number_format($datos->cantidad_naci, DECIMALES, ".", ",");
+			$arregloDatos[cant_nonac_f] = number_format($datos->cantidad_nonac, DECIMALES, ".", ",");
+
+			$arregloDatos[fob_naci_f] = number_format($datos->fob_naci, DECIMALES, ".", ",");
+		}
+		
+		if($datos->cod_referencia <> 4){
+			$this->total_fob = $this->total_fob + $datos->fob_nonac;
+
+			$arregloDatos[total_fob] = number_format(abs($this->total_fob), DECIMALES, ".", ",");
+			$arregloDatos[fob_saldo_f] = number_format(abs($fob), DECIMALES, ".", ",");
+			$arregloDatos[fob_f] = number_format(abs($datos->fob_nonac), DECIMALES, ".", ",");
+			$arregloDatos[cif_f] = number_format(abs($datos->cif), DECIMALES, ".", ",");
+		} else {
+			$this->total_fob = $this->total_fob + $datos->fob_nonac;
+
+			$arregloDatos[total_fob] = number_format($this->total_fob, DECIMALES, ".", ",");
+			$arregloDatos[fob_saldo_f] = number_format($fob, DECIMALES, ".", ",");
+			$arregloDatos[fob_f] = number_format($datos->fob_nonac, DECIMALES, ".", ",");
+			$arregloDatos[cif_f] = number_format($datos->cif, DECIMALES, ".", ",");
+		}
+    //totales pesos formateados
+    if($datos->cod_referencia <> 4) {
+      $this->tot_peso_nac = $this->tot_peso_nac + abs($datos->peso_naci);
+      $arregloDatos[tot_peso_nac] = $this->tot_peso_nac;
+      $arregloDatos[tot_peso_nacf] = number_format($this->tot_peso_nac, DECIMALES, ".", ",");
+
+			$this->tot_peso_nonac = $this->tot_peso_nonac + abs($datos->peso_nonac);
+      $arregloDatos[tot_peso_nonac] = $this->tot_peso_nonac;
+      $arregloDatos[tot_peso_nonacf] = number_format($this->tot_peso_nonac, DECIMALES, ".", ",");
+
+      $this->tot_peso_nac1 = $this->tot_peso_nac1 + abs($datos->peso_naci);
+      $arregloDatos[tot_peso_nac1] = $this->tot_peso_nac1;
+      $arregloDatos[tot_peso_nacf1] = number_format($this->tot_peso_nac1, DECIMALES, ".", ",");
+    } else {
+			$this->tot_peso_nac = $this->tot_peso_nac + $datos->peso_naci;
+      $arregloDatos[tot_peso_nac] = $this->tot_peso_nac;
+      $arregloDatos[tot_peso_nacf] = number_format($this->tot_peso_nac, DECIMALES, ".", ",");
+
+      $this->tot_peso_nonac = $this->tot_peso_nonac + $datos->peso_nonac;
+      $arregloDatos[tot_peso_nonac] = $this->tot_peso_nonac;
+      $arregloDatos[tot_peso_nonacf] = number_format($this->tot_peso_nonac, DECIMALES, ".", ",");
+
+      $this->tot_peso_nac1 = $this->tot_peso_nac1 + $datos->peso_naci;
+      $arregloDatos[tot_peso_nac1] = $this->tot_peso_nac1;
+      $arregloDatos[tot_peso_nacf1] = number_format($this->tot_peso_nac1, DECIMALES, ".", ",");
+		}
+    // Totales Fob formateados
+		if($datos->cod_referencia <> 4) {
+      $this->tot_fob_nac = $this->tot_fob_nac + abs($datos->fob_naci);
+      $arregloDatos[tot_fob_nac] = number_format($this->tot_fob_nac, DECIMALES, ".", ",");
+
+			$this->tot_fob_nonac = $this->tot_fob_nonac + abs($datos->fob_nonac);
+			$arregloDatos[tot_fob_nonac] = number_format($this->tot_fob_nonac, DECIMALES, ".", ",");
+			$arregloDatos[fob_nonac_f] = number_format(abs($datos->fob_nonac), DECIMALES, ".", ",");
+			
+		} else {
+			$this->tot_fob_nac = $this->tot_fob_nac + $datos->fob_naci;
+      $arregloDatos[tot_fob_nac] = number_format($this->tot_fob_nac, DECIMALES, ".", ",");
+
+			$this->tot_fob_nonac = $this->tot_fob_nonac + $datos->fob_nonac;
+			$arregloDatos[tot_fob_nonac] = number_format($this->tot_fob_nonac, DECIMALES, ".", ",");
+			$arregloDatos[fob_nonac_f] = number_format($datos->fob_nonac, DECIMALES, ".", ",");
+		}
+    //Totales cantidades formateados
+		if($datos->cod_referencia <> 4) {
+			$this->tot_cant_nac = $this->tot_cant_nac + abs($datos->cantidad_naci);
+			$arregloDatos[tot_cant_nac] = number_format($this->tot_cant_nac, DECIMALES, ".", ",");
+
+			$this->tot_cant_nac1 = $this->tot_cant_nac1 + abs($datos->cantidad_naci);
+			$arregloDatos[tot_cant_nac1] = number_format($this->tot_cant_nac1, DECIMALES, ".", ",");
+
+			$this->tot_cant_nonac = $this->tot_cant_nonac + abs($datos->cantidad_nonac);
+			$arregloDatos[tot_cant_nonac] = number_format($this->tot_cant_nonac, DECIMALES, ",", ",");
+			$arregloDatos[t_cant_nonac] = $this->tot_cant_nonac;
+		} else {
+			$this->tot_cant_nac = $this->tot_cant_nac + $datos->cantidad_naci;
+			$arregloDatos[tot_cant_nac] = number_format($this->tot_cant_nac, DECIMALES, ".", ",");
+	  
+			$this->tot_cant_nac1 = $this->tot_cant_nac1 + $datos->cantidad_naci;
+			$arregloDatos[tot_cant_nac1] = number_format($this->tot_cant_nac1, DECIMALES, ".", ",");
+		
+			$this->tot_cant_nonac = $this->tot_cant_nonac + $datos->cantidad_nonac;
+			$arregloDatos[tot_cant_nonac] = number_format($this->tot_cant_nonac, DECIMALES, ",", ",");
+			$arregloDatos[t_cant_nonac] = $this->tot_cant_nonac;
+		}
+    // Aqui se formatean las cifras y se muestra valor absoluto para el caso de retiros
+	
+		if($datos->cod_referencia <> 4) {
+			$arregloDatos[peso_f] = number_format(abs($datos->peso_naci), DECIMALES, ".", ",");
+			$arregloDatos[cantidad_f] = number_format(abs($datos->cantidad_naci), DECIMALES, ".", ",");
+		
+			$this->tot_cif = $this->tot_cif + abs($datos->cif);
+			$arregloDatos[tot_cif] = number_format($this->tot_cif, DECIMALES, ".", ",");
+	
+			$this->tot_fob = $this->tot_fob + abs($datos->fob_nonac);
+			$arregloDatos[tot_fob] = number_format($this->tot_fob, DECIMALES, ".", ",");
+							
+		} else {
+			$arregloDatos[peso_f] = number_format($datos->peso_naci, DECIMALES, ".", ",");
+			$arregloDatos[cantidad_f] = number_format($datos->cantidad_naci, DECIMALES, ".", ",");
+			
+			$this->tot_cif = $this->tot_cif + $datos->cif; 
+			$arregloDatos[tot_cif] = number_format($this->tot_cif, DECIMALES, ".", ",");
+	
+			$this->tot_fob = $this->tot_fob + $datos->fob_nonac;
+			$arregloDatos[tot_fob] = number_format($this->tot_fob, DECIMALES, ".", ",");
+				
+		}
+	
+		if(empty($arregloDatos[tipo_retiro_filtro])) {
+      $arregloDatos[tipo_retiro_filtro] = $arregloDatos[tipo_retiro];
+    }
+    if(empty($arregloDatos[tipo_retiro_filtro])) {
+      $arregloDatos[tipo_retiro_filtro] = $arregloDatos[tipo_movimiento];
+    }
+
+    switch($arregloDatos[tipo_retiro_filtro]) {
+      case 1:
+      case 0:
+        $arregloDatos[fob_saldo] = "0";
+        $arregloDatos[peso_nonac_f] = "";
+        $arregloDatos[cant_nonac_f] = "";
+        $arregloDatos[fob_nonac_f] = "";
+        $arregloDatos[tot_peso_nonac] = "";
+        $arregloDatos[tot_cant_nonac] = "";
+        $arregloDatos[tot_fob_nonac] = "";
+        $arregloDatos[fob_saldo_f] = "";
+        $arregloDatos[total_fob] = "";
+        $arregloDatos[fob_f] = "";
+        $arregloDatos[ext] = "";
+        break;
+      case 2: // reexportacion
+      case 3: // RETIRO
+      case 11: // reexportacion
+      case 8: // producto para Proceso
+      case 9: // producto para Ensamble  
+      case 7: // producto para Ensamble 
+      case 13:
+        $arregloDatos[sn] = " | [EXT] ";
+        $arregloDatos[snt] = " | [EXT] ";
+        $arregloDatos[sn_aux] = " | [EXT] ";
+        $arregloDatos[type_nonac] = "text";
+        $arregloDatos[cantidad_nonaci_aux] = $datos->cantidad_nonaci;
+        $arregloDatos[peso_nonaci_aux] = $datos->peso_nonaci;
+        $arregloDatos[fob_nonaci_aux] = $datos->fob_nonaci;
+        $arregloDatos[ext] = "/FOB";
+        break;
+		case 17: // garantiza valores positivos en rechazados
+			  $arregloDatos[cantidad_naci] = abs($datos->cantidad_naci);
+        	$arregloDatos[peso_naci] = abs($datos->peso_naci);
+        	$arregloDatos[cif] = abs($datos->cif);
+		break;
+		
+      default:
+        break;
+    }
+	
+		// Garantiza mostrar valores y etiquetas de Extranjero cuando aplique 23/11/2016, se agrego  or $this->tot_peso_nac <> 0 09122017
+		if(($this->tot_peso_nonac <> 0 or  $this->tot_cant_nonac <> 0 or $this->tot_peso_nac <> 0) && $arregloDatos[tipo_retiro_filtro] <> 1) {
+			
+			$arregloDatos[sn] = " | [EXT] ";
+			$arregloDatos[snt] = " | [EXT] ";
+			$arregloDatos[sn_aux] = " | [EXT] ";
+			$arregloDatos[type_nonac] = "text";
+			$arregloDatos[cantidad_nonaci_aux] = $datos->cantidad_nonaci;
+			$arregloDatos[peso_nonaci_aux] = $datos->peso_nonaci;
+			$arregloDatos[fob_nonaci_aux] = $datos->fob_nonaci;
+			$arregloDatos[ext] = "/FOB";
+			$arregloDatos[mostrarCaptura]='none';
+			// se garantizan  valores positivos 04/01/2018
+		} else {
+			
+			$arregloDatos[tot_cant_nonac] = "";
+
+			$arregloDatos[tot_peso_nonac] = "";
+			$arregloDatos[total_fob] = "";
+			$arregloDatos[tot_cant_nonacf] = "";
+			$arregloDatos[tot_peso_nonacf] = "";
+			$arregloDatos[tot_fob] = "";
+			$arregloDatos[sn] = "";
+			$arregloDatos[snt] = "";
+			$arregloDatos[mostrarCaptura]='block';
+		}
+		// se garantizan valores positivos
+		}
+  	
 } 
 ?>

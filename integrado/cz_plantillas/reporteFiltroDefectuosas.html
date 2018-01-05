@@ -1,0 +1,99 @@
+<script>
+  function EnviarformularioFactura() { }
+  $(document).ready(function() {
+    $("#formularioFactura{accion}").validate({
+      submitHandler: function(form) {
+        $.ajax({
+          url: 'scripts_index.php',
+          type: "POST",
+          async: false,
+          data: $('#formularioFactura{accion}').serialize(),
+          success: function(msm) {
+            $( "#ventana_factura{accion}" ).dialog( "close" );
+            $('#componente_central').html("");
+            $('#componente_central').html(msm);
+          }
+        }); 
+      }
+    });	
+  });    
+
+  $(function() {
+    $( "#btnConsulta" ).button();
+    $("#fecha_inicio_factura{accion}").datepicker();
+    $("#fecha_inicio_factura{accion}").datepicker('option', {
+      dateFormat: 'yy/mm/dd',
+      changeYear: true,
+      changeMonth: true,
+      showOn: 'both',
+      buttonImage: 'integrado/imagenes/calendar.png',
+      buttonImageOnly: true
+    });
+
+    $('#fecha_inicio_factura{accion}').val('{fecha_inicio_factura}');
+    $("#fecha_fin_factura{accion}").datepicker();
+    $("#fecha_fin_factura{accion}").datepicker('option', {
+      dateFormat: 'yy/mm/dd',
+      changeYear: true,
+      changeMonth: true,
+      showOn: 'both',
+      buttonImage: 'integrado/imagenes/calendar.png',
+      buttonImageOnly: true
+    });
+  });
+
+  $(function() {
+    $("#buscarClienteReporte{accion}").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
+      width: 260,
+      selectFirst: false
+    });
+
+    $("#buscarClienteReporte{accion}").result(function(event, data, formatted) {
+      if(data) $("#por_cuenta_filro{accion}").val(data[1]);
+    });
+  });
+</script>
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+<style type="text/css">
+  label { width: 140px; margin-left: 10px;} /*ancho de las etiquetas de los campos*/
+  .ui-datepicker-trigger { position:relative; top: 5px; right: 1px; height:22px; } /* Configuración tamaño imagen del DatePicker */
+</style>
+<div class="demo">
+  <div id="dialog-form" title="Asignaci&oacute;n de DOs">
+    <p class="validateTips">Seleccione uno o varios filtros para delimitar resultados.</p>
+    <form class="formularioFactura{accion}" id="formularioFactura{accion}" method="post" action="javascript:EnviarformularioFactura()" name="formularioFactura{accion}">
+      <fieldset class="ui-widget ui-widget-content ui-corner-all">
+        <legend class="ui-widget ui-widget-header ui-corner-all">
+          
+      <div id="nombre_reporte">Filtros de Consulta D</div>
+        </legend>
+        <input name="filtro" type="hidden" id="filtro" value="1" />
+        <p>
+          <label>Por Cuenta de:</label>
+          <input type="text" id="buscarClienteReporte{accion}" size="30" value="{cliente}" {soloLectura} />
+        </p>
+        <p>
+          <label>Nit: </label>
+          <input name="por_cuenta_filtro" type="text" class="ui-widget-content" id="por_cuenta_filro{accion}" value="{usuario}" {soloLectura} />
+        </p> 
+        
+        <p style="display:{mostrarFiltro};">
+          
+        <label for="ap">Documento:</label>
+          
+        <input name="un_doc_filtro" type="text" class="ui-widget-content"  id="doc_filtro_aux" />
+        </p>
+       
+        <p style="display:{mostrarFiltro};">
+          <label for="ap">Orden:</label>
+          
+        <input name="una_orden" type="text" class="ui-widget-content"  id="una_orden" />
+        </p>
+      </fieldset>
+      <input type="hidden" name="aux" id="aux2" value="{restrinje}" />
+      <input type="hidden" name="clase" id="clase" value="Reporte" />
+      <input type="hidden" name="accion" id="accion" value="{accion}" />   
+      <input type="hidden" name="metodo" id="metodoConsulta" value="maestroDefectuosa" />
+    </form>
+  </div>
+</div>

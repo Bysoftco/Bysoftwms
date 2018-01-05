@@ -22,6 +22,12 @@ require_once("ReportePresentacion.php");
                 $arregloDatos[thisFunction]     ='filtronPrincipal';
                 $this->pantalla->setFuncion($arregloDatos,&$this->datos);
             }
+			
+		function maestroDefectuosa($arregloDatos) {
+    		//$arregloDatos['titulo'] = $this->titulo($arregloDatos);
+    		$arregloDatos['metodoAux'] = 'maestroConsulta';
+    		$this->pantalla->maestroDefectuosa($arregloDatos);
+  		}
             
               function filtro($arregloDatos){
                 $arregloDatos[mostrar]          =1;
@@ -94,6 +100,8 @@ require_once("ReportePresentacion.php");
                 $this->pantalla->setFuncion($arregloDatos,&$this->datos);
   
             }
+			
+		
 	}		
   	
 ?>
