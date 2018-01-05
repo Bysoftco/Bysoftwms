@@ -1,108 +1,112 @@
-<script>
-  /*Marcacion VERSION 17032017*/
-  $(function() {
-    $("a.id_mercancia").click(function() { //check for the first selection
-      var $column = $(this).attr('id'); // assign the ID of the column
-
-      with (document.listadoMercancia) {
-        $("#tipo_movimiento_send").val(parseInt($("#tipo_movimiento_consulta"+$column).val()));
-        $("#do_asignado_consulta").val(parseInt($("#do_asignado_listado"+$column).val()));
-        $("#tipo_retiro_send").val(parseInt($("#tipo_retiro"+$column).val()));
-        
-        var url;
-        url = 'scripts_index.php';
-
-		switch(parseInt($("#tipo_movimiento_send").val())) {
-          case 5:
-          case 4: //Reempaque
-            $("#clase").val("Reempaque");
-            $("#metodo").val("verReempaque");
-            break;
-          case 10: //Kits
-            var registro = $("#cod_mov"+$column).val();
-            url = 'index_blank.php?component=Kits&method=mostrarKitsAlistados&id_registro='+registro;
-            break;
-          case 15: //Alistamiento
-            var registro = $("#cod_mov"+$column).val();
-            url = 'index_blank.php?component=Alistamientos&method=mostrarAlistamiento&id_registro='+registro;
-            break;
-			case 16: //Acondicionar
-            var registro = $("#cod_mov"+$column).val();
-            url = 'index_blank.php?component=acondicionamientos&method=mostrarAcondicionamiento&id_registro='+registro;
-            break;
-          default: //Cualquier otro movimiento que no esté definido
-            $("#clase").val("Levante");
-            $("#metodo").val("verRetiro");
-        }
-      }
-      $("#id_levante_consulta").val($("#cod_mov"+$column).val()); //Se cambia método para ver los retiros
-      $("#doc").val($("#num_documento_aux"+$column).val())
-      $("#por_cuenta").val($("#por_cuenta_aux"+$column).val())
-      $("#cliente").val($("#nombre_cliente_ax"+$column).val())
-      $("#tipo_retiro_label").val($("#nombre_movimiento_aux"+$column).val())
-
-      $.ajax({
-        url: url,
-        type: "POST",
-        async: false,
-        data: $("#listadoMercancia").serialize(),
-        success: function(msm) {
-          $('#componente_central').html(msm);
-        }
-      });
-    });
-    
-    $(":submit").button();
-  });
-</script>
-<style>
-  .ui-button { margin-left: -1px; }
-  .ui-button-icon-only .ui-button-text { padding: 0.35em; } 
-  .ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; width:200px;}
-  #formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
-  tbody tr.odd th,tbody tr.odd td {border-color:#EBE5D9;background:#F7F4EE;}
-  tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
-</style>
-<div id="users-contain" class="ui-widget">
-  <form id="listadoMercancia" name="listadoMercancia">
-    <fieldset class="ui-widget ui-widget-content ui-corner-all">
-      
-    <legend class="ui-widget ui-widget-header ui-corner-all"> Listado Mercancia 
-    Defectuosa </legend>
-      <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
-      
-    <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
-      <thead>
-        <tr class="ui-widget-header "> 
-          <th>#</th>
-          <th>Id</th>
-          <th>Cliente</th>
-          <th>Orden</th>
-          <th>DocTTE</th>
-          <th>Ref</th>
-          <th>Mercanc&iacute;a </th>
-          <th>Cantidad</th>
-          <th>Peso</th>
-          <th>Cif/FOB</th>
-        </tr>
-      </thead>
-      <tbody>
-      {comodin} 
-      <!-- BEGIN ROW -->
-      <tr class="{odd}"> 
-        <td width="1%" >{n}</td>
-        <td>{numero_documento}</td>
-        <td>{razon_social}</td>
-        <td> {orden}</td>
-        <td title="{descripcion}">{doc_tte} </td>
-        <td> {cod_referencia}</td>
-        <td>{nombre_referencia}</td>
-        <td>{cant_naci_f} {sn}{cant_nonac_f} {cantidad_nacix} </td>
-        <td>{peso_naci_f} {sn}{peso_nonac_f} </td>
-        <td>{cif_f} {sn}{fob_nonac_f}</td>
+{COMODIN}
+<div class="div_barra">
+  <div id="titulo_ruta">
+    <table align="right" cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <td style="padding-top: 8px;">
+          LISTADO MERCANC&Iacute;AS RECHAZADAS
+        </td>
       </tr>
-      <!-- END ROW -->
     </table>
-      </fieldset>
-  </form>
+  </div>
+  <div id="contenedor_opciones" align="left">
+    <table border="0">
+      <tr>
+				<td align="center">
+					<div class="borde_circular">
+						<a href="javascript: Excel()">
+							<img src="img/acciones/repoexcel.gif" title="Exportar a Excel" width="25" height="25" border="0" />
+						</a>
+					</div>
+				</td>
+        <td align="center">
+          <div class="borde_circular">
+            <a href="" target="_blank" class="tblank">
+              <img src="img/acciones/printer.gif" title="Imprimir" width="25" height="25" border="0" />
+            </a>
+          </div> 
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>
+<div style="padding-top: 45px;"></div>
+<table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general_z" class="display">
+  <thead>
+    <tr> 
+      <th width="15%">Cliente</th>
+      <th width="5%">Orden</th>
+      <th width="8%">Documento TTE</th>
+      <th width="10%">Referencia</th>
+      <th width="14%">Nombre Referencia</th>
+      <th width="13%">Cantidad</th>
+      <th width="18%">Peso</th>
+      <th width="17%">Cif/FOB</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- BEGIN ROW  -->
+    <tr> 
+      <td>[{numero_documento}] {razon_social}</td>
+      <td style="text-align: center;">{orden}</td>
+      <td style="text-align: center;">{doc_tte}</td>
+      <td style="text-align: center;">{cod_referencia}</td>
+      <td>{nombre_referencia}</td>
+      <td style="text-align: center;">{cant_naci_f} {sn}{cant_nonac_f} {cantidad_nacix} 
+      </td>
+      <td style="text-align: center;">{peso_naci_f} {sn}{peso_nonac_f}</td>
+      <td style="text-align: center;">{cif_f} {sn}{fob_nonac_f}</td>
+    </tr>
+    <!-- END ROW  -->
+  </tbody>
+  <tfoot>
+    <tr> 
+      <th colspan="2">Totales</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>{tot_cant_nac}{snt}{tot_cant_nonac}</th>
+      <th>{tot_peso_nacf}{snt}{tot_peso_nonacf}</th>
+      <th>{tot_cif}{snt}{total_fob}</th>
+    </tr>
+  </tfoot>
+</table>
+<form name="frmExcel" action="index_blank.php" >
+  <input type="hidden" name="buscarClientefr" id="buscarClientefr" value="{buscarClientefr}" />
+  <input type="hidden" name="nitfr" id="nitfr" value="{nitfr}" />
+  <input type="hidden" name="fechadesdefr" id="fechadesdefr" value="{fechadesdefr}" />
+  <input type="hidden" name="fechahastafr" id="fechahastafr" value="{fechahastafr}" />
+  <input type="hidden" name="doasignadofr" id="doasignadofr" value="{doasignadofr}" />
+  <input type="hidden" name="tiporechazofr" id="tiporechazofr" value="{tiporechazofr}" />
+  <input type="hidden" name="component" id="component" value="acondicionamientos" />
+  <input type="hidden" name="method" id="method" value="exportarExcel" />
+</form>
+<script>
+  Nifty("div.borde_circular","transparent");
+  Nifty("div.div_barra","top transparent");
+
+  $(document).ready(function() {
+    $('#tabla_general_z').dataTable({
+      "aaSorting": [],
+      "oLanguage": {
+        "sLengthMenu": "Mostrar _MENU_ registros por p&aacute;gina",
+        "sZeroRecords": "No hay registros para mostrar",
+        "sInfo": "Mostrando _START_ a _END_ registros de _TOTAL_",
+        "sInfoEmpty": "Mostrando 0 a 0 registros de 0",
+        "sInfoFiltered": "",
+        "sSearch": "Buscar:"
+      }
+    });
+  });	
+
+  $('a[class="tblank"]').click(function() {
+    window.open("index_blank.php?component=acondicionamientos&method=imprimeListadoRechazadas&buscarClientefr="+$("#buscarClientefr").val()+
+      "&nitfr="+$("#nitfr").val()+"&fechadesdefr="+$("#fechadesdefr").val()+"&fechahastafr="+$("#fechahastafr").val()+"&doasignadofr="+$("#doasignadofr").val()+
+      "&tiporechazofr="+$("#tiporechazofr").val());
+    return false;
+  });
+  
+  function Excel() {
+    document.frmExcel.submit();
+  }
+</script>
