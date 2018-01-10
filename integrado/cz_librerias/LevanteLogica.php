@@ -979,5 +979,13 @@ class LevanteLogica {
 	function traeCiudades($arregloDatos) {
 		$this->datos->traeCiudades($arregloDatos);
 	}
+	
+	function imprimeRechazados($arregloDatos) {
+    
+ 	$arregloDatos[plantilla] = 'levanteCuerpo.html';
+    $arregloDatos[thisFunction] = 'getCuerpoLevante';
+    $this->pantalla->setFuncion($arregloDatos,$this->datos);
+  }
+	
 }
 ?>

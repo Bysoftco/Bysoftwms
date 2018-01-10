@@ -80,12 +80,12 @@
   </tfoot>
 </table>
 <form name="frmExcel" action="index_blank.php" >
-  <input type="hidden" name="buscarClientefr" id="buscarClientefr" value="{buscarClientefr}" />
+  <input type="hidden" name="cliente" id="cliente" value="{por_cuenta_filtro}" />
   <input type="hidden" name="nitfr" id="nitfr" value="{nitfr}" />
   <input type="hidden" name="fechadesdefr" id="fechadesdefr" value="{fechadesdefr}" />
   <input type="hidden" name="fechahastafr" id="fechahastafr" value="{fechahastafr}" />
-  <input type="hidden" name="doasignadofr" id="doasignadofr" value="{doasignadofr}" />
-  <input type="hidden" name="tiporechazofr" id="tiporechazofr" value="{tiporechazofr}" />
+  <input type="hidden" name="una_orden" id="una_orden" value="{una_orden}" />
+  <input type="hidden" name="un_doc_filtro" id="un_doc_filtro" value="{un_doc_filtro}" />
   <input type="hidden" name="component" id="component" value="acondicionamientos" />
   <input type="hidden" name="method" id="method" value="exportarExcel" />
 </form>
@@ -108,9 +108,9 @@
   });	
 
   $('a[class="tblank"]').click(function() {
-    window.open("index_blank.php?component=acondicionamientos&method=imprimeListadoRechazadas&buscarClientefr="+$("#buscarClientefr").val()+
-      "&nitfr="+$("#nitfr").val()+"&fechadesdefr="+$("#fechadesdefr").val()+"&fechahastafr="+$("#fechahastafr").val()+"&doasignadofr="+$("#doasignadofr").val()+
-      "&tiporechazofr="+$("#tiporechazofr").val());
+    window.open("./scripts_index.php?clase=Reporte&metodo=listadoRechazadas&cliente="+$("#cliente").val()+
+      "&nitfr="+$("#nitfr").val()+"&fechadesdefr="+$("#fechadesdefr").val()+"&fechahastafr="+$("#fechahastafr").val()+"&una_orden="+$("#una_orden").val()+
+      "&un_doc_filtro="+$("#un_doc_filtro").val());
     return false;
   });
   

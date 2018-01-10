@@ -3,9 +3,7 @@
   <div id="titulo_ruta">
     <table align="right" cellpadding="0" cellspacing="0" border="0">
       <tr>
-        <td style="padding-top: 8px;">
-          LISTADO MERCANC&Iacute;AS RECHAZADAS
-        </td>
+        <td style="padding-top: 8px;"> LISTADO MERCANC&Iacute;AS RECHAZADASX </td>
       </tr>
     </table>
   </div>
@@ -108,7 +106,8 @@
   });	
 
   $('a[class="tblank"]').click(function() {
-    window.open("index_blank.php?component=acondicionamientos&method=imprimeListadoRechazadas&buscarClientefr="+$("#buscarClientefr").val()+
+  alert("test")
+    window.open("./scripts_index.php?clase:Reporte&metodo=listadoRechazadas&buscarClientefr="+$("#buscarClientefr").val()+
       "&nitfr="+$("#nitfr").val()+"&fechadesdefr="+$("#fechadesdefr").val()+"&fechahastafr="+$("#fechahastafr").val()+"&doasignadofr="+$("#doasignadofr").val()+
       "&tiporechazofr="+$("#tiporechazofr").val());
     return false;

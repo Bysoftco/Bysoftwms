@@ -101,6 +101,11 @@ require_once("ReportePresentacion.php");
   
             }
 			
+			function listadoRechazadas($arregloDatos) {
+  			
+    			$this->pantalla->listadoRechazadas($arregloDatos);
+  			}
+			
 		
 	}		
   	

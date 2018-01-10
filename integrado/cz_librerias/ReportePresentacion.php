@@ -534,6 +534,40 @@ class ReportePresentacion {
 		}
 		// se garantizan valores positivos
 		}
+		
+		function listadoRechazadas($arregloDatos) 
+		{
+			
+			//$this->plantilla->loadTemplateFile(PLANTILLAS . 'reporteListadoRechazadas.html', true, false);
+   			$this->datos =& new Levante();
+			$arregloDatos[tipo_retiro]=17;
+			$arregloDatos[having] = " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
+			$arregloDatos[GroupBy] = "orden,codigo_referencia";  // 
+			$arregloDatos[movimiento] = "16,17";
+			$this->datos->getInvParaProceso($arregloDatos) ;
+	
+			$unaPlantilla = new HTML_Template_IT();
+    		$unaPlantilla->loadTemplateFile(PLANTILLAS . 'reporteListadoRechazadas.html',true,true);
+    		$unaPlantilla->setVariable('comodin'	,' ');
+		
+			while($this->datos->fetch()) {
+				$odd = ($arregloDatos[n] % 2) ? 'odd' : '';
+      			$arregloDatos[n] = $arregloDatos[n] + 1;
+				$unaPlantilla->setCurrentBlock('ROW');
+     		
+				$this->setValores($arregloDatos, $this->datos, $unaPlantilla);
+				$this->mantenerDatos($arregloDatos, $unaPlantilla);
+				$this->setDatos($arregloDatos,$this->datos,$unaPlantilla);
+			
+				$unaPlantilla->setVariable('n', $arregloDatos[n]);
+     			$unaPlantilla->setVariable('odd', $odd);
+      			$unaPlantilla->parseCurrentBlock();
+			} 
+	   	
+		$unaPlantilla->show();
+	 
+  	}	
+
   	
 } 
 ?>
