@@ -25,6 +25,7 @@
         switch(parseInt($('#tipo_movimiento').val())) {
           case 13: // Endoso
           case 3: // Retiro
+		  case 17: // Retiro
           case 7:
             getmetodo = 'getCuerpoRetiro';    // Método que trae el formulario que abre
             break;
@@ -98,7 +99,7 @@
   <form id="forMercancia" name="forMercancia">   
     <fieldset class="ui-widget ui-widget-content ui-corner-all">
       <legend class="ui-widget ui-widget-header ui-corner-all"> Datos de la Mercanc&iacute;a</legend>
-      <input type="hidden" name="aplica_matriz" id="aplica_matriz" />
+    <input type="hidden" name="aplica_matriz" id="aplica_matriz" />
       <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
       
     <table width="100%" class="ui-widget ui-widget-content" id="users"
