@@ -822,7 +822,7 @@ class Levante extends MYDB {
   }
 
   function findBodega($arregloDatos) {
-    $sql = "SELECT codigo,nombre FROM bodegas WHERE nombre LIKE '%$arregloDatos[q]%'";
+    $sql = "SELECT codigo,nombre FROM posiciones WHERE nombre LIKE '%$arregloDatos[q]%'";
 
     $this->query($sql);
     if($this->_lastError) {
@@ -895,7 +895,7 @@ class Levante extends MYDB {
               LEFT JOIN ubicaciones ON imm.posicion = ubicaciones.codigo
               LEFT JOIN posiciones ON imm.posicion = posiciones.codigo
               LEFT JOIN ciudades ON imm.ciudad = ciudades.codigo
-              LEFT JOIN bodegas ON imm.bodega = bodegas.codigo
+              LEFT JOIN posiciones as bodegas ON imm.bodega = bodegas.codigo
               LEFT JOIN clientes AS destinatarios ON imm.destinatario = destinatarios.numero_documento
             WHERE imm.codigo = $arregloDatos[id_levante]";
 //echo $sql;
