@@ -551,6 +551,7 @@ class LevanteLogica {
       $this->datos->addItemRetiro($arregloDatos); //linea para probar
     }
     unset($arregloDatos[orden]);
+	unset($arregloDatos[where]);
     $arregloDatos[mostrar] = 1;
     $arregloDatos[id_item] = NULL;
     $arregloDatos[plantilla] = 'levanteListadoMercanciaRetiro.html';

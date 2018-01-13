@@ -178,7 +178,7 @@ class Levante extends MYDB {
 		
 		$this->_lastError = NULL;
 		$this->query($sql);
-		//echo $sql."<br>";
+		
 		
 		if($this->_lastError) {
 			echo "Error" . $arregloDatos[metodo] . $sql . "<BR>";
