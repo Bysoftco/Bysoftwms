@@ -30,6 +30,9 @@ class reporteExcel {
     $i = $n = 1; $tpiezas_nal = $tpeso_nal = $tpiezas_ext = $tpeso_ext = 0;
     foreach($arreglo['datos'] as $value) {
       $i++;
+	  
+	  
+	  	//var_dump($arreglo['datos']);die();
       // Mostramos información de registro en cada fila
       $this->objPHPExcel->setActiveSheetIndex(0)
                   ->setCellValue('A'.$i, $n)
