@@ -6,6 +6,12 @@
  */
 
 require_once(CLASSES_PATH.'BDControlador.php');
+//echo "xxx".LIB_PATH;
+//require_once('integrado/cz_configuracion/Constantes.php');
+//require_once('integrado/cz_librerias/LevanteDatos.php');
+//require_once('./integrado/cz_librerias/LevanteDatos.php');
+//echo "redyreadfred";
+//die();
 
 class acondicionaDatos extends BDControlador {
   function acondicionaDatos() {

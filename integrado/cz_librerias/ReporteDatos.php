@@ -155,7 +155,18 @@ class Reporte extends MYDB {
 	}
 	function listarMercanciaRechazada($arregloDatos) {
 		
-		
+	}
+	function excelAcondicionamientos($arregloDatos) {
+		echo "ready";
+		$sql = "SELECT * FROM arribos
+WHERE orden='1702100009'";
+$this->query($sql);
+$this->get(2);
+print_r($this->toArray());
+
+echo "x".$this->numRows();
+$this->get(2);
+var_dump($this->toArray()) ;
 	}
 }
 ?>
