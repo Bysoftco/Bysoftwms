@@ -154,7 +154,7 @@ class Reporte extends MYDB {
     return $this->razon_social;
 	}
 	function listarMercanciaRechazada($arregloDatos) {
-<<<<<<< HEAD
+
 		
 	}
 	function excelAcondicionamientos($arregloDatos) {
@@ -168,10 +168,10 @@ print_r($this->toArray());
 echo "x".$this->numRows();
 $this->get(2);
 var_dump($this->toArray()) ;
-=======
+
 		// incluir libraries/classes/PHPExcel.php
 		
->>>>>>> 8566867a884dd9f1b8bb9fc2ed31c11e50432883
+
 	}
 }
 ?>

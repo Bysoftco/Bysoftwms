@@ -48,8 +48,7 @@ class acondicionamientos {
   }
   
   function exportarExcel($arreglo) {
-    $arreglo['datos'] = $this->datos->listadoRechazadas1($arreglo);
-
+    $arreglo['datos'] = $this->datos->listadoRechazadas($arreglo);
     
     $datosExcel = new reporteExcel();
     $datosExcel->generarExcel($arreglo);

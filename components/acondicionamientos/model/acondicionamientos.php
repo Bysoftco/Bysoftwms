@@ -6,12 +6,6 @@
  */
 
 require_once(CLASSES_PATH.'BDControlador.php');
-//echo "xxx".LIB_PATH;
-//require_once('integrado/cz_configuracion/Constantes.php');
-//require_once('integrado/cz_librerias/LevanteDatos.php');
-//require_once('./integrado/cz_librerias/LevanteDatos.php');
-//echo "redyreadfred";
-//die();
 
 class acondicionaDatos extends BDControlador {
   function acondicionaDatos() {
@@ -261,15 +255,6 @@ class acondicionaDatos extends BDControlador {
     $db = $_SESSION['conexion'];
     $query = "UPDATE inventario_maestro_movimientos SET cierre = 1 WHERE codigo = $codigo";
     $db->query($query);
-  }
-  
-  function listadoRechazadas1($arreglo) {
-  	$db = $_SESSION['conexion'];
-	$query = "SELECT * FROM arribos
-			WHERE orden='1702100009'";
-	$db->query($query);
-	
-	return $db->getArray();
   }
   
   function listadoRechazadas($arreglo) {

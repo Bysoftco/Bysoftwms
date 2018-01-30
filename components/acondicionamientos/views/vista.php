@@ -175,8 +175,6 @@ class acondicionaVista {
   }
   
   function mostrarAcondicionamiento($arreglo) {
-  
-  
     $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/detalleAcondicionamiento.php' );
     $this->template->setVariable('COMODIN', '' );
     

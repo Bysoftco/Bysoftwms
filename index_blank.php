@@ -19,7 +19,9 @@ if(!isset( $_SESSION['datos_logueo']['usuario'] ) && $component!='login'){
 	echo '<script>window.location="index.php";</script>';
 	die();
 }
+ 
 $component_path = COMPONENTS_PATH . $component . '/' . $component . '.php';
+
 include $component_path;
 $clase = new $component();
 $clase->$method($_REQUEST);
