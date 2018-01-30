@@ -266,10 +266,12 @@ class acondicionaDatos extends BDControlador {
   function listadoRechazadas1($arreglo) {
   	$db = $_SESSION['conexion'];
 	$query = "SELECT * FROM arribos
-WHERE orden='1702100009'";
+			WHERE orden='1702100009'";
 	$db->query($query);
+	
 	return $db->getArray();
   }
+  
   function listadoRechazadas($arreglo) {
     $db = $_SESSION['conexion'];
 

@@ -208,8 +208,12 @@
 				   $('#rte_iva').val(total_iva*0.15);
 				   
 				   // Si el subtotal es menor al tope minimo  NO HACE RETENCIONES
+				   
 				   if($('#subtotal').val()/1 <= $('#tope_minimo_retencion').val()/1){
+				   
 				   		retiene=0;  // Se aprovecha el if que ya existia para que NO HAGA NINGUNA RETENCION
+						
+						
 				   }
 				  // Si no se hacen retenciones se anulan los calculos
 				   if(retiene==0){

@@ -106,9 +106,15 @@ require_once("ReportePresentacion.php");
     			$this->pantalla->listadoRechazadas($arregloDatos);
   			}
 			
+<<<<<<< HEAD
 			function excelAcondicionamientos($arregloDatos) {
   			
     			$this->datos->excelAcondicionamientos($arregloDatos);
+=======
+			function reporteExcelRechazadas($arregloDatos) {
+  			
+    			
+>>>>>>> 8566867a884dd9f1b8bb9fc2ed31c11e50432883
   			}
 			
 		

@@ -4,11 +4,14 @@ require_once('integrado/cz_configuracion/Constantes.php');
 require_once(LIBRERIAS . "Funciones.php");
 
 $sede = $_SESSION['sede'];
- 
+
 if(!isset( $_SESSION['datos_logueo']['usuario'] ) && $component!='login') {
-  /*
-	echo '<script>window.location="index.php";</script>';
-	die();*/
+    $mensaje="La cuenta estuvo  mucho tiempo inactiva por seguridad se cerrara. ";
+	echo "<script>
+	alert('$mensaje');
+	window.location='index.php';
+	</script>";
+	die();
 }
    
 init();
