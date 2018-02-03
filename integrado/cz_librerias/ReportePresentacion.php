@@ -318,7 +318,7 @@ class ReportePresentacion {
 	  $htmlFiltro = $this->cargaPlantilla($arregloDatos);
       $this->plantilla->setVariable('filtroEntrada', $htmlFiltro);
 	 } 
-
+	  $this->plantilla->setVariable('filtro'	,$arregloDatos[filtro]);
 	 $this->plantilla->setVariable('accion'	,$arregloDatos[accion]);
 	$this->plantilla->show();
     // Carga información del Perfil

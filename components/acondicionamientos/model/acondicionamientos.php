@@ -171,7 +171,7 @@ class acondicionaDatos extends BDControlador {
         $arreglo['fob_nonac'] = $arreglo['val_unit'] * $arreglo['cantidad_nonac'];
         //Registra cantidad acondicionada en inventario_movimientos
         $query = "UPDATE inventario_movimientos SET cantidad_naci = cantidad_naci+$arreglo[rechazadas],
-                    cantidad_nonac = cantidad_nonac+$arreglo[rechazadas], peso_naci = $arreglo[peso_naci]*-1,
+                    cantidad_nonac = cantidad_nonac+($arreglo[rechazadas]+$arreglo[devueltas]), peso_naci = $arreglo[peso_naci]*-1,
                     peso_nonac = $arreglo[peso_nonac]*-1, cif = $arreglo[cif]*-1, fob_nonac = $arreglo[fob_nonac]*-1
                   WHERE cod_maestro = $arreglo[codigo_operacion] AND tipo_movimiento = 16 AND inventario_entrada=$arreglo[inventario_entrada]";
         
