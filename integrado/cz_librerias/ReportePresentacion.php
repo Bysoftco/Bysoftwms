@@ -318,9 +318,64 @@ class ReportePresentacion {
 	  $htmlFiltro = $this->cargaPlantilla($arregloDatos);
       $this->plantilla->setVariable('filtroEntrada', $htmlFiltro);
 	 } 
+
+	 $this->plantilla->setVariable('accion'	,$arregloDatos[accion]);
 	$this->plantilla->show();
     // Carga información del Perfil
   }	
+  
+    function maestroAcondicionados($arregloDatos) {
+
+    $this->plantilla->loadTemplateFile(PLANTILLAS . 'reporteMaestroConsulta.html', true, true);
+    
+	 if(!empty($arregloDatos[filtro])) {
+   
+	  $this->datos =& new Levante();
+		$arregloDatos[tipo_retiro]=17;
+		$arregloDatos[having] = " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
+		//$arregloDatos[where] .=" AND  ie.orden='$arregloDatos[orden]'"; // filtro por referencia
+		$arregloDatos[GroupBy] = "orden,codigo_referencia";  // 
+		$arregloDatos[movimiento] = "16";// Aqui se suma  el retiro
+		$this->datos->getInvParaProceso($arregloDatos) ;
+	
+		$unaPlantilla = new HTML_Template_IT();
+    	$unaPlantilla->loadTemplateFile(PLANTILLAS . 'reporteListadoDefectuosas.html',true,true);
+    	$unaPlantilla->setVariable('comodin'	,' ');
+		
+		
+		while($this->datos->fetch()) {
+			$odd = ($arregloDatos[n] % 2) ? 'odd' : '';
+      		$arregloDatos[n] = $arregloDatos[n] + 1;
+			$unaPlantilla->setCurrentBlock('ROW');
+     		
+			$this->setValores($arregloDatos, $this->datos, $unaPlantilla);
+			$this->mantenerDatos($arregloDatos, $unaPlantilla);
+			$this->setDatos($arregloDatos,$this->datos,$unaPlantilla);
+			
+			$unaPlantilla->setVariable('n', $arregloDatos[n]);
+     		$unaPlantilla->setVariable('odd', $odd);
+      		$unaPlantilla->parseCurrentBlock();
+		} 
+	   $unaPlantilla->show();
+	  //$this->datos->listarMercanciaRechazada($arregloDatos);
+	  //echo "XXX".$this->datos->N;
+    } else {
+		  
+      $arregloDatos[thisFunction] = 'filtroDefectuosas';
+      $arregloDatos[plantilla] = 'reporteFiltroDefectuosas.html';
+      $arregloDatos[mostrar] = 0;
+	  
+	  $htmlFiltro = $this->cargaPlantilla($arregloDatos);
+      $this->plantilla->setVariable('filtroEntrada', $htmlFiltro);
+	 } 
+	 $this->plantilla->setVariable('filtro'	,$arregloDatos[filtro]);
+	 $this->plantilla->setVariable('accion'	,$arregloDatos[accion]);
+	 $this->plantilla->show();
+     // Carga información del Perfil
+  }	
+  
+  
+  
   	function setValores(&$arregloDatos, &$datos, $plantilla) {  
     // Si los valores son negativos significa que  ya se retiró la mercancía por lo tanto se forza a cero
     if($arregloDatos[tipo_ajuste] == 15) {
@@ -537,9 +592,7 @@ class ReportePresentacion {
 		
 		function listadoRechazadas($arregloDatos) 
 		{
-			
-			//$this->plantilla->loadTemplateFile(PLANTILLAS . 'reporteListadoRechazadas.html', true, false);
-   			$this->datos =& new Levante();
+			$this->datos =& new Levante();
 			$arregloDatos[tipo_retiro]=17;
 			$arregloDatos[having] = " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
 			$arregloDatos[GroupBy] = "orden,codigo_referencia";  // 
@@ -568,6 +621,35 @@ class ReportePresentacion {
 	 
   	}	
 
-  	
+  		function listadoAcondicionadas($arregloDatos) 
+		{
+			$this->datos =& new Levante();
+			$arregloDatos[tipo_retiro]=16;
+			$arregloDatos[having] = " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
+			$arregloDatos[GroupBy] = "orden,codigo_referencia";  // 
+			$arregloDatos[movimiento] = "16"; // Ojo aqui se suma el retiro del alistamiento
+			$this->datos->getInvParaProceso($arregloDatos) ;
+	
+			$unaPlantilla = new HTML_Template_IT();
+    		$unaPlantilla->loadTemplateFile(PLANTILLAS . 'reporteListadoRechazadas.html',true,true);
+    		$unaPlantilla->setVariable('comodin'	,' ');
+		
+			while($this->datos->fetch()) {
+				$odd = ($arregloDatos[n] % 2) ? 'odd' : '';
+      			$arregloDatos[n] = $arregloDatos[n] + 1;
+				$unaPlantilla->setCurrentBlock('ROW');
+     		
+				$this->setValores($arregloDatos, $this->datos, $unaPlantilla);
+				$this->mantenerDatos($arregloDatos, $unaPlantilla);
+				$this->setDatos($arregloDatos,$this->datos,$unaPlantilla);
+			
+				$unaPlantilla->setVariable('n', $arregloDatos[n]);
+     			$unaPlantilla->setVariable('odd', $odd);
+      			$unaPlantilla->parseCurrentBlock();
+			} 
+	   	
+		$unaPlantilla->show();
+	 
+  	}
 } 
 ?>

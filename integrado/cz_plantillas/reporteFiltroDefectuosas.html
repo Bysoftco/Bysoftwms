@@ -9,6 +9,7 @@
           async: false,
           data: $('#formularioFactura{accion}').serialize(),
           success: function(msm) {
+		  //alert('test{accion}*')
             $( "#ventana_factura{accion}" ).dialog( "close" );
             $('#componente_central').html("");
             $('#componente_central').html(msm);
@@ -65,9 +66,10 @@
       <fieldset class="ui-widget ui-widget-content ui-corner-all">
         <legend class="ui-widget ui-widget-header ui-corner-all">
           
-      <div id="nombre_reporte">Filtros de Consulta </div>
+      <div id="nombre_reporte">Filtros de Consulta {metodoEnvia}</div>
         </legend>
-        <input name="filtro" type="hidden" id="filtro" value="1" />
+        
+      <input name="filtro" type="hidden" id="filtro" value="1" />
         <p>
           <label>Por Cuenta de:</label>
           <input type="text" id="buscarClienteReporte{accion}" size="30" value="{cliente}" {soloLectura} />
@@ -93,7 +95,7 @@
       <input type="hidden" name="aux" id="aux2" value="{restrinje}" />
       <input type="hidden" name="clase" id="clase" value="Reporte" />
       <input type="hidden" name="accion" id="accion" value="{accion}" />   
-      <input type="hidden" name="metodo" id="metodoConsulta" value="maestroDefectuosa" />
+      <input name="metodo" type="hidden" id="metodoConsulta" value="{metodoEnvia}" />
     </form>
   </div>
 </div>

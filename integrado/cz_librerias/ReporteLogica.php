@@ -25,8 +25,18 @@ require_once("ReportePresentacion.php");
 			
 		function maestroDefectuosa($arregloDatos) {
     		//$arregloDatos['titulo'] = $this->titulo($arregloDatos);
+			$arregloDatos['accion'] = 'defectuosa';
+			$arregloDatos['metodoEnvia'] = 'maestroDefectuosa';
     		$arregloDatos['metodoAux'] = 'maestroConsulta';
     		$this->pantalla->maestroDefectuosa($arregloDatos);
+  		}
+		
+		function maestroAcondicionados($arregloDatos) {
+    		//$arregloDatos['titulo'] = $this->titulo($arregloDatos);
+			$arregloDatos['accion'] = 'acondicionados';
+			$arregloDatos['metodoEnvia'] = 'maestroAcondicionados';
+    		$arregloDatos['metodoAux'] = 'maestroConsulta';
+    		$this->pantalla->maestroAcondicionados($arregloDatos);
   		}
             
               function filtro($arregloDatos){
@@ -106,11 +116,21 @@ require_once("ReportePresentacion.php");
     			$this->pantalla->listadoRechazadas($arregloDatos);
   			}
 			
+			function listadoAcondicionadas($arregloDatos) {
+  			
+    			$this->pantalla->listadoAcondicionadas($arregloDatos);
+  			}
+			
 
 			function excelAcondicionamientos($arregloDatos) {
   			
     			$this->datos->excelAcondicionamientos($arregloDatos);
 			}
+			
+			
+			
+			
+			
 			function reporteExcelRechazadas($arregloDatos) {
   			
     			

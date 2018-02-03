@@ -98,13 +98,16 @@ class Levante extends MYDB {
                               AND do_asignados.sede='$sede'
                               AND da.por_cuenta='$arregloDatos[por_cuenta_filtro]')";
 		}
-		//var_dump($arregloDatos);
-		if(($arregloDatos[tipo_retiro]==17) OR $arregloDatos[tipo_retiro_filtro]==17){ // retiro de alistamientos
+		
+		if(($arregloDatos[tipo_retiro]==17) OR $arregloDatos[tipo_retiro_filtro]==17){ // retiro de alistamientos rechazadas
 			$sql_alistamiento=" AND  im.estado_mcia NOT IN(0,1)";
 			$arregloDatos[having] = " HAVING peso_nonac  <> 0 OR peso_naci <> 0 ";
-			
-			//$arregloDatos[having]="";
 		}
+		if(($arregloDatos[tipo_retiro]==16) OR $arregloDatos[tipo_retiro_filtro]==16){ // retiro de alistamientos
+			$sql_alistamiento=" AND  im.estado_mcia IN(1)";
+			$arregloDatos[having] = " HAVING peso_nonac  <> 0 OR peso_naci <> 0 ";
+		}
+		
 		// Si las cifras son negativas se convierte el valor en cero porque significa que ya se retiró toda la mercancía
 		$sql = "SELECT orden,
 									 doc_tte,
@@ -178,7 +181,7 @@ class Levante extends MYDB {
 		
 		$this->_lastError = NULL;
 		$this->query($sql);
-		
+		//echo $sql;
 		
 		if($this->_lastError) {
 			echo "Error" . $arregloDatos[metodo] . $sql . "<BR>";
