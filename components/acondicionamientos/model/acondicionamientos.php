@@ -175,7 +175,7 @@ class acondicionaDatos extends BDControlador {
                     peso_nonac = $arreglo[peso_nonac]*-1, cif = $arreglo[cif]*-1, fob_nonac = $arreglo[fob_nonac]*-1
                   WHERE cod_maestro = $arreglo[codigo_operacion] AND tipo_movimiento = 16 AND inventario_entrada=$arreglo[inventario_entrada]";
         
-		//echo $query;
+		echo $query;
 		$db->query($query);
         break;
       }
