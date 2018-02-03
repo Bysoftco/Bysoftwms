@@ -163,6 +163,14 @@ class acondicionaDatos extends BDControlador {
   function registrarAcondicionamiento($accion,$arreglo) {
     $db = $_SESSION['conexion'];
     //Identifica la acción a realizar
+	if($arreglo['tipo_mercancia']==1){
+		 $arreglo[cantidad_ajuste_nacional]=$arreglo[rechazadas]+$arreglo[devueltas];
+		 $arreglo[cantidad_ajuste_extranjero]=0;	
+	}else{
+		$arreglo[cantidad_ajuste_extranjero]=$arreglo[rechazadas]+$arreglo[devueltas];
+		$arreglo[cantidad_ajuste_nacional]=0;
+	}
+	
     switch($accion) {
       case 1: {
         $arreglo['peso_naci'] = $arreglo['peso_uni'] * $arreglo['cantidad_naci'];
@@ -170,8 +178,8 @@ class acondicionaDatos extends BDControlador {
         $arreglo['cif'] = $arreglo['val_unit'] * $arreglo['cantidad_naci'];
         $arreglo['fob_nonac'] = $arreglo['val_unit'] * $arreglo['cantidad_nonac'];
         //Registra cantidad acondicionada en inventario_movimientos
-        $query = "UPDATE inventario_movimientos SET cantidad_naci = cantidad_naci+$arreglo[rechazadas]+$arreglo[devueltas],
-                    cantidad_nonac = cantidad_nonac+($arreglo[rechazadas]+$arreglo[devueltas]), peso_naci = $arreglo[peso_naci]*-1,
+        $query = "UPDATE inventario_movimientos SET cantidad_naci = cantidad_naci+$arreglo[cantidad_ajuste_nacional],
+                    cantidad_nonac = cantidad_nonac+$arreglo[cantidad_ajuste_extranjero], peso_naci = $arreglo[peso_naci]*-1,
                     peso_nonac = $arreglo[peso_nonac]*-1, cif = $arreglo[cif]*-1, fob_nonac = $arreglo[fob_nonac]*-1
                   WHERE cod_maestro = $arreglo[codigo_operacion] AND tipo_movimiento = 16 AND inventario_entrada=$arreglo[inventario_entrada]";
         
