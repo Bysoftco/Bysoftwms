@@ -331,10 +331,11 @@ class ReportePresentacion {
 	 if(!empty($arregloDatos[filtro])) {
    
 	  $this->datos =& new Levante();
-		$arregloDatos[tipo_retiro]=17;
+		$arregloDatos[tipo_retiro]=16;
 		$arregloDatos[having] = " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
 		//$arregloDatos[where] .=" AND  ie.orden='$arregloDatos[orden]'"; // filtro por referencia
 		$arregloDatos[GroupBy] = "orden,codigo_referencia";  // 
+		$arregloDatos[movimiento] = "16";// Aqui se suma  el retiro
 		$arregloDatos[movimiento] = "16";// Aqui se suma  el retiro
 		$this->datos->getInvParaProceso($arregloDatos) ;
 	
