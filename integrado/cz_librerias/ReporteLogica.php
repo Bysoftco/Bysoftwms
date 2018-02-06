@@ -128,12 +128,9 @@ require_once("ReportePresentacion.php");
 			}
 			
 			
-			
-			
-			
 			function reporteExcelRechazadas($arregloDatos) {
   			
-    			
+    			$this->datos->excelRechazadas($arregloDatos);			
 
   			}
 			

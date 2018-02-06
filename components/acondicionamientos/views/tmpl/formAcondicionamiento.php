@@ -22,6 +22,7 @@
         <td style="padding-left: 5px;">
           {nombre_tipo_mercancia}
           <input type="hidden" name="tipo_mercancia" id="tipo_mercancia" value="{tipo_mercancia}" />
+		  <input type="text" name="tipo_retiro" id="tipo_mercancia" value="1" />
         </td>
         <td style="height: 27px; padding-left:5px;" class="tituloForm">Pedido:</td>
         <td style="padding-left: 5px;">

@@ -77,7 +77,7 @@
     </tr>
   </tfoot>
 </table>
-<form name="frmExcel" action="index_blank.php" >
+<form name="frmExcel" action="scripts_index.php" >
   <input type="hidden" name="cliente" id="cliente" value="{por_cuenta_filtro}" />
   <input type="hidden" name="nitfr" id="nitfr" value="{nitfr}" />
   <input type="hidden" name="fechadesdefr" id="fechadesdefr" value="{fechadesdefr}" />
@@ -86,6 +86,8 @@
   <input type="hidden" name="un_doc_filtro" id="un_doc_filtro" value="{un_doc_filtro}" />
   <input type="hidden" name="component" id="component" value="acondicionamientos" />
   <input type="hidden" name="method" id="method" value="exportarExcel" />
+  <input type="hidden" name="clase" id="clase" value="Reporte" />
+  <input type="hidden" name="metodo" id="metodo" value="excelAcondicionamientos" />
 </form>
 <script>
   Nifty("div.borde_circular","transparent");

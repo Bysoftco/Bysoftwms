@@ -18,8 +18,9 @@
       },
       close: function() {}
     });
-    
+     $("#titulo").hide();
     if('{filtro}'!=1) {
+	$("#titulo").show();
       $( "#ventana_factura{accion}" ).dialog( "open" );
     }
   });
@@ -32,6 +33,9 @@
     //$( "#metodo" ).dialog( "excel" );
     document.listaRegistros.submit();
   }
+  
+  
+  
 </script>
 <style>
   body { font-size: 62.5%; }
@@ -48,7 +52,7 @@
   tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
 </style>
 {COMODIN}
-<div class="div_barra">
+<div class="div_barra" id="titulo">
   <div id="titulo_ruta"> 
     <table align="right" cellpadding="0" cellspacing="0" border="0">
       <tr>
@@ -57,10 +61,10 @@
     </table>
   </div>
   <div id="contenedor_opciones" align="left">
-    <table border="0">
+    <table border="0" id="barra">
       <tr>
         <td align="center">
-          <div class="popupsVer borde_circular noSeleccion">
+          <div class="popupsVer borde_circular noSeleccion" >
             <a href="javascript: verFiltro()">
               <img src="img/acciones/ver.png" title="Filtro" width="25" height="25" border="0" />
             </a>

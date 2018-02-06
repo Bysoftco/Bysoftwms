@@ -316,6 +316,15 @@ class acondicionaDatos extends BDControlador {
     $db->query($query);
   }
   
+  function updateTipoMercancia($codigo, $arreglo) {
+    $db = $_SESSION['conexion'];
+    $query = "UPDATE inventario_maestro_movimientos
+			  SET tipo_retiro='$arreglo[tipo_mercancia]'
+			 WHERE codigo= $codigo";
+    $db->query($query);
+	echo $query;
+  }
+  
   function listadoEtiquetar($arreglo) {
     $db = $_SESSION['conexion'];
 		$sede = $_SESSION['sede'];
@@ -365,5 +374,7 @@ class acondicionaDatos extends BDControlador {
     $retornar['datos']=$db->getArray();
     return $retornar;
   }
+  
+  
 }
 ?>

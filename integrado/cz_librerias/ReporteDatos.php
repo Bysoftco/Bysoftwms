@@ -160,14 +160,14 @@ class Reporte extends MYDB {
 	function excelAcondicionamientos($arregloDatos) {
 		echo "ready";
 		$sql = "SELECT * FROM arribos
-WHERE orden='1702100009'";
+WHERE orden  in('','1702100008')";
 $this->query($sql);
 $this->get(2);
-print_r($this->toArray());
+$a=$this->toArray();
+//$this->fetch();
 
-echo "x".$this->numRows();
-$this->get(2);
-var_dump($this->toArray()) ;
+
+
 
 		// incluir libraries/classes/PHPExcel.php
 		
