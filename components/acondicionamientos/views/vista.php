@@ -158,8 +158,6 @@ class acondicionaVista {
     $this->template->setVariable('conductor_nombre',isset($datosCamion->conductor_nombre)?$datosCamion->conductor_nombre:'');
     $this->template->setVariable('destinatario','Bodega');
 
-    var_dump($datosCamion);
-
     //Captura automática de fecha y hora 
     $fecha = new DateTime();
     $fecha = $fecha->format('Y-m-d H:i');
