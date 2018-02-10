@@ -226,7 +226,7 @@ class LevantePresentacion {
     $plantilla->setVariable("listaTiposRemesa", $lista);
 
     $unaLista = new Inventario();
-    $lista = $unaLista->lista("inventario_tipos_movimiento", "2,3,4,5,6,7,8,9,10,17", 'codigo');
+    $lista = $unaLista->lista("inventario_tipos_movimiento", "2,3,4,5,6,7,8,9,10,16,17", 'codigo');
 
     $lista = armaSelect($lista, '[seleccione]', NULL);
     $plantilla->setVariable("listaTipos", $lista);
