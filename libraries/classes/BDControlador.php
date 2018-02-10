@@ -120,12 +120,12 @@ class BDControlador {
   }
 
   /**
-    * Funcin trae una sola fila de datos basado en un valor de clave primaria.
+    * Función trae una sola fila de datos basado en un valor de clave primaria.
     * 
-    * Los datos recuperados son colocados en el objeto instanciado. La funcin tambien procesa los datos formateandolos en 
-    * el formato correcto de hora/fecha y valores nmericos.
+    * Los datos recuperados son colocados en el objeto instanciado. La función tambien procesa los datos formateándolos en 
+    * el formato correcto de hora/fecha y valores númericos.
     * 
-    * @param string $id usado para la bsqueda
+    * @param string $id usado para la búsqueda
     * @param boolean $codificar Optional, predeterminado true, codifica los valores recuperados de la base de datos.
     * 
     */
@@ -319,12 +319,12 @@ class BDControlador {
     return $tabla;
   }
 
-  function ExcelSimple($arreglo) {
-    header("Content-type: application/force-download");
+  //function ExcelSimple($arreglo) {
+    /*header("Content-type: application/force-download");
     header('Content-Type: application/vnd.ms-excel;');                 // This should work for IE & Opera 
     header("Content-type: application/x-msexcel");                    // This should work for the rest
     header("Content-disposition: attachment; filename=" . $arreglo['tituloArchivo'] . ".xls; charset=iso-8859-1");
-    header("Content-Transfer-Encoding: binary");
+    header("Content-Transfer-Encoding: binary");*/
 
     /* $tabla="";
     if(!isset($arreglo['encabezados'])) {
@@ -348,7 +348,7 @@ class BDControlador {
       $tabla.=" \n ";
     } */
 
-    $tabla = "<table border='1'>";
+    /*$tabla = "<table border='1'>";
     $tabla .= "<tr style='font-weight: bold;'>";
     if (!isset($arreglo['encabezados'])) {
       foreach ($arreglo['datosExcel'][0] as $key => $value) {
@@ -369,6 +369,6 @@ class BDControlador {
     }
     $tabla .= "</table>";
     echo $tabla;
-  }
+  }*/
 }
 ?>
