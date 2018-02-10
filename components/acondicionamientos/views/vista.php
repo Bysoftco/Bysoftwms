@@ -3,10 +3,11 @@
  * Description of acondicionaVista
  *
  * @author  Fredy Salom <fsalom@bysoft.us>
- * @date    10-Octubre-2017
+ * @date    07-Febrero-2018
  */
 
 require_once COMPONENTS_PATH . 'Entidades/Clientes.php';
+require_once COMPONENTS_PATH . 'Entidades/Camiones.php';
 require_once COMPONENTS_PATH . 'Entidades/Referencias.php';
 
 class acondicionaVista {
@@ -148,6 +149,14 @@ class acondicionaVista {
     } else if($arreglo['tipo_mercancia']==3) {
       $this->template->setVariable('nombre_tipo_mercancia' , 'MIXTA');
     }
+    
+    //Inicializa Placa y Destino
+    $this->template->setVariable('placa','111111');
+    $camion = new Camiones();
+    $datosCamion = $camion->recover('111111','placa');
+    $this->template->setVariable('id_camion',isset($datosCamion->codigo)?$datosCamion->codigo:'');
+    $this->template->setVariable('conductor_nombre',isset($datosCamion->conductor_nombre)?$datosCamion->conductor_nombre:'');
+    $this->template->setVariable('destinatario','Bodega');
 
     //Captura automática de fecha y hora 
     $fecha = new DateTime();
@@ -215,11 +224,11 @@ class acondicionaVista {
     $this->template->setVariable('observaciones', $datosMaestro->obs);
     
     $detalleAcondicionamiento = $this->datos->retornarDetalleAcondicionamiento($arreglo['id_registro']);
-	$inv_entrada_mayor=0;
-	$valor_mayor=0;
+    $inv_entrada_mayor=0;
+    $valor_mayor=0;
     foreach($detalleAcondicionamiento as $valueDetalle) {
       $this->template->setCurrentBlock("ROW");
-	  $this->template->setVariable('orden_detalle', $valueDetalle['orden']);
+      $this->template->setVariable('orden_detalle', $valueDetalle['orden']);
       $this->template->setVariable('arribo', $valueDetalle['arribo']);
       $this->template->setVariable('inv_entrada', $valueDetalle['inventario_entrada']);
       $this->template->setVariable('codigo_referen', $valueDetalle['codigo_ref']);
@@ -228,37 +237,30 @@ class acondicionaVista {
       $this->template->setVariable('fecha_detalle', $valueDetalle['fecha']);
       $this->template->setVariable('modelo', !empty($valueDetalle['modelo'])?$valueDetalle['modelo']:'POR ASIGNAR');
       $this->template->setVariable('nombre_ubicacion', isset($valueDetalle['nombre_ubicacion'])?$valueDetalle['nombre_ubicacion']:'POR ASIGNAR');
-     
-	 if($valor_mayor==0){ // es la primera vez
-	 	 if(abs($valueDetalle['cantidad_nonac']) > 0){ // valida extranjero
-	 		$valor_mayor=abs($valueDetalle['cantidad_nonac']);
-			$inv_entrada_mayor=$valueDetalle['inventario_entrada'];
-	 	}else{
-	 		//valida nacional
-			$valor_mayor=abs($valueDetalle['cantidad_naci']);
-			$inv_entrada_mayor=$valueDetalle['inventario_entrada'];
-			
-	 	}
-	 }
-	 if($valor_mayor<> 0){ // se averigua el registro que tenga mayor cantidad
-	 	 if(abs($valueDetalle['cantidad_nonac']) > 0){ // valida extranjero
-		 	if(abs($valueDetalle['cantidad_nonac']) > $valor_mayor)
-			{
-	 			$valor_mayor=abs($valueDetalle['cantidad_nonac']);
-				$inv_entrada_mayor=$valueDetalle['inventario_entrada'];
-			}
-	 	}else{										//valida nacional
-	 		if(abs($valueDetalle['cantidad_naci']) > $valor_mayor)
-			{
-				$valor_mayor=abs($valueDetalle['cantidad_naci']);
-				$inv_entrada_mayor=$valueDetalle['inventario_entrada'];
-			}
-	 	}
-	 
-	 }
-	
-	 
-	  switch($valueDetalle['nombre_mcia']) {
+      if($valor_mayor==0){ // es la primera vez
+        if(abs($valueDetalle['cantidad_nonac']) > 0){ // valida extranjero
+          $valor_mayor=abs($valueDetalle['cantidad_nonac']);
+          $inv_entrada_mayor=$valueDetalle['inventario_entrada'];
+        } else {
+          //valida nacional
+          $valor_mayor=abs($valueDetalle['cantidad_naci']);
+          $inv_entrada_mayor=$valueDetalle['inventario_entrada'];
+        }
+      }
+      if($valor_mayor<> 0){ // se averigua el registro que tenga mayor cantidad
+        if(abs($valueDetalle['cantidad_nonac']) > 0) { // valida extranjero
+          if(abs($valueDetalle['cantidad_nonac']) > $valor_mayor) {
+            $valor_mayor=abs($valueDetalle['cantidad_nonac']);
+            $inv_entrada_mayor=$valueDetalle['inventario_entrada'];
+          }
+        } else {										//valida nacional
+          if(abs($valueDetalle['cantidad_naci']) > $valor_mayor) {
+            $valor_mayor=abs($valueDetalle['cantidad_naci']);
+            $inv_entrada_mayor=$valueDetalle['inventario_entrada'];
+          }
+        }
+      }
+      switch($valueDetalle['nombre_mcia']) {
         case 'NORMAL': {
           $this->template->setVariable('nombre_mcia', 'ACONDICIONADAS');
           break;
@@ -275,7 +277,7 @@ class acondicionaVista {
       $this->template->setVariable('cantidad_extranjera', number_format(abs($valueDetalle['cantidad_nonac']),2,".",","));
       $this->template->setVariable('peso_extranjera', number_format(abs($valueDetalle['peso_nonac']),2,".",","));
       $this->template->setVariable('valor_fob', number_format(abs($valueDetalle['fob_nonac']),2,".",","));
-	  $this->template->setVariable('inv_entrada_mayor', $inv_entrada_mayor);
+      $this->template->setVariable('inv_entrada_mayor', $inv_entrada_mayor);
       $this->template->parseCurrentBlock("ROW");
     }
     

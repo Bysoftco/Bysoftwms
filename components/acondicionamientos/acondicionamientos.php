@@ -80,10 +80,9 @@ class acondicionamientos {
 
   function generarAcondicionamiento($arreglo) {
     $invMaestro = new InventarioMaestroMovimientos();
-    recuperar_Post($invMaestro,$arreglo);
+    recuperar_Post($invMaestro);
     $codigoMaestro = $invMaestro->save();
-	//$resultado = $this->datos->updateTipoMercancia($codigoMaestro,$arreglo);
-	
+    
     if($arreglo['tipo_mercancia']==1) {
       $this->acondicionarNacional($arreglo, $codigoMaestro, $codigoNuevaEntrada);
     } else {
@@ -117,7 +116,7 @@ class acondicionamientos {
 
   function acondicionarNacional($arreglo, $codigoMaestro, $codigoNuevaEntrada) {
     $arregloMaestro = $this->armarArregloEncabezado($arreglo);
-	
+
     $cantidadTotal = 0;
     foreach($arreglo['cantidad_retirar'] as $key => $value) {
       $cantidadTotal += $value;
@@ -125,9 +124,7 @@ class acondicionamientos {
       $disponbiblesRetirar = $this->datos->disponiblesRetirar($key, $arreglo['doc_cliente']);
 
       foreach($disponbiblesRetirar as $valueDisponibles) {
-	  
         $arregloRetirar = array();
-		$arregloRetirar['tipo_retiro']=77;
         $arregloRetirar['inventario_entrada'] = $valueDisponibles['inventario_entrada'];
         $arregloRetirar['fecha'] = date('Y-m-d H:i');
         $arregloRetirar['tipo_movimiento'] = 16;
