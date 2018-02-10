@@ -269,6 +269,7 @@ class ReportePresentacion {
   
   function maestroDefectuosa($arregloDatos) {
 
+	$arregloDatos[tipoLabel]="DEFECTUOSA";
     $this->plantilla->loadTemplateFile(PLANTILLAS . 'reporteMaestroConsulta.html', true, true);
     //$this->mantenerDatos($arregloDatos, $this->plantilla);
     //$this->plantilla->setVariable('comodin', '');
@@ -280,6 +281,7 @@ class ReportePresentacion {
       //$this->plantilla->setVariable('htmlListado', $htmlListado);
 	  
 	  $this->datos =& new Levante();
+	  
 		$arregloDatos[tipo_retiro]=17;
 		$arregloDatos[having] = " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
 		//$arregloDatos[where] .=" AND  ie.orden='$arregloDatos[orden]'"; // filtro por referencia
@@ -325,7 +327,8 @@ class ReportePresentacion {
   }	
   
     function maestroAcondicionados($arregloDatos) {
-
+ 
+  	$arregloDatos[tipoLabel]="ACONDICIONADA";
     $this->plantilla->loadTemplateFile(PLANTILLAS . 'reporteMaestroConsulta.html', true, true);
     
 	 if(!empty($arregloDatos[filtro])) {
@@ -624,6 +627,8 @@ class ReportePresentacion {
 
   		function listadoAcondicionadas($arregloDatos) 
 		{
+			
+			
 			$this->datos =& new Levante();
 			$arregloDatos[tipo_retiro]=16;
 			$arregloDatos[having] = " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
