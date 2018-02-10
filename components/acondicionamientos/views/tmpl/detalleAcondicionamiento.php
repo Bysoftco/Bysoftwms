@@ -291,12 +291,8 @@
   });
   
   function calcular() {
-    //Validación del valor de Mercancías Rechazadas
-    if(parseFloat($("#rechazadas").val())>parseFloat($("#acondicionadas").val())) alert('La cantidad de mercancía Rechazada no puede ser mayor que la cantidad disponible Acondicionar.');
-    else {
-      //Validación del valor de Mercancías Devueltas
-      if(parseFloat($("#devueltas").val())>parseFloat($("#acondicionadas").val())) alert('La cantidad de mercancía Devuelta no puede ser mayor que la cantidad disponible Acondicionar.');
-      else $("#acondicionadas").val(($("#piezas").val()-$("#rechazadas").val()-$("#devueltas").val()).toFixed(2));
-    }
+    //Validación del valor de Mercancías Acondicionadas
+    $("#acondicionadas").val(($("#piezas").val()-$("#rechazadas").val()-$("#devueltas").val()).toFixed(2));
+    if($("#acondicionadas").val()<0) alert('La cantidad de mercancía Acondicionada no puede ser menor que 1. Revisar la cantidad de Rechazadas o Devueltas.');
   }
 </script>
