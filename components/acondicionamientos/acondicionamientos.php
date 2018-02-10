@@ -79,7 +79,6 @@ class acondicionamientos {
   }
 
   function generarAcondicionamiento($arreglo) {
-    var_dump($arreglo);
     $invMaestro = new InventarioMaestroMovimientos();
     recuperar_Post($invMaestro);
     $codigoMaestro = $invMaestro->save();
