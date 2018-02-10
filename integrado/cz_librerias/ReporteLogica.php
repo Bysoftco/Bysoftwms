@@ -33,6 +33,7 @@ require_once("ReportePresentacion.php");
 		
 		function maestroAcondicionados($arregloDatos) {
     		//$arregloDatos['titulo'] = $this->titulo($arregloDatos);
+			
 			$arregloDatos['accion'] = 'acondicionados';
 			$arregloDatos['metodoEnvia'] = 'maestroAcondicionados';
     		$arregloDatos['metodoAux'] = 'maestroConsulta';
@@ -117,13 +118,13 @@ require_once("ReportePresentacion.php");
   			}
 			
 			function listadoAcondicionadas($arregloDatos) {
-  			
+			
     			$this->pantalla->listadoAcondicionadas($arregloDatos);
   			}
 			
 
 			function excelAcondicionamientos($arregloDatos) {
-  			
+  						
     			$this->datos->excelAcondicionamientos($arregloDatos);
 			}
 			
