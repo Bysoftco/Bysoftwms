@@ -75,7 +75,7 @@
 	}
   
 	function ProcesaDB() {
-    var nFoto = $("#archivo").val();
+    var nFoto = $("#archivo").val().replace(/C:\\fakepath\\/i, '');
     
 		$.ajax({
 			url: 'scripts_index.php?clase=Orden&metodo=regFotos&numOrden='+numOrden+'&nFoto='+nFoto,
