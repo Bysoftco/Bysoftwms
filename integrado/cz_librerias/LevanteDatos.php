@@ -105,7 +105,7 @@ class Levante extends MYDB {
 			//echo "YYYYYYYYYYYYYYYYYYYYY17<BR>";
 		}
 		
-		if(($arregloDatos[tipo_retiro]==16) OR $arregloDatos[tipo_retiro_filtro]==16){ // retiro de alistamientos
+		if(($arregloDatos[tipo_retiro]==16) OR $arregloDatos[tipo_retiro_filtro]==16){ // retiro de alistamientos llega de la linea 383 presentacion
 			$sql_alistamiento=" AND  im.estado_mcia IN(1)";
 			$arregloDatos[having] = " HAVING peso_nonac  <> 0 OR peso_naci <> 0 ";
 			//echo "XXXXXXXXXXXXXXXXXXXX16<BR>";
@@ -197,6 +197,7 @@ class Levante extends MYDB {
 
 	//Función que lista el inventario para retirar solo devuelve mercancía disponible
 	function getInvParaRetiro($arregloDatos) {
+	
     $filtro = ($arregloDatos[tipo_retiro]==1) ? " peso_naci > 0" : " peso_nonac > 0 OR peso_naci > 0 ";
 		$arregloDatos[having] = " HAVING $filtro ";
 		if($arregloDatos[cod_ref]) {
@@ -792,7 +793,7 @@ class Levante extends MYDB {
   // Lista la mercancía ya retirada
   function getCuerpoRetiro($arregloDatos) {
     if(empty($arregloDatos[este_movimiento])) {
-      $arregloDatos[este_movimiento] = "3,7,8,9,13,17";
+      $arregloDatos[este_movimiento] = "3,7,8,9,13,17,16";
     }
     $sql = "SELECT im.codigo AS id_retiro,inventario_entrada AS id_item,
               MAX(tipo_movimiento) AS tipo_movimiento,SUM(peso_naci) AS peso_naci,
@@ -1098,13 +1099,7 @@ class Levante extends MYDB {
         break;
 	  
     }
-	if($arregloDatos[tipo_movimiento]==17){
-		//$arregloDatos[peso_naci_para]=$arregloDatos[peso_naci_para]/1*-1;
-		//$arregloDatos[peso_nonaci_para]=$arregloDatos[peso_nonaci_para]/1*-1;
-		//$arregloDatos[cantidad_naci_para]=$arregloDatos[cantidad_naci_para]/1*-1;
-		//$arregloDatos[cantidad_nonaci_para]=$arregloDatos[cantidad_nonaci_para]/1*-1;
-		//$arregloDatos[fob_ret]=$arregloDatos[fob_ret]/1*-1;
-	}
+	
     //Captura automática de fecha y hora 
     $fecha = new DateTime();
     $fecha = $fecha->format('Y-m-d H:i');
@@ -1123,6 +1118,45 @@ class Levante extends MYDB {
     $arregloDatos[mensaje] = "se retiro correctamente la mercancia ";
     $arregloDatos[estilo] = $this->estilo_ok;
   }
+  
+   // Agrega registro de mercancia retirada
+  function addItemRetiroAcondicionamiento($arregloDatos) {
+    //si no existe un levante se deja como levante el id del movimiento esto permite borrar movimientos con varios registros 
+    if(empty($arregloDatos[num_levante])) {
+      $arregloDatos[num_levante] = $arregloDatos[id_levante];
+    }
+
+    switch($arregloDatos[tipo_retiro_filtro]) {
+      case 1: // Mercancia Nacional
+
+        $arregloDatos[peso_nonaci_para] = 0;
+        $arregloDatos[cantidad_nonaci_para] = 0;
+        $arregloDatos[fob_nonaci_para] = 0;
+        break;
+      case 2: // Reexportación
+        break;
+	  
+    }
+	
+    //Captura automática de fecha y hora 
+    $fecha = new DateTime();
+    $fecha = $fecha->format('Y-m-d H:i');
+    $sql = "INSERT INTO inventario_movimientos
+              (fecha,inventario_entrada,tipo_movimiento,peso_naci,peso_nonac,cantidad_naci,cantidad_nonac,cif,fob_nonac,cod_maestro,num_levante)
+            VALUES('$fecha',$arregloDatos[id_item],$arregloDatos[tipo_movimiento],$arregloDatos[peso_naci_para],$arregloDatos[peso_nonaci_para],$arregloDatos[cantidad_naci_para],$arregloDatos[cantidad_nonaci_para],$arregloDatos[cif_ret],- $arregloDatos[fob_ret] ,$arregloDatos[id_levante],'$arregloDatos[num_levante]')";
+//echo $sql;
+    $this->query($sql);
+    if($this->_lastError) {
+      $arregloDatos[mensaje] = "error al retirar la mercancia "; //$arregloDatos[mensaje] = "error al retirar la mercancia ";//
+      $arregloDatos[estilo] = $this->estilo_error;
+      echo "error" . $sql;
+      return TRUE;
+    }
+    $this->updateUltimoDo($arregloDatos);
+    $arregloDatos[mensaje] = "se retiro correctamente la mercancia ";
+    $arregloDatos[estilo] = $this->estilo_ok;
+  }
+
 
 // Agrega registro de mercancia retirada
   function addItemRetiroAlistamiento($arregloDatos) {
@@ -1142,13 +1176,7 @@ class Levante extends MYDB {
         break;
 	  
     }
-	if($arregloDatos[tipo_movimiento]==17){
-		//$arregloDatos[peso_naci_para]=$arregloDatos[peso_naci_para]/1*-1;
-		//$arregloDatos[peso_nonaci_para]=$arregloDatos[peso_nonaci_para]/1*-1;
-		//$arregloDatos[cantidad_naci_para]=$arregloDatos[cantidad_naci_para]/1*-1;
-		//$arregloDatos[cantidad_nonaci_para]=$arregloDatos[cantidad_nonaci_para]/1*-1;
-		//$arregloDatos[fob_ret]=$arregloDatos[fob_ret]/1*-1;
-	}
+	
     //Captura automática de fecha y hora 
     $fecha = new DateTime();
     $fecha = $fecha->format('Y-m-d H:i');
