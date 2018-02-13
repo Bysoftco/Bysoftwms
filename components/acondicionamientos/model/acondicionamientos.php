@@ -80,7 +80,6 @@ class acondicionaDatos extends BDControlador {
                   AND ref.codigo = $codigo_ref
                   AND clientes.numero_documento = '$docCliente') AS inv
                 GROUP BY codigo_referencia";
-				
 
     $db->query($query);
     return $db->fetch();
@@ -111,7 +110,7 @@ class acondicionaDatos extends BDControlador {
                 AND clientes.numero_documento = '$docCliente'
                 AND im.tipo_movimiento IN (".$arregloDatos['movimiento'].")
               GROUP BY inventario_entrada";
-   
+    
     $db->query($query);
     return $db->getArray();
   }
@@ -139,7 +138,7 @@ class acondicionaDatos extends BDControlador {
                 LEFT JOIN camiones cm ON imm.id_camion = cm.codigo
                 LEFT JOIN ciudades ci ON imm.ciudad = ci.codigo
               WHERE imm.codigo = $idRegistro";
-
+ 
     $db->query($query);
     return $db->fetch();
   }
@@ -155,7 +154,7 @@ class acondicionaDatos extends BDControlador {
                 INNER JOIN estados_mcia em ON em.codigo = im.estado_mcia
                 LEFT JOIN posiciones p ON p.codigo = ie.posicion
               WHERE cod_maestro = $idRegistro AND tipo_movimiento = 16";
-    
+
     $db->query($query);
     return $db->getArray();
   }
@@ -163,14 +162,6 @@ class acondicionaDatos extends BDControlador {
   function registrarAcondicionamiento($accion,$arreglo) {
     $db = $_SESSION['conexion'];
     //Identifica la acción a realizar
-	if($arreglo['tipo_mercancia']==1){
-		 $arreglo[cantidad_ajuste_nacional]=$arreglo[rechazadas]+$arreglo[devueltas];
-		 $arreglo[cantidad_ajuste_extranjero]=0;	
-	}else{
-		$arreglo[cantidad_ajuste_extranjero]=$arreglo[rechazadas]+$arreglo[devueltas];
-		$arreglo[cantidad_ajuste_nacional]=0;
-	}
-	
     switch($accion) {
       case 1: {
         $arreglo['peso_naci'] = $arreglo['peso_uni'] * $arreglo['cantidad_naci'];
@@ -178,13 +169,11 @@ class acondicionaDatos extends BDControlador {
         $arreglo['cif'] = $arreglo['val_unit'] * $arreglo['cantidad_naci'];
         $arreglo['fob_nonac'] = $arreglo['val_unit'] * $arreglo['cantidad_nonac'];
         //Registra cantidad acondicionada en inventario_movimientos
-        $query = "UPDATE inventario_movimientos SET cantidad_naci = cantidad_naci+$arreglo[cantidad_ajuste_nacional],
-                    cantidad_nonac = cantidad_nonac+$arreglo[cantidad_ajuste_extranjero], peso_naci = $arreglo[peso_naci]*-1,
+        $query = "UPDATE inventario_movimientos SET cantidad_naci = $arreglo[cantidad_naci]*-1,
+                    cantidad_nonac = $arreglo[cantidad_nonac]*-1, peso_naci = $arreglo[peso_naci]*-1,
                     peso_nonac = $arreglo[peso_nonac]*-1, cif = $arreglo[cif]*-1, fob_nonac = $arreglo[fob_nonac]*-1
-                  WHERE cod_maestro = $arreglo[codigo_operacion] AND tipo_movimiento = 16 AND inventario_entrada=$arreglo[inventario_entrada]";
-        
-		//echo $query;
-		$db->query($query);
+                  WHERE cod_maestro = $arreglo[codigo_operacion] AND tipo_movimiento = 16";
+        $db->query($query);
         break;
       }
       case 2: {
@@ -279,22 +268,20 @@ class acondicionaDatos extends BDControlador {
     if(!empty($arreglo[doasignadofr])) $arreglo[where] .= " AND da.do_asignado = '$arreglo[doasignadofr]'";
     if(!empty($arreglo[tiporechazofr])) $arreglo[where] .= " AND im.estado_mcia = '$arreglo[tiporechazofr]'";
     
-    $query = "SELECT min(im.fecha) AS fecha_rechazo,ie.orden,ref.nombre AS nombre_referencia,
+    $query = "SELECT im.*,im.fecha AS fecha_rechazo,ie.*,ref.nombre AS nombre_referencia,
                 ref.codigo_ref,p.nombre AS nombre_ubicacion,em.nombre AS tipo_rechazo,
-                da.doc_tte, cl.numero_documento,cl.razon_social,
+                imm.doc_tte, cl.numero_documento,cl.razon_social,
                 SUM(cantidad_naci) AS tc_nal,SUM(peso_naci) tp_nal,SUM(cantidad_nonac) AS tc_ext,
                 SUM(peso_nonac) AS tp_ext
               FROM inventario_movimientos im
                 INNER JOIN inventario_entradas ie ON ie.codigo = im.inventario_entrada
                 INNER JOIN referencias ref ON ref.codigo = ie.referencia
                 INNER JOIN inventario_maestro_movimientos imm ON imm.codigo = im.cod_maestro
-				
-                INNER JOIN do_asignados da ON da.do_asignado = ie.orden
-				
+                INNER JOIN do_asignados da ON da.do_asignado = imm.orden
                 INNER JOIN clientes cl ON cl.numero_documento = da.por_cuenta
                 INNER JOIN estados_mcia em ON em.codigo = im.estado_mcia
                 LEFT JOIN posiciones p ON p.codigo = ie.posicion
-              WHERE tipo_movimiento in (16,17)
+              WHERE tipo_movimiento = 16
                 AND estado_mcia > 1 $arreglo[where]
               GROUP BY $arreglo[GroupBy] ORDER BY im.codigo";    
 
@@ -314,15 +301,6 @@ class acondicionaDatos extends BDControlador {
     $db = $_SESSION['conexion'];
     $query = "DELETE FROM $table WHERE $where";
     $db->query($query);
-  }
-  
-  function updateTipoMercancia($codigo, $arreglo) {
-    $db = $_SESSION['conexion'];
-    $query = "UPDATE inventario_maestro_movimientos
-			  SET tipo_retiro='$arreglo[tipo_mercancia]'
-			 WHERE codigo= $codigo";
-    $db->query($query);
-	echo $query;
   }
   
   function listadoEtiquetar($arreglo) {
@@ -374,7 +352,5 @@ class acondicionaDatos extends BDControlador {
     $retornar['datos']=$db->getArray();
     return $retornar;
   }
-  
-  
 }
 ?>

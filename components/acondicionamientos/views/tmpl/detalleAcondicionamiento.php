@@ -93,8 +93,7 @@
     </tr>
     <!-- BEGIN ROW -->
     <tr>
-      
-    <td style="text-align:center;">{orden_detalle}</td>
+      <td style="text-align:center;">{orden_detalle}</td>
       <td style="text-align:center;">{codigo_referen}</td>
       <td>{nombre_referencia}</td>
       <td style="text-align:center;color: red;">{fecha_expira}</td>
@@ -176,10 +175,9 @@
   </div>
   <input type="hidden" name="codigoMaestro" id="codigoMaestro" value="{codigo_operacion}" />
   <input type="hidden" name="tipo_mercancia" id="tipo_mercancia" value="{tipo_mercancia}" />
-  <input type="hidden" name="inventario_entrada" id="inventario_entrada" value="{inv_entrada_mayor}" />
+  <input type="hidden" name="inventario_entrada" id="inventario_entrada" value="{inv_entrada}" />
   <input type="hidden" name="fecha" id="fecha" value="{fecha}" />
   <input type="hidden" name="n" id="n" value="{n}" />
-{inv_entrada_mayorx} 
 </fieldset>
 <script>
   Nifty("div.borde_circular","transparent");
@@ -293,12 +291,8 @@
   });
   
   function calcular() {
-    //Validación del valor de Mercancías Rechazadas
-    if(parseFloat($("#rechazadas").val())>parseFloat($("#acondicionadas").val())) alert('La cantidad de mercancía Rechazada no puede ser mayor que la cantidad disponible Acondicionar.');
-    else {
-      //Validación del valor de Mercancías Devueltas
-      if(parseFloat($("#devueltas").val())>parseFloat($("#acondicionadas").val())) alert('La cantidad de mercancía Devuelta no puede ser mayor que la cantidad disponible Acondicionar.');
-      else $("#acondicionadas").val(($("#piezas").val()-$("#rechazadas").val()-$("#devueltas").val()).toFixed(2));
-    }
+    //Validación del valor de Mercancías Acondicionadas
+    $("#acondicionadas").val(($("#piezas").val()-$("#rechazadas").val()-$("#devueltas").val()).toFixed(2));
+    if($("#acondicionadas").val()<0) alert('La cantidad de mercancía Acondicionada no puede ser menor que 1. Revisar la cantidad de Rechazadas o Devueltas.');
   }
 </script>

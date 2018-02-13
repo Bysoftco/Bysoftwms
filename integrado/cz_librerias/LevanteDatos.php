@@ -98,20 +98,16 @@ class Levante extends MYDB {
                               AND do_asignados.sede='$sede'
                               AND da.por_cuenta='$arregloDatos[por_cuenta_filtro]')";
 		}
-		
-		if(($arregloDatos[tipo_retiro]==17) OR $arregloDatos[tipo_retiro_filtro]==17){ // retiro de alistamientos rechazadas
+		//var_dump($arregloDatos);
+		if(($arregloDatos[tipo_retiro]==17) OR $arregloDatos[tipo_retiro_filtro]==17){ // retiro de alistamientos
 			$sql_alistamiento=" AND  im.estado_mcia NOT IN(0,1)";
 			$arregloDatos[having] = " HAVING peso_nonac  <> 0 OR peso_naci <> 0 ";
-			//echo "YYYYYYYYYYYYYYYYYYYYY17<BR>";
+			
 		}
-		
 		if(($arregloDatos[tipo_retiro]==16) OR $arregloDatos[tipo_retiro_filtro]==16){ // retiro de alistamientos llega de la linea 383 presentacion
 			$sql_alistamiento=" AND  im.estado_mcia IN(1)";
 			$arregloDatos[having] = " HAVING peso_nonac  <> 0 OR peso_naci <> 0 ";
-			//echo "XXXXXXXXXXXXXXXXXXXX16<BR>";
-			
 		}
-		
 		// Si las cifras son negativas se convierte el valor en cero porque significa que ya se retiró toda la mercancía
 		$sql = "SELECT orden,
 									 doc_tte,
@@ -185,7 +181,7 @@ class Levante extends MYDB {
 		
 		$this->_lastError = NULL;
 		$this->query($sql);
-		//echo $sql;
+		
 		
 		if($this->_lastError) {
 			echo "Error" . $arregloDatos[metodo] . $sql . "<BR>";
@@ -197,7 +193,6 @@ class Levante extends MYDB {
 
 	//Función que lista el inventario para retirar solo devuelve mercancía disponible
 	function getInvParaRetiro($arregloDatos) {
-	
     $filtro = ($arregloDatos[tipo_retiro]==1) ? " peso_naci > 0" : " peso_nonac > 0 OR peso_naci > 0 ";
 		$arregloDatos[having] = " HAVING $filtro ";
 		if($arregloDatos[cod_ref]) {
@@ -1099,7 +1094,13 @@ class Levante extends MYDB {
         break;
 	  
     }
-	
+	if($arregloDatos[tipo_movimiento]==17){
+		//$arregloDatos[peso_naci_para]=$arregloDatos[peso_naci_para]/1*-1;
+		//$arregloDatos[peso_nonaci_para]=$arregloDatos[peso_nonaci_para]/1*-1;
+		//$arregloDatos[cantidad_naci_para]=$arregloDatos[cantidad_naci_para]/1*-1;
+		//$arregloDatos[cantidad_nonaci_para]=$arregloDatos[cantidad_nonaci_para]/1*-1;
+		//$arregloDatos[fob_ret]=$arregloDatos[fob_ret]/1*-1;
+	}
     //Captura automática de fecha y hora 
     $fecha = new DateTime();
     $fecha = $fecha->format('Y-m-d H:i');
@@ -1118,7 +1119,6 @@ class Levante extends MYDB {
     $arregloDatos[mensaje] = "se retiro correctamente la mercancia ";
     $arregloDatos[estilo] = $this->estilo_ok;
   }
-  
    // Agrega registro de mercancia retirada
   function addItemRetiroAcondicionamiento($arregloDatos) {
     //si no existe un levante se deja como levante el id del movimiento esto permite borrar movimientos con varios registros 
@@ -1176,7 +1176,13 @@ class Levante extends MYDB {
         break;
 	  
     }
-	
+	if($arregloDatos[tipo_movimiento]==17){
+		//$arregloDatos[peso_naci_para]=$arregloDatos[peso_naci_para]/1*-1;
+		//$arregloDatos[peso_nonaci_para]=$arregloDatos[peso_nonaci_para]/1*-1;
+		//$arregloDatos[cantidad_naci_para]=$arregloDatos[cantidad_naci_para]/1*-1;
+		//$arregloDatos[cantidad_nonaci_para]=$arregloDatos[cantidad_nonaci_para]/1*-1;
+		//$arregloDatos[fob_ret]=$arregloDatos[fob_ret]/1*-1;
+	}
     //Captura automática de fecha y hora 
     $fecha = new DateTime();
     $fecha = $fecha->format('Y-m-d H:i');
@@ -1559,7 +1565,7 @@ class Levante extends MYDB {
     //antes im.tipo_movimiento ahora imm_tip_movimiento en el select y en el where
     $sede = $_SESSION['sede'];
     $sql = "SELECT DISTINCT imm.fecha,imm.codigo AS cod_mov,imm.lev_documento,do_asignados.do_asignado,imm.tip_movimiento,
-              imm.tipo_retiro,imm.fmm,itm.nombre AS nombre_movimiento,itm.descripcion AS descripcion,clientes.numero_documento,
+              imm.tipo_retiro,imm.fmm,imm.cantidad_nac AS cantidad,itm.nombre AS nombre_movimiento,itm.descripcion AS descripcion,clientes.numero_documento,
               clientes.razon_social AS nombre_cliente,aduana.razon_social AS nombre_aduana,camiones.placa,camiones.conductor_nombre,
               im.tipo_movimiento as movimiento_tipo,
               IF(imm.tip_movimiento= 3,tipos_remesas.nombre,'') AS tipo_retiro_nombre
