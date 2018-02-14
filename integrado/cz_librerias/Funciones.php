@@ -12,7 +12,7 @@ function init() {
   global $servidorLDAP; 
    // setlocale (LC_NUMERIC, ""); //Línea para permitir el uso de decimales en el sitio. permite comas,  LOCAL 
   setlocale(LC_ALL, 'es_ES'); 
-  setlocale (LC_NUMERIC, ""); //Línea para permitir el uso de decimales en el sitio. permite comas, 
+  //setlocale (LC_NUMERIC, ""); //Línea para permitir el uso de decimales en el sitio. permite comas, 
   $config = parse_ini_file(CONFIG_FILE, true);
   $options = null;
   foreach ($config as $class => $values) {

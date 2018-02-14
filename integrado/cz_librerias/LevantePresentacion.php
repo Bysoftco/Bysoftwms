@@ -107,6 +107,7 @@ class LevantePresentacion {
   }
 
   function maestro($arregloDatos) {
+  
     if($arregloDatos[tipo_retiro_label] == "Matriz") {
       $this->plantilla->setVariable('tipo_retiro_label', 'Matriz');
     }
@@ -578,6 +579,7 @@ class LevantePresentacion {
         $arregloDatos[fob_nonaci_aux] = $datos->fob_nonaci;
         $arregloDatos[ext] = "/FOB";
         break;
+		case 16: // garantiza valores positivos en mercancia acondicionada
 		case 17: // garantiza valores positivos en rechazados
 			  $arregloDatos[cantidad_naci] = abs($datos->cantidad_naci);
         	$arregloDatos[peso_naci] = abs($datos->peso_naci);
