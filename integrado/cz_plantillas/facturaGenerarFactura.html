@@ -212,9 +212,12 @@
 				   if($('#subtotal').val()/1 <= $('#tope_minimo_retencion').val()/1){
 				   
 				   		retiene=0;  // Se aprovecha el if que ya existia para que NO HAGA NINGUNA RETENCION
-						
-						
-				   }
+					}
+					if($('#subtotal').val()/1 <= $('#tope_minimo_rete_ica').val()/1){
+				   		 $('#rte_ica').val(0);
+						 
+				   
+					}
 				  // Si no se hacen retenciones se anulan los calculos
 				   if(retiene==0){
 				   		 $('#rte_fuente').val(0);
