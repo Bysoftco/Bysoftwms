@@ -882,13 +882,14 @@ class Levante extends MYDB {
   // Devuelve los datos de la cabeza del retiro y del levente
   function getCabezaLevante($arregloDatos) {
     $sql = "SELECT  imm.codigo AS num_levante,imm.lev_sia,lev_cant_declaraciones AS lev_cant,lev_bultos,
-                    imm.fecha,imm.destinatario,imm.direccion,imm.obs,imm.fmm,imm.lev_cuenta_grupo,
+                    imm.fecha,imm.destinatario,imm.direccion,imm.obs,imm.fmm,imm.lev_cuenta_grupo,prefactura,
                     clientes.razon_social,imm.producto,camiones.conductor_nombre,camiones.codigo AS id_camion,
                     camiones.placa,referencias.nombre AS nombre_producto,imm.cantidad,imm.cantidad_nac,
                     imm.cantidad_ext,imm.doc_tte,imm.peso,imm.valor,imm.unidad,imm.bodega,imm.orden,
                     imm.cierre,imm.pos_arancelaria,imm.tip_movimiento,imm.tipo_retiro,imm.posicion,
                     imm.pedido,imm.destinatario,imm.ciudad AS codigo_ciudad,ubicaciones.nombre AS nombre_ubicacion,
 					imm.peso_ext,imm.peso_nac,
+					
                     posiciones.nombre AS nombre_posicion,ciudades.nombre AS nombre_ciudad,bodegas.nombre AS nombre_bodega, 
                     destinatarios.razon_social AS nombre_destinatario
             FROM inventario_maestro_movimientos imm
@@ -941,7 +942,8 @@ class Levante extends MYDB {
                 ciudad                  = '$arregloDatos[codigo_ciudad]',
                 id_camion               = '$arregloDatos[id_camion]',
                 destinatario            = '$arregloDatos[destinatario]',
-                direccion               = '$arregloDatos[direccion]'
+                direccion               = '$arregloDatos[direccion]',
+				prefactura               = '$arregloDatos[multiple]'
             WHERE codigo = $arregloDatos[id_levante]";
 
     $this->_lastError = NULL;

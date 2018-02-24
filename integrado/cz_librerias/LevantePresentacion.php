@@ -278,6 +278,12 @@ class LevantePresentacion {
       $arregloDatos[sum_cant_naci] = 0;
     }
     $arregloDatos[prefijo]="03".date('Y')."000";
+	
+	// Si es un levante Mixto se traen los datos del levante anterior
+	if($arregloDatos[mixto])
+	{
+		//var_dump($arregloDatos);
+	}
     $this->setValores($arregloDatos, $unDatos, $plantilla);
     $this->mantenerDatos($arregloDatos, $plantilla);
   }
@@ -294,7 +300,9 @@ class LevantePresentacion {
   }
 
   function getCabezaLevante($arregloDatos, $unDatos, $unaPlantilla) {
-    // si es procesamiento parcial interno	
+    
+	
+	// si es procesamiento parcial interno	
     $unaConsulta = new Levante();
     $arregloDatos[cuenta_grupos] = $unDatos->lev_cuenta_grupo;
     $unaConsulta->cuentaDeclaraciones($arregloDatos);
@@ -303,6 +311,9 @@ class LevantePresentacion {
     if($unDatos->lev_cuenta_grupo > 1) {
       //".$unDatos->lev_cuenta_grupo;
       $unaPlantilla->setVariable("parcial", $unDatos->lev_cuenta_grupo);
+    }
+	if($unDatos->prefactura == 1) {
+      $unaPlantilla->setVariable("checked_multiple", "checked");
     }
 
     if($arregloDatos[parcial] == 1) {
