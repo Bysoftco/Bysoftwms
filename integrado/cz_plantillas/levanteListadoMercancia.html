@@ -3,92 +3,60 @@
     $(function()
 
     {
+		$("a.id_mercancia").click(function()
 
-        $("a.id_mercancia").click(function()
-
-        { //check for the first selection
+        { 
 
             var $column = $(this).attr('id'); // assign the ID of the column
 
             with (document.listadoMercancia)
+			{
 
-            {
+			   var id_item = $("#id_unitem" + $column).val();
+			   var cod_ref = $("#cod_ref" + $column).val();
+			   var fob = $("#fob" + $column).val();
 
+              if (fob == 0) 
+			  {
+				if (confirm("La mercancia esta sin nacionalizar se aconseja costearla antes de nacionalizar,use el menu de Costeo")) 
+				{
+					$('.popupsCosteo a').click();
+					return false;
 
+                 }
 
-                var id_item = $("#id_unitem" + $column).val();
+              }
 
-                var cod_ref = $("#cod_ref" + $column).val();
+				if ($("#lev_cant").val() / 1 == 0)
+				{
+					alert("Antes de hacer un levante debe ingresar la informacion General")
+					$('#tabs').tabs("select", 0);
 
-                var fob = $("#fob" + $column).val();
+                } else 
+				{
+				
+				var mixto=0;
+				if( $('input[name="multiple"]').is(":checked"))
+				{
+					var mixto=1;
+				}
+				if ($("#cant_declaraciones").val() / 1 >= $("#lev_cant").val() / 1 && $('input[name="multiple"]').is(":checked")/1==0) 
+				{
+					alert("para agregar mas levantes cree un nuevo parcial marcando la casilla parcial");
 
-              
+                } else 
+				{
+					$("#dialog-form-hacer-levante").dialog("open");
+					$("#ventana_levante").html("Espere un momento....");
+					$("div#ventana_levante").load("./scripts_index.php", {clase: 'Levante', metodo: 'getItem', mostrar: '1', id_item: id_item, doc_filtro: $("#doc_filtro_aux").val(), id_levante: $("#id_levante").val(), num_declaraciones: $("#num_declaraciones_aux").val(), cant_declaraciones: $("#cant_declaraciones").val(), cant_bultos: $("#bultos_aux").val(), id_grupo: $("#id_grupo").val(), lev_bultos: $("#lev_bultos").val(), peso_declaraciones: $("#peso_declaraciones").val(), cod_ref: cod_ref, tipo_movimiento: $("#tipo_movimiento").val(), por_cuenta_filtro: $("#por_cuenta_aux").val(), orden_filtro: $("#orden_maestro").val(),mixto:mixto}, function(datos) {
+					});
 
-                if (fob == 0) {
-
-                    if (confirm("La mercancia esta sin nacionalizar se aconseja costearla antes de nacionalizar,use el menu de Costeo")) {
-
-                        $('.popupsCosteo a').click();
-
-                        return false;
-
-                    }
-
-                }
-
-
-
-                if ($("#lev_cant").val() / 1 == 0)
-
-                {
-
-                    alert("Antes de hacer un levante debe ingresar la informacion General")
-
-                    $('#tabs').tabs("select", 0);
-
-                } else {
-
-
-
-                    if ($("#cant_declaraciones").val() / 1 >= $("#lev_cant").val() / 1) { //cant_declaraciones, conteo declaraciones en LevanteCuerpo
-
-                        alert("para agregar mas levantes cree un nuevo parcial marcando la casilla parcial");
-
-                    } else {
-
-                        //id_item
-
-                        //alert($("#orden_detalle").val());
-
-                        $("#dialog-form-hacer-levante").dialog("open");
-
-                        $("#ventana_levante").html("Espere un momento....");
-
-                        $("div#ventana_levante").load("./scripts_index.php", {clase: 'Levante', metodo: 'getItem', mostrar: '1', id_item: id_item, doc_filtro: 							$("#doc_filtro_aux").val(), id_levante: $("#id_levante").val(), num_declaraciones: $("#num_declaraciones_aux").val(), cant_declaraciones: $("#cant_declaraciones").val(), cant_bultos: $("#bultos_aux").val(), id_grupo: $("#id_grupo").val(), lev_bultos: $("#lev_bultos").val(), peso_declaraciones: $("#peso_declaraciones").val(), cod_ref: cod_ref, tipo_movimiento: $("#tipo_movimiento").val(), por_cuenta_filtro: $("#por_cuenta_aux").val(), orden_filtro: $("#orden_maestro").val()}, function(datos) {
-
-                            //alert(datos)
-
-                        });
-
-                    }
-
-
-
-                }
-
-
-
-
-
-            }
-
-
-
-        });
+                  }
+				}
+			}
+		});
 
         $(":submit").button();
-
-        ;
 
     });
 

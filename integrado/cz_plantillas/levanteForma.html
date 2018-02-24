@@ -25,6 +25,12 @@
 		submitHandler: function(){
 			$.post("./scripts_index.php",{ clase:'Levante',metodo:'existeLevante',num_levante:$('#levante').val() } ,function(data){ 
 				var valida=1;
+				// si el MULTIPLE no se valida el nùmero de levante
+			
+				if($('input[name="multiple"]').is(":checked")/1==1)
+				{
+					data=0;
+				}
 				if(data >= 1){
 					var valida=0;
 					$("#msgbox_mov{id_form}").html('El Numero de Levante '+$('#levante').val()+' Ya Existe en la BD').addClass('ui-state-error');

@@ -340,6 +340,7 @@ class LevanteLogica {
   }
   
   function getItem($arregloDatos) {
+  //var_dump($arregloDatos);
     $arregloDatos[id_movimiento] = $arregloDatos[id_levante];
     $arregloDatos[id_form] = $arregloDatos[id_form]/1;
     
