@@ -54,7 +54,7 @@ class LevanteLogica {
 
     switch(trim($arregloDatos[tipo_movimiento])) {
       case 2: // Nacionalizacion
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,30";
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16x,30";
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercancia.html";
         $arregloDatos[metodoMercanciaCuerpo] = "listaInventario";
 
