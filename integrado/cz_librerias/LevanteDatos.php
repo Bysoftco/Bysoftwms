@@ -2108,9 +2108,10 @@ class Levante extends MYDB {
   }
   
    function datosDeclaracion($arregloDatos) {
+   
    		$sql ="SELECT *
 				FROM inventario_declaraciones
-				WHERE cod_maestro=3933
+				WHERE cod_maestro=$arregloDatos[id_levante]
 				LIMIT 1
 		";	
 		$this->query($sql);
