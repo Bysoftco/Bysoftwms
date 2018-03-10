@@ -193,7 +193,7 @@ class Levante extends MYDB {
 
 	//Función que lista el inventario para retirar solo devuelve mercancía disponible
 	function getInvParaRetiro($arregloDatos) {
-    $filtro = ($arregloDatos[tipo_retiro]==1) ? " peso_naci > 0" : " peso_nonac > 0 OR peso_naci > 0 ";
+    $filtro = ($arregloDatos[tipo_retiro]==1) ? " TRUNCATE(peso_naci,1) > 0" : " TRUNCATE(peso_nonac,1) > 0 OR TRUNCATE(peso_naci,1) > 0 ";
 		$arregloDatos[having] = " HAVING $filtro ";
 		if($arregloDatos[cod_ref]) {
 			$arregloDatos[where] .=" AND ref.codigo = '$arregloDatos[cod_ref]' AND arribos.orden = '$arregloDatos[orden_retiro]'"; // filtro por referencia
