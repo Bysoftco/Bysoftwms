@@ -169,7 +169,7 @@ class Levante extends MYDB {
 										razon_social
 									FROM  do_asignados, inventario_entradas ie,arribos,clientes,referencias ref,inventario_movimientos im
 									LEFT JOIN inventario_maestro_movimientos imm ON im.cod_maestro = imm.codigo
-									LEFT JOIN (SELECT MAX(num_levante ) AS num_levante,MAX(grupo) AS grupo  FROM inventario_declaraciones GROUP BY num_levante,grupo) id ON im.num_levante = id.num_levante
+									LEFT JOIN (SELECT MAX(num_levante ) AS num_levante,MIN(grupo) AS grupo  FROM inventario_declaraciones GROUP BY num_levante) id ON im.num_levante = id.num_levante
 									WHERE im.inventario_entrada = ie.codigo
 										AND arribos.arribo = ie.arribo
 										AND arribos.orden = do_asignados.do_asignado
@@ -182,7 +182,7 @@ class Levante extends MYDB {
 		$this->_lastError = NULL;
 		$this->query($sql);
 		//se rempalazo cruce con la tabla inventario_declaraciones 26022018 para no duplicar registros cuando es MULTIPLE
-		
+		//echo $sql;
 		if($this->_lastError) {
 			echo "Error" . $arregloDatos[metodo] . $sql . "<BR>";
 			$this->mensaje = "Error al consultar Inventario1 ";
@@ -1259,7 +1259,7 @@ class Levante extends MYDB {
 
     $this->query($sql);
     if($this->_lastError) {
-      $arregloDatos[mensaje] .= "error al nacionalizar la mercancia "; //$arregloDatos[mensaje] = "error al nacionalizar la mercancia ";//
+      $arregloDatos[mensaje] .= "error al nacionalizar la mercancia $sql "; //$arregloDatos[mensaje] = "error al nacionalizar la mercancia ";//
       $arregloDatos[estilo] = $this->estilo_error;
       return TRUE;
     }
