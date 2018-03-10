@@ -2106,6 +2106,18 @@ class Levante extends MYDB {
       return false;
     }
   }
+  
+   function datosDeclaracion($arregloDatos) {
+   
+   		$sql ="SELECT *
+				FROM inventario_declaraciones
+				WHERE cod_maestro=$arregloDatos[id_levante]
+				LIMIT 1
+		";	
+		$this->query($sql);
+   		 if($this->_lastError) {	
+		 }
+   }
 }
 //
 ?>
