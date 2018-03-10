@@ -284,6 +284,31 @@ class LevantePresentacion {
 	{
 		//var_dump($arregloDatos);
 	}
+	//Se averigua si ya existe una declaracion para mantener datos 
+	$unaConsulta = new Levante();
+	$unaConsulta->datosDeclaracion($arregloDatos);
+	$unaConsulta->fetch();
+	$arregloDatos[tipo_declaracion]="Inicial";
+	$arregloDatos[modalidad]="C100";
+	$arregloDatos[arancel]="5";
+	$arregloDatos[iva]="16";
+	if($unaConsulta->N > 0){
+		
+		$arregloDatos[prefijo]=$unaConsulta->num_levante;
+		$arregloDatos[fecha]=$unaConsulta->fecha;
+		$arregloDatos[tipo_declaracion]=$unaConsulta->tipo_declaracion;
+		$arregloDatos[subpartida]=$unaConsulta->subpartida;
+		$arregloDatos[cod_subpartida]=$unaConsulta->subpartida;
+		$arregloDatos[obs]=$unaConsulta->obs;
+		$arregloDatos[modalidad]=$unaConsulta->modalidad;
+		$arregloDatos[fob]=$unaConsulta->fob;
+		$arregloDatos[flete]=$unaConsulta->fletes;
+		$arregloDatos[valor_aduana]=$unaConsulta->aduana;
+		$arregloDatos[arancel]=$unaConsulta->arancel;
+		$arregloDatos[total]=$unaConsulta->total;
+		$arregloDatos[trm]=$unaConsulta->trm;
+	}
+	
     $this->setValores($arregloDatos, $unDatos, $plantilla);
     $this->mantenerDatos($arregloDatos, $plantilla);
   }
