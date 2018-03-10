@@ -301,11 +301,11 @@ class LevantePresentacion {
 		$arregloDatos[cod_subpartida]=$unaConsulta->subpartida;
 		$arregloDatos[obs]=$unaConsulta->obs;
 		$arregloDatos[modalidad]=$unaConsulta->modalidad;
-		$arregloDatos[fob]=$unaConsulta->fob;
-		$arregloDatos[flete]=$unaConsulta->fletes;
-		$arregloDatos[valor_aduana]=$unaConsulta->aduana;
+		//$arregloDatos[fob]=$unaConsulta->fob;
+		//$arregloDatos[flete]=$unaConsulta->fletes;
+		//$arregloDatos[valor_aduana]=$unaConsulta->aduana;
 		$arregloDatos[arancel]=$unaConsulta->arancel;
-		$arregloDatos[total]=$unaConsulta->total;
+		//$arregloDatos[total]=$unaConsulta->total;
 		$arregloDatos[trm]=$unaConsulta->trm;
 	}
 	
@@ -341,7 +341,8 @@ class LevantePresentacion {
       $unaPlantilla->setVariable("checked_multiple", "checked");
     }
 
-    if($arregloDatos[parcial] == 1) {
+    if($unDatos->lev_cuenta_grupo >= 1) {
+	
       $unaPlantilla->setVariable("checked", "checked");
     }
 
