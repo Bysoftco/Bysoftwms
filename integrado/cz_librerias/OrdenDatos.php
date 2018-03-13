@@ -587,7 +587,7 @@ class Orden extends MYDB {
 										camiones.conductor_nombre AS conductor,
 										camiones.placa,
 										transportador.nombre AS nom_transportador,
-                    paises.nombre AS parcial
+                    paises.nombre AS parcial,da.tipo_operacion
 						FROM arribos 
 						LEFT JOIN posiciones
 						ON arribos.ubicacion = posiciones.codigo
@@ -595,6 +595,8 @@ class Orden extends MYDB {
 						ON arribos.id_camion = camiones.codigo
 						LEFT JOIN transportador
 						ON arribos.transportador = transportador.codigo
+						LEFT JOIN do_asignados da
+						ON arribos.orden = da.do_asignado
             LEFT JOIN paises
             ON arribos.parcial = paises.codigo";
 
@@ -709,11 +711,19 @@ class Orden extends MYDB {
 	}
 
 	function addArribo($arregloDatos) {
+	$arregloDatos[moneda]=2;
+
+	if($arregloDatos[tipo_operacion]=='24'){
+	
+		$arregloDatos[bloquea_moneda]=1; // No se deja modificar	
+		$arregloDatos[moneda]=1; // si es Libre disposicion LA MONEDA es pesos
+	}
 		if(empty($arregloDatos[peso_bruto])){$arregloDatos[peso_bruto]=0;}
 		$fecha = date('Y/m/d');
     $nombre_sede = $_SESSION['nombre_sede'];    
     //Valida creación arribo desde Orden Crear
     if($arregloDatos[flgnewa]) {
+	var_dump($arregloDatos);
       $arregloDatos[paiscompra] = $this->findCodigoPais($arregloDatos[paiscompra]);      
 		  $sql = "INSERT INTO arribos(orden,factura,fecha_arribo,manifiesto,fecha_manifiesto,fecha_doc_tt,
                 tipo_documento,cantidad,peso_bruto,repeso,metros,estibas,seguros,otros_gastos,valor_fob,
@@ -736,10 +746,10 @@ class Orden extends MYDB {
         strlen($arregloDatos[origen])-(strpos($arregloDatos[origen],',')+2));
       $arregloDatos[paiscompra] = $this->findCodigoPais($arregloDatos[parcial]);
 		  $sql = "INSERT INTO arribos(orden,fecha_arribo,manifiesto,origen,destino,ubicacion,
-                tipo_documento,parcial,sitio,peso_bruto)
+                tipo_documento,parcial,sitio,peso_bruto,moneda)
               VALUES('$arregloDatos[do_asignado]','$fecha','$arregloDatos[manifiesto]',
                 '$arregloDatos[origen]','$arregloDatos[destino]','$arregloDatos[ubicacion]',
-                '$arregloDatos[tipo_documento]','$arregloDatos[paiscompra]','$nombre_sede',$arregloDatos[peso_bruto])";
+                '$arregloDatos[tipo_documento]','$arregloDatos[paiscompra]','$nombre_sede',$arregloDatos[peso_bruto],'$arregloDatos[moneda]')";
     }
 
 		$this->query($sql);
