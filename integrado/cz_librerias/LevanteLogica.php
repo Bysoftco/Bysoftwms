@@ -72,7 +72,7 @@ class LevanteLogica {
         break;
       case 3: // Retiro
       case 7: // Alistamiento
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30"; 
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         $arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
         
@@ -88,7 +88,7 @@ class LevanteLogica {
         $arregloDatos[v_aux_nonac] = "0";
         break;
       case 8: //Envia Productos en Proceso
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30"; 
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         $arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
         
@@ -104,7 +104,7 @@ class LevanteLogica {
         $arregloDatos[v_aux_nonac] = "0";
         break;
       case 13: //Enndoso
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,30";
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30";
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         $arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
         
@@ -171,7 +171,7 @@ class LevanteLogica {
         	$arregloDatos[v_aux_nonac] = "0";
 		break;
       default: // Cualquier movimiento que no este definido se presenta como retiro
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30"; 
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         $arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
         
@@ -512,10 +512,14 @@ class LevanteLogica {
 	switch($arregloDatos[tipo_movimiento]) {
 		  case 16:
 		  		//$arregloDatos[tipo_movimiento]='30';
-		  		$this->datos->addItemRetiroAcondicionamiento($arregloDatos); //linea para probar
+		  		$this->datos->addItemRetiroAcondicionamiento($arregloDatos); 
+				$arregloDatos[tipo_movimiento]='30';
+				$this->datos->addItemRetiro($arregloDatos); 
 		  break;
 		  case 17:
 		  	$this->datos->addItemRetiroAlistamiento($arregloDatos);
+			//$arregloDatos[tipo_movimiento]='30';
+			//$this->datos->addItemRetiro($arregloDatos);
 		  break;
 		  default:
 		  	$this->datos->addItemRetiro($arregloDatos);

@@ -145,12 +145,14 @@
 
   $('#cantidad_naci_para').blur(function() {//Nacional
     // solo si es mayor a cero
+	
     if($('#peso_naci_aux').val() > 0) {
+	
       var pesoProp = ($('#peso_naci_aux').val() / $('#cantidad_naci_aux').val()) * $('#cantidad_naci_para').val();
       pesoProp = pesoProp.toFixed(2);
       $('#peso_naci_para').val(pesoProp);
     }
-
+	
     if($('#fob_yanaci_aux').val() > 0) {
       var fobProp = ($('#fob_yanaci_aux').val() / $('#cantidad_naci_aux').val()) * $('#cantidad_naci_para').val();
       fobProp = fobProp.toFixed(2);
@@ -385,5 +387,5 @@
   <input type="hidden" name="mercancia" id="mercancia" value="[{cod_referencia}] {nombre_referencia}" />
   <input name="cod_ref_aux" type="hidden" id="cod_ref_aux" value="{cod_ref} " />
   <input name="orden_retiro_aux" type="hidden" id="orden_retiro_aux" value="{orden_retiro} " />
-  *{tipo_retiro_filtro}{ordenX} {tipo_retiro_filtroX} {tipo_movimientoX} 
+  {tipo_retiro_filtroX}{ordenX} {tipo_retiro_filtroX} {tipo_movimientoX} 
 </form>
