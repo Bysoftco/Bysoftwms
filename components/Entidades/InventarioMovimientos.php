@@ -20,14 +20,15 @@ class InventarioMovimientos extends BDControlador {
   var $cantidad_nonac = 0;
   var $cif = 0;
   var $fob_nonac = 0;
-  //var $flg_control;
+  var $estado_mcia = 1;
+  var $flg_control = 1;
   
   var $table_name = "inventario_movimientos";
   var $module_directory = 'Entidades';
   var $object_name = "InventarioMovimientos";
   
   var $campos = array('inventario_entrada', 'fecha', 'tipo_movimiento', 'cod_maestro', 'num_levante', 'peso_naci', 
-    'peso_nonac', 'cantidad_naci', 'cantidad_nonac', 'cif', 'fob_nonac', 'flg_control');
+    'peso_nonac', 'cantidad_naci', 'cantidad_nonac', 'cif', 'fob_nonac', 'estado_mcia', 'flg_control');
   
   function __construct() {
     parent :: Manejador_BD();

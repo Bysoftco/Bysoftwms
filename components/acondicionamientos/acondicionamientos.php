@@ -3,8 +3,9 @@
  * Description of acondicionamientos
  *
  * @author  Fredy Salom <fsalom@bysoft.us>
- * @date    10-Octubre-2017 
+ * @date    10-Marzo-2018 
  */
+ 
 if(!defined('entrada_valida')) die('Acceso directo no permitido');
 require_once COMPONENTS_PATH.'acondicionamientos/views/vista.php';
 require_once COMPONENTS_PATH.'acondicionamientos/model/acondicionamientos.php';
@@ -25,7 +26,7 @@ class acondicionamientos {
   }
 
   function filtroCliente($arreglo) {
-    $this->vista->filtroClientes();
+    $this->vista->filtroCliente();
   }
   
   function filtroRechazadas($arreglo) {
@@ -90,6 +91,7 @@ class acondicionamientos {
     }
     $arregloEnviar['id_registro'] = $codigoMaestro;
     $arregloEnviar['tipo_mercancia'] = $arreglo['tipo_mercancia'];
+    $arregloEnviar['nombre_tipo_mercancia'] = $arreglo['nombre_tipo_mercancia'];
     $this->mostrarAcondicionamiento($arregloEnviar);
   }
 
@@ -116,14 +118,14 @@ class acondicionamientos {
 
   function acondicionarNacional($arreglo, $codigoMaestro, $codigoNuevaEntrada) {
     $arregloMaestro = $this->armarArregloEncabezado($arreglo);
-
+ 
     $cantidadTotal = 0;
-    foreach($arreglo['cantidad_retirar'] as $key => $value) {
+    foreach($arreglo['cantidad_acondicionar'] as $key => $value) {
       $cantidadTotal += $value;
       $cantidad = $value;
-      $disponbiblesRetirar = $this->datos->disponiblesRetirar($key, $arreglo['doc_cliente']);
-
-      foreach($disponbiblesRetirar as $valueDisponibles) {
+      $disponiblesRetirar = $this->datos->disponiblesRetirar($key, $arreglo['doc_cliente']);
+      
+      foreach($disponiblesRetirar as $valueDisponibles) {
         $arregloRetirar = array();
         $arregloRetirar['inventario_entrada'] = $valueDisponibles['inventario_entrada'];
         $arregloRetirar['fecha'] = date('Y-m-d H:i');
@@ -146,11 +148,59 @@ class acondicionamientos {
           $arregloMaestro['peso'] += abs($arregloRetirar['peso_naci']);
           $inv_entrada = $valueDisponibles['inventario_entrada'];
           $ordenAsignar = $this->datos->retornarOrden($valueDisponibles['inventario_entrada']);
-
+          
+          //Guarda en inventario_movimientos la Mercancía Nacional a Acondicionar
           $inventarioMov = new InventarioMovimientos();
           $_POST = $arregloRetirar;
           recuperar_Post($inventarioMov);
           $inventarioMov->save();
+
+          //Valida Existencia de Mercancía Nacional Rechazada
+          if($arreglo['cantidad_rechazar'][$key]!=0) {
+            $peso_uni = $valueDisponibles['peso_nacional'] / $valueDisponibles['cantidad_nacional'];
+            $valor_uni = $valueDisponibles['cif'] / $valueDisponibles['cantidad_nacional'];
+            //Registra Mercancía Nacional Rechazada
+            $arregloRetirar['peso_naci'] = $arreglo['cantidad_rechazar'][$key] * $peso_uni * -1;
+            $arregloRetirar['cantidad_naci'] = $arreglo['cantidad_rechazar'][$key] * -1;
+            $arregloRetirar['cif'] = $arreglo['cantidad_rechazar'][$key] * $valor_uni * -1;
+            
+            $arregloRetirar['estado_mcia'] = $arreglo['tipo_rechazo'][$key];
+            
+            //Guarda en inventario_movimientos la Mercancía Nacional a Rechazar
+            $inventarioMov = new InventarioMovimientos();
+            $_POST = $arregloRetirar;
+            recuperar_Post($inventarioMov);
+            $inventarioMov->save();
+          }
+          
+          //Valida Existencia de Mercancía Nacional Devuelta
+          if($arreglo['cantidad_devueltas'][$key]!=0) {
+            $peso_uni = $valueDisponibles['peso_nacional'] / $valueDisponibles['cantidad_nacional'];
+            $valor_uni = $valueDisponibles['cif'] / $valueDisponibles['cantidad_nacional'];
+            //Registra Mercancía Nacional Devuelta
+            $arregloRetirar['peso_naci'] = $arreglo['cantidad_devueltas'][$key] * $peso_uni;
+            $arregloRetirar['cantidad_naci'] = $arreglo['cantidad_devueltas'][$key];
+            $arregloRetirar['cif'] = $arreglo['cantidad_devueltas'][$key] * $valor_uni;
+            
+            $arregloRetirar['estado_mcia'] = 0;
+            
+            //Guarda en inventario_movimientos la Mercancía Nacional a Devolver
+            $inventarioMov = new InventarioMovimientos();
+            $_POST = $arregloRetirar;
+            recuperar_Post($inventarioMov);
+            $inventarioMov->save();
+            
+            $arregloRetirar['tipo_movimiento'] = 30;
+            $arregloRetirar['peso_naci'] = $arregloRetirar['peso_naci'] * -1;
+            $arregloRetirar['cantidad_naci'] = $arregloRetirar['cantidad_naci'] * -1;
+            $arregloRetirar['cif'] = $arregloRetirar['cif'] * -1;
+            
+            //Guarda en inventario_movimientos el Comodin de Devolución
+            $inventarioMov = new InventarioMovimientos();
+            $_POST = $arregloRetirar;
+            recuperar_Post($inventarioMov);
+            $inventarioMov->save();
+          }
         }
         if($cantidad==0) { break; }
       }
@@ -170,12 +220,12 @@ class acondicionamientos {
     $arregloMaestro=$this->armarArregloEncabezado($arreglo);
 
     $cantidadTotal = 0;
-    foreach($arreglo['cantidad_retirar'] as $key => $value) {
+    foreach($arreglo['cantidad_acondicionar'] as $key => $value) {
       $cantidadTotal += $value;
       $cantidad = $value;
-      $disponbiblesRetirar = $this->datos->disponiblesRetirar($key, $arreglo['doc_cliente']);
+      $disponiblesRetirar = $this->datos->disponiblesRetirar($key, $arreglo['doc_cliente']);
       
-      foreach($disponbiblesRetirar as $valueDisponibles) {
+      foreach($disponiblesRetirar as $valueDisponibles) {
         $arregloRetirar = array();
         $arregloRetirar['inventario_entrada'] = $valueDisponibles['inventario_entrada'];
         $arregloRetirar['fecha'] = date('Y-m-d H:i');
@@ -199,104 +249,63 @@ class acondicionamientos {
           $arregloMaestro['peso'] += abs($arregloRetirar['peso_nonac']);
           $inv_entrada = $valueDisponibles['inventario_entrada'];
           $ordenAsignar = $this->datos->retornarOrden($valueDisponibles['inventario_entrada']);
-          
+
+          //Guarda en inventario_movimientos la Mercancía Extranjera a Acondicionar
           $inventarioMov = new InventarioMovimientos();
           $_POST = $arregloRetirar;
           recuperar_Post($inventarioMov);
           $inventarioMov->save();
-        }
-        if($cantidad==0) { break; }
-      }
-    }
-    $arregloMaestro['orden'] = isset($ordenAsignar->orden) ? $ordenAsignar->orden : "";
-    $arregloMaestro['arribo'] = isset($ordenAsignar->arribo) ? $ordenAsignar->arribo : 0;
-    $arregloMaestro['cantidad'] = $cantidadTotal;
-    $arregloMaestro['cantidad_ext'] = $cantidadTotal;
-    
-    $invMaestro = new InventarioMaestroMovimientos();
-    $_POST = $arregloMaestro;
-    recuperar_Post($invMaestro);
-    $codigoMaestro = $invMaestro->save($codigoMaestro, 'codigo');
-  }
-  
-  function acondicionarMixta($arreglo, $codigoMaestro, $codigoNuevaEntrada) {
-    $arregloMaestro = $this->armarArregloEncabezado($arreglo);
-    
-    $cantidadTotal = 0;
-    foreach($arreglo['cantidad_retirar'] as $key => $value) {
-      $cantidadTotal += $value;
-      $cantidad = $value;
-      $disponbiblesRetirar = $this->datos->disponiblesRetirar($key, $arreglo['doc_cliente']);
-      
-      foreach($disponbiblesRetirar as $valueDisponibles) {
-        $arregloRetirar = array();
-        $arregloRetirar['inventario_entrada'] = $valueDisponibles['inventario_entrada'];
-        $arregloRetirar['fecha'] = date('Y-m-d H:i');
-        $arregloRetirar['tipo_movimiento'] = 16;
-        $arregloRetirar['cod_maestro'] = $codigoMaestro;
-        
-        if($valueDisponibles['cantidad_no_nacional']>0) {
-          if($valueDisponibles['cantidad_no_nacional']<=$cantidad) {
-            $arregloRetirar['peso_nonac'] = $valueDisponibles['peso_no_nacional'] * -1;
-            $arregloRetirar['cantidad_nonac'] = $valueDisponibles['cantidad_no_nacional'] * -1;
-            $arregloRetirar['fob_nonac'] = $valueDisponibles['fob_nonac'] * -1;
-            $cantidad -= $valueDisponibles['cantidad_no_nacional'];
-          } else {
-            $arregloRetirar['peso_nonac'] = (($cantidad*$valueDisponibles['peso_no_nacional'])/($valueDisponibles['cantidad_no_nacional'])) * -1;
-            $arregloRetirar['cantidad_nonac'] = $cantidad * -1;
-            $arregloRetirar['fob_nonac'] = (($cantidad*$valueDisponibles['fob_nonac'])/($valueDisponibles['cantidad_no_nacional'])) * -1;
-            $cantidad = 0;
-          }
-          
-          $arregloMaestro['valor'] += abs($arregloRetirar['fob_nonac']);
-          $arregloMaestro['peso'] += abs($arregloRetirar['peso_nonac']);
-          $inv_entrada = $valueDisponibles['inventario_entrada'];
-          $ordenAsignar = $this->datos->retornarOrden($valueDisponibles['inventario_entrada']);
-          
-          $inventarioMov = new InventarioMovimientos();
-          $_POST = $arregloRetirar;
-          recuperar_Post($inventarioMov);
-          $inventarioMov->save();
-        }
-        if($cantidad==0) { break; }
-      }
-      
-      if($cantidad>0) {
-        foreach($disponbiblesRetirar as $valueDisponibles) {
-          $arregloRetirar = array();
-          $arregloRetirar['inventario_entrada'] = $valueDisponibles['inventario_entrada'];
-          $arregloRetirar['fecha'] = date('Y-m-d H:i');
-          $arregloRetirar['tipo_movimiento'] = 16;
-          $arregloRetirar['cod_maestro'] = $codigoMaestro;
-          
-          if($valueDisponibles['cantidad_nacional']>0) {
-            if($valueDisponibles['cantidad_nacional']<=$cantidad) {
-              $arregloRetirar['peso_naci'] = $valueDisponibles['peso_nacional'] * -1;
-              $arregloRetirar['cantidad_naci'] = $valueDisponibles['cantidad_nacional'] * -1;
-              $arregloRetirar['cif'] = $valueDisponibles['cif'] * -1;
-              $cantidad -= $valueDisponibles['cantidad_nacional'];
-            } else {
-              $arregloRetirar['peso_naci'] = (($cantidad*$valueDisponibles['peso_nacional'])/($valueDisponibles['cantidad_nacional'])) * -1;
-              $arregloRetirar['cantidad_naci'] = $cantidad * -1;
-              $arregloRetirar['cif'] = (($cantidad*$valueDisponibles['cif'])/($valueDisponibles['cantidad_nacional'])) * -1;
-              $cantidad = 0;
-            }
+
+          //Valida Existencia de Mercancía Extranjera Rechazada
+          if($arreglo['cantidad_rechazar'][$key]!=0) {
+            $peso_uni = $valueDisponibles['peso_no_nacional'] / $valueDisponibles['cantidad_no_nacional'];
+            $valor_uni = $valueDisponibles['fob_nonac'] / $valueDisponibles['cantidad_no_nacional'];
+            //Registra Mercancía Extranjera Rechazada
+            $arregloRetirar['peso_nonac'] = $arreglo['cantidad_rechazar'][$key] * $peso_uni * -1;
+            $arregloRetirar['cantidad_nonac'] = $arreglo['cantidad_rechazar'][$key] * -1;
+            $arregloRetirar['fob_nonac'] = $arreglo['cantidad_rechazar'][$key] * $valor_uni * -1;
             
-            $arregloMaestro['valor'] += abs($arregloRetirar['cif']);
-            $arregloMaestro['peso'] += abs($arregloRetirar['peso_naci']);
-            $inv_entrada = $valueDisponibles['inventario_entrada'];
-            $ordenAsignar = $this->datos->retornarOrden($valueDisponibles['inventario_entrada']);
+            $arregloRetirar['estado_mcia'] = $arreglo['tipo_rechazo'][$key];
             
+            //Guarda en inventario_movimientos la Mercancía Extranjera a Rechazar
             $inventarioMov = new InventarioMovimientos();
             $_POST = $arregloRetirar;
             recuperar_Post($inventarioMov);
             $inventarioMov->save();
           }
-          if($cantidad==0) { break; }
+          
+          //Valida Existencia de Mercancía Extranjera Devuelta
+          if($arreglo['cantidad_devueltas'][$key]!=0) {
+            $peso_uni = $valueDisponibles['peso_no_nacional'] / $valueDisponibles['cantidad_no_nacional'];
+            $valor_uni = $valueDisponibles['fob_nonac'] / $valueDisponibles['cantidad_no_nacional'];
+            //Registra Mercancía Extranjera Devuelta
+            $arregloRetirar['peso_nonac'] = $arreglo['cantidad_devueltas'][$key] * $peso_uni;
+            $arregloRetirar['cantidad_nonac'] = $arreglo['cantidad_devueltas'][$key];
+            $arregloRetirar['fob_nonac'] = $arreglo['cantidad_devueltas'][$key] * $valor_uni;
+            
+            $arregloRetirar['estado_mcia'] = 0;
+            
+            //Guarda en inventario_movimientos la Mercancía Extranjera a Devolver
+            $inventarioMov = new InventarioMovimientos();
+            $_POST = $arregloRetirar;
+            recuperar_Post($inventarioMov);
+            $inventarioMov->save();
+            
+            $arregloRetirar['tipo_movimiento'] = 30;
+            $arregloRetirar['peso_nonac'] = $arregloRetirar['peso_nonac'] * -1;
+            $arregloRetirar['cantidad_nonac'] = $arregloRetirar['cantidad_nonac'] * -1;
+            $arregloRetirar['fob_nonac'] = $arregloRetirar['fob_nonac'] * -1;
+            
+            //Guarda en inventario_movimientos el Comodin de Devolución
+            $inventarioMov = new InventarioMovimientos();
+            $_POST = $arregloRetirar;
+            recuperar_Post($inventarioMov);
+            $inventarioMov->save();
+          }
         }
+        if($cantidad==0) { break; }
       }
     }
-    
     $arregloMaestro['orden'] = isset($ordenAsignar->orden) ? $ordenAsignar->orden : "";
     $arregloMaestro['arribo'] = isset($ordenAsignar->arribo) ? $ordenAsignar->arribo : 0;
     $arregloMaestro['cantidad'] = $cantidadTotal;
@@ -307,27 +316,13 @@ class acondicionamientos {
     recuperar_Post($invMaestro);
     $codigoMaestro = $invMaestro->save($codigoMaestro, 'codigo');
   }
-  
+
   function mostrarAcondicionamiento($arreglo) {
-    //Carga el cuadro de lista Tipo de Rechazo - Tabla: estados_mcia
-    $lista_tiporechazo = $this->datos->build_list("estados_mcia", "codigo", "nombre");
-    $arreglo['select_tiporechazo'] = $this->datos->armSelect($lista_tiporechazo, 'Seleccione Tipo Rechazo...', 1);
     $this->vista->mostrarAcondicionamiento($arreglo);
   }
   
   function mostrarEtiquetarAcondicionamiento($arreglo) {
     $this->vista->mostrarEtiquetarAcondicionamiento($arreglo);
-  }
-  
-  function registrarAcondicionamiento($arreglo) {
-    $arreglo['id_registro'] = $arreglo['codigo_operacion'];
-    //Actualización cantidad acondicionada en inventario_movimientos
-    $this->datos->registrarAcondicionamiento(1,$arreglo);
-    //Inserción novedades de Rechazo y Devolución con estado de la mercancia en inventario_movimientos
-    $this->datos->registrarAcondicionamiento(2,$arreglo);
-    //Actualización cantidad acondicionada en inventario_maestro_movimientos
-    $this->datos->registrarAcondicionamiento(3,$arreglo);
-    $this->mostrarAcondicionamiento($arreglo);
   }
   
   function cerrarAcondicionamiento($arreglo) {
@@ -355,13 +350,8 @@ class acondicionamientos {
     $this->vista->mostrarDetalleAcondicionamiento($arreglo['id_registro']);
   }
   
-  function generarPackingList($arreglo) {
-    $arregloEnviar['id_registro'] = $arreglo['codigoMaestro'];
-    $this->mostrarPackingList($arregloEnviar);
-  }
-  
-  function mostrarPackingList($arreglo) {
-    $this->vista->mostrarPackingList($arreglo['id_registro']);
+  function generarOrdenAcondicionamiento($arreglo) {
+    $this->vista->generarOrdenAcondicionamiento($arreglo);
   }
     
   function mostrarEtiqueta($arreglo) {

@@ -22,15 +22,17 @@
     <tr>
       <td align="right">Tipo de mercancía:</td>
       <td align="left">
-        <select class="{required:true} input" id="tipo_mercancia" name="tipo_mercancia" style="width: 260px;">
+        <select class="{required:true} input" id="tipo_mercancia" name="tipo_mercancia"
+          style="width: 260px;" onchange="nuevoTipoMercancia()">
           <option value="1">Nacional</option>
           <option value="2">Extranjera</option>
         </select>
       </td>
+      <input type="hidden" name="nombre_tipo_mercancia" id="nombre_tipo_mercancia" value="" />
     </tr>
     <tr align="center">
       <td colspan="2">
-        <input type="submit" name="enviar" value="Enviar" />
+        <input type="submit" class="button" name="enviar" value="Enviar" />
       </td>
     </tr>
   </table>
@@ -38,7 +40,14 @@
 <script>
   $().ready(function() {
     $("#filtroCliente").validate();
+    var nm = document.getElementById("tipo_mercancia");
+    $("#nombre_tipo_mercancia").val(nm.options[nm.selectedIndex].text);
   });
+  
+  function nuevoTipoMercancia() {
+    var nm = document.getElementById("tipo_mercancia");
+    $("#nombre_tipo_mercancia").val(nm.options[nm.selectedIndex].text);   
+  }
 
   function mostrarReferencias() {
     $.ajax({

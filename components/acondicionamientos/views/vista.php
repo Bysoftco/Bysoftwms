@@ -3,7 +3,7 @@
  * Description of acondicionaVista
  *
  * @author  Fredy Salom <fsalom@bysoft.us>
- * @date    07-Febrero-2018
+ * @date    24-Febrero-2018
  */
 
 require_once COMPONENTS_PATH . 'Entidades/Clientes.php';
@@ -19,8 +19,8 @@ class acondicionaVista {
     $this->datos = new acondicionaDatos();
   }
   
-  function filtroClientes() {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/filtroClientes.php' );
+  function filtroCliente() {
+    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/filtroCliente.php' );
     $this->template->setVariable('COMODIN', '' );
     $this->template->show();
   }
@@ -80,13 +80,7 @@ class acondicionaVista {
     $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/listadoReferencias.php' );
     $this->template->setVariable('COMODIN', '' );
     $this->template->setVariable('tipo_mercancia', $arreglo['tipo_mercancia']);
-    if($arreglo['tipo_mercancia']==1) {
-      $this->template->setVariable('nombre_tipo_mercancia', 'NACIONAL');
-    } else if($arreglo['tipo_mercancia']==2) {
-      $this->template->setVariable('nombre_tipo_mercancia', 'EXTRANJERA');
-    } else if($arreglo['tipo_mercancia']==3) {
-      $this->template->setVariable('nombre_tipo_mercancia', 'MIXTA');
-    }
+    $this->template->setVariable('nombre_tipo_mercancia',$arreglo['nombre_tipo_mercancia']);        
     
     $cliente = new Clientes();
     $datosCliente = $cliente->recover($arreglo['docCliente'],'numero_documento');
@@ -109,16 +103,8 @@ class acondicionaVista {
             $this->template->setVariable('codigo', $valure['codigo']);
             $this->template->parseCurrentBlock("ROW");
           }
-        } else if($arreglo['tipo_mercancia']==2) {
+        } else {
           if($disponibles->cantidad_nonac>0) {
-            $this->template->setCurrentBlock("ROW");
-            $this->template->setVariable('codigo_ref', $valure['codigo_ref']);
-            $this->template->setVariable('nombre_ref', $valure['nombre']);
-            $this->template->setVariable('codigo', $valure['codigo']);
-            $this->template->parseCurrentBlock("ROW");
-          }
-        } else if($arreglo['tipo_mercancia']==3) {
-          if($disponibles->cantidad_mixto>0) {
             $this->template->setCurrentBlock("ROW");
             $this->template->setVariable('codigo_ref', $valure['codigo_ref']);
             $this->template->setVariable('nombre_ref', $valure['nombre']);
@@ -142,13 +128,7 @@ class acondicionaVista {
     $this->template->setVariable('nombre_cliente' , isset($datosCliente->razon_social)?$datosCliente->razon_social:'');
     
     $this->template->setVariable('tipo_mercancia' , $arreglo['tipo_mercancia']);
-    if($arreglo['tipo_mercancia']==1) {
-      $this->template->setVariable('nombre_tipo_mercancia' , 'NACIONAL');
-    } else if($arreglo['tipo_mercancia']==2) {
-      $this->template->setVariable('nombre_tipo_mercancia' , 'EXTRANJERA');
-    } else if($arreglo['tipo_mercancia']==3) {
-      $this->template->setVariable('nombre_tipo_mercancia' , 'MIXTA');
-    }
+    $this->template->setVariable('nombre_tipo_mercancia',$arreglo['nombre_tipo_mercancia']);
     
     //Inicializa Placa y Destino
     $this->template->setVariable('placa','111111');
@@ -163,21 +143,25 @@ class acondicionaVista {
     $fecha = $fecha->format('Y-m-d H:i');
     $this->template->setVariable('fecha',$fecha);
     
-    $value = $arreglo['seleccion'][0]; //Capturo Primera Selección
-    $referencias = new Referencias();
-    $datosReferencia = $referencias->recover($value, 'codigo'); //Recuperación de un Registro
-    // Información de la Primera Referencia Seleccionada
-    $this->template->setVariable('cod_referencia', isset($datosReferencia->codigo)?$datosReferencia->codigo:'');
-    $this->template->setVariable('codigo_referencia', isset($datosReferencia->codigo_ref)?$datosReferencia->codigo_ref:'');
-    $this->template->setVariable('nombre_referencia', isset($datosReferencia->nombre)?$datosReferencia->nombre:'');
-    $disponibles = $this->datos->disponiblesProducto($value,$arreglo['docCliente']);
-    $this->template->setVariable('doc_tte', isset($disponibles->doc_tte)?$disponibles->doc_tte:'');
-    if($arreglo['tipo_mercancia']==1) {
-      $this->template->setVariable('disponible', isset($disponibles->cantidad_naci)?number_format($disponibles->cantidad_naci,2,".",""):0);
-    } else if($arreglo['tipo_mercancia']==2) {
-      $this->template->setVariable('disponible', isset($disponibles->cantidad_nonac)?number_format($disponibles->cantidad_nonac,2,".",""):0);
-    } else if($arreglo['tipo_mercancia']==3) {
-      $this->template->setVariable('disponible', isset($disponibles->cantidad_mixto)?number_format($disponibles->cantidad_mixto,2,".",""):0);
+    //Carga el cuadro de lista Tipo de Rechazo - Tabla: estados_mcia
+    $lista_tiporechazo = $this->datos->build_list("estados_mcia", "codigo", "nombre");
+    $arreglo['select_tiporechazo'] = $this->datos->armSelect($lista_tiporechazo, 'Seleccione Tipo Rechazo...', 1);
+    
+    foreach($arreglo['seleccion'] as $value) {
+      $referencias = new Referencias();
+      $datosReferencia = $referencias->recover($value, 'codigo');
+
+      $this->template->setCurrentBlock("ROW");
+      $this->template->setVariable('cod_referencia', isset($datosReferencia->codigo)?$datosReferencia->codigo:'');
+      $this->template->setVariable('codigo_referencia', isset($datosReferencia->codigo_ref)?$datosReferencia->codigo_ref:'');
+      $this->template->setVariable('nombre_referencia', isset($datosReferencia->nombre)?$datosReferencia->nombre:'');
+      $this->template->setVariable('select_tiporechazo', $arreglo['select_tiporechazo']);
+      $disponibles = $this->datos->disponiblesProducto($value,$arreglo['docCliente']);
+      $this->template->setVariable('doc_tte', isset($disponibles->doc_tte)?$disponibles->doc_tte:'');
+
+      $vrdisponible = $arreglo['tipo_mercancia']==1?(isset($disponibles->cantidad_naci)?number_format($disponibles->cantidad_naci,2,".",""):0):(isset($disponibles->cantidad_nonac)?number_format($disponibles->cantidad_nonac,2,".",""):0);
+      $this->template->setVariable('disponible',$vrdisponible);
+      $this->template->parseCurrentBlock("ROW");
     }
     
     $this->template->show();
@@ -199,8 +183,8 @@ class acondicionaVista {
     }
 
     $this->template->setVariable('tipo_mercancia', $arreglo['tipo_mercancia']);
-    $this->template->setVariable('select_tiporechazo', $arreglo['select_tiporechazo']);
-        
+    $this->template->setVariable('nombre_tipo_mercancia', $arreglo['nombre_tipo_mercancia']);
+      
     $this->template->setVariable('codigo_operacion', $datosMaestro->codigo);
     $this->template->setVariable('numero_documento', $datosMaestro->numero_documento);    
     $this->template->setVariable('razon_social', $datosMaestro->razon_social);
@@ -214,9 +198,7 @@ class acondicionaVista {
     $this->template->setVariable('placa', $datosMaestro->placa);
     $this->template->setVariable('fmm', $datosMaestro->fmm);
     $this->template->setVariable('reginvima', $datosMaestro->parte_numero);
-    $this->template->setVariable('producto', $datosMaestro->nombre_referencia);
-    $this->template->setVariable('orden', $datosMaestro->orden);
-    $this->template->setVariable('doc_tte', $datosMaestro->doc_tte);
+    $this->template->setVariable('codigo', 'PGP-01-F1');
     $this->template->setVariable('pedido', $datosMaestro->pedido);
     $this->template->setVariable('cantidad', number_format($datosMaestro->cantidad,2,".",","));
     $this->template->setVariable('cantidad_nac', number_format($datosMaestro->cantidad_nac,2,".",","));
@@ -229,7 +211,7 @@ class acondicionaVista {
     foreach($detalleAcondicionamiento as $valueDetalle) {
       $this->template->setCurrentBlock("ROW");
       $this->template->setVariable('orden_detalle', $valueDetalle['orden']);
-      $this->template->setVariable('arribo', $valueDetalle['arribo']);
+      $this->template->setVariable('doc_tte', $valueDetalle['doc_tte']);
       $this->template->setVariable('inv_entrada', $valueDetalle['inventario_entrada']);
       $this->template->setVariable('codigo_referen', $valueDetalle['codigo_ref']);
       $this->template->setVariable('nombre_referencia', $valueDetalle['nombre_referencia']);
@@ -284,11 +266,11 @@ class acondicionaVista {
     $this->template->show();
   }
 
-  function mostrarPackingList($idRegistro) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/detallePackingList.php' );
+  function generarOrdenAcondicionamiento($arreglo) {
+    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/detalleOrdenAcondicionamiento.php' );
     $this->template->setVariable('COMODIN', '' );
     
-    $datosMaestro = $this->datos->retornarMaestroAcondicionamiento($idRegistro);
+    $datosMaestro = $this->datos->retornarMaestroAcondicionamiento($arreglo['codigoMaestro']);
     
     $this->template->setVariable('mostrar_botones', 'block');
     $this->template->setVariable('mostrar_mensaje', 'none');
@@ -297,8 +279,9 @@ class acondicionaVista {
       $this->template->setVariable('mostrar_mensaje', 'block');
     }
 
-    $this->template->setVariable('tipo_mercancia', $arreglo['tipo_mercancia']);
-    $this->template->setVariable('select_tiporechazo', $arreglo['select_tiporechazo']);
+    $this->template->setVariable('nombre_tipo_mercancia', $arreglo['nombre_tipo_mercancia']);
+    $this->template->setVariable('codigo_reporte', $arreglo['codigo_reporte']);
+
 
     $this->template->setVariable('codigo_operacion', $datosMaestro->codigo);
     $this->template->setVariable('razon_social', $datosMaestro->razon_social);
@@ -313,9 +296,9 @@ class acondicionaVista {
     $this->template->setVariable('placa', $datosMaestro->placa);
     $this->template->setVariable('fmm', $datosMaestro->fmm);
     $this->template->setVariable('reginvima', $datosMaestro->parte_numero);
-    $this->template->setVariable('codigo_ref', $datosMaestro->codigo_ref);
     $this->template->setVariable('producto', $datosMaestro->nombre_referencia);
-    $this->template->setVariable('peso', number_format(abs($datosMaestro->peso),2,".",","));    
+    $this->template->setVariable('peso', number_format(abs($datosMaestro->peso),2,".",","));
+    $this->template->setVariable('valor', number_format(abs($datosMaestro->valor),2,".",","));    
     $this->template->setVariable('orden', $datosMaestro->orden);
     $this->template->setVariable('doc_tte', $datosMaestro->doc_tte);
     $this->template->setVariable('pedido', $datosMaestro->pedido);
@@ -324,16 +307,16 @@ class acondicionaVista {
     $this->template->setVariable('cantidad_ext', number_format($datosMaestro->cantidad_ext,2,".",","));
     $this->template->setVariable('observaciones', $datosMaestro->obs);
     
-    $detalleAlistamiento = $this->datos->retornarDetalleAcondicionamiento($idRegistro);
+    $detalleAcondicionamiento = $this->datos->retornarDetalleAcondicionamiento($arreglo['codigoMaestro']);
     
     //Inicializa las variables que registran los totales
     $tot_piezas_naci = $tot_peso_naci = $tot_valor_cif = 0;
     $tot_piezas_ext = $tot_peso_ext = $tot_valor_fob = 0;
 
-    foreach($detalleAlistamiento as $valueDetalle) {
+    foreach($detalleAcondicionamiento as $valueDetalle) {
       $this->template->setCurrentBlock("ROW");
       $this->template->setVariable('orden_detalle', $valueDetalle['orden']);
-      $this->template->setVariable('arribo', $valueDetalle['arribo']);
+      $this->template->setVariable('doc_tte', $valueDetalle['doc_tte']);
       $this->template->setVariable('codigo_referen', $valueDetalle['codigo_ref']);
       $this->template->setVariable('nombre_referencia', $valueDetalle['nombre_referencia']);
       $this->template->setVariable('fecha_expira', $valueDetalle['fecha_expira']);

@@ -146,110 +146,20 @@ class acondicionaDatos extends BDControlador {
   function retornarDetalleAcondicionamiento($idRegistro) {
     $db = $_SESSION['conexion'];
     
-    $query = "SELECT im.*, ie.*, ref.nombre AS nombre_referencia, ref.codigo_ref,
+    $query = "SELECT im.*, ie.*, da.*, ref.nombre AS nombre_referencia, ref.codigo_ref,
                 p.nombre AS nombre_ubicacion, em.nombre AS nombre_mcia
               FROM inventario_movimientos im
                 INNER JOIN inventario_entradas ie ON ie.codigo = im.inventario_entrada
                 INNER JOIN referencias ref ON ref.codigo = ie.referencia
                 INNER JOIN estados_mcia em ON em.codigo = im.estado_mcia
+                INNER JOIN do_asignados da ON da.do_asignado = ie.orden
                 LEFT JOIN posiciones p ON p.codigo = ie.posicion
               WHERE cod_maestro = $idRegistro AND tipo_movimiento = 16";
 
     $db->query($query);
     return $db->getArray();
   }
-  
-  function registrarAcondicionamiento($accion,$arreglo) {
-    $db = $_SESSION['conexion'];
-    //Identifica la acción a realizar
-    switch($accion) {
-      case 1: {
-        $arreglo['peso_naci'] = $arreglo['peso_uni'] * $arreglo['cantidad_naci'];
-        $arreglo['peso_nonac'] = $arreglo['peso_uni'] * $arreglo['cantidad_nonac'];
-        $arreglo['cif'] = $arreglo['val_unit'] * $arreglo['cantidad_naci'];
-        $arreglo['fob_nonac'] = $arreglo['val_unit'] * $arreglo['cantidad_nonac'];
-        //Registra cantidad acondicionada en inventario_movimientos
-        $query = "UPDATE inventario_movimientos SET cantidad_naci = $arreglo[cantidad_naci]*-1,
-                    cantidad_nonac = $arreglo[cantidad_nonac]*-1, peso_naci = $arreglo[peso_naci]*-1,
-                    peso_nonac = $arreglo[peso_nonac]*-1, cif = $arreglo[cif]*-1, fob_nonac = $arreglo[fob_nonac]*-1
-                  WHERE cod_maestro = $arreglo[codigo_operacion] AND tipo_movimiento = 16";
-        $db->query($query);
-        break;
-      }
-      case 2: {
-        //Verifica si hubo novedad de Rechazo
-        if($arreglo['rechazadas']!=0) {
-          if($arreglo['tipo_mercancia']==1) {
-            $arreglo['cantidad_naci'] = $arreglo['rechazadas'];
-            $arreglo['cantidad_nonac'] = 0;
-          } else {
-            $arreglo['cantidad_naci'] = 0;
-            $arreglo['cantidad_nonac'] = $arreglo['rechazadas'];
-          }
-          $arreglo['peso_naci'] = $arreglo['peso_uni'] * $arreglo['cantidad_naci'];
-          $arreglo['peso_nonac'] = $arreglo['peso_uni'] * $arreglo['cantidad_nonac'];
-          $arreglo['cif'] = $arreglo['val_unit'] * $arreglo['cantidad_naci'];
-          $arreglo['fob_nonac'] = $arreglo['val_unit'] * $arreglo['cantidad_nonac'];
-          //Inserta el movimiento de Rechazo en inventario_movimientos
-          $query = "INSERT INTO inventario_movimientos(inventario_entrada,fecha,tipo_movimiento,
-                      cod_maestro,peso_naci,peso_nonac,cantidad_naci,cantidad_nonac,cif,fob_nonac,
-                      estado_mcia)
-                    VALUES($arreglo[inventario_entrada],'$arreglo[fecha]',16,$arreglo[codigo_operacion],
-                      $arreglo[peso_naci]*-1,$arreglo[peso_nonac]*-1,$arreglo[cantidad_naci]*-1,
-                      $arreglo[cantidad_nonac]*-1,$arreglo[cif]*-1,$arreglo[fob_nonac]*-1,
-                      $arreglo[tiporechazo])";
-          $db->query($query);
-        }
-        if($arreglo['devueltas']!=0) {
-          if($arreglo['tipo_mercancia']==1) {
-            $arreglo['cantidad_naci'] = $arreglo['devueltas'];
-            $arreglo['cantidad_nonac'] = 0;
-          } else {
-            $arreglo['cantidad_naci'] = 0;
-            $arreglo['cantidad_nonac'] = $arreglo['devueltas'];
-          }
-          $arreglo['peso_naci'] = $arreglo['peso_uni'] * $arreglo['cantidad_naci'];
-          $arreglo['peso_nonac'] = $arreglo['peso_uni'] * $arreglo['cantidad_nonac'];
-          $arreglo['cif'] = $arreglo['val_unit'] * $arreglo['cantidad_naci'];
-          $arreglo['fob_nonac'] = $arreglo['val_unit'] * $arreglo['cantidad_nonac'];
-          //Inserta el movimiento de Devolución en inventario_movimientos
-          $query = "INSERT INTO inventario_movimientos(inventario_entrada,fecha,tipo_movimiento,
-                      cod_maestro,peso_naci,peso_nonac,cantidad_naci,cantidad_nonac,cif,fob_nonac,
-                      estado_mcia)
-                    VALUES($arreglo[inventario_entrada],'$arreglo[fecha]',16,$arreglo[codigo_operacion],
-                      $arreglo[peso_naci],$arreglo[peso_nonac],$arreglo[cantidad_naci],
-                      $arreglo[cantidad_nonac],$arreglo[cif],$arreglo[fob_nonac],0)";
-          $db->query($query);
-          //Inserta el movimiento el Comodin de Devolución en inventario_movimientos
-          $query = "INSERT INTO inventario_movimientos(inventario_entrada,fecha,tipo_movimiento,
-                      cod_maestro,peso_naci,peso_nonac,cantidad_naci,cantidad_nonac,cif,fob_nonac,
-                      estado_mcia)
-                    VALUES($arreglo[inventario_entrada],'$arreglo[fecha]',30,$arreglo[codigo_operacion],
-                      $arreglo[peso_naci]*-1,$arreglo[peso_nonac]*-1,$arreglo[cantidad_naci]*-1,
-                      $arreglo[cantidad_nonac]*-1,$arreglo[cif]*-1,$arreglo[fob_nonac]*-1,0)";
-          $db->query($query);          
-        }
-        break;
-      }
-      case 3: {
-        if($arreglo['tipo_mercancia']==1) {
-          $arreglo['peso'] = $arreglo['peso_uni'] * $arreglo['cantidad_naci'];
-          $arreglo['valor'] = $arreglo['val_unit'] * $arreglo['cantidad_naci'];
-        } else {
-          $arreglo['peso'] = $arreglo['peso_uni'] * $arreglo['cantidad_nonac'];
-          $arreglo['valor'] = $arreglo['val_unit'] * $arreglo['cantidad_nonac'];
-        }        
-        //Registra cantidad acondicionada en inventario_maestro_movimientos
-        $query = "UPDATE inventario_maestro_movimientos SET cantidad = $arreglo[cantidad],
-                    cantidad_nac = $arreglo[cantidad_naci], cantidad_ext = $arreglo[cantidad_nonac],
-                    peso = $arreglo[peso], valor = $arreglo[valor]
-                  WHERE codigo = $arreglo[codigo_operacion]";
-        $db->query($query);
-        break;        
-      }
-    }
-  }
-  
+    
   function cerrarAcondicionamiento($codigo) {
     $db = $_SESSION['conexion'];
     $query = "UPDATE inventario_maestro_movimientos SET cierre = 1 WHERE codigo = $codigo";

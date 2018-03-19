@@ -48,10 +48,10 @@ require_once "Image/Barcode.php";
 class Image_Barcode_code128 extends Image_Barcode
 {
     var $_type = 'code128';
-    var $_barcodeheight = 10;
-		//var $_barcodeheight = 20;
-    var $_font = 2; //2 
-    var $_barwidth = 0.8; //1
+    //var $_barcodeheight = 5;
+		var $_barcodeheight = 20;
+    var $_font = 2;  
+    var $_barwidth = 1;
     var $code;
 
 // The draw() method is broken into three sections.  First, we take

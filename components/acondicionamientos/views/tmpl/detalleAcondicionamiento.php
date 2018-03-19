@@ -51,12 +51,14 @@
     <tr>      
       <td class="tituloForm">Registro INVIMA</td>
       <td>{reginvima}</td>
-      <td class="tituloForm">Referencia</td>
-      <td><b>{producto}</b></td>
+      <td class="tituloForm">Código</td>
+      <td>
+        <input type="text" name="codigo_reporte" id="codigo_reporte" value="{codigo}" />
+      </td>
     </tr>
     <tr>
-      <td class="tituloForm">Documento Transporte</td>
-      <td>{doc_tte}</td>
+      <td class="tituloForm">Tipo de Mercanc&iacute;a</td>
+      <td>{nombre_tipo_mercancia}</td>
       <td class="tituloForm">Cantidad</td>
       <td>
         <input type="text" name="cantidad" id="cantidad" value="{cantidad}" readonly="" />
@@ -75,10 +77,11 @@
   </table><br /><br />
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general">
     <tr>
-      <th colspan="12">Detalle del Acondicionamiento</th>
+      <th colspan="13">Detalle del Acondicionamiento</th>
     </tr>
     <tr>
       <th>Orden</th>
+      <th>Doc.TTE</th>
       <th>Referencia</th>
       <th>Nombre Referencia</th>
       <th>Fecha Exp.</th>
@@ -94,6 +97,7 @@
     <!-- BEGIN ROW -->
     <tr>
       <td style="text-align:center;">{orden_detalle}</td>
+      <td style="text-align:center;">{doc_tte}</td>
       <td style="text-align:center;">{codigo_referen}</td>
       <td>{nombre_referencia}</td>
       <td style="text-align:center;color: red;">{fecha_expira}</td>
@@ -114,67 +118,34 @@
     <input type="hidden" name="fob_nonac" id="fob_nonac" value="{valor_fob}" />
     <!-- END ROW -->
   </table><br /><br />
-  <div id="acondiciona">
-    <div id="izquierda">
-      <table width="100%" align="left" cellpadding="0" cellspacing="0" id="tabla_acondicionar">
-        <tr>
-          <th>Piezas</th>
-          <th>Rechazadas</th>
-          <th>Tipo Rechazo</th>
-          <th>Devueltas</th>
-          <th>Acondicionadas</th>
-        </tr>
-        <tr>
-          <td style="text-align:center;">
-            <input type="text" name="piezas" id="piezas" value="{cantidad}" readonly="" />
-          </td>
-          <td style="text-align:center;">
-            <input type="text" id="rechazadas" name="rechazadas" style="text-align: right;" value="0" onchange="calcular()" size="10" />
-          </td>
-          <td style="text-align:center;">
-            <select name="tipo_rechazo" id="tipo_rechazo">{select_tiporechazo}</select>
-          </td>
-          <td style="text-align:center;">
-            <input type="text" id="devueltas" name="devueltas" style="text-align: right;" value="0" onchange="calcular()" size="10" />
-          </td>
-          <td style="text-align:center;">
-            <input type="text" name="acondicionadas" id="acondicionadas" value="{cantidad}" readonly="" />
-          </td>
-        </tr>
-      </table>    
-    </div>
-    <div id="derecha">
-      <table align="right" cellpadding="0" cellspacing="0">
-        <tr><td colspan="4" style="height:15px;"></td></tr>
-        <tr style="display: {mostrar_botones}">
-          <td>
-            <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="acondicionar" >Acondicionar</button>
-          </td>
-          <td style="width: 5px;"></td>
-          <td>
-            <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="cerrar_operacion" >Cerrar</button>
-          </td>
-          <td style="width: 5px;"></td>
-          <td>
-            <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="devolver" >Devolver Operación</button>
-          </td>
-          <td style="width: 5px;"></td>
-          <td>
-            <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="pcklist-1" >Orden Acondicionamiento</button>
-          </td>
-        </tr>
-        <tr style="display: {mostrar_mensaje}">
-          <td colspan="2" style="color:#FF0000;">* La operación no puede ser devuelta debido a que se encuentra cerrada.</td>
-          <td style="width: 5px;"></td>
-          <td>
-            <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="pcklist-2" >Orden Acondicionamiento</button>
-          </td>
-        </tr>
-      </table>    
-    </div>
+  <div id="derecha">
+    <table align="right" cellpadding="0" cellspacing="0">
+      <tr><td colspan="4" style="height:15px;"></td></tr>
+      <tr style="display: {mostrar_botones}">
+        <td>
+          <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="cerrar_operacion" >Cerrar</button>
+        </td>
+        <td style="width: 5px;"></td>
+        <td>
+          <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="devolver" >Devolver Operación</button>
+        </td>
+        <td style="width: 5px;"></td>
+        <td>
+          <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="ordenac-1" >Orden Acondicionamiento</button>
+        </td>
+      </tr>
+      <tr style="display: {mostrar_mensaje}">
+        <td colspan="2" style="color:#FF0000;">* La operación no puede ser devuelta debido a que se encuentra cerrada.</td>
+        <td style="width: 5px;"></td>
+        <td>
+          <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="ordenac-2" >Orden Acondicionamiento</button>
+        </td>
+      </tr>
+    </table>
   </div>
   <input type="hidden" name="codigoMaestro" id="codigoMaestro" value="{codigo_operacion}" />
   <input type="hidden" name="tipo_mercancia" id="tipo_mercancia" value="{tipo_mercancia}" />
+  <input type="hidden" name="nombre_tipo_mercancia" id="nombre_tipo_mercancia" value="{nombre_tipo_mercancia}" />
   <input type="hidden" name="inventario_entrada" id="inventario_entrada" value="{inv_entrada}" />
   <input type="hidden" name="fecha" id="fecha" value="{fecha}" />
   <input type="hidden" name="n" id="n" value="{n}" />
@@ -199,8 +170,7 @@
         $("#cantidad").val($("#acondicionadas").val());
         if($("#tipo_mercancia").val()==1) {
           $("#cantidad_naci").val($("#acondicionadas").val());
-        }
-        else $("#cantidad_nonac").val($("#acondicionadas").val());
+        } else $("#cantidad_nonac").val($("#acondicionadas").val());
         $.ajax({
           url: 'index_blank.php?component=acondicionamientos&method=registrarAcondicionamiento',
           type: "POST",
@@ -279,14 +249,16 @@
     }
   });
   
-  $( "#pcklist-"+$("#n").val() ).button({
+  $( "#ordenac-"+$("#n").val() ).button({
     text: true,
     icons: {
       primary: "ui-icon-document"
     }
   })
 	.click(function() {
-    window.open("index_blank.php?component=acondicionamientos&method=generarPackingList&codigoMaestro="+$("#codigoMaestro").attr("value"));
+    window.open("index_blank.php?component=acondicionamientos&method=generarOrdenAcondicionamiento&codigoMaestro="
+      +$("#codigoMaestro").attr("value")+"&nombre_tipo_mercancia="+$("#nombre_tipo_mercancia").attr("value")
+      +"&codigo_reporte="+$("#codigo_reporte").attr("value"));
     return false;
   });
   

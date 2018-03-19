@@ -48,8 +48,9 @@
           <ul id="sortable2" class="connectedSortable">
             <input type="hidden" name="docCliente" id="docCliente" value="{documento_cliente}" />
             <input type="hidden" name="tipo_mercancia" id="tipo_mercancia" value="{tipo_mercancia}" />
+            <input type="hidden" name="nombre_tipo_mercancia" id="nombre_tipo_mercancia" value="{nombre_tipo_mercancia}" />
           </ul>
-          <input type="submit" value="Enviar" />
+          <input type="submit" class="button" value="Enviar" />
         </fieldset>
       </form>
     </td>
@@ -89,7 +90,7 @@
 
   $('.acondicionar a').wowwindow({
     draggable: true,
-    width: 800,
+    width: 900,
     height: 450,
     overlay: {
       clickToClose: false,

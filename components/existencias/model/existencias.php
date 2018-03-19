@@ -11,7 +11,7 @@ class ExistenciasModelo extends BDControlador {
 		$sede = $_SESSION['sede'];
 
     $arreglo[movimiento] = "1,2,3,7,10,15,16,30";
-    $arreglo[GroupBy] = "orden,codigo_ref,modelo";
+    $arreglo[GroupBy] = "orden,codigo_ref";
     $arreglo[having] = "HAVING (TRUNCATE(c_nal,1) > 0 OR TRUNCATE(c_ext,1) > 0) AND (TRUNCATE(cantidad,1) > 0)";
 
 		//Prepara la condición del filtro

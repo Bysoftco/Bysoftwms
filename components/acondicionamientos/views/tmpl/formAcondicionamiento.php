@@ -22,6 +22,7 @@
         <td style="padding-left: 5px;">
           {nombre_tipo_mercancia}
           <input type="hidden" name="tipo_mercancia" id="tipo_mercancia" value="{tipo_mercancia}" />
+          <input type="hidden" name="nombre_tipo_mercancia" id="nombre_tipo_mercancia" value="{nombre_tipo_mercancia}" />
         </td>
         <td style="height: 27px; padding-left:5px;" class="tituloForm">Pedido:</td>
         <td style="padding-left: 5px;">
@@ -68,43 +69,119 @@
     </table>
     <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general">
       <tr>
-        <th>Código</th>
-        <th>Referencia</th>
-        <th>Piezas Disponible</th>
-        <th>Piezas a Acondicionar</th>
+        <th rowspan="2">Código</th>
+        <th rowspan="2">Referencia</th>
+        <th colspan="6">P i e z a s</th>
       </tr>
-      <!-- Visualiza Información de la Primera Referencia Seleccionada -->
       <tr>
-        <td>
-          {codigo_referencia}
+        <th>Disponibles</th>
+        <th>Pedidas</th>
+        <th>Rechazadas</th>
+        <th>Tipo Rechazo</th>
+        <th>Devueltas</th>
+        <th>Acondicionadas</th>
+      </tr>
+      <!--  BEGIN ROW -->
+      <tr>
+        <td style="padding-left:3px;">
+          {codigo_referencia}"
           <input type="hidden" value="{cod_referencia}" class="cantidadPiezas" name="cod_referencia"/>
         </td>
-        <td>{nombre_referencia}</td>
-        <td style="text-align: right">
-          {disponible} Piezas
+        <td style="padding-left:3px;">{nombre_referencia}</td>
+        <td style="text-align: center;">
+          {disponible}
           <input type="hidden" name="disponible[{cod_referencia}]" id="disponible{cod_referencia}" value="{disponible}" />
         </td>
-        <td style="text-align: right">
-          <input style="width:50px" class="required number" name="cantidad_retirar[{cod_referencia}]" id="cantidad_retirar{cod_referencia}" /> Piezas
+        <td style="text-align:center;">
+          <input class="required number" style="text-align:right;padding-right:3px;" name="cantidad_retirar[{cod_referencia}]" id="cantidad_retirar{cod_referencia}" value="{disponible}" onblur="calcular('{cod_referencia}')" size="8" />
+        </td>
+        <td style="text-align:center;">
+          <input class="required number" style="text-align:right;padding-right:3px;" name="cantidad_rechazar[{cod_referencia}]" id="cantidad_rechazar{cod_referencia}" value="0.00" onblur="calcular('{cod_referencia}')" size="8" />
+        </td>
+        <td style="text-align:center;">
+          <select style="width:150px;" name="tipo_rechazo[{cod_referencia}]" id="tipo_rechazo{cod_referencia}">{select_tiporechazo}</select>
+        </td>
+        <td style="text-align:center;">
+          <input class="required number" style="text-align:right;padding-right:3px;" name="cantidad_devueltas[{cod_referencia}]" id="cantidad_devueltas{cod_referencia}" value="0.00" onblur="calcular('{cod_referencia}')" size="8" />
+        </td>
+        <td style="text-align:center;">
+          <input class="required number" style="text-align:right;padding-right:3px;" name="cantidad_acondicionar[{cod_referencia}]" id="cantidad_acondicionar{cod_referencia}" value="{disponible}" readonly="" size="8" />
         </td>
       </tr>
+      <!-- END ROW -->
     </table><br />
     <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general">
       <tr>
         <td>
-          Observaciones<br/><textarea name="observaciones" cols="90" rows="3"></textarea>
+          Observaciones<br/><span id="mostrar"></span>
         </td>
       </tr>
     </table>
   </fieldset><br />
   <center>
-    <input name="enviarAcondicionar" id="enviarAcondicionar" class="button small yellow2" type="submit" value="Enviar" />
+    <input name="enviarAcondicionar" id="enviarAcondicionar" class="button" type="submit" value="Acondicionar" />
 	</center>
 </form>
 <script>
   $().ready(function() {
     $("#form_acondicionamiento").validate();
+    /**
+     * Obtiene el nombre del navegador para dibujar el área de 
+     * texto del campo Observaciones. 
+     *
+     * @returns {string}
+     */
+    var browser = function() {
+      // Devuelve el resultado guardado (cached) si está disponible, en caso contrario el resultado obtenido lo guarda.
+      if (browser.prototype._cachedResult)
+        return browser.prototype._cachedResult;
+
+      // Opera 8.0+
+      var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
+      // Firefox 1.0+
+      var isFirefox = typeof InstallTrigger !== 'undefined';
+
+      // Safari 3.0+ "[object HTMLElementConstructor]" 
+      var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || safari.pushNotification);
+
+      // Internet Explorer 6-11
+      var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+      // Edge 20+
+      var isEdge = !isIE && !!window.StyleMedia;
+
+      // Chrome 1+
+      var isChrome = !!window.chrome && !!window.chrome.webstore;
+
+      // Blink engine detection
+      var isBlink = (isChrome || isOpera) && !!window.CSS;
+
+      return browser.prototype._cachedResult =
+        isOpera ? 'Opera' :
+        isFirefox ? 'Firefox' :
+        isSafari ? 'Safari' :
+        isChrome ? 'Chrome' :
+        isIE ? 'IE' :
+        isEdge ? 'Edge' :
+        isBlink ? 'Blink' :
+        "Desconocido";
+    };
+    //Valida el navegador detectado
+    if(browser()=='Chrome') $("#mostrar").html("<textarea name='observaciones' cols='120' rows='3'></textarea>");
+    else $("#mostrar").html("<textarea name='observaciones' cols='105' rows='3'></textarea>");
   });
+  
+  function calcular(ref) {
+    $('#cantidad_retirar'+ref).val(parseFloat($('#cantidad_retirar'+ref).val()).toFixed(2));
+    $('#cantidad_acondicionar'+ref).val(parseFloat($('#cantidad_retirar'+ref).val()).toFixed(2));
+    $('#cantidad_rechazar'+ref).val(parseFloat($('#cantidad_rechazar'+ref).val()).toFixed(2));
+    $('#cantidad_devueltas'+ref).val(parseFloat($('#cantidad_devueltas'+ref).val()).toFixed(2));
+    $('#cantidad_acondicionar'+ref).val(parseFloat($('#cantidad_retirar'+ref).val()).toFixed(2));
+    //Validación del valor de Mercancías Acondicionadas
+    $('#cantidad_acondicionar'+ref).val(parseFloat($('#cantidad_retirar'+ref).val()-$('#cantidad_rechazar'+ref).val()-$('#cantidad_devueltas'+ref).val()).toFixed(2));
+    if($("#cantidad_acondicionar"+ref).val()<=0) alert('La cantidad de mercancía Acondicionada no puede ser menor que 1. Revisar la cantidad de Rechazadas o Devueltas.');
+  }
 
   function enviarAcondicionamiento() {
     var recorrer = $(".cantidadPiezas");
