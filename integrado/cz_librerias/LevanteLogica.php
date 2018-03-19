@@ -519,7 +519,7 @@ class LevanteLogica {
 		  case 17:
 		  	$this->datos->addItemRetiroAlistamiento($arregloDatos);
 			//$arregloDatos[tipo_movimiento]='30';
-			//$this->datos->addItemRetiro($arregloDatos);
+			//$this->datos->addItemRetiro($arregloDatos); // no hay necesidad porque la opracion 17 no esta en los  select
 		  break;
 		  default:
 		  	$this->datos->addItemRetiro($arregloDatos);
