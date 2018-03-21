@@ -737,7 +737,7 @@ class Factura extends MYDB {
   
   function getTope($arregloDatos) {
     $sede = $_SESSION['sede'];
-    $sql = "SELECT MAX(valor_minimo) AS tope_minimo FROM sedes WHERE codigo= '$sede'";
+    $sql = "SELECT MAX(valor_minimo) AS tope_minimo,MAX(rete_ica) AS rete_ica FROM sedes WHERE codigo= '$sede'";
     
     $this->query($sql);
     if($this->_lastError) {

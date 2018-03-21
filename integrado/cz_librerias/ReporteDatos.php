@@ -105,7 +105,9 @@ class Reporte extends MYDB {
                 AND ie.referencia = ref.codigo
                 AND p.codigo = ie.posicion
                 AND do_asignados.sede = '$sede' $arreglo[where]) AS inv
-              GROUP BY orden,codigo_ref,modelo $arreglo[having]";
+              GROUP BY orden,codigo_ref $arreglo[having]";
+			  //GROUP BY orden,codigo_ref,modelo $arreglo[having]";
+			  //echo $sql;
 
     if($arregloDatos[excel]){ return $sql; }
     $this->_lastError=NULL;

@@ -407,7 +407,8 @@ class OrdenPresentacion {
 		$arregloDatos[tabla] = 'monedas';
 		$arregloDatos[labelLista] = 'selectMonedas';
 		$this->getLista($arregloDatos,$datos->moneda,$plantilla);
-		
+		$arregloDatos[moneda]=$datos->moneda;
+		$arregloDatos[tipo_operacion]=$datos->tipo_operacion;
 		$arregloDatos[tabla] = 'posiciones';
 		$arregloDatos[labelLista] = 'selectUbicacion';
 		$this->getLista($arregloDatos,$datos->moneda,$plantilla);

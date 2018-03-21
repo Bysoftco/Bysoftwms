@@ -309,7 +309,7 @@ class FacturaPresentacion {
     $getTope->getTope($arregloDatos);
     $getTope->fetch();
     $arregloDatos[tope_minimo_retencion] = $getTope->tope_minimo;
-
+	$arregloDatos[tope_minimo_rte_ica] = $getTope->rete_ica;
     // Se consultan los anticipos
     $this->getAnticipos($arregloDatos);
     $this->mantenerDatos($arregloDatos,$unaPlantilla);

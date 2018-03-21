@@ -107,6 +107,7 @@ class LevantePresentacion {
   }
 
   function maestro($arregloDatos) {
+  
     if($arregloDatos[tipo_retiro_label] == "Matriz") {
       $this->plantilla->setVariable('tipo_retiro_label', 'Matriz');
     }
@@ -277,6 +278,37 @@ class LevantePresentacion {
       $arregloDatos[sum_cant_naci] = 0;
     }
     $arregloDatos[prefijo]="03".date('Y')."000";
+	
+	// Si es un levante Mixto se traen los datos del levante anterior
+	if($arregloDatos[mixto])
+	{
+		//var_dump($arregloDatos);
+	}
+	//Se averigua si ya existe una declaracion para mantener datos 
+	$unaConsulta = new Levante();
+	$unaConsulta->datosDeclaracion($arregloDatos);
+	$unaConsulta->fetch();
+	$arregloDatos[tipo_declaracion]="Inicial";
+	$arregloDatos[modalidad]="C100";
+	$arregloDatos[arancel]="5";
+	$arregloDatos[iva]="16";
+	if($unaConsulta->N > 0){
+		
+		$arregloDatos[prefijo]=$unaConsulta->num_levante;
+		$arregloDatos[fecha]=$unaConsulta->fecha;
+		$arregloDatos[tipo_declaracion]=$unaConsulta->tipo_declaracion;
+		$arregloDatos[subpartida]=$unaConsulta->subpartida;
+		$arregloDatos[cod_subpartida]=$unaConsulta->subpartida;
+		$arregloDatos[obs]=$unaConsulta->obs;
+		$arregloDatos[modalidad]=$unaConsulta->modalidad;
+		//$arregloDatos[fob]=$unaConsulta->fob;
+		//$arregloDatos[flete]=$unaConsulta->fletes;
+		//$arregloDatos[valor_aduana]=$unaConsulta->aduana;
+		$arregloDatos[arancel]=$unaConsulta->arancel;
+		//$arregloDatos[total]=$unaConsulta->total;
+		$arregloDatos[trm]=$unaConsulta->trm;
+	}
+	
     $this->setValores($arregloDatos, $unDatos, $plantilla);
     $this->mantenerDatos($arregloDatos, $plantilla);
   }
@@ -293,7 +325,9 @@ class LevantePresentacion {
   }
 
   function getCabezaLevante($arregloDatos, $unDatos, $unaPlantilla) {
-    // si es procesamiento parcial interno	
+    
+	
+	// si es procesamiento parcial interno	
     $unaConsulta = new Levante();
     $arregloDatos[cuenta_grupos] = $unDatos->lev_cuenta_grupo;
     $unaConsulta->cuentaDeclaraciones($arregloDatos);
@@ -303,8 +337,12 @@ class LevantePresentacion {
       //".$unDatos->lev_cuenta_grupo;
       $unaPlantilla->setVariable("parcial", $unDatos->lev_cuenta_grupo);
     }
+	if($unDatos->prefactura == 1) {
+      $unaPlantilla->setVariable("checked_multiple", "checked");
+    }
 
-    if($arregloDatos[parcial] == 1) {
+    if($unDatos->lev_cuenta_grupo >= 1) {
+	
       $unaPlantilla->setVariable("checked", "checked");
     }
 
@@ -578,6 +616,7 @@ class LevantePresentacion {
         $arregloDatos[fob_nonaci_aux] = $datos->fob_nonaci;
         $arregloDatos[ext] = "/FOB";
         break;
+		case 16: // garantiza valores positivos en mercancia acondicionada
 		case 17: // garantiza valores positivos en rechazados
 			  $arregloDatos[cantidad_naci] = abs($datos->cantidad_naci);
         	$arregloDatos[peso_naci] = abs($datos->peso_naci);

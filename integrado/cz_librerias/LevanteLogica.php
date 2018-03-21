@@ -54,7 +54,7 @@ class LevanteLogica {
 
     switch(trim($arregloDatos[tipo_movimiento])) {
       case 2: // Nacionalizacion
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,30";
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30";
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercancia.html";
         $arregloDatos[metodoMercanciaCuerpo] = "listaInventario";
 
@@ -72,7 +72,7 @@ class LevanteLogica {
         break;
       case 3: // Retiro
       case 7: // Alistamiento
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30"; 
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         $arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
         
@@ -88,7 +88,7 @@ class LevanteLogica {
         $arregloDatos[v_aux_nonac] = "0";
         break;
       case 8: //Envia Productos en Proceso
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30"; 
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         $arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
         
@@ -104,7 +104,7 @@ class LevanteLogica {
         $arregloDatos[v_aux_nonac] = "0";
         break;
       case 13: //Enndoso
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,30";
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30";
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         $arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
         
@@ -134,7 +134,25 @@ class LevanteLogica {
         //Metodos para enviar formulario despues
         $arregloDatos[setMetodo] = "addItemEnsamble";
         break;
-		 case 17: // Retiro de Alistamientos
+		 case 16: // Retiro de Alistamientos
+		 
+		 	$arregloDatos[movimiento] = "16"; 
+        	$arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
+        	$arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
+			
+        
+        	$arregloDatos[plantillaCabeza] = "levanteCabezaRetiro.html";
+        	$arregloDatos[metodoCabeza] = "getCabezaLevante";
+        	$arregloDatos[metodoCabezaEnvia] = "updateRetiroCabeza";
+        
+        	$arregloDatos[plantillaCuerpo] = "levanteCuerpoRetiro.html";
+        	$arregloDatos[metodoCuerpo] = "getCuerpoRetiro";
+        	//Metodos para enviar formulario despues
+        	$arregloDatos[setMetodo] = "addItemRetiro";
+        	$arregloDatos[type_nonac] = "hidden"; // No deja selecionar piezas  nacionales
+        	$arregloDatos[v_aux_nonac] = "0";
+		break;
+		 case 17: // Retiro de Rechazados
 		 	//echo "XXXX".$arregloDatos[tipo_movimiento];die();
 		 	$arregloDatos[movimiento] = "16,17"; 
         	$arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
@@ -153,7 +171,7 @@ class LevanteLogica {
         	$arregloDatos[v_aux_nonac] = "0";
 		break;
       default: // Cualquier movimiento que no este definido se presenta como retiro
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30"; 
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         $arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
         
@@ -295,6 +313,11 @@ class LevanteLogica {
         $arregloDatos[tipo_movimiento] = 17;
         $arregloDatos[tipo_retiro_filtro] = 8;// para que muestre extrangero
         break;
+		
+		case 16:
+        $arregloDatos[tipo_movimiento] = 16;
+        $arregloDatos[tipo_retiro_filtro] = 8;// para que muestre extrangero
+        break;
     }
     
     $arregloDatos[id_levante] = $this->datos->newLevante($arregloDatos);// siempre se crea un nuevo retiro
@@ -317,6 +340,8 @@ class LevanteLogica {
   }
   
   function getItem($arregloDatos) {
+  //var_dump($arregloDatos);
+  
     $arregloDatos[id_movimiento] = $arregloDatos[id_levante];
     $arregloDatos[id_form] = $arregloDatos[id_form]/1;
     
@@ -329,6 +354,7 @@ class LevanteLogica {
   }
   
   function getItemRetiro($arregloDatos) {
+  //var_dump($arregloDatos);
     $unLevante = new Inventario();
     $arregloDatos[ubicaciones] = implode(";",$unLevante->selectUbicacion($arregloDatos));
     $arregloDatos[id_form] = (int) $arregloDatos[id_form];
@@ -482,12 +508,24 @@ class LevanteLogica {
       $this->datos->updateDoc($arregloDatos);
     }
     $this->controlarTransaccion($arregloDatos);
-	if($arregloDatos[tipo_movimiento]==17){
-		
-    	$this->datos->addItemRetiroAlistamiento($arregloDatos);
-	}else{
-		$this->datos->addItemRetiro($arregloDatos);
+	
+	switch($arregloDatos[tipo_movimiento]) {
+		  case 16:
+		  		//$arregloDatos[tipo_movimiento]='30';
+		  		$this->datos->addItemRetiroAcondicionamiento($arregloDatos); 
+				$arregloDatos[tipo_movimiento]='30';
+				$this->datos->addItemRetiro($arregloDatos); 
+		  break;
+		  case 17:
+		  	$this->datos->addItemRetiroAlistamiento($arregloDatos);
+			//$arregloDatos[tipo_movimiento]='30';
+			//$this->datos->addItemRetiro($arregloDatos); // no hay necesidad porque la opracion 17 no esta en los  select
+		  break;
+		  default:
+		  	$this->datos->addItemRetiro($arregloDatos);
+         break;
 	}
+	
     /*
       Inmediatamente despues de hacer el retiro, se verifica si el registro  queda o no con inventario
       si no queda con inventario se RETIRAN LAS UBICACIONES AUTOMATICAMETE 15052017/
@@ -501,6 +539,9 @@ class LevanteLogica {
 		
 	if($arregloDatos[tipo_movimiento]==17){
 		$arregloDatos[movimiento] = "16,17"; 
+	}
+	if($arregloDatos[tipo_movimiento]==16){
+		$arregloDatos[movimiento] = "16"; // aqui pegar nueva operacion que resta
 	}
 	
     $verificaInventario->getInvParaProceso($arregloDatos);
