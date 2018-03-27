@@ -12,7 +12,8 @@ class Reporte extends MYDB {
     $sede = $_SESSION['sede'];
     $arreglo[having] = "HAVING (TRUNCATE(c_nal,1) > 0 OR TRUNCATE(c_ext,1) > 0) AND (TRUNCATE(cantidad,1) > 0)";
     
-    if(!empty($arregloDatos[id_item])) $arreglo[where] .= " AND ie.codigo = $arregloDatos[id_item] ";
+    if(!empty($arregloDatos[moneda_filtro])) $arreglo[where] .= " AND arribos.moneda = $arregloDatos[moneda_filtro] ";
+	if(!empty($arregloDatos[id_item])) $arreglo[where] .= " AND ie.codigo = $arregloDatos[id_item] ";
     if(!empty($arregloDatos[por_cuenta_filtro])) $arreglo[where] .= " AND do_asignados.por_cuenta = '$arregloDatos[por_cuenta_filtro]' ";
     if(!empty($arregloDatos[fecha_inicio]) AND !empty($arregloDatos[fecha_fin])) {
       $arreglo[where] .= " AND do_asignados.fecha >= '$arregloDatos[fecha_inicio]' AND  do_asignados.fecha <= '$arregloDatos[fecha_fin]' ";
@@ -107,7 +108,7 @@ class Reporte extends MYDB {
                 AND do_asignados.sede = '$sede' $arreglo[where]) AS inv
               GROUP BY orden,codigo_ref $arreglo[having]";
 			  //GROUP BY orden,codigo_ref,modelo $arreglo[having]";
-			  //echo $sql;
+			 // echo $sql;
 
     if($arregloDatos[excel]){ return $sql; }
     $this->_lastError=NULL;
