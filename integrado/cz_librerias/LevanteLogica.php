@@ -46,6 +46,7 @@ class LevanteLogica {
   }
   
   function controlarTransaccion(&$arregloDatos) {
+  //var_dump($arregloDatos);
     //Aqui se decide el tipo de Formulario Para el movimiento Seleccionado
     //El método y plantilla  se condicionan por el formulario levanteFiltro según selección del combo transacción 
     $arregloDatos[type_nonac] = "text";
@@ -135,8 +136,8 @@ class LevanteLogica {
         $arregloDatos[setMetodo] = "addItemEnsamble";
         break;
 		 case 16: // Retiro de Alistamientos
-		 
-		 	$arregloDatos[movimiento] = "16"; 
+		 case 18:
+		 	$arregloDatos[movimiento] = "16,18"; 
         	$arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         	$arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
 			
@@ -154,7 +155,7 @@ class LevanteLogica {
 		break;
 		 case 17: // Retiro de Rechazados
 		 	//echo "XXXX".$arregloDatos[tipo_movimiento];die();
-		 	$arregloDatos[movimiento] = "16,17"; 
+		 	$arregloDatos[movimiento] = "16,17,18"; 
         	$arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         	$arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
 			
@@ -511,14 +512,17 @@ class LevanteLogica {
 	
 	switch($arregloDatos[tipo_movimiento]) {
 		  case 16:
-		  		//$arregloDatos[tipo_movimiento]='30';
+		  	
+		  		$arregloDatos[tipo_movimiento]='18';
 		  		$this->datos->addItemRetiroAcondicionamiento($arregloDatos); 
-				$arregloDatos[tipo_movimiento]='30';
-				$this->datos->addItemRetiro($arregloDatos); 
+				//echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+				//$arregloDatos[tipo_movimiento]='18';
+				//$this->datos->addItemRetiro($arregloDatos); 
+				
 		  break;
 		  case 17:
 		  	$this->datos->addItemRetiroAlistamiento($arregloDatos);
-			//$arregloDatos[tipo_movimiento]='30';
+			//$arregloDatos[tipo_movimiento]='18';
 			//$this->datos->addItemRetiro($arregloDatos); // no hay necesidad porque la opracion 17 no esta en los  select
 		  break;
 		  default:
@@ -540,8 +544,14 @@ class LevanteLogica {
 	if($arregloDatos[tipo_movimiento]==17){
 		$arregloDatos[movimiento] = "16,17"; 
 	}
+	
 	if($arregloDatos[tipo_movimiento]==16){
-		$arregloDatos[movimiento] = "16"; // aqui pegar nueva operacion que resta
+		
+		$arregloDatos[movimiento] = "16,18"; // aqui pegar nueva operacion que resta
+	}
+	if($arregloDatos[tipo_movimiento]==18){
+		
+		$arregloDatos[movimiento] = "16,18"; // aqui pegar nueva operacion que resta
 	}
 	
     $verificaInventario->getInvParaProceso($arregloDatos);
