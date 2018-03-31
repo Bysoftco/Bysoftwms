@@ -92,6 +92,7 @@ class acondicionamientos {
     $arregloEnviar['id_registro'] = $codigoMaestro;
     $arregloEnviar['tipo_mercancia'] = $arreglo['tipo_mercancia'];
     $arregloEnviar['nombre_tipo_mercancia'] = $arreglo['nombre_tipo_mercancia'];
+    $arregloEnviar['doc_cliente'] = $arreglo['doc_cliente'];
     $this->mostrarAcondicionamiento($arregloEnviar);
   }
 
@@ -120,7 +121,7 @@ class acondicionamientos {
     $arregloMaestro = $this->armarArregloEncabezado($arreglo);
  
     $cantidadTotal = 0;
-    foreach($arreglo['cantidad_acondicionar'] as $key => $value) {
+    foreach($arreglo['cantidad_retirar'] as $key => $value) {
       $cantidadTotal += $value;
       $cantidad = $value;
       $disponiblesRetirar = $this->datos->disponiblesRetirar($key, $arreglo['doc_cliente']);
@@ -154,59 +155,11 @@ class acondicionamientos {
           $_POST = $arregloRetirar;
           recuperar_Post($inventarioMov);
           $inventarioMov->save();
-
-          //Valida Existencia de Mercancía Nacional Rechazada
-          if($arreglo['cantidad_rechazar'][$key]!=0) {
-            $peso_uni = $valueDisponibles['peso_nacional'] / $valueDisponibles['cantidad_nacional'];
-            $valor_uni = $valueDisponibles['cif'] / $valueDisponibles['cantidad_nacional'];
-            //Registra Mercancía Nacional Rechazada
-            $arregloRetirar['peso_naci'] = $arreglo['cantidad_rechazar'][$key] * $peso_uni * -1;
-            $arregloRetirar['cantidad_naci'] = $arreglo['cantidad_rechazar'][$key] * -1;
-            $arregloRetirar['cif'] = $arreglo['cantidad_rechazar'][$key] * $valor_uni * -1;
-            
-            $arregloRetirar['estado_mcia'] = $arreglo['tipo_rechazo'][$key];
-            
-            //Guarda en inventario_movimientos la Mercancía Nacional a Rechazar
-            $inventarioMov = new InventarioMovimientos();
-            $_POST = $arregloRetirar;
-            recuperar_Post($inventarioMov);
-            $inventarioMov->save();
-          }
-          
-          //Valida Existencia de Mercancía Nacional Devuelta
-          if($arreglo['cantidad_devueltas'][$key]!=0) {
-            $peso_uni = $valueDisponibles['peso_nacional'] / $valueDisponibles['cantidad_nacional'];
-            $valor_uni = $valueDisponibles['cif'] / $valueDisponibles['cantidad_nacional'];
-            //Registra Mercancía Nacional Devuelta
-            $arregloRetirar['peso_naci'] = $arreglo['cantidad_devueltas'][$key] * $peso_uni;
-            $arregloRetirar['cantidad_naci'] = $arreglo['cantidad_devueltas'][$key];
-            $arregloRetirar['cif'] = $arreglo['cantidad_devueltas'][$key] * $valor_uni;
-            
-            $arregloRetirar['estado_mcia'] = 0;
-            
-            //Guarda en inventario_movimientos la Mercancía Nacional a Devolver
-            $inventarioMov = new InventarioMovimientos();
-            $_POST = $arregloRetirar;
-            recuperar_Post($inventarioMov);
-            $inventarioMov->save();
-            
-            $arregloRetirar['tipo_movimiento'] = 30;
-            $arregloRetirar['peso_naci'] = $arregloRetirar['peso_naci'] * -1;
-            $arregloRetirar['cantidad_naci'] = $arregloRetirar['cantidad_naci'] * -1;
-            $arregloRetirar['cif'] = $arregloRetirar['cif'] * -1;
-            
-            //Guarda en inventario_movimientos el Comodin de Devolución
-            $inventarioMov = new InventarioMovimientos();
-            $_POST = $arregloRetirar;
-            recuperar_Post($inventarioMov);
-            $inventarioMov->save();
-          }
         }
         if($cantidad==0) { break; }
       }
     }
     $arregloMaestro['orden'] = isset($ordenAsignar->orden) ? $ordenAsignar->orden : "";
-    $arregloMaestro['arribo'] = isset($ordenAsignar->arribo) ? $ordenAsignar->arribo : 0;
     $arregloMaestro['cantidad'] = $cantidadTotal;
     $arregloMaestro['cantidad_nac'] = $cantidadTotal;
 
@@ -220,7 +173,7 @@ class acondicionamientos {
     $arregloMaestro=$this->armarArregloEncabezado($arreglo);
 
     $cantidadTotal = 0;
-    foreach($arreglo['cantidad_acondicionar'] as $key => $value) {
+    foreach($arreglo['cantidad_retirar'] as $key => $value) {
       $cantidadTotal += $value;
       $cantidad = $value;
       $disponiblesRetirar = $this->datos->disponiblesRetirar($key, $arreglo['doc_cliente']);
@@ -255,59 +208,11 @@ class acondicionamientos {
           $_POST = $arregloRetirar;
           recuperar_Post($inventarioMov);
           $inventarioMov->save();
-
-          //Valida Existencia de Mercancía Extranjera Rechazada
-          if($arreglo['cantidad_rechazar'][$key]!=0) {
-            $peso_uni = $valueDisponibles['peso_no_nacional'] / $valueDisponibles['cantidad_no_nacional'];
-            $valor_uni = $valueDisponibles['fob_nonac'] / $valueDisponibles['cantidad_no_nacional'];
-            //Registra Mercancía Extranjera Rechazada
-            $arregloRetirar['peso_nonac'] = $arreglo['cantidad_rechazar'][$key] * $peso_uni * -1;
-            $arregloRetirar['cantidad_nonac'] = $arreglo['cantidad_rechazar'][$key] * -1;
-            $arregloRetirar['fob_nonac'] = $arreglo['cantidad_rechazar'][$key] * $valor_uni * -1;
-            
-            $arregloRetirar['estado_mcia'] = $arreglo['tipo_rechazo'][$key];
-            
-            //Guarda en inventario_movimientos la Mercancía Extranjera a Rechazar
-            $inventarioMov = new InventarioMovimientos();
-            $_POST = $arregloRetirar;
-            recuperar_Post($inventarioMov);
-            $inventarioMov->save();
-          }
-          
-          //Valida Existencia de Mercancía Extranjera Devuelta
-          if($arreglo['cantidad_devueltas'][$key]!=0) {
-            $peso_uni = $valueDisponibles['peso_no_nacional'] / $valueDisponibles['cantidad_no_nacional'];
-            $valor_uni = $valueDisponibles['fob_nonac'] / $valueDisponibles['cantidad_no_nacional'];
-            //Registra Mercancía Extranjera Devuelta
-            $arregloRetirar['peso_nonac'] = $arreglo['cantidad_devueltas'][$key] * $peso_uni;
-            $arregloRetirar['cantidad_nonac'] = $arreglo['cantidad_devueltas'][$key];
-            $arregloRetirar['fob_nonac'] = $arreglo['cantidad_devueltas'][$key] * $valor_uni;
-            
-            $arregloRetirar['estado_mcia'] = 0;
-            
-            //Guarda en inventario_movimientos la Mercancía Extranjera a Devolver
-            $inventarioMov = new InventarioMovimientos();
-            $_POST = $arregloRetirar;
-            recuperar_Post($inventarioMov);
-            $inventarioMov->save();
-            
-            $arregloRetirar['tipo_movimiento'] = 30;
-            $arregloRetirar['peso_nonac'] = $arregloRetirar['peso_nonac'] * -1;
-            $arregloRetirar['cantidad_nonac'] = $arregloRetirar['cantidad_nonac'] * -1;
-            $arregloRetirar['fob_nonac'] = $arregloRetirar['fob_nonac'] * -1;
-            
-            //Guarda en inventario_movimientos el Comodin de Devolución
-            $inventarioMov = new InventarioMovimientos();
-            $_POST = $arregloRetirar;
-            recuperar_Post($inventarioMov);
-            $inventarioMov->save();
-          }
         }
         if($cantidad==0) { break; }
       }
     }
     $arregloMaestro['orden'] = isset($ordenAsignar->orden) ? $ordenAsignar->orden : "";
-    $arregloMaestro['arribo'] = isset($ordenAsignar->arribo) ? $ordenAsignar->arribo : 0;
     $arregloMaestro['cantidad'] = $cantidadTotal;
     $arregloMaestro['cantidad_ext'] = $cantidadTotal;
     
@@ -316,11 +221,200 @@ class acondicionamientos {
     recuperar_Post($invMaestro);
     $codigoMaestro = $invMaestro->save($codigoMaestro, 'codigo');
   }
-
+  
   function mostrarAcondicionamiento($arreglo) {
     $this->vista->mostrarAcondicionamiento($arreglo);
   }
+
+  function registroAcondicionamiento($arreglo) {
+    $this->vista->registroAcondicionamiento($arreglo);
+  }
   
+  function registraAcondicionamiento($arreglo) {
+    $codigoMaestro = $arreglo['codigoMaestro'];
+   
+    if($arreglo['tipo_mercancia']==1) {
+      $this->registrarNacional($arreglo, $codigoMaestro);
+    } else {
+      $this->registrarExtranjera($arreglo, $codigoMaestro);
+    }
+    $arregloEnviar['id_registro'] = $codigoMaestro;
+    $arregloEnviar['tipo_mercancia'] = $arreglo['tipo_mercancia'];
+    $arregloEnviar['nombre_tipo_mercancia'] = $arreglo['nombre_tipo_mercancia'];
+    $arregloEnviar['doc_cliente'] = $arreglo['doc_cliente'];
+    $this->mostrarAcondicionamiento($arregloEnviar);    
+  }
+  
+  function registrarNacional($arreglo, $codigoMaestro) {
+    $arregloMaestro = $this->armarArregloEncabezado($arreglo);
+ 
+    $cantidadTotal = 0;
+    $detalleAcondicionamiento = $this->datos->registrarDetalleAcondicionamiento($codigoMaestro);   
+    foreach($detalleAcondicionamiento as $valueDetalle) {
+      $key = $valueDetalle['codigo_ref'];
+      $cantidad = $arreglo['cantidad_acondicionar'][$key]; //Nueva cantidad a Acondicionar
+      $cantidadTotal += $cantidad;
+      $arregloRegistrar = array();
+      $arregloRegistrar['codigo'] = $valueDetalle['cod_movimiento'];
+      $arregloRegistrar['inventario_entrada'] = $valueDetalle['inventario_entrada'];
+      $arregloRegistrar['fecha'] = date('Y-m-d H:i');
+      $arregloRegistrar['tipo_movimiento'] = 16;
+      $arregloRegistrar['cod_maestro'] = $codigoMaestro;
+        
+      $arregloRegistrar['peso_naci'] = $cantidad * $valueDetalle['peso_naci'] / $valueDetalle['cantidad_naci'] * -1;
+      $arregloRegistrar['cantidad_naci'] = $cantidad * -1;
+      $arregloRegistrar['cif'] = $cantidad * $valueDetalle['cif'] / $valueDetalle['cantidad_naci'] * -1;
+      $arregloMaestro['valor'] += abs($arregloRegistrar['cif']);
+      $arregloMaestro['peso'] += abs($arregloRegistrar['peso_naci']);
+      $inv_entrada = $valueDetalle['inventario_entrada'];
+      $ordenAsignar = $this->datos->retornarOrden($valueDetalle['inventario_entrada']);
+      $peso_uni = $valueDetalle['peso_naci'] / $valueDetalle['cantidad_naci'];
+      $valor_uni = $valueDetalle['cif'] / $valueDetalle['cantidad_naci'];
+        
+      //Actualiza en inventario_movimientos la Mercancía Nacional a Acondicionar
+      $inventarioMov = new InventarioMovimientos();
+      $_POST = $arregloRegistrar;
+      recuperar_Post($inventarioMov);
+      $inventarioMov->save($arregloRegistrar['codigo'],'codigo');
+
+      //Valida Existencia de Mercancía Nacional Rechazada
+      if($arreglo['cantidad_rechazar'][$key]!=0) {
+        //Registra Mercancía Nacional Rechazada
+        $arregloRegistrar['peso_naci'] = $arreglo['cantidad_rechazar'][$key] * $peso_uni * -1;
+        $arregloRegistrar['cantidad_naci'] = $arreglo['cantidad_rechazar'][$key] * -1;
+        $arregloRegistrar['cif'] = $arreglo['cantidad_rechazar'][$key] * $valor_uni * -1;
+          
+        $arregloRegistrar['estado_mcia'] = $arreglo['tipo_rechazo'][$key];
+            
+        //Guarda en inventario_movimientos la Mercancía Nacional a Rechazar
+        $inventarioMov = new InventarioMovimientos();
+        $_POST = $arregloRegistrar;
+        recuperar_Post($inventarioMov);
+        $inventarioMov->save();
+      }
+          
+      //Valida Existencia de Mercancía Nacional Devuelta
+      if($arreglo['cantidad_devueltas'][$key]!=0) {
+        //Registra Mercancía Nacional Devuelta
+        $arregloRegistrar['peso_naci'] = $arreglo['cantidad_devueltas'][$key] * $peso_uni;
+        $arregloRegistrar['cantidad_naci'] = $arreglo['cantidad_devueltas'][$key];
+        $arregloRegistrar['cif'] = $arreglo['cantidad_devueltas'][$key] * $valor_uni;
+          
+        $arregloRegistrar['estado_mcia'] = 0;
+            
+        //Guarda en inventario_movimientos la Mercancía Nacional a Devolver
+        $inventarioMov = new InventarioMovimientos();
+        $_POST = $arregloRegistrar;
+        recuperar_Post($inventarioMov);
+        $inventarioMov->save();
+            
+        $arregloRegistrar['tipo_movimiento'] = 30;
+        $arregloRegistrar['peso_naci'] = $arregloRegistrar['peso_naci'] * -1;
+        $arregloRegistrar['cantidad_naci'] = $arregloRegistrar['cantidad_naci'] * -1;
+        $arregloRegistrar['cif'] = $arregloRegistrar['cif'] * -1;
+            
+        //Guarda en inventario_movimientos el Comodin de Devolución
+        $inventarioMov = new InventarioMovimientos();
+        $_POST = $arregloRegistrar;
+        recuperar_Post($inventarioMov);
+        $inventarioMov->save();
+      }
+    }
+    $arregloMaestro['orden'] = isset($ordenAsignar->orden) ? $ordenAsignar->orden : "";
+    $arregloMaestro['cantidad'] = $cantidadTotal;
+    $arregloMaestro['cantidad_nac'] = $cantidadTotal;
+
+    $invMaestro = new InventarioMaestroMovimientos();
+    $_POST = $arregloMaestro;
+    recuperar_Post($invMaestro);
+    $codigoMaestro = $invMaestro->save($codigoMaestro, 'codigo');
+  }
+
+  function registrarExtranjera($arreglo, $codigoMaestro) {
+    $arregloMaestro = $this->armarArregloEncabezado($arreglo);
+ 
+    $cantidadTotal = 0;
+    $detalleAcondicionamiento = $this->datos->registrarDetalleAcondicionamiento($codigoMaestro); 
+    foreach($detalleAcondicionamiento as $valueDetalle) {
+      $key = $valueDetalle['codigo_ref'];
+      $cantidad = $arreglo['cantidad_acondicionar'][$key]; //Nueva cantidad a Acondicionar
+      $cantidadTotal += $cantidad;
+      $arregloRegistrar = array();
+      $arregloRegistrar['codigo'] = $valueDetalle['cod_movimiento'];
+      $arregloRegistrar['inventario_entrada'] = $valueDetalle['inventario_entrada'];
+      $arregloRegistrar['fecha'] = date('Y-m-d H:i');
+      $arregloRegistrar['tipo_movimiento'] = 16;
+      $arregloRegistrar['cod_maestro'] = $codigoMaestro;
+        
+      $arregloRegistrar['peso_nonac'] = $cantidad * $valueDetalle['peso_nonac'] / $valueDetalle['cantidad_nonac'] * -1;
+      $arregloRegistrar['cantidad_nonac'] = $cantidad * -1;
+      $arregloRegistrar['fob_nonac'] = $cantidad * $valueDetalle['fob_nonac'] / $valueDetalle['cantidad_nonac'] * -1;
+      $arregloMaestro['valor'] += abs($arregloRegistrar['fob_nonac']);
+      $arregloMaestro['peso'] += abs($arregloRegistrar['peso_nonac']);
+      $inv_entrada = $valueDetalle['inventario_entrada'];
+      $ordenAsignar = $this->datos->retornarOrden($valueDetalle['inventario_entrada']);
+      $peso_uni = $valueDetalle['peso_nonac'] / $valueDetalle['cantidad_nonac'];
+      $valor_uni = $valueDetalle['fob_nonac'] / $valueDetalle['cantidad_nonac'];
+        
+      //Actualiza en inventario_movimientos la Mercancía Extranjera a Acondicionar
+      $inventarioMov = new InventarioMovimientos();
+      $_POST = $arregloRegistrar;
+      recuperar_Post($inventarioMov);
+      $inventarioMov->save($arregloRegistrar['codigo'],'codigo');
+
+      //Valida Existencia de Mercancía Extranjera Rechazada
+      if($arreglo['cantidad_rechazar'][$key]!=0) {
+        //Registra Mercancía Extranjera Rechazada
+        $arregloRegistrar['peso_nonac'] = $arreglo['cantidad_rechazar'][$key] * $peso_uni * -1;
+        $arregloRegistrar['cantidad_nonac'] = $arreglo['cantidad_rechazar'][$key] * -1;
+        $arregloRegistrar['fob_nonac'] = $arreglo['cantidad_rechazar'][$key] * $valor_uni * -1;
+          
+        $arregloRegistrar['estado_mcia'] = $arreglo['tipo_rechazo'][$key];
+            
+        //Guarda en inventario_movimientos la Mercancía Extranjera a Rechazar
+        $inventarioMov = new InventarioMovimientos();
+        $_POST = $arregloRegistrar;
+        recuperar_Post($inventarioMov);
+        $inventarioMov->save();
+      }
+          
+      //Valida Existencia de Mercancía Extranjera Devuelta
+      if($arreglo['cantidad_devueltas'][$key]!=0) {
+        //Registra Mercancía Nacional Devuelta
+        $arregloRegistrar['peso_nonac'] = $arreglo['cantidad_devueltas'][$key] * $peso_uni;
+        $arregloRegistrar['cantidad_nonac'] = $arreglo['cantidad_devueltas'][$key];
+        $arregloRegistrar['fob_nonac'] = $arreglo['cantidad_devueltas'][$key] * $valor_uni;
+          
+        $arregloRegistrar['estado_mcia'] = 0;
+            
+        //Guarda en inventario_movimientos la Mercancía Extranjera a Devolver
+        $inventarioMov = new InventarioMovimientos();
+        $_POST = $arregloRegistrar;
+        recuperar_Post($inventarioMov);
+        $inventarioMov->save();
+            
+        $arregloRegistrar['tipo_movimiento'] = 30;
+        $arregloRegistrar['peso_nonac'] = $arregloRegistrar['peso_nonac'] * -1;
+        $arregloRegistrar['cantidad_nonac'] = $arregloRegistrar['cantidad_nonac'] * -1;
+        $arregloRegistrar['fob_nonac'] = $arregloRegistrar['fob_nonac'] * -1;
+            
+        //Guarda en inventario_movimientos el Comodin de Devolución
+        $inventarioMov = new InventarioMovimientos();
+        $_POST = $arregloRegistrar;
+        recuperar_Post($inventarioMov);
+        $inventarioMov->save();
+      }
+    }
+    $arregloMaestro['orden'] = isset($ordenAsignar->orden) ? $ordenAsignar->orden : "";
+    $arregloMaestro['cantidad'] = $cantidadTotal;
+    $arregloMaestro['cantidad_ext'] = $cantidadTotal;
+
+    $invMaestro = new InventarioMaestroMovimientos();
+    $_POST = $arregloMaestro;
+    recuperar_Post($invMaestro);
+    $codigoMaestro = $invMaestro->save($codigoMaestro, 'codigo');
+  }
+
   function mostrarEtiquetarAcondicionamiento($arreglo) {
     $this->vista->mostrarEtiquetarAcondicionamiento($arreglo);
   }
@@ -328,8 +422,7 @@ class acondicionamientos {
   function cerrarAcondicionamiento($arreglo) {
     $arreglo['id_registro'] = $arreglo['codigo_operacion'];
     $this->datos->cerrarAcondicionamiento($arreglo['codigo_operacion']);
-    $this->mostrarAcondicionamiento($arreglo);
-    //$this->vista->mostrarAcondicionamiento($arreglo);
+    $this->vista->mostrarAcondicionamiento($arreglo);
   }
   
   function devolderAcondicionamiento($arreglo) {
