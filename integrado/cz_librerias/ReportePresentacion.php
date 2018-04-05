@@ -11,6 +11,8 @@ require_once("HTML/Template/IT.php");
 require_once("Funciones.php");
 
 
+
+
 class ReportePresentacion {
   var $datos;
   var $plantilla;
@@ -160,6 +162,9 @@ class ReportePresentacion {
     $this->t_cif_proc = $this->t_cif_proc + abs($datos->cif_proceso);
     $this->t_cif_ensamb = $this->cif_ensamb + abs($datos->cif_ensamble);
     $this->t_rpk=$this->t_rpk  +abs($datos->v_rpk);
+	
+	$this->tvalor_f = $this->tvalor_f + abs($datos->valor);//here
+	$this->t_fob_f = $this->t_fob_f+ abs($datos->fob);//here
 
     //Formateo de Datos de Registros
     $arregloDatos[cif_f] = number_format(abs($datos->cif),DECIMALES,".",",");
@@ -198,7 +203,9 @@ class ReportePresentacion {
     $arregloDatos[cif_proceso] = number_format(abs($datos->cif_proceso),DECIMALES,".",",");
     $arregloDatos[cif_ensamble] = number_format(abs($datos->cif_ensamble),DECIMALES,".",",");
     $arregloDatos[v_rpk_f] = number_format(abs($datos->v_rpk),DECIMALES,".",",");
-          
+	
+	$arregloDatos[tvalor_f] = number_format(abs($this->tvalor_f),DECIMALES,".",",");
+	 $arregloDatos[t_fob_f] = number_format(abs($this->t_fob_f),DECIMALES,".",",");         
                     
     //Formateo de Acumuladores de Totales
     $arregloDatos[tpeso_f] = number_format($this->peso,DECIMALES,".",",");
