@@ -90,7 +90,7 @@
 
   $('.acondicionar a').wowwindow({
     draggable: true,
-    width: 900,
+    width: 800,
     height: 450,
     overlay: {
       clickToClose: false,

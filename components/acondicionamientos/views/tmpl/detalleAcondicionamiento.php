@@ -1,6 +1,5 @@
 {COMODIN}
 <style>
-  #izquierda { float: left; width:50% }
   #derecha { float: right; }
 </style>
 <div style="padding-top: 10px;"></div>
@@ -123,6 +122,10 @@
       <tr><td colspan="4" style="height:15px;"></td></tr>
       <tr style="display: {mostrar_botones}">
         <td>
+          <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="acondicionar" >Acondicionar</button>
+        </td>
+        <td style="width: 5px;"></td>
+        <td>
           <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="cerrar_operacion" >Cerrar</button>
         </td>
         <td style="width: 5px;"></td>
@@ -148,8 +151,21 @@
   <input type="hidden" name="nombre_tipo_mercancia" id="nombre_tipo_mercancia" value="{nombre_tipo_mercancia}" />
   <input type="hidden" name="inventario_entrada" id="inventario_entrada" value="{inv_entrada}" />
   <input type="hidden" name="fecha" id="fecha" value="{fecha}" />
+  <input type="hidden" name="id_camion" id="id_camion" value="{id_camion}" />
+  <input type="hidden" name="destinatario" id="destinatario" value="{destinatario}" />
+  <input type="hidden" name="direccion" id="direccion" value="{direccion}" />
+  <input type="hidden" name="fmm" id="fmm" value="{fmm}" />
+  <input type="hidden" name="doc_tte" id="doc_tte" value="{doc_tte}" />
+  <input type="hidden" name="cod_referencia" id="cod_referencia" value="{cod_referencia}" />
+  <input type="hidden" name="pedido" id="pedido" value="{pedido}" />
+  <input type="hidden" name="codigo_ciudad" id="codigo_ciudad" value="{codigo_ciudad}" />
+  <input type="hidden" name="observaciones" id="observaciones" value="{observaciones}" />
   <input type="hidden" name="n" id="n" value="{n}" />
 </fieldset>
+<div class="registrosAcondicionar">
+  <a id="registrarAcondicionamiento" href="" title="Registro del Acondicionamiento">
+  </a>
+</div>
 <script>
   Nifty("div.borde_circular","transparent");
   Nifty("div.div_barra","top transparent");    
@@ -161,43 +177,46 @@
     }
   })
 	.click(function() {
-    //Valida si se hizo movimiento de Rechazo o Devolución
-    if(parseFloat($("#cantidad").val())!=parseFloat($("#acondicionadas").val())) {
-      if(confirm("\u00BFEstá seguro de la cantidad de mercancia a acondicionar?")) {
-        //Cálculo del Precio Unitario
-        var peso_uni = $("#tipo_mercancia").val()==1?$("#peso_naci").attr('value')/$("#cantidad").attr('value'):$("#peso_nonac").attr('value')/$("#cantidad").attr('value');
-        var val_unit = $("#tipo_mercancia").val()==1?$("#cif").attr('value')/$("#cantidad").attr('value'):$("#fob_nonac").attr('value')/$("#cantidad").attr('value');
-        $("#cantidad").val($("#acondicionadas").val());
-        if($("#tipo_mercancia").val()==1) {
-          $("#cantidad_naci").val($("#acondicionadas").val());
-        } else $("#cantidad_nonac").val($("#acondicionadas").val());
-        $.ajax({
-          url: 'index_blank.php?component=acondicionamientos&method=registrarAcondicionamiento',
-          type: "POST",
-          data: {
-            codigo_operacion: $("#codigo_operacion").attr("value"),
-            tipo_mercancia: $("#tipo_mercancia").attr('value'),
-            rechazadas: $("#rechazadas").attr('value'),
-            tiporechazo: $("#tipo_rechazo").attr('value'),
-            devueltas: $("#devueltas").attr('value'),
-            inventario_entrada: $("#inventario_entrada").attr('value'),
-            fecha: $("#fecha").attr('value'),
-            cantidad: $("#cantidad").attr('value'),
-            cantidad_naci: $("#cantidad_naci").attr('value'),
-            cantidad_nonac: $("#cantidad_nonac").attr('value'),
-            peso_naci: $("#cantidad_naci").attr('value')*peso_uni,
-            peso_nonac: $("#cantidad_nonac").attr('value')*peso_uni,
-            cif: $("#cantidad_naci").attr('value')*val_unit,
-            fob_nonac: $("#cantidad_nonac").attr('value')*val_unit,
-            peso_uni: peso_uni,
-            val_unit: val_unit
-          },
-          success: function(msm) {
-            jQuery(document.body).overlayPlayground('close');void(0);
-            $('#componente_central').html(msm);
-          }
-        });      
-      }
+    //Visualiza Registros con Disponibilidad para Acondicionar
+    registrarAcondicionamiento.click();
+  });
+
+  $('.registrosAcondicionar a').wowwindow({
+    draggable: true,
+    width: 950,
+    height: 450,
+    overlay: {
+      clickToClose: false,
+      background: '#000000'
+    },
+    onclose: function() {
+      $('.formError').remove();
+    },
+    before: function() {
+      $.ajax({
+        url: 'index_blank.php?component=acondicionamientos&method=registroAcondicionamiento',
+        async: true,
+        type: "POST",
+        data: { 
+          codigo_maestro: $('#codigoMaestro').val(),
+          tipo_mercancia: $('#tipo_mercancia').val(),
+          doc_cliente: $('#doc_cliente').val(),
+          nombre_tipo_mercancia: $('#nombre_tipo_mercancia').val(),
+          fecha: $('#fecha').val(),
+          id_camion: $('#id_camion').val(),
+          destinatario: $('#destinatario').val(),
+          direccion: $('#direccion').val(),
+          fmm: $('#fmm').val(),
+          doc_tte: $('#doc_tte').val(),
+          cod_referencia: $('#cod_referencia').val(),
+          pedido: $('#pedido').val(),
+          codigo_ciudad: $('#codigo_ciudad').val(),
+          observaciones: $('#observaciones').val()
+        },
+        success: function(msm) {
+          $('#wowwindow-inner').html(msm);
+        }
+      });
     }
   });
 

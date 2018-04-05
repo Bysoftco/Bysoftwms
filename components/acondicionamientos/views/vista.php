@@ -142,11 +142,7 @@ class acondicionaVista {
     $fecha = new DateTime();
     $fecha = $fecha->format('Y-m-d H:i');
     $this->template->setVariable('fecha',$fecha);
-    
-    //Carga el cuadro de lista Tipo de Rechazo - Tabla: estados_mcia
-    $lista_tiporechazo = $this->datos->build_list("estados_mcia", "codigo", "nombre");
-    $arreglo['select_tiporechazo'] = $this->datos->armSelect($lista_tiporechazo, 'Seleccione Tipo Rechazo...', 1);
-    
+        
     foreach($arreglo['seleccion'] as $value) {
       $referencias = new Referencias();
       $datosReferencia = $referencias->recover($value, 'codigo');
@@ -155,7 +151,6 @@ class acondicionaVista {
       $this->template->setVariable('cod_referencia', isset($datosReferencia->codigo)?$datosReferencia->codigo:'');
       $this->template->setVariable('codigo_referencia', isset($datosReferencia->codigo_ref)?$datosReferencia->codigo_ref:'');
       $this->template->setVariable('nombre_referencia', isset($datosReferencia->nombre)?$datosReferencia->nombre:'');
-      $this->template->setVariable('select_tiporechazo', $arreglo['select_tiporechazo']);
       $disponibles = $this->datos->disponiblesProducto($value,$arreglo['docCliente']);
       $this->template->setVariable('doc_tte', isset($disponibles->doc_tte)?$disponibles->doc_tte:'');
 
@@ -170,7 +165,7 @@ class acondicionaVista {
   function mostrarAcondicionamiento($arreglo) {
     $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/detalleAcondicionamiento.php' );
     $this->template->setVariable('COMODIN', '' );
-    
+ 
     $datosMaestro = $this->datos->retornarMaestroAcondicionamiento($arreglo['id_registro']);
     
     $this->template->setVariable('mostrar_botones', 'block');
@@ -184,19 +179,24 @@ class acondicionaVista {
 
     $this->template->setVariable('tipo_mercancia', $arreglo['tipo_mercancia']);
     $this->template->setVariable('nombre_tipo_mercancia', $arreglo['nombre_tipo_mercancia']);
+    $this->template->setVariable('select_tiporechazo', $arreglo['select_tiporechazo']);
       
     $this->template->setVariable('codigo_operacion', $datosMaestro->codigo);
     $this->template->setVariable('numero_documento', $datosMaestro->numero_documento);    
     $this->template->setVariable('razon_social', $datosMaestro->razon_social);
     $fecha = date_create($datosMaestro->fecha);
     $this->template->setVariable('fecha', date_format($fecha,'Y-m-d H:i'));
+    $this->template->setVariable('id_camion', $datosMaestro->id_camion);
     $this->template->setVariable('destinatario', $datosMaestro->destinatario);
     $this->template->setVariable('ciudad', $datosMaestro->ciudad);
+    $this->template->setVariable('codigo_ciudad', $datosMaestro->cod_ciudad);
     $this->template->setVariable('direccion', $datosMaestro->direccion);
     $this->template->setVariable('conductor_nombre', $datosMaestro->conductor_nombre);
     $this->template->setVariable('conductor_identificacion', $datosMaestro->conductor_identificacion);
     $this->template->setVariable('placa', $datosMaestro->placa);
     $this->template->setVariable('fmm', $datosMaestro->fmm);
+    $this->template->setVariable('doc_tte', $datosMaestro->doc_tte);
+    $this->template->setVariable('cod_referencia', $datosMaestro->producto);
     $this->template->setVariable('reginvima', $datosMaestro->parte_numero);
     $this->template->setVariable('codigo', 'PGP-01-F1');
     $this->template->setVariable('pedido', $datosMaestro->pedido);
@@ -360,35 +360,73 @@ class acondicionaVista {
     
     $this->template->show();
   }
-  
-  function mostrarDetalleAcondicionamiento($idRegistro) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/mostrarDetalleAcondicionamiento.php' );
+
+  function registroAcondicionamiento($arreglo) {
+    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/registroAcondicionamiento.php' );
     $this->template->setVariable('COMODIN', '' );
-    
-    $datosMaestro = $this->datos->retornarMaestroAlistamiento($idRegistro);
-    $detalleAlistamiento = $this->datos->retornarDetalleAlistamiento($idRegistro);
-    $this->template->setVariable('codigo_operacion', $datosMaestro->codigo);
-    $this->template->setVariable('pedido', $datosMaestro->pedido);
-    
-    foreach($detalleAlistamiento as $valueDetalle) {
+
+    //Carga el cuadro de lista Tipo de Rechazo - Tabla: estados_mcia
+    $lista_tiporechazo = $this->datos->build_list("estados_mcia", "codigo", "nombre");
+    $arreglo['select_tiporechazo'] = $this->datos->armSelect($lista_tiporechazo, 'Seleccione Tipo Rechazo...', 1);
+
+    $this->template->setVariable('codigo_operacion',$arreglo['codigo_maestro']);
+    $this->template->setVariable('tipo_mercancia',$arreglo['tipo_mercancia']);
+    $this->template->setVariable('nombre_tipo_mercancia',$arreglo['nombre_tipo_mercancia']);
+    $this->template->setVariable('doc_cliente',$arreglo['doc_cliente']);
+    $this->template->setVariable('fecha',$arreglo['fecha']);
+    $this->template->setVariable('id_camion',$arreglo['id_camion']);
+    $this->template->setVariable('destinatario',$arreglo['destinatario']);
+    $this->template->setVariable('direccion',$arreglo['direccion']);
+    $this->template->setVariable('fmm',$arreglo['fmm']);
+    $this->template->setVariable('doc_tte',$arreglo['doc_tte']);
+    $this->template->setVariable('cod_referencia',$arreglo['cod_referencia']);
+    $this->template->setVariable('pedido',$arreglo['pedido']);
+    $this->template->setVariable('codigo_ciudad',$arreglo['codigo_ciudad']);
+    $this->template->setVariable('observaciones',$arreglo['observaciones']);
+
+    $detalleAcondicionamiento = $this->datos->retornarDetalleAcondicionamiento($arreglo['codigo_maestro']);
+    $inv_entrada_mayor=0;
+    $valor_mayor=0;
+    foreach($detalleAcondicionamiento as $valueDetalle) {
       $this->template->setCurrentBlock("ROW");
+      $this->template->setVariable('n',$n);
       $this->template->setVariable('orden_detalle', $valueDetalle['orden']);
-      $this->template->setVariable('arribo', $valueDetalle['arribo']);
+      $this->template->setVariable('doc_tte', $valueDetalle['doc_tte']);
+      $this->template->setVariable('inv_entrada', $valueDetalle['inventario_entrada']);
+      $this->template->setVariable('codigo_referen', $valueDetalle['codigo_ref']);
       $this->template->setVariable('nombre_referencia', $valueDetalle['nombre_referencia']);
-      $this->template->setVariable('nombre_ubicacion', $valueDetalle['nombre_ubicacion']);      
-      $this->template->setVariable('fecha_detalle', $valueDetalle['fecha']);
-      $this->template->setVariable('cantidad_nacional', number_format(abs($valueDetalle['cantidad_naci']),2,".",","));
-      $this->template->setVariable('peso_nacional', number_format(abs($valueDetalle['peso_naci']),2,".",","));
-      $this->template->setVariable('valor_cif', number_format(abs($valueDetalle['cif']),2,".",","));
-      $this->template->setVariable('cantidad_extranjera', number_format(abs($valueDetalle['cantidad_nonac']),2,".",","));
-      $this->template->setVariable('peso_extranjera', number_format(abs($valueDetalle['peso_nonac']),2,".",","));
-      $this->template->setVariable('valor_fob', number_format(abs($valueDetalle['fob_nonac']),2,".",","));
+      $this->template->setVariable('select_tiporechazo',$arreglo['select_tiporechazo']);
+      $this->template->setVariable('acondicionar', $valueDetalle['cantidad_naci']!=0?number_format(abs($valueDetalle['cantidad_naci']),2,".",","):number_format(abs($valueDetalle['cantidad_nonac']),2,".",","));
+      if($valor_mayor==0){ // es la primera vez
+        if(abs($valueDetalle['cantidad_nonac']) > 0){ // valida extranjero
+          $valor_mayor=abs($valueDetalle['cantidad_nonac']);
+          $inv_entrada_mayor=$valueDetalle['inventario_entrada'];
+        } else {
+          //valida nacional
+          $valor_mayor=abs($valueDetalle['cantidad_naci']);
+          $inv_entrada_mayor=$valueDetalle['inventario_entrada'];
+        }
+      }
+      if($valor_mayor<> 0){ // se averigua el registro que tenga mayor cantidad
+        if(abs($valueDetalle['cantidad_nonac']) > 0) { // valida extranjero
+          if(abs($valueDetalle['cantidad_nonac']) > $valor_mayor) {
+            $valor_mayor=abs($valueDetalle['cantidad_nonac']);
+            $inv_entrada_mayor=$valueDetalle['inventario_entrada'];
+          }
+        } else {										//valida nacional
+          if(abs($valueDetalle['cantidad_naci']) > $valor_mayor) {
+            $valor_mayor=abs($valueDetalle['cantidad_naci']);
+            $inv_entrada_mayor=$valueDetalle['inventario_entrada'];
+          }
+        }
+      }
+      $this->template->setVariable('inv_entrada_mayor', $inv_entrada_mayor);
       $this->template->parseCurrentBlock("ROW");
     }
     
-    $this->template->show();
+    $this->template->show();    
   }
-  
+    
   function imprimeListadoRechazadas($arreglo) {
     $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/verListadoRechazadas.php' );
     $this->template->setVariable('COMODIN', '');

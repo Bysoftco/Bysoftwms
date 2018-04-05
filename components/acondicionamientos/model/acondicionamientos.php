@@ -129,7 +129,8 @@ class acondicionaDatos extends BDControlador {
     
     $query = "SELECT imm.*, ref.nombre AS nombre_referencia, te.nombre AS nombre_unidad_empaque,
                 cl.numero_documento, cl.razon_social, cm.conductor_nombre, ref.parte_numero,
-                cm.conductor_identificacion, cm.placa, ci.nombre AS ciudad, ref.codigo_ref
+                cm.conductor_identificacion, cm.placa, ci.nombre AS ciudad, ci.codigo AS cod_ciudad,
+                ref.codigo_ref
               FROM inventario_maestro_movimientos imm
                 INNER JOIN referencias ref ON ref.codigo = imm.producto
                 INNER JOIN tipos_embalaje te ON te.codigo = imm.unidad
@@ -154,6 +155,23 @@ class acondicionaDatos extends BDControlador {
                 INNER JOIN estados_mcia em ON em.codigo = im.estado_mcia
                 INNER JOIN do_asignados da ON da.do_asignado = ie.orden
                 LEFT JOIN posiciones p ON p.codigo = ie.posicion
+              WHERE cod_maestro = $idRegistro AND tipo_movimiento = 16";
+
+    $db->query($query);
+    return $db->getArray();
+  }
+  
+  function registrarDetalleAcondicionamiento($idRegistro) {
+    $db = $_SESSION['conexion'];
+    
+    $query = "SELECT im.codigo AS cod_movimiento,im.cod_maestro,im.tipo_movimiento,
+                im.inventario_entrada,im.peso_naci,im.peso_nonac,im.cantidad_naci,
+                im.peso_nonac,im.cantidad_nonac,im.cif,im.fob_nonac,im.estado_mcia,
+                imm.*,ref.codigo_ref
+              FROM inventario_movimientos im
+                INNER JOIN inventario_maestro_movimientos imm ON imm.codigo = im.cod_maestro
+                INNER JOIN inventario_entradas ie ON ie.codigo = im.inventario_entrada
+                INNER JOIN referencias ref ON ref.codigo = ie.referencia
               WHERE cod_maestro = $idRegistro AND tipo_movimiento = 16";
 
     $db->query($query);
