@@ -315,6 +315,11 @@ class LevanteLogica {
         $arregloDatos[tipo_retiro_filtro] = 8;// para que muestre extrangero
         break;
 		
+		case 15:
+        $arregloDatos[tipo_movimiento] = 15;
+        
+        break;
+		
 		case 16:
         $arregloDatos[tipo_movimiento] = 16;
         $arregloDatos[tipo_retiro_filtro] = 8;// para que muestre extrangero
@@ -502,7 +507,7 @@ class LevanteLogica {
   }
   
   function addItemRetiro($arregloDatos) {
- 
+ //var_dump($arregloDatos);
     // Si es endoso se procede a obtener el do anterior
     if($arregloDatos[tipo_movimiento] == 13) {
       $this->datos->addIDOAnt($arregloDatos);
@@ -540,6 +545,11 @@ class LevanteLogica {
 	$arregloDatos[where] .=" AND  ie.orden='$arregloDatos[orden]'"; // filtro por referencia
 	$arregloDatos[GroupBy] = "orden";  // 
 	$arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
+		
+	
+	if($arregloDatos[tipo_movimiento]==15){
+		$arregloDatos[movimiento] = "1,2,3,7,10,15,16,30"; 
+	}
 		
 	if($arregloDatos[tipo_movimiento]==17){
 		$arregloDatos[movimiento] = "16,17"; 

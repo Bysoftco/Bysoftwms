@@ -120,6 +120,8 @@ $(function() {
     $('#btnAdicionales').hide();
     $("a.id_mercancia").click(function() { //check for the first selection
       var $column = $(this).attr('id'); // assign the ID of the column
+	  
+
 
       with(document.listadoMercancia) {
         if(parseInt($("#do_bloqueo" + $column).val())==1) {
@@ -141,6 +143,7 @@ $(function() {
           $('#tabs').tabs("select", 0);
         } else {
           //alert($('#una_matriz').val());
+		  
           switch(parseInt(tipo_movimiento)) {
             case 3: // Retiro
             case 7: // Alistamiento
@@ -167,6 +170,7 @@ $(function() {
               sendmetodo = 'addItemRetiro' // metodo que recibe el formulario al enviarlo
               break;	
             default:
+			  //alert("test");
               getmetodo = 'getItemRetiro';    // metodo que trae el formulario que abre
               sendmetodo = 'addItemRetiro' // metodo que recibe el formulario al enviarlo
           }

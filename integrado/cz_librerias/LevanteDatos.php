@@ -791,7 +791,7 @@ class Levante extends MYDB {
   // Lista la mercancía ya retirada
   function getCuerpoRetiro($arregloDatos) {
     if(empty($arregloDatos[este_movimiento])) {
-      $arregloDatos[este_movimiento] = "3,7,8,9,13,17,16,18";
+      $arregloDatos[este_movimiento] = "3,7,8,9,13,17,15,16,18";
     }
     $sql = "SELECT im.codigo AS id_retiro,inventario_entrada AS id_item,
               MAX(tipo_movimiento) AS tipo_movimiento,SUM(peso_naci) AS peso_naci,
