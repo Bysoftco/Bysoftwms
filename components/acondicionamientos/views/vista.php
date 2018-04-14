@@ -379,20 +379,20 @@ class acondicionaVista {
     $this->template->setVariable('direccion',$arreglo['direccion']);
     $this->template->setVariable('fmm',$arreglo['fmm']);
     $this->template->setVariable('doc_tte',$arreglo['doc_tte']);
-    $this->template->setVariable('cod_referencia',$arreglo['cod_referencia']);
     $this->template->setVariable('pedido',$arreglo['pedido']);
     $this->template->setVariable('codigo_ciudad',$arreglo['codigo_ciudad']);
     $this->template->setVariable('observaciones',$arreglo['observaciones']);
 
     $detalleAcondicionamiento = $this->datos->retornarDetalleAcondicionamiento($arreglo['codigo_maestro']);
     $inv_entrada_mayor=0;
-    $valor_mayor=0;
+    $n=$valor_mayor=0;
     foreach($detalleAcondicionamiento as $valueDetalle) {
       $this->template->setCurrentBlock("ROW");
       $this->template->setVariable('n',$n);
       $this->template->setVariable('orden_detalle', $valueDetalle['orden']);
       $this->template->setVariable('doc_tte', $valueDetalle['doc_tte']);
       $this->template->setVariable('inv_entrada', $valueDetalle['inventario_entrada']);
+      $this->template->setVariable('cod_referencia', $valueDetalle['cod_referencia']);
       $this->template->setVariable('codigo_referen', $valueDetalle['codigo_ref']);
       $this->template->setVariable('nombre_referencia', $valueDetalle['nombre_referencia']);
       $this->template->setVariable('select_tiporechazo',$arreglo['select_tiporechazo']);
@@ -421,6 +421,7 @@ class acondicionaVista {
         }
       }
       $this->template->setVariable('inv_entrada_mayor', $inv_entrada_mayor);
+      $n++;
       $this->template->parseCurrentBlock("ROW");
     }
     

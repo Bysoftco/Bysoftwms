@@ -87,6 +87,54 @@ class acondicionaDatos extends BDControlador {
   
   function disponiblesRetirar($codigo_ref, $docCliente) {
     $db = $_SESSION['conexion'];
+		$sede = $_SESSION['sede'];
+
+    $arreglo[movimiento] = "1,2,3,7,10,15,16,30";
+    $arreglo[GroupBy] = "orden,codigo_ref";
+    $arreglo[having] = "HAVING (TRUNCATE(cantidad_nacional,1) > 0 OR TRUNCATE(cantidad_no_nacional,1) > 0)";
+
+    $query = "SELECT orden, doc_tte, inventario_entrada,
+                arribo, nombre_referencia, cod_referencia, codigo_ref, documento, fecha,
+                modelo, SUM(p_nal) AS peso_nacional, SUM(p_ext) AS peso_no_nacional,
+                nombre_ubicacion, manifiesto, SUM(c_nal) AS cantidad_nacional,
+                SUM(c_ext) AS cantidad_no_nacional, ingreso,
+                SUM(cif) AS cif, SUM(fob) AS fob_nonac, nombre_cliente
+              FROM(SELECT im.codigo, im.tipo_movimiento, do_asignados.do_asignado AS orden, do_asignados.doc_tte AS doc_tte,
+                ie.arribo, ref.nombre AS nombre_referencia, ref.codigo_ref AS codigo_ref, ref.ref_prove AS cod_referencia, ie.modelo AS modelo, ie.fecha AS fecha,
+                clientes.razon_social AS nombre_cliente, clientes.numero_documento AS documento, do_asignados.ingreso AS ingreso,
+                arribos.manifiesto AS manifiesto, p.nombre AS nombre_ubicacion,
+                CASE WHEN im.tipo_movimiento IN($arreglo[movimiento]) THEN peso_nonac ELSE 0
+                END AS p_ext,
+                CASE WHEN im.tipo_movimiento IN($arreglo[movimiento]) THEN peso_naci ELSE 0
+                END AS p_nal,
+                CASE WHEN im.tipo_movimiento IN($arreglo[movimiento]) THEN cantidad_naci ELSE 0
+                END AS c_nal,
+                CASE WHEN im.tipo_movimiento IN($arreglo[movimiento]) THEN cantidad_nonac ELSE 0
+                END AS c_ext,
+                CASE WHEN im.tipo_movimiento IN(1,2,3,7,8,9,10,15,16) THEN fob_nonac ELSE 0
+                END AS fob,
+                CASE WHEN im.tipo_movimiento IN(2,3,10,15,16,30) THEN cif ELSE 0
+                END AS cif,
+                im.inventario_entrada 
+                FROM inventario_movimientos im,inventario_entradas ie,arribos,do_asignados,clientes,referencias ref,posiciones p
+              WHERE im.inventario_entrada = ie.codigo
+                AND arribos.arribo = ie.arribo
+                AND arribos.orden = do_asignados.do_asignado
+                AND clientes.numero_documento = do_asignados.por_cuenta
+                AND ie.referencia = ref.codigo
+                AND ref.codigo = $codigo_ref
+                AND clientes.numero_documento = '$docCliente'
+                AND p.codigo = ie.posicion
+                AND im.tipo_movimiento IN (".$arreglo['movimiento'].")
+                AND do_asignados.sede = '$sede' $arreglo[where]) AS inv
+              GROUP BY $arreglo[GroupBy] $arreglo[having]"; //cod_referencia se cambio por codigo_ref
+    
+    $db->query($query);
+    return $db->getArray();
+  }
+  
+  /*function disponiblesRetirar($codigo_ref, $docCliente) {
+    $db = $_SESSION['conexion'];
     
     $arregloDatos['movimiento'] = "1,2,3,7,10,15,16,30";
     
@@ -113,7 +161,7 @@ class acondicionaDatos extends BDControlador {
     
     $db->query($query);
     return $db->getArray();
-  }
+  }*/
   
   function retornarOrden($idMaestro) {
     $db = $_SESSION['conexion'];
@@ -147,7 +195,8 @@ class acondicionaDatos extends BDControlador {
   function retornarDetalleAcondicionamiento($idRegistro) {
     $db = $_SESSION['conexion'];
     
-    $query = "SELECT im.*, ie.*, da.*, ref.nombre AS nombre_referencia, ref.codigo_ref,
+    $query = "SELECT im.*, ie.*, da.*, ref.codigo AS cod_referencia,
+                ref.nombre AS nombre_referencia, ref.codigo_ref,
                 p.nombre AS nombre_ubicacion, em.nombre AS nombre_mcia
               FROM inventario_movimientos im
                 INNER JOIN inventario_entradas ie ON ie.codigo = im.inventario_entrada
@@ -167,13 +216,14 @@ class acondicionaDatos extends BDControlador {
     $query = "SELECT im.codigo AS cod_movimiento,im.cod_maestro,im.tipo_movimiento,
                 im.inventario_entrada,im.peso_naci,im.peso_nonac,im.cantidad_naci,
                 im.peso_nonac,im.cantidad_nonac,im.cif,im.fob_nonac,im.estado_mcia,
-                imm.*,ref.codigo_ref
+                ref.codigo AS codigo_ref
               FROM inventario_movimientos im
                 INNER JOIN inventario_maestro_movimientos imm ON imm.codigo = im.cod_maestro
                 INNER JOIN inventario_entradas ie ON ie.codigo = im.inventario_entrada
                 INNER JOIN referencias ref ON ref.codigo = ie.referencia
               WHERE cod_maestro = $idRegistro AND tipo_movimiento = 16";
 
+    //echo $query;
     $db->query($query);
     return $db->getArray();
   }

@@ -151,13 +151,16 @@
   <input type="hidden" name="nombre_tipo_mercancia" id="nombre_tipo_mercancia" value="{nombre_tipo_mercancia}" />
   <input type="hidden" name="inventario_entrada" id="inventario_entrada" value="{inv_entrada}" />
   <input type="hidden" name="fecha" id="fecha" value="{fecha}" />
+  <input type="hidden" name="placa" id="placa" value="{placa}" />
   <input type="hidden" name="id_camion" id="id_camion" value="{id_camion}" />
+  <input type="hidden" name="conductor" id="conductor" value="{conductor_nombre}" />
   <input type="hidden" name="destinatario" id="destinatario" value="{destinatario}" />
   <input type="hidden" name="direccion" id="direccion" value="{direccion}" />
   <input type="hidden" name="fmm" id="fmm" value="{fmm}" />
   <input type="hidden" name="doc_tte" id="doc_tte" value="{doc_tte}" />
   <input type="hidden" name="cod_referencia" id="cod_referencia" value="{cod_referencia}" />
   <input type="hidden" name="pedido" id="pedido" value="{pedido}" />
+  <input type="hidden" name="ciudad" id="ciudad" value="{ciudad}" />
   <input type="hidden" name="codigo_ciudad" id="codigo_ciudad" value="{codigo_ciudad}" />
   <input type="hidden" name="observaciones" id="observaciones" value="{observaciones}" />
   <input type="hidden" name="n" id="n" value="{n}" />
@@ -203,13 +206,16 @@
           doc_cliente: $('#doc_cliente').val(),
           nombre_tipo_mercancia: $('#nombre_tipo_mercancia').val(),
           fecha: $('#fecha').val(),
+          placa: $('#placa').val(),
           id_camion: $('#id_camion').val(),
+          conductor: $('#conductor').val(),
           destinatario: $('#destinatario').val(),
           direccion: $('#direccion').val(),
           fmm: $('#fmm').val(),
           doc_tte: $('#doc_tte').val(),
           cod_referencia: $('#cod_referencia').val(),
           pedido: $('#pedido').val(),
+          ciudad: $('#ciudad').val(),
           codigo_ciudad: $('#codigo_ciudad').val(),
           observaciones: $('#observaciones').val()
         },

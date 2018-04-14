@@ -168,10 +168,10 @@ class acondicionamientos {
     recuperar_Post($invMaestro);
     $codigoMaestro = $invMaestro->save($codigoMaestro, 'codigo');
   }
-
+  
   function acondicionarExtranjera($arreglo, $codigoMaestro, $codigoNuevaEntrada) {
-    $arregloMaestro=$this->armarArregloEncabezado($arreglo);
-
+    $arregloMaestro = $this->armarArregloEncabezado($arreglo);
+ 
     $cantidadTotal = 0;
     foreach($arreglo['cantidad_retirar'] as $key => $value) {
       $cantidadTotal += $value;
@@ -184,7 +184,7 @@ class acondicionamientos {
         $arregloRetirar['fecha'] = date('Y-m-d H:i');
         $arregloRetirar['tipo_movimiento'] = 16;
         $arregloRetirar['cod_maestro'] = $codigoMaestro;
-        
+
         if($valueDisponibles['cantidad_no_nacional']>0) {
           if($valueDisponibles['cantidad_no_nacional']<=$cantidad) {
             $arregloRetirar['peso_nonac'] = $valueDisponibles['peso_no_nacional'] * -1;
@@ -197,12 +197,11 @@ class acondicionamientos {
             $arregloRetirar['fob_nonac'] = (($cantidad*$valueDisponibles['fob_nonac'])/($valueDisponibles['cantidad_no_nacional'])) * -1;
             $cantidad = 0;
           }
-          
           $arregloMaestro['valor'] += abs($arregloRetirar['fob_nonac']);
           $arregloMaestro['peso'] += abs($arregloRetirar['peso_nonac']);
           $inv_entrada = $valueDisponibles['inventario_entrada'];
           $ordenAsignar = $this->datos->retornarOrden($valueDisponibles['inventario_entrada']);
-
+          
           //Guarda en inventario_movimientos la Mercancía Extranjera a Acondicionar
           $inventarioMov = new InventarioMovimientos();
           $_POST = $arregloRetirar;
@@ -214,8 +213,8 @@ class acondicionamientos {
     }
     $arregloMaestro['orden'] = isset($ordenAsignar->orden) ? $ordenAsignar->orden : "";
     $arregloMaestro['cantidad'] = $cantidadTotal;
-    $arregloMaestro['cantidad_ext'] = $cantidadTotal;
-    
+    $arregloMaestro['cantidad_nonac'] = $cantidadTotal;
+
     $invMaestro = new InventarioMaestroMovimientos();
     $_POST = $arregloMaestro;
     recuperar_Post($invMaestro);
@@ -248,10 +247,10 @@ class acondicionamientos {
   function registrarNacional($arreglo, $codigoMaestro) {
     $arregloMaestro = $this->armarArregloEncabezado($arreglo);
  
-    $cantidadTotal = 0;
-    $detalleAcondicionamiento = $this->datos->registrarDetalleAcondicionamiento($codigoMaestro);   
+    $n=$cantidadTotal = 0;
+    $detalleAcondicionamiento = $this->datos->registrarDetalleAcondicionamiento($codigoMaestro);
     foreach($detalleAcondicionamiento as $valueDetalle) {
-      $key = $valueDetalle['codigo_ref'];
+      $key = $valueDetalle['codigo_ref'].$n;
       $cantidad = $arreglo['cantidad_acondicionar'][$key]; //Nueva cantidad a Acondicionar
       $cantidadTotal += $cantidad;
       $arregloRegistrar = array();
@@ -319,6 +318,7 @@ class acondicionamientos {
         recuperar_Post($inventarioMov);
         $inventarioMov->save();
       }
+      $n++;
     }
     $arregloMaestro['orden'] = isset($ordenAsignar->orden) ? $ordenAsignar->orden : "";
     $arregloMaestro['cantidad'] = $cantidadTotal;
@@ -329,14 +329,14 @@ class acondicionamientos {
     recuperar_Post($invMaestro);
     $codigoMaestro = $invMaestro->save($codigoMaestro, 'codigo');
   }
-
+  
   function registrarExtranjera($arreglo, $codigoMaestro) {
     $arregloMaestro = $this->armarArregloEncabezado($arreglo);
  
-    $cantidadTotal = 0;
-    $detalleAcondicionamiento = $this->datos->registrarDetalleAcondicionamiento($codigoMaestro); 
+    $n=$cantidadTotal = 0;
+    $detalleAcondicionamiento = $this->datos->registrarDetalleAcondicionamiento($codigoMaestro);
     foreach($detalleAcondicionamiento as $valueDetalle) {
-      $key = $valueDetalle['codigo_ref'];
+      $key = $valueDetalle['codigo_ref'].$n;
       $cantidad = $arreglo['cantidad_acondicionar'][$key]; //Nueva cantidad a Acondicionar
       $cantidadTotal += $cantidad;
       $arregloRegistrar = array();
@@ -380,7 +380,7 @@ class acondicionamientos {
           
       //Valida Existencia de Mercancía Extranjera Devuelta
       if($arreglo['cantidad_devueltas'][$key]!=0) {
-        //Registra Mercancía Nacional Devuelta
+        //Registra Mercancía Extranjera Devuelta
         $arregloRegistrar['peso_nonac'] = $arreglo['cantidad_devueltas'][$key] * $peso_uni;
         $arregloRegistrar['cantidad_nonac'] = $arreglo['cantidad_devueltas'][$key];
         $arregloRegistrar['fob_nonac'] = $arreglo['cantidad_devueltas'][$key] * $valor_uni;
@@ -404,6 +404,7 @@ class acondicionamientos {
         recuperar_Post($inventarioMov);
         $inventarioMov->save();
       }
+      $n++;
     }
     $arregloMaestro['orden'] = isset($ordenAsignar->orden) ? $ordenAsignar->orden : "";
     $arregloMaestro['cantidad'] = $cantidadTotal;
