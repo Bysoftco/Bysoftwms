@@ -31,7 +31,7 @@
         </td>
         <td style="padding-left:3px;">{nombre_referencia}</td>
         <td style="text-align:center;">
-          <input style="text-align:right;padding-right:3px;" name="cantidad_retirar[{cod_referencia}{n}]" id="cantidad_retirar{cod_referencia}{n}" value="{acondicionar}" readonly="" size="8" readonly="" />
+          <input style="text-align:right;padding-right:3px;" name="cantidad_retirar[{cod_referencia}{n}]" id="cantidad_retirar{cod_referencia}{n}" value="{acondicionar}" size="8" readonly="" />
         </td>
         <td style="text-align:center;">
           <input class="required number" style="text-align:right;padding-right:3px;" name="cantidad_rechazar[{cod_referencia}{n}]" id="cantidad_rechazar{cod_referencia}{n}" value="0.00" onblur="calcular('{cod_referencia}{n}')" size="8" />

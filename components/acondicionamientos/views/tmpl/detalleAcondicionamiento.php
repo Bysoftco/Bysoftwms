@@ -122,6 +122,10 @@
       <tr><td colspan="4" style="height:15px;"></td></tr>
       <tr style="display: {mostrar_botones}">
         <td>
+          <span style="color:#FF0000;">* Dar clic en el botón Acondicionar para registrar el Acondicionamiento </span>
+        </td>
+        <td style="width: 5px;"></td>
+        <td>
           <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="acondicionar" >Acondicionar</button>
         </td>
         <td style="width: 5px;"></td>

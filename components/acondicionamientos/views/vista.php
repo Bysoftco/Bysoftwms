@@ -48,6 +48,7 @@ class acondicionaVista {
     foreach($arreglo['datos'] as $value) {
       $this->template->setCurrentBlock("ROW");
       $this->template->setVariable('n', $n);
+      $this->template->setVariable('codigo', $value['codigo_mov']);
       $this->template->setVariable('doc_cliente', $value['numero_documento']);
       $this->template->setVariable('nombre_cliente', $value['razon_social']);
       $this->template->setVariable('orden', $value['orden']);

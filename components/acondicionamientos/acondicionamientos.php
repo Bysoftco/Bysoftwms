@@ -415,6 +415,25 @@ class acondicionamientos {
     recuperar_Post($invMaestro);
     $codigoMaestro = $invMaestro->save($codigoMaestro, 'codigo');
   }
+  
+  function reintegroMercancia($arreglo) {
+    $datos_mov = $this->datos->retornarDatos($arreglo);
+    $datosReintegro[inventario_entrada] = $datos_mov->inventario_entrada;
+    $fecha = new DateTime();
+    $fecha = $fecha->format('Y-m-d H:i');
+    $datosReintegro[fecha] = $fecha;
+    $datosReintegro[tipo_movimiento] = 19;
+    $datosReintegro[cod_maestro] = $datos_mov->cod_maestro;
+    $datosReintegro[peso_naci] = $datos_mov->peso_naci;
+    $datosReintegro[peso_nonac] = $datos_mov->peso_nonac;
+    $datosReintegro[cantidad_naci] = $datos_mov->cantidad_naci;
+    $datosReintegro[cantidad_nonac] = $datos_mov->cantidad_nonac;
+    $datosReintegro[cif] = $datos_mov->cif;
+    $datosReintegro[fob_nonac] = $datos_mov->fob_nonac;
+    $datosReintegro[estado_mcia] = 1;
+    $this->datos->reintegroMercancia($datosReintegro);
+    $this->listadoRechazadas($arreglo);
+  }
 
   function mostrarEtiquetarAcondicionamiento($arreglo) {
     $this->vista->mostrarEtiquetarAcondicionamiento($arreglo);

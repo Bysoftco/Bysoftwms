@@ -47,6 +47,7 @@
       <th>Peso Nal.</th>
       <th>Piezas Ext.</th>
       <th>Peso Ext.</th>
+      <th>Acción</th>
     </tr>
   </thead>
   <tbody>
@@ -57,7 +58,7 @@
       <td style="text-align: center;">{doc_transporte}</td>
       <td style="text-align: center;">{codigo_referencia}</td>
       <td>{nombre_referencia}</td>
-      <td>{modelo}</td>
+      <td style="text-align: center;">{modelo}</td>
       <td style="text-align: center;">{fecha_rechazo}</td>
       <td style="text-align: center;">{nombre_ubicacion}</td>
       <td style="text-align: center;">{tipo_rechazo}</td>
@@ -65,6 +66,12 @@
       <td style="text-align: right;">{peso_nal}</td>
       <td style="text-align: right;">{piezas_ext}</td>
       <td style="text-align: right;">{peso_ext}</td>
+      <td style="text-align: center;">
+        <a href="javascript: Reintegrar({orden},{n})">
+          <img src="img/acciones/reintegrar.png" title="Reintegrar Mercancía con Orden {orden}" width="25" height="25" border="0" />
+        </a>
+      </td>
+      <input type="hidden" name="codigo_mov[{n}]" id="codigo_mov{n}" value="{codigo}" />
     </tr>
     <!-- END ROW  -->
   </tbody>
@@ -76,6 +83,7 @@
       <th style="text-align: right;">{total_peso_nal}</th>
       <th style="text-align: right;">{total_piezas_ext}</th>
       <th style="text-align: right;">{total_peso_ext}</th>
+      <th></th>
     </tr>
   </tfoot>
 </table>
@@ -116,5 +124,25 @@
   
   function Excel() {
     document.frmExcel.submit();
+  }
+  
+  function Reintegrar(orden,n) {
+    if(confirm('¿Está seguro de reintegrar la Mercancia con Orden '+orden+'?')) {
+      $.ajax({
+        url: 'index_blank.php?component=acondicionamientos&method=reintegroMercancia',
+        async: true,
+        type: "POST",
+        data: { 
+          nitfr: $('#nitfr').val(),
+          fechadesdefr: $('#fechadesdefr').val(),
+          fechahastafr: $('#fechahastafr').val(),
+          doasignadofr: $('#doasignadofr').val(),
+          codigo_mov: $('#codigo_mov'+n).val()
+        },
+        success: function(msm) {
+          $('#componente_central').html(msm);
+        }
+      });      
+    }
   }
 </script>

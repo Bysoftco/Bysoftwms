@@ -31,13 +31,10 @@ class acondicionaDatos extends BDControlador {
                 modelo,
                 SUM(peso_nonac) AS peso_nonac, 
                 SUM(peso_naci) AS peso_naci,
-                SUM(peso_nonac)+SUM(peso_naci) AS peso_mixto,
                 SUM(cantidad_naci) AS cantidad_naci,
-                SUM(cantidad_nonac) AS cantidad_nonac, 
-                SUM(cantidad_naci) + SUM(cantidad_nonac) AS cantidad_mixto, 
+                SUM(cantidad_nonac) AS cantidad_nonac,  
                 SUM(fob_nonac) AS fob_nonac, 
                 SUM(cif) AS cif,
-                SUM(fob_nonac) + SUM(cif) AS valor_mixto,
                 cod_maestro,
                 MIN(num_levante) AS num_levante, 
                 un_grupo, 
@@ -132,41 +129,20 @@ class acondicionaDatos extends BDControlador {
     $db->query($query);
     return $db->getArray();
   }
-  
-  /*function disponiblesRetirar($codigo_ref, $docCliente) {
-    $db = $_SESSION['conexion'];
     
-    $arregloDatos['movimiento'] = "1,2,3,7,10,15,16,30";
-    
-    $query = "SELECT im.inventario_entrada,
-                SUM(im.peso_naci) AS peso_nacional,
-                SUM(im.peso_nonac) AS peso_no_nacional,
-                SUM(im.cantidad_naci) AS cantidad_nacional, 
-                SUM(im.cantidad_nonac) AS cantidad_no_nacional,
-                SUM(im.cif) AS cif,
-                SUM(im.fob_nonac) AS fob_nonac,
-                imm.orden
-              FROM inventario_movimientos im
-                LEFT JOIN inventario_maestro_movimientos imm ON im.cod_maestro = imm.codigo
-                LEFT JOIN inventario_declaraciones id ON im.num_levante = id.num_levante,
-                inventario_entradas ie, arribos, do_asignados, clientes, referencias ref
-              WHERE im.inventario_entrada = ie.codigo
-                AND arribos.arribo = ie.arribo AND arribos.orden = do_asignados.do_asignado
-                AND clientes.numero_documento = do_asignados.por_cuenta
-                AND ie.referencia = ref.codigo
-                AND ref.codigo = $codigo_ref
-                AND clientes.numero_documento = '$docCliente'
-                AND im.tipo_movimiento IN (".$arregloDatos['movimiento'].")
-              GROUP BY inventario_entrada";
-    
-    $db->query($query);
-    return $db->getArray();
-  }*/
-  
   function retornarOrden($idMaestro) {
     $db = $_SESSION['conexion'];
     
     $query = "SELECT * FROM inventario_entradas WHERE codigo = $idMaestro";
+    
+    $db->query($query);
+    return $db->fetch();
+  }
+  
+  function retornarDatos($arreglo) {
+    $db = $_SESSION['conexion'];
+    
+    $query = "SELECT * FROM inventario_movimientos WHERE codigo = $arreglo[codigo_mov]";
     
     $db->query($query);
     return $db->fetch();
@@ -227,7 +203,7 @@ class acondicionaDatos extends BDControlador {
     $db->query($query);
     return $db->getArray();
   }
-    
+
   function cerrarAcondicionamiento($codigo) {
     $db = $_SESSION['conexion'];
     $query = "UPDATE inventario_maestro_movimientos SET cierre = 1 WHERE codigo = $codigo";
@@ -237,7 +213,8 @@ class acondicionaDatos extends BDControlador {
   function listadoRechazadas($arreglo) {
     $db = $_SESSION['conexion'];
 
-    $arreglo[GroupBy] = "orden,codigo_ref,tipo_rechazo";
+    $arreglo[GroupBy] = "inventario_entrada";
+    $arreglo[having] = "HAVING (TRUNCATE(ABS(tc_nal),1) > 0 OR TRUNCATE(ABS(tc_ext),1) > 0)";
 
 		//Prepara la condición del filtro
     if(!empty($arreglo[nitfr])) $arreglo[where] .= " AND da.por_cuenta = '$arreglo[nitfr]'";
@@ -245,11 +222,14 @@ class acondicionaDatos extends BDControlador {
     if(!empty($arreglo[fechahastafr])) $arreglo[where] .= " AND DATE(im.fecha) <= '$arreglo[fechahastafr]'";
     if(!empty($arreglo[doasignadofr])) $arreglo[where] .= " AND da.do_asignado = '$arreglo[doasignadofr]'";
     if(!empty($arreglo[tiporechazofr])) $arreglo[where] .= " AND im.estado_mcia = '$arreglo[tiporechazofr]'";
-    
-    $query = "SELECT im.*,im.fecha AS fecha_rechazo,ie.*,ref.nombre AS nombre_referencia,
+
+    $query = "SELECT im.*,im.fecha AS fecha_rechazo,im.codigo AS codigo_mov,ie.*,
+                ref.nombre AS nombre_referencia,
                 ref.codigo_ref,p.nombre AS nombre_ubicacion,em.nombre AS tipo_rechazo,
                 imm.doc_tte, cl.numero_documento,cl.razon_social,
-                SUM(cantidad_naci) AS tc_nal,SUM(peso_naci) tp_nal,SUM(cantidad_nonac) AS tc_ext,
+                SUM(cantidad_naci) AS tc_nal,
+                SUM(peso_naci) AS tp_nal,
+                SUM(cantidad_nonac) AS tc_ext,
                 SUM(peso_nonac) AS tp_ext
               FROM inventario_movimientos im
                 INNER JOIN inventario_entradas ie ON ie.codigo = im.inventario_entrada
@@ -259,9 +239,9 @@ class acondicionaDatos extends BDControlador {
                 INNER JOIN clientes cl ON cl.numero_documento = da.por_cuenta
                 INNER JOIN estados_mcia em ON em.codigo = im.estado_mcia
                 LEFT JOIN posiciones p ON p.codigo = ie.posicion
-              WHERE tipo_movimiento = 16
-                AND estado_mcia > 1 $arreglo[where]
-              GROUP BY $arreglo[GroupBy] ORDER BY im.codigo";    
+              WHERE (tipo_movimiento = 16 AND estado_mcia > 1) OR
+                (tipo_movimiento = 19 AND estado_mcia = 1) $arreglo[where]
+              GROUP BY $arreglo[GroupBy] $arreglo[having] ORDER BY im.codigo";
 
     $db->query($query);
     return $db->getArray();
@@ -329,6 +309,21 @@ class acondicionaDatos extends BDControlador {
     $db->query($query);
     $retornar['datos']=$db->getArray();
     return $retornar;
+  }
+  
+  function reintegroMercancia($arreglo) {
+    $db = $_SESSION['conexion'];
+    
+    //Inserta el movimiento de Reintegro en inventario_movimientos
+    $query = "INSERT INTO inventario_movimientos(inventario_entrada,fecha,tipo_movimiento,
+                cod_maestro,peso_naci,peso_nonac,cantidad_naci,cantidad_nonac,cif,fob_nonac,
+                estado_mcia)
+              VALUES($arreglo[inventario_entrada],'$arreglo[fecha]',$arreglo[tipo_movimiento],
+                $arreglo[cod_maestro],$arreglo[peso_naci]*-1,$arreglo[peso_nonac]*-1,
+                $arreglo[cantidad_naci]*-1,$arreglo[cantidad_nonac]*-1,$arreglo[cif]*-1,
+                $arreglo[fob_nonac]*-1,$arreglo[estado_mcia])";
+
+    $db->query($query);
   }
 }
 ?>
