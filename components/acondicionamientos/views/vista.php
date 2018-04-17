@@ -168,7 +168,8 @@ class acondicionaVista {
     $this->template->setVariable('COMODIN', '' );
  
     $datosMaestro = $this->datos->retornarMaestroAcondicionamiento($arreglo['id_registro']);
-    
+
+		$this->template->setVariable('verBoton', $arreglo['verBoton']);
     $this->template->setVariable('mostrar_botones', 'block');
     $this->template->setVariable('mostrar_mensaje', 'none');
     $this->template->setVariable('n',1);

@@ -239,8 +239,8 @@ class acondicionaDatos extends BDControlador {
                 INNER JOIN clientes cl ON cl.numero_documento = da.por_cuenta
                 INNER JOIN estados_mcia em ON em.codigo = im.estado_mcia
                 LEFT JOIN posiciones p ON p.codigo = ie.posicion
-              WHERE (tipo_movimiento = 16 AND estado_mcia > 1) OR
-                (tipo_movimiento = 19 AND estado_mcia = 1) $arreglo[where]
+              WHERE ((tipo_movimiento = 16 AND estado_mcia > 1) OR
+                (tipo_movimiento = 19 AND estado_mcia = 1)) $arreglo[where]
               GROUP BY $arreglo[GroupBy] $arreglo[having] ORDER BY im.codigo";
 
     $db->query($query);

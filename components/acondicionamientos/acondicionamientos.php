@@ -93,6 +93,7 @@ class acondicionamientos {
     $arregloEnviar['tipo_mercancia'] = $arreglo['tipo_mercancia'];
     $arregloEnviar['nombre_tipo_mercancia'] = $arreglo['nombre_tipo_mercancia'];
     $arregloEnviar['doc_cliente'] = $arreglo['doc_cliente'];
+		$arregloEnviar['verBoton'] = $arreglo['verBoton'];
     $this->mostrarAcondicionamiento($arregloEnviar);
   }
 
@@ -241,6 +242,7 @@ class acondicionamientos {
     $arregloEnviar['tipo_mercancia'] = $arreglo['tipo_mercancia'];
     $arregloEnviar['nombre_tipo_mercancia'] = $arreglo['nombre_tipo_mercancia'];
     $arregloEnviar['doc_cliente'] = $arreglo['doc_cliente'];
+		$arregloEnviar['verBoton'] = $arreglo['verBoton'];
     $this->mostrarAcondicionamiento($arregloEnviar);    
   }
   

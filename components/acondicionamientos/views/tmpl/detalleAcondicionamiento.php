@@ -168,6 +168,7 @@
   <input type="hidden" name="codigo_ciudad" id="codigo_ciudad" value="{codigo_ciudad}" />
   <input type="hidden" name="observaciones" id="observaciones" value="{observaciones}" />
   <input type="hidden" name="n" id="n" value="{n}" />
+	<input type="text" name="verBoton" id="verBoton" value="{verBoton}" />
 </fieldset>
 <div class="registrosAcondicionar">
   <a id="registrarAcondicionamiento" href="" title="Registro del Acondicionamiento">
@@ -175,7 +176,8 @@
 </div>
 <script>
   Nifty("div.borde_circular","transparent");
-  Nifty("div.div_barra","top transparent");    
+  Nifty("div.div_barra","top transparent");
+	$('#acondicionar').prop("disabled",$('#verBoton').val());
 
   $( "#acondicionar" ).button({
     text: true,
