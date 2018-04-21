@@ -26,23 +26,24 @@
         <td style="text-align:center;">{orden_detalle}</td>
         <td style="text-align:center;">
           {codigo_referen}
-          <input type="hidden" class="cantidadPiezas" name="codreferencia" value="{codigo_referen}" />
+          <input type="hidden" class="cantidadPiezas" name="codreferencia" value="{cod_referencia}{n}" />
+          <input type="hidden" name="cod_referencia" value="{cod_referencia}" />
         </td>
         <td style="padding-left:3px;">{nombre_referencia}</td>
         <td style="text-align:center;">
-          <input style="text-align:right;padding-right:3px;" name="cantidad_retirar[{codigo_referen}]" id="cantidad_retirar{codigo_referen}" value="{acondicionar}" readonly="" size="8" readonly="" />
+          <input style="text-align:right;padding-right:3px;" name="cantidad_retirar[{cod_referencia}{n}]" id="cantidad_retirar{cod_referencia}{n}" value="{acondicionar}" size="8" readonly="" />
         </td>
         <td style="text-align:center;">
-          <input class="required number" style="text-align:right;padding-right:3px;" name="cantidad_rechazar[{codigo_referen}]" id="cantidad_rechazar{codigo_referen}" value="0.00" onblur="calcular('{codigo_referen}')" size="8" />
+          <input class="required number" style="text-align:right;padding-right:3px;" name="cantidad_rechazar[{cod_referencia}{n}]" id="cantidad_rechazar{cod_referencia}{n}" value="0.00" onblur="calcular('{cod_referencia}{n}')" size="8" />
         </td>
         <td style="text-align:center;">
-          <select style="width:150px;" name="tipo_rechazo[{codigo_referen}]" id="tipo_rechazo{codigo_referen}">{select_tiporechazo}</select>
+          <select style="width:150px;" name="tipo_rechazo[{cod_referencia}{n}]" id="tipo_rechazo{cod_referencia}{n}">{select_tiporechazo}</select>
         </td>
         <td style="text-align:center;">
-          <input class="required number" style="text-align:right;padding-right:3px;" name="cantidad_devueltas[{codigo_referen}]" id="cantidad_devueltas{codigo_referen}" value="0.00" onblur="calcular('{codigo_referen}')" size="8" />
+          <input class="required number" style="text-align:right;padding-right:3px;" name="cantidad_devueltas[{cod_referencia}{n}]" id="cantidad_devueltas{cod_referencia}{n}" value="0.00" onblur="calcular('{cod_referencia}{n}')" size="8" />
         </td>
         <td style="text-align:center;">
-          <input class="required number" style="text-align:right;padding-right:3px;" name="cantidad_acondicionar[{codigo_referen}]" id="cantidad_acondicionar{codigo_referen}" value="{acondicionar}" readonly="" size="8" />
+          <input class="required number" style="text-align:right;padding-right:3px;" name="cantidad_acondicionar[{cod_referencia}{n}]" id="cantidad_acondicionar{cod_referencia}{n}" value="{acondicionar}" readonly="" size="8" />
         </td>
       </tr>
       <!-- END ROW -->
@@ -57,7 +58,6 @@
     <input type="hidden" name="direccion" id="direccion" value="{direccion}" />
     <input type="hidden" name="fmm" id="fmm" value="{fmm}" />
     <input type="hidden" name="doc_tte" id="doc_tte" value="{doc_tte}" />
-    <input type="hidden" name="cod_referencia" id="cod_referencia" value="{cod_referencia}" />
     <input type="hidden" name="pedido" id="pedido" value="{pedido}" />
     <input type="hidden" name="codigo_ciudad" id="codigo_ciudad" value="{codigo_ciudad}" />
     <input type="hidden" name="observaciones" id="observaciones" value="{observaciones}" />
@@ -65,6 +65,7 @@
   <center>
     <input name="enviarAcondicionar" id="enviarAcondicionar" class="button" type="submit" value="Acondicionar" />
 	</center>
+	<input type="hidden" name="verBoton" id="verBoton" value="true" />
 </form>
 <script>
   $().ready(function() {
@@ -86,7 +87,7 @@
     var cont = true;
     for(var x=0; x < recorrer.length; x++) {
       if($("#cantidad_rechazar"+recorrer[x].value).attr("value")!=0 && $("#tipo_rechazo"+recorrer[x].value).attr("value")==1) {
-        alert("Debe seleccionar el tipo de rechazo de la mercancia "+recorrer[x].value+", existe(n) "+$("#cantidad_rechazar"+recorrer[x].value)+" para rechazar.");
+        alert("La mercancia rechazada no puede tener estado NORMAL");
         cont = false;
         break;
       }
