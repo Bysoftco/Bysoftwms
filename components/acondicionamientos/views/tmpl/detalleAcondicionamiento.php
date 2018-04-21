@@ -122,7 +122,7 @@
       <tr><td colspan="4" style="height:15px;"></td></tr>
       <tr style="display: {mostrar_botones}">
         <td>
-          <span style="color:#FF0000;">* Dar clic en el botón Acondicionar para registrar el Acondicionamiento </span>
+          <span style="color:#FF0000;" id="msgAcondicionar"></span>
         </td>
         <td style="width: 5px;"></td>
         <td>
@@ -175,7 +175,12 @@
 </div>
 <script>
   Nifty("div.borde_circular","transparent");
-  Nifty("div.div_barra","top transparent");    
+  Nifty("div.div_barra","top transparent");
+  
+  //Habilita/Deshabilita el botón de Acondicionar y el Mensaje
+  $("#acondicionar").attr("disabled",{verBoton});
+  if({verBoton}) $("#msgAcondicionar").html("");
+  else $("#msgAcondicionar").html("* Dar clic en el botón Acondicionar para registrar el Acondicionamiento ");
 
   $( "#acondicionar" ).button({
     text: true,
@@ -262,11 +267,12 @@
 	.click(function() {
     if(confirm("\u00BFRealmente desea Devolver la Operación?")) {
       $.ajax({
-        url: 'index_blank.php?component=acondicionamientos&method=devolderAcondicionamiento',
+        url: 'index_blank.php?component=acondicionamientos&method=devolverAcondicionamiento',
         type: "POST",
         data: {
           codigo_operacion: $("#codigo_operacion").attr("value"),
           tipo_mercancia: $("#tipo_mercancia").attr('value'),
+          nombre_tipo_mercancia: $('#nombre_tipo_mercancia').val(),
           doc_cliente: $("#doc_cliente").attr("value")
         },
         success: function(msm) {

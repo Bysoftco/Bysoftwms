@@ -169,6 +169,9 @@ class acondicionaVista {
  
     $datosMaestro = $this->datos->retornarMaestroAcondicionamiento($arreglo['id_registro']);
     
+    //Habilita el botón de Acondicionar
+    $this->template->setVariable('verBoton',$arreglo['verBoton']);
+
     $this->template->setVariable('mostrar_botones', 'block');
     $this->template->setVariable('mostrar_mensaje', 'none');
     $this->template->setVariable('n',1);

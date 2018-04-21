@@ -93,6 +93,7 @@ class acondicionamientos {
     $arregloEnviar['tipo_mercancia'] = $arreglo['tipo_mercancia'];
     $arregloEnviar['nombre_tipo_mercancia'] = $arreglo['nombre_tipo_mercancia'];
     $arregloEnviar['doc_cliente'] = $arreglo['doc_cliente'];
+    $arregloEnviar['verBoton'] = $arreglo['verBoton'];
     $this->mostrarAcondicionamiento($arregloEnviar);
   }
 
@@ -241,6 +242,7 @@ class acondicionamientos {
     $arregloEnviar['tipo_mercancia'] = $arreglo['tipo_mercancia'];
     $arregloEnviar['nombre_tipo_mercancia'] = $arreglo['nombre_tipo_mercancia'];
     $arregloEnviar['doc_cliente'] = $arreglo['doc_cliente'];
+    $arregloEnviar['verBoton'] = $arreglo['verBoton'];
     $this->mostrarAcondicionamiento($arregloEnviar);    
   }
   
@@ -445,7 +447,7 @@ class acondicionamientos {
     $this->vista->mostrarAcondicionamiento($arreglo);
   }
   
-  function devolderAcondicionamiento($arreglo) {
+  function devolverAcondicionamiento($arreglo) {
     $nuevoIngreso = $this->datos->retornarIdNuevoIngreso($arreglo['codigo_operacion']);
     $codigoNuevaEntrada = isset($nuevoIngreso->inventario_entrada) ? $nuevoIngreso->inventario_entrada : 0;
     
@@ -456,6 +458,7 @@ class acondicionamientos {
     $arreglo_Datos = array();
     $arreglo_Datos['docCliente'] = $arreglo['doc_cliente'];
     $arreglo_Datos['tipo_mercancia'] = $arreglo['tipo_mercancia'];
+    $arreglo_Datos['nombre_tipo_mercancia'] = $arreglo['nombre_tipo_mercancia'];
     $this->mostrarListadoReferencias($arreglo_Datos);
   }
   
