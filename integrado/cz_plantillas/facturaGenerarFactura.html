@@ -189,7 +189,10 @@
 					   
 					   vrte_icas     =$('#valores'+i).val()/1* $('#rte_icas'+i).val()/1/100;
                        t_rte_icas    =t_rte_icas +vrte_icas;
-                       $('#vrte_icas'+i).val(vrte_icas);
+                       
+					  
+					   
+					   $('#vrte_icas'+i).val(vrte_icas);
                        
 					   vrte_cree     =$('#valores'+i).val()/1* $('#crees'+i).val()/1/100;
                        t_rte_cree    =t_rte_cree +vrte_cree;
@@ -198,6 +201,12 @@
 					   subtotal=subtotal+$('#valores'+i).val()/1;
                           
                     }
+					 if($('#subtotal').val()/1 <= $('#tope_minimo_rete_ica').val()/1){ //20180421
+				   		$('#rte_ica').val(0);
+						t_rte_icas=0;
+					}
+					
+					
                    $('#subtotal').val(subtotal);
                    $('#iva').val(total_iva);
                    $('#rte_fuente').val(t_rte_fuente);
@@ -207,16 +216,14 @@
 				  
 				   $('#rte_iva').val(total_iva*0.15);
 				   
-				   // Si el subtotal es menor al tope minimo  NO HACE RETENCIONES
+				   // Si el subtotal es menor al tope minimo  NO HACE RETENCIONES  
 				   
-				   if($('#subtotal').val()/1 <= $('#tope_minimo_retencion').val()/1){
-				   
+				   if($('#subtotal').val()/1 <= $('#tope_minimo_retencion').val()/1){ // valids contra la Base minima de retefuente
+				        //FYA TEST		
 				   		retiene=0;  // Se aprovecha el if que ya existia para que NO HAGA NINGUNA RETENCION
 					}
 					if($('#subtotal').val()/1 <= $('#tope_minimo_rete_ica').val()/1){
 				   		 $('#rte_ica').val(0);
-						 
-				   
 					}
 				  // Si no se hacen retenciones se anulan los calculos
 				   if(retiene==0){
@@ -225,7 +232,9 @@
 						 $('#rte_ica').val(0);
 						 t_rte_fuente=0;
 						 t_rte_icas	 =0;
+						 
 				   }
+				 
 				   if($('input[name="en_dolares"]').is(":checked"))
 				   {
 				   		$('#rte_fuente').val(0);
@@ -254,6 +263,7 @@
 					rte_ica_aux=$('#rte_ica').val()/1;
 					var rte_iva_aux;
 					rte_iva_aux=$('#rte_iva').val()/1;
+					
 					$('#neto_aux').val(subtotal+total_iva-rte_iva_aux-rte_ica_aux-t_rte_fuente);
 					// Se calcula el valor de los anticipo adicionales
 					//alert($('#cantidad_anticipos').val())
@@ -264,6 +274,9 @@
 						otros_anticipos=otros_anticipos+$('#otro_anticipo'+a).val()/1;
 						
 					}
+					//alert(rte_ica_aux)//fredy
+					//alert(t_rte_icas)
+					
 					var total_anticipos=otros_anticipos/1+$('#valor_anticipo').val()/1;
 					var deducciones=(t_rte_fuente+t_rte_icas+$('#rte_iva').val()/1);//+$('#rte_cree').val()/1
 					

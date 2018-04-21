@@ -1,0 +1,88 @@
+
+
+
+<script>
+$(function(){
+if('{carg}'=='1')
+	{
+		$('#guardar').show();
+	}
+	else
+	{
+		$('#guardar').hide();
+	}
+
+});
+</script>
+
+<body >
+<div class="ui-widget" id="mensajex">
+			<div class="{estilo}" style="margin-top: 5px; padding: 0 .7em;"> 
+				<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+				{mensajex}
+			  </p>
+			</div>
+		</div>
+<form action="./index_scripts.php" name="listaDocumentos" method="post" >
+  <table cellpadding="1" cellspacing="1" class="tablaBlanco" border="0" width="90%" align="center" style="display:{mostrarResultados};">
+    <tr> 
+      <td colspan="44"> </td>
+    </tr>
+    <tr> 
+      <td align="left" colspan="44"> </td>
+    </tr>
+    <tr class="ui-widget-header "> 
+      <th># </th>
+  
+
+      <th>FECHA</th>
+      <th>TIP_DOC</th>
+      <th>NUM_DOC</th>
+      <th>VAL_DOC</th>
+      <th>TIP_ERROR</th>
+      <th>DES_ERROR</th>
+      <th>VAL_EXT</th>
+      <th>DIGITO</th>
+      <th>COD_BAN</th>
+      <th>TIP_DOC NUMDOC</th>
+      <th>VAL_CONS</th>
+      <th>IMPUESTO</th>
+      <th>FEC_PROC</th>
+      <th>DESCRIP</th>
+      <th>FEC_ING</th>
+      <th>IND_032</th>
+      <th>ALERTAS</th>
+    </tr>
+    <!-- BEGIN ROW -->
+    <tr class="{odd}"> 
+      <td height="27" >{n}</td>
+      <td >{fecha} <input type="hidden" name="carga[]" id="carga" value="{fecha},{tip_doc},{num_doc},{val_doc},{tip_error},{des_error},{val_ext},{digito},{cod_ban},{tip_docnum_doc},{val_cons},{impuesto},{fec_proc},{descrip},{fec_ing},{ind_032}"/></td>
+      <td >{tip_doc}</td>
+      <td >{num_doc}</td>
+      <td >{val_doc1}</td>
+      <td >{tip_error}</td>
+      <td >{des_error}</td>
+      <td >{val_ext}</td>
+      <td >{digito}</td>
+      <td >{cod_ban}</td>
+      <td >{tip_docnum_doc}</td>
+      <td >{val_cons1}</td>
+      <td >{impuesto}</td>
+      <td >{fec_proc}</td>
+      <td >{descrip}</td>
+      <td >{fec_ing}</td>
+      <td >{ind_032}</td>
+      <td style="{color}" >{alerta}{msj}</td>
+    </tr>
+    
+   
+	 <!-- END ROW -->
+     
+   
+
+  </table>
+<input name="clase" type="hidden" id="clase" value="Extracto">
+          <input name="metodo" type="hidden" id="metodo" value="crearDoc">
+</form>
+ 
+</body>
