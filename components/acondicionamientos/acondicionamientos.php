@@ -5,7 +5,7 @@
  * @author  Fredy Salom <fsalom@bysoft.us>
  * @date    10-Marzo-2018 
  */
- 
+
 if(!defined('entrada_valida')) die('Acceso directo no permitido');
 require_once COMPONENTS_PATH.'acondicionamientos/views/vista.php';
 require_once COMPONENTS_PATH.'acondicionamientos/model/acondicionamientos.php';

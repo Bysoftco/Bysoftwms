@@ -210,8 +210,8 @@ class acondicionaVista {
     $this->template->setVariable('observaciones', $datosMaestro->obs);
     
     $detalleAcondicionamiento = $this->datos->retornarDetalleAcondicionamiento($arreglo['id_registro']);
-    $inv_entrada_mayor=0;
-    $valor_mayor=0;
+    $inv_entrada_mayor = 0;
+    $valor_mayor = 0;
     foreach($detalleAcondicionamiento as $valueDetalle) {
       $this->template->setCurrentBlock("ROW");
       $this->template->setVariable('orden_detalle', $valueDetalle['orden']);
@@ -285,8 +285,6 @@ class acondicionaVista {
 
     $this->template->setVariable('nombre_tipo_mercancia', $arreglo['nombre_tipo_mercancia']);
     $this->template->setVariable('codigo_reporte', $arreglo['codigo_reporte']);
-
-
     $this->template->setVariable('codigo_operacion', $datosMaestro->codigo);
     $this->template->setVariable('razon_social', $datosMaestro->razon_social);
     $this->template->setVariable('numero_documento', $datosMaestro->numero_documento);
@@ -311,56 +309,37 @@ class acondicionaVista {
     $this->template->setVariable('cantidad_ext', number_format($datosMaestro->cantidad_ext,2,".",","));
     $this->template->setVariable('observaciones', $datosMaestro->obs);
     
-    $detalleAcondicionamiento = $this->datos->retornarDetalleAcondicionamiento($arreglo['codigoMaestro']);
+    $detalleAcondicionamiento = $this->datos->regOrdenDetalleAcondicionamiento($arreglo['codigoMaestro']);
     
     //Inicializa las variables que registran los totales
-    $tot_piezas_naci = $tot_peso_naci = $tot_valor_cif = 0;
-    $tot_piezas_ext = $tot_peso_ext = $tot_valor_fob = 0;
+    $tot_acondicionadas = $tot_rechazadas = $tot_devueltas = 0;
+    $nr = 0;
 
     foreach($detalleAcondicionamiento as $valueDetalle) {
       $this->template->setCurrentBlock("ROW");
+      $this->template->setVariable('nr', ++$nr);
       $this->template->setVariable('orden_detalle', $valueDetalle['orden']);
       $this->template->setVariable('doc_tte', $valueDetalle['doc_tte']);
       $this->template->setVariable('codigo_referen', $valueDetalle['codigo_ref']);
       $this->template->setVariable('nombre_referencia', $valueDetalle['nombre_referencia']);
       $this->template->setVariable('fecha_expira', $valueDetalle['fecha_expira']);
-      $this->template->setVariable('fecha_detalle', $valueDetalle['fecha']);    
+      $this->template->setVariable('fecha_detalle', $valueDetalle['fecha_mov']);    
       $this->template->setVariable('modelo', !empty($valueDetalle['modelo'])?$valueDetalle['modelo']:'POR ASIGNAR');
       $this->template->setVariable('nombre_ubicacion', isset($valueDetalle['nombre_ubicacion'])?$valueDetalle['nombre_ubicacion']:'POR ASIGNAR');
-      switch($valueDetalle['nombre_mcia']) {
-        case 'NORMAL': {
-          $this->template->setVariable('nombre_mcia', 'ACONDICIONADAS');
-          break;
-        }
-        case 'DEVUELTAS': {
-          $this->template->setVariable('nombre_mcia', 'DEVUELTAS');
-          break;
-        }
-        default: $this->template->setVariable('nombre_mcia', 'RECHAZADAS');
-      }
-      $this->template->setVariable('cantidad_nacional', number_format(abs($valueDetalle['cantidad_naci']),2,".",","));
-      $this->template->setVariable('negrita_nac', abs($valueDetalle['cantidad_naci'])!=0?'bold':'normal');
-      $this->template->setVariable('peso_nacional', number_format(abs($valueDetalle['peso_naci']),2,".",","));
-      $this->template->setVariable('valor_cif', number_format(abs($valueDetalle['cif']),2,".",","));
-      $this->template->setVariable('cantidad_extranjera', number_format(abs($valueDetalle['cantidad_nonac']),2,".",","));
-      $this->template->setVariable('negrita_ext', abs($valueDetalle['cantidad_nonac'])!=0?'bold':'normal');
-      $this->template->setVariable('peso_extranjera', number_format(abs($valueDetalle['peso_nonac']),2,".",","));
-      $this->template->setVariable('valor_fob', number_format(abs($valueDetalle['fob_nonac']),2,".",","));
+      $this->template->setVariable('acondicionadas', number_format($valueDetalle['acondicionadas'],2,".",","));
+      $this->template->setVariable('rechazadas', number_format($valueDetalle['rechazadas'],2,".",","));
+      $this->template->setVariable('devueltas', number_format($valueDetalle['devueltas'],2,".",","));
       /*************************************************************************************************/
       // Registro de Totales
-      $tot_piezas_naci += abs($valueDetalle['cantidad_naci']); $tot_piezas_ext += abs($valueDetalle['cantidad_nonac']);
-      $tot_peso_naci += abs($valueDetalle['peso_naci']); $tot_peso_ext += abs($valueDetalle['peso_nonac']);
-      $tot_valor_cif += abs($valueDetalle['cif']); $tot_valor_fob += abs($valueDetalle['fob_nonac']);
+      $tot_acondicionadas += $valueDetalle['acondicionadas']; $tot_rechazadas += $valueDetalle['rechazadas'];
+      $tot_devueltas += $valueDetalle['devueltas'];
       /*************************************************************************************************/
       $this->template->parseCurrentBlock("ROW");
     }
     // Captura los totales registrados
-    $this->template->setVariable('tot_piezas_naci', number_format($tot_piezas_naci,2,".",","));
-    $this->template->setVariable('tot_peso_naci', number_format($tot_peso_naci,2,".",","));
-    $this->template->setVariable('tot_valor_cif', number_format($tot_valor_cif,2,".",","));
-    $this->template->setVariable('tot_piezas_ext', number_format($tot_piezas_ext,2,".",","));
-    $this->template->setVariable('tot_peso_ext', number_format($tot_peso_ext,2,".",","));
-    $this->template->setVariable('tot_valor_fob', number_format($tot_valor_fob,2,".",","));
+    $this->template->setVariable('tot_acondicionadas', number_format($tot_acondicionadas,2,".",","));
+    $this->template->setVariable('tot_rechazadas', number_format($tot_rechazadas,2,".",","));
+    $this->template->setVariable('tot_devueltas', number_format($tot_devueltas,2,".",","));
     
     $this->template->show();
   }

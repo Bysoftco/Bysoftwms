@@ -53,7 +53,8 @@
     }
     #tabla_packinglist td:hover {
       background-color: #fff;
-    }      
+    }
+    .saltarpagina { page-break-before: always; } /* page-break-after también funciona */      
   </style>
 </head>
 <body>
@@ -192,11 +193,9 @@
       <th><b>M/L/C</b></th>
       <th><b>Fecha Ing.</b></th>
       <th><b>Ubicaci&oacute;n</b></th>
-      <th><b>Movimiento</b></th>
-      <th><b>Piezas Nal.</b></th>
-      <th><b>Peso Nal.</b></th>
-      <th><b>Piezas Ext.</b></th>
-      <th><b>Peso Ext.</b></th>
+      <th><b>Acondicionadas</b></th>
+      <th><b>Rechazadas</b></th>
+      <th><b>Devueltas</b></th>
     </tr>
     <!-- BEGIN ROW -->
     <tr>
@@ -210,19 +209,16 @@
       <td style="text-align:center;">{modelo}</td>
       <td style="text-align:center;">{fecha_detalle}</td>
       <td style="text-align:center;">{nombre_ubicacion}</td>
-      <td style="text-align:center;"><b>{nombre_mcia}</b></td>
-      <td style="text-align: right;padding-right: 5px;font-weight: {negrita_nac};">{cantidad_nacional}</td>
-      <td style="text-align: right;padding-right: 5px;">{peso_nacional}</td>
-      <td style="text-align: right;padding-right: 5px;font-weight: {negrita_ext};">{cantidad_extranjera}</td>
-      <td style="text-align: right;padding-right: 5px;">{peso_extranjera}</td>
+      <td style="text-align: right;padding-right: 5px;">{acondicionadas}</td>
+      <td style="text-align: right;padding-right: 5px;">{rechazadas}</td>
+      <td style="text-align: right;padding-right: 5px;">{devueltas}</td>
     </tr>
     <!-- END ROW -->
     <tr>
-      <td colspan="9" style="font-size: 10px;"><b>T O T A L E S</b></td>
-      <td style="text-align: right;font-size: 10px;padding-right: 5px;"><b>{tot_piezas_naci}</b></td>
-      <td style="text-align: right;font-size: 10px;padding-right: 5px;"><b>{tot_peso_naci}</b></td>
-      <td style="text-align: right;font-size: 10px;padding-right: 5px;"><b>{tot_piezas_ext}</b></td>
-      <td style="text-align: right;font-size: 10px;padding-right: 5px;"><b>{tot_peso_ext}</b></td>
+      <td colspan="8" style="font-size: 10px;"><b>T O T A L E S</b></td>
+      <td style="text-align: right;font-size: 10px;padding-right: 5px;"><b>{tot_acondicionadas}</b></td>
+      <td style="text-align: right;font-size: 10px;padding-right: 5px;"><b>{tot_rechazadas}</b></td>
+      <td style="text-align: right;font-size: 10px;padding-right: 5px;"><b>{tot_devueltas}</b></td>
     </tr>
     <tr>
       <td colspan="2"style="font-size:10px;"><b>RECIBIDO POR</b></td>
@@ -241,5 +237,62 @@
     </tr>
     <tr><td colspan="13" style="font-size:10px;height:70px;">{observaciones}</td></tr>
   </table>
+  <div class="saltarpagina"> </div>
+  <canvas id="canvas" width="1200" height="900"></canvas>
+  <script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext('2d');
+
+    /**
+     * Draws a rounded rectangle using the current state of the canvas. 
+     * If you omit the last three params, it will draw a rectangle 
+     * outline with a 5 pixel border radius 
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {Number} x The top left x coordinate
+     * @param {Number} y The top left y coordinate 
+     * @param {Number} width The width of the rectangle 
+     * @param {Number} height The height of the rectangle
+     * @param {Number} radius The corner radius. Defaults to 5;
+     * @param {Boolean} fill Whether to fill the rectangle. Defaults to false.
+     * @param {Boolean} stroke Whether to stroke the rectangle. Defaults to true.
+     */
+    function roundRect(ctx, x, y, width, height, radius, fill, stroke) { 
+      if (typeof stroke == "undefined" ) {
+        stroke = true;
+      }
+      if (typeof radius === "undefined") {
+        radius = 5;
+      }
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+      if (stroke) {
+        ctx.stroke();
+      }
+      if (fill) {
+        ctx.fill();
+      }
+    }      
+    ctx.lineWidth = 4;
+    var nrect = 1;
+    var registros = {nr};
+    var rectWidth = 100;
+    for(i=10;i<=200;i=i+170) {
+      ctx.fillStyle = "#000";
+      ctx.fillText("ETIQUETA-"+nrect,(i+rectWidth)/2,10);
+      ctx.fillStyle = "#FFF";
+      roundRect(ctx, i, 15, 150, 50, 10, true);
+      if(nrect==registros) break;
+      nrect++;rectWidth+=170;
+    }
+  </script>
 </body>
 </html>
