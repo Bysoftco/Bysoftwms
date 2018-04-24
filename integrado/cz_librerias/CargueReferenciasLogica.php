@@ -45,7 +45,7 @@ class CargueReferenciasLogica {
         $this->pantalla->setFuncion($arregloDatos, &$this->datos);
     }
 
-    function rfiltroCargueReferencias($arregloDatos) {
+    function filtroCargueReferencias($arregloDatos) {
         $arregloDatos[mostrar] = 1;
         $arregloDatos[plantilla] = "CargueReferenciasFiltro.html";
         $arregloDatos[thisFunction] = 'filtro';
@@ -159,6 +159,7 @@ class CargueReferenciasLogica {
     function uploadArchivoBancos($arregloDatos) {
 
 
+
         $file = new Archivo();
         $error = 0;
         if ($arregloDatos[dejar_subir]) {
@@ -166,8 +167,10 @@ class CargueReferenciasLogica {
         } else {
             $subir = false;
         }
+		
+		
 
-        if ($file->subir('archivo', '_files/bancos/', $subir, false)) {
+        if ($file->subir('archivo', '_files/referencias/', $subir, false)) {
             $mensaje = 'El Archivo se subio correctamente en : ' . $file->nombreCompleto . "\n<br>";
             $mensaje .= "<pre>
 				directorio           : $file->directorio
@@ -184,86 +187,17 @@ class CargueReferenciasLogica {
             $error = 2;
             $arregloDatos['mensaje'] = 'Problemas al intentar subir el archivo, ' . $file->_error;
         }
-
-        switch ($error) {
-            case 0:
+$error=0;
+       
                 //subir archhivo segun la extension
-                if (strtolower($file->extension) == 'csv' && $arregloDatos[banco] == 6103) {
-
-                    $resultado = strpos($file->nombre, '3081');
-                    if ($resultado !== FALSE) {
-                        $archivo = fopen("./$file->nombreCompleto", "r");
+				
+              			$nombreCompleto="./integrado/_files/referencias.csv";
+                        //$archivo = fopen("./$file->nombreCompleto", "r");
+						 $archivo = fopen("$nombreCompleto", "r");
                         $arregloDatos[nomarchivo] = $file->nombre;
                         $this->pantalla->crearPreuploadDocumentoscsv(&$arregloDatos, $archivo);
-                    } else {
-                        $arregloDatos['estilo'] = 'ui-state-error';
-                        $arregloDatos['mensaje'] = 'Debe seleccionar el archivo correspondiente para cada banco.';
-                        $this->pantalla->maestroCarga(&$arregloDatos);
-                    }
-                } else if (strtolower($file->extension) == 'csv' && $arregloDatos[banco] == 6113) {
-                    $resultado = strpos($file->nombre, '0751');
-                    if ($resultado !== FALSE) {
-                        $archivo = fopen("./$file->nombreCompleto", "r");
-                        $arregloDatos[nomarchivo] = $file->nombre;
-                        $this->pantalla->crearPreuploadDocumentoscsv1(&$arregloDatos, $archivo);
-                    } else {
-                        $arregloDatos['estilo'] = 'ui-state-error';
-                        $arregloDatos['mensaje'] = 'Debe seleccionar el archivo correspondiente para cada banco.';
-                        $this->pantalla->maestroCarga(&$arregloDatos);
-                    }
-                } else if (strtolower($file->extension) == 'fil' && $arregloDatos[banco] == 5012) {
-                    $archivo = fopen("./$file->nombreCompleto", "r");
-                    $arregloDatos[nomarchivo] = $file->nombre;
-                    $this->pantalla->crearPreuploadDocumentoscsv2(&$arregloDatos, $archivo);
-                } else if (strtolower($file->extension) == 'mrn' && $arregloDatos[banco] == 1317) {
-                    $archivo = fopen("./$file->nombreCompleto", "r");
-                    $arregloDatos[nomarchivo] = $file->nombre;
-                    $this->pantalla->crearPreuploadDocumentoscsv3(&$arregloDatos, $archivo);
-                } else if (strtolower($file->extension) == 'csv' && $arregloDatos[banco] == 1) {
-                    $resultado = strpos($file->nombre, 'TransactionsReport');
-                    if ($resultado !== FALSE) {
-                        $archivo = fopen("./$file->nombreCompleto", "r");
-                        $arregloDatos[nomarchivo] = $file->nombre;
-                        $this->pantalla->crearPreuploadDocumentoscsv4(&$arregloDatos, $archivo);
-                    } else {
-                        $arregloDatos['estilo'] = 'ui-state-error';
-                        $arregloDatos['mensaje'] = 'Debe seleccionar el archivo correspondiente para cada banco.';
-                        $this->pantalla->maestroCarga(&$arregloDatos);
-                    }
-                } else if (strtolower($file->extension) == 'csv' && $arregloDatos[banco] == 2) {
-                    $resultado = strpos($file->nombre, 'formato_estandar');
-                    if ($resultado !== FALSE) {
-                        $archivo = fopen("./$file->nombreCompleto", "r");
-                        $arregloDatos[nomarchivo] = $file->nombre;
-                        $this->pantalla->crearPreuploadDocumentoscsv5(&$arregloDatos, $archivo);
-                    } else {
-                        $arregloDatos['estilo'] = 'ui-state-error';
-                        $arregloDatos['mensaje'] = 'Debe seleccionar el archivo correspondiente para cada banco.';
-                        $this->pantalla->maestroCarga(&$arregloDatos);
-                    }
-                } else {
-                    $arregloDatos['estilo'] = 'ui-state-error';
-                    $arregloDatos['mensaje'] = 'Debe seleccionar el archivo correspondiente para cada banco.';
-
-                    $this->pantalla->maestroCarga(&$arregloDatos);
-                }
-
-                break;
-            case 1:
-                $arregloDatos['estilo'] = 'ui-state-error';
-                $arregloDatos['mensaje'] = 'Formato inapropiado el archivo debe tener al guna de las siguientes extensiones: cvs, xlsx,xls';
-                $this->pantalla->maestroCarga(&$arregloDatos);
-                break;
-            case 2:
-                $arregloDatos['estilo'] = 'ui-state-error';
-                $arregloDatos['mensaje'] = 'Problemas al intentar subir el archivo, ' . $file->_error;
-                $this->pantalla->maestroCarga(&$arregloDatos);
-                break;
-            default :
-                $arregloDatos['estilo'] = 'ui-state-error';
-                $arregloDatos['mensaje'] = 'El archivo ya se encuentra en el servidor';
-                $this->pantalla->maestroCarga(&$arregloDatos);
-        }
+                    
+               
     }
 
     function crearDoc($arregloDatos) {

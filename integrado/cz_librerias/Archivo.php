@@ -381,10 +381,12 @@ Class Archivo
                 return false;
             } 
         } 
-
+		echo	 $userfile;
+			echo "X".$this->nombreCompleto."Y";
         if (move_uploaded_file($userfile, $this->nombreCompleto))
         {
-            $pathParts = pathinfo($this->nombreCompleto);
+            
+			$pathParts = pathinfo($this->nombreCompleto);
             $this->directorio = $pathParts["dirname"];
             $this->nombre = $pathParts["basename"];
             $this->extension = $pathParts["extension"];

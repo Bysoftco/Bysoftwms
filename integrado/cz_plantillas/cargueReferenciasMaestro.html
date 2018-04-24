@@ -119,7 +119,7 @@
 		
                     $( "#dialog-form" ).dialog( "open" );
 	    
-                    $("div#filtro").load("./index_scripts.php", {clase:'Extracto',metodo:'rfiltroextracto',mostrar:'1'}, function(datos){	
+                    $("div#filtro").load("./index_scripts.php", {clase:'Extracto',metodo:'filtroCargueReferencias',mostrar:'1'}, function(datos){	
                     });
 		
                 });
@@ -133,7 +133,8 @@
                     buttons: {
                         Aceptar: function() {
 
-                            $( "#"+$( "#elije_formulario" ).val() ).submit();
+							alert($( "#elije_formulario" ).val() );
+                           // $( "#"+$( "#elije_formulario" ).val() ).submit();
 				
                         },
                         Cancelar: function() {
@@ -168,7 +169,7 @@
         <div id="tabs"> 
             <ul>
 
-                <li><a href="#tabs-2">Extractos</a></li>
+                <li><a href="#tabs-2">Cargue de Referencias</a></li>
 
             </ul>
 
