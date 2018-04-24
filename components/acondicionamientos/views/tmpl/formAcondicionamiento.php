@@ -104,7 +104,7 @@
   <center>
     <input name="enviarAcondicionar" id="enviarAcondicionar" class="button" type="submit" value="Enviar" />
 	</center>
-	<input type="hidden" name="verBoton" id="verBoton" value="true" />
+  <input type="hidden" name="verBoton" id="verBoton" value="false" />
 </form>
 <script>
   $().ready(function() {
