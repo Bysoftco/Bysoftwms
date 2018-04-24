@@ -15,7 +15,7 @@ class acondicionaDatos extends BDControlador {
   function disponiblesProducto($codigo_ref, $docCliente) {
     $db = $_SESSION['conexion'];
     
-    $arregloDatos['movimiento'] = "1,2,3,7,10,15,16,30";
+    $arregloDatos['movimiento'] = "1,2,3,7,10,15,16,19,30";
     
     $query = "SELECT orden,
                 doc_tte, 
@@ -199,7 +199,43 @@ class acondicionaDatos extends BDControlador {
                 INNER JOIN referencias ref ON ref.codigo = ie.referencia
               WHERE cod_maestro = $idRegistro AND tipo_movimiento = 16";
 
-    //echo $query;
+    $db->query($query);
+    return $db->getArray();
+  }
+  
+  function regOrdenDetalleAcondicionamiento($idRegistro) {
+    $db = $_SESSION['conexion'];
+
+    $arreglo[GroupBy] = "orden,codigo_ref";    
+    $query = "SELECT orden,codigo_ref,nombre_referencia,doc_tte,fecha_expira,fecha_mov,modelo,
+                ABS(SUM(tac_nac)+SUM(tac_ext)) AS acondicionadas,
+                ABS(SUM(trc_nac)+SUM(trc_ext)) AS rechazadas,
+                ABS(SUM(tdc_nac)+SUM(tdc_ext)) AS devueltas,nombre_ubicacion
+              FROM (SELECT im.codigo AS cod_movimiento,im.cod_maestro,im.tipo_movimiento,
+                  im.inventario_entrada,im.estado_mcia,im.fecha AS fecha_mov,
+                  CASE WHEN im.estado_mcia>1 THEN im.cantidad_naci ELSE 0
+                  END AS trc_nac,
+                  CASE WHEN im.estado_mcia=1 THEN im.cantidad_naci ELSE 0
+                  END AS tac_nac,
+                  CASE WHEN im.estado_mcia=0 THEN im.cantidad_naci ELSE 0
+                  END AS tdc_nac,
+                  CASE WHEN im.estado_mcia>1 THEN im.cantidad_nonac ELSE 0
+                  END AS trc_ext,
+                  CASE WHEN im.estado_mcia=1 THEN im.cantidad_nonac ELSE 0
+                  END AS tac_ext,
+                  CASE WHEN im.estado_mcia=0 THEN im.cantidad_nonac ELSE 0
+                  END AS tdc_ext,im.cif,im.fob_nonac,
+                  ref.codigo_ref,ie.orden,ref.nombre AS nombre_referencia,
+                  da.doc_tte,ie.fecha_expira,ie.posicion,ie.modelo,p.nombre AS nombre_ubicacion
+                FROM inventario_movimientos im
+                  INNER JOIN inventario_maestro_movimientos imm ON imm.codigo = im.cod_maestro
+                  INNER JOIN inventario_entradas ie ON ie.codigo = im.inventario_entrada
+                  INNER JOIN referencias ref ON ref.codigo = ie.referencia
+                  INNER JOIN do_asignados da ON da.do_asignado = ie.orden
+                  LEFT JOIN posiciones p ON p.codigo = ie.posicion
+                WHERE cod_maestro = $idRegistro AND tipo_movimiento = 16) AS inv
+              GROUP BY $arreglo[GroupBy]";
+
     $db->query($query);
     return $db->getArray();
   }
