@@ -29,8 +29,10 @@
           case 16: //Acondicionamiento
             var registro = $("#cod_mov"+$column).val();
             var tipo_mercancia = $("#cantidad"+$column).val()!=0?1:2;
+            var nombre_tipo_mercancia = tipo_mercancia==1?'Nacional':'Extranjera';
+            var verBoton = true;
             url = 'index_blank.php?component=acondicionamientos&method=mostrarAcondicionamiento&id_registro='+registro+
-                    '&tipo_mercancia='+tipo_mercancia;
+                    '&tipo_mercancia='+tipo_mercancia+'&nombre_tipo_mercancia='+nombre_tipo_mercancia+'&verBoton='+verBoton;
             break;
           default: //Cualquier otro movimiento que no esté definido
             $("#clase").val("Levante");
