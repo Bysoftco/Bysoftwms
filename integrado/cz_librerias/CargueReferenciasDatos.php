@@ -16,7 +16,19 @@ class CargueReferencias extends MYDB {
         
     }
 
-   
+   function validarCliente($arregloDatos) {
+   		$sql = "SELECT * 
+				FROM clientes 
+				WHERE numero_documento='$arregloDatos[cliente]'
+				";
+		$this->query($sql);
+		if ($this->_lastError) {
+            echo "<div class=error>" . 'Error al crear el documento<BR>' . $sql . "<BR></div>";
+            $this->_lastError = FALSE;
+        }
+		//echo 	$sql."<br>";
+        return $this->N;
+   }
 
     function setReferencia($arregloDatos) {
         $sql = "INSERT INTO referencias 

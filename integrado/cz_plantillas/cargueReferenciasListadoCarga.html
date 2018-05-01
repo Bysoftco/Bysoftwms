@@ -17,33 +17,7 @@
 	  
       var metodo; 
         
-      switch('{accion}') {
-        case "habilitar":
-          if(cerrada > 0) { // La factura ya esta cerrada
-            metodo = 'getPreFactura'; 
-            if('{accion}' == "habilitar") {
-              if(!confirm("¿ Seguro que desea habilitar la factura "+factura+" para impresion ?")) return false;
-            }		
-            metodo = 'habilitaImpresion';
-          } else {
-            alert('La factura esta abierta, para que pueda imprimirla debe finalizarla') 
-            return false;
-          }   
-          break;
-        case "anular":
-          if(!confirm("¿ Seguro que desea anular la factura "+factura+" ?")) return false;
-          metodo = 'anularFactura';
-          break;
-        case "abrir":
-          if(!confirm("¿ Seguro que desea abrir la factura "+factura+" ?")) return false;
-          metodo = 'abrirFactura';
-          break;
-        case "Preliquidacion":
-          metodo = 'getPreFactura';
-          break;
-        default:
-          metodo = 'consultaFactura';
-      }
+     
     
       $("div#componente_central").load("./scripts_index.php", {
 	     clase:'Factura',metodo:	metodo,num_prefactura:num_prefactura,verToolbar:$("#toolbar").val(),num_factura:factura,accion:'{accion}'
@@ -59,7 +33,8 @@
     <table width="100%" class="ui-widget ui-widget-content" id="users">
       <thead>
         <tr class="ui-widget-header"> 
-          <th>Codigo</th>
+          <th>No
+            <input name="registros" type="hidden" id="registros" value="{registros} "></th>
           <th>Codigo_ref</th>
           <th>Ref_prove</th>
           <th>Nombre </th>
@@ -69,7 +44,7 @@
           <th>Unidad Venta</th>
           <th>Presentacion</th>
           <th>Fecha Expira</th>
-          <th>&nbsp;</th>
+          <th>Obs</th>
           <!-- <th style="display: {ocultaColumna}"> -->
           <th> Acci&oacute;n </th>
         </tr>
@@ -79,25 +54,28 @@
         <tr class="{odd}"> 
           <td> {n} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
             </a> </td>
-          <td> {codigo_ref} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
+          <td> {codigo_ref}
+            <input name="codigo_ref" type="hidden" id="codigo_ref{n}" value="{codigo_ref} "> 
+            <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
             </a> </td>
           <td> {ref_prove} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
+            <input name="ref_prove" type="hidden" id="ref_prove{n}" value="{ref_prove} ">
             </a></td>
-          <td>{nombre} </td>
-          <td>{cliente} </td>
+          <td>{nombre} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
+            <input name="nombre" type="hidden" id="nombre{n}" value="{nombre} ">
+            <input name="observacion" type="hidden" id="observacion{n}" value="{observacion} ">
+            </a></td>
+          <td>{cliente} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor>
+            <input name="cliente" type="hidden" id="cliente{n}" value="{cliente} ">
+            </a></td>
           <td>{parte_numero}</td>
           <td>{unidad}</td>
           <td>{unidad_venta}</td>
           <td>{presentacion}</td>
           <td>{fecha_expira}</td>
-          <td>&nbsp;
-		  </td>
-            <td> 
-			<a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
-            <img src="integrado/imagenes/{img_editar}" border="0" /> </a> <a href="#" class="signup documento_id" title="Consultar Do {do_asignado}" id="{n}" cursor> 
-            </a> 
-			
-			</td>
+          <td>{alerta}</td>
+            
+          <td> <div id="ok{n}" style="display:none"><img src="integrado/imagenes/checkin.gif" width="16" height="16" ></div> </td>
         </tr>
         <!-- END ROW -->
       </tbody>

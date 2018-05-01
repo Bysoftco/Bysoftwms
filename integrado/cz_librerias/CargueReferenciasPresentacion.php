@@ -186,55 +186,99 @@ class CargueReferenciasPresentacion {
 
     function obtendatos($arregloDatos, $archivo) 
 	{
-        //var_dump($arregloDatos);
         $unaPlantilla = new HTML_Template_IT();
-        $unaPlantilla->loadTemplateFile(PLANTILLAS . 'cargueReferenciasListadoCarga.html', false, false);
+        $unaPlantilla->loadTemplateFile(PLANTILLAS . 'cargueReferenciasListadoCarga.html', true, true);
 
         $n = 0;
         $status = '';
-        $valfor = 0;
-        $cuentaError = 0;
+  		$cuentaError = 0;
         $cont = 0;
-        while (!feof($archivo)) {
-
-            list($codigo, $codigo_ref, $ref_prove, $nombre,
-                    $vigencia, $min_stock, $lote_cosecha, $alto, $largo,
-                    $ancho,$serial,$tipo,$grupo_item,$factor_conversion) = explode(";", $linea);
-          // echo $unidad."$unidad_venta $presentacion_venta $fecha_expira $vigencia $min_stock $lote_cosecha $alto $largo $ancho $serial $tipo $grupo_item $factor_conversion <BR>";
-		    $linea = fgets($archivo, 4092);
-            $estado = '';
-            if ($cont >= 3) 
+        while (!feof($archivo)) 
+		{
+ 			$linea = fgets($archivo, 4092);
+            
+				list(
+				 $codigo_ref, 
+				 $ref_prove,
+				 $nombre,
+				 $observacion,
+				 $cliente,
+				 $parte_numero,
+				 $unidad,
+				 $unidad_venta,
+				 $presentacion_venta,
+				 $fecha_expira,
+                 $vigencia, 
+				 $min_stock, 
+				 $lote_cosecha, 
+				 $alto, 
+				 $largo,
+                 $ancho,
+				 $serial,
+				 $tipo,
+				 $grupo_item,
+				 $factor_conversion) = explode(";", $linea);
+				 
+			if($n > 0 or trim($arregloDatos[codigo_ref])<>"")
 			{
-				if ($n % 2) 
+			
+				$estado = '';
+           		if ($n % 2) 
 				{
-                    $odd = 'odd';
-                } else {
-                    $odd = '';
-                }
-                $n = $n + 1;
-					echo "X".$n."<br>";
-                $unaPlantilla->setCurrentBlock('ROW');
+             		$odd = 'odd';
+            	} else 
+		    	{
+             		$odd = '';
+            	}
+			
+				$unaPlantilla->setCurrentBlock('ROW');
 				$arregloDatos[n] = $n;
-				$Fecha = substr($Fecha_transaccion, 0, 4) . '/' . substr($Fecha_transaccion, 4, 2) . '/' . substr($Fecha_transaccion, 6, 2);
-                $arregloDatos[fecha] = $Fecha;
-                $mes = date('m', strtotime($Fecha));
-                $annio = date('Y', strtotime($Fecha));
-               
-
-                $unaPlantilla->parseCurrentBlock();
-                $arregloDatos[odd] = $odd;
+				//$Fecha = substr($Fecha_transaccion, 0, 4) . '/' . substr($Fecha_transaccion, 4, 2) . '/' . substr($Fecha_transaccion, 6, 2);
+            	//$arregloDatos[fecha] = $Fecha;
+            
+            	$arregloDatos[odd] = $odd;
 				
 				//Se setean los datos
-				$arregloDatos[codigo]		=$codigo;
-                $arregloDatos[codigo_ref]	=$codigo_ref;
-				$arregloDatos[ref_prove]	=$ref_prove;
-				$arregloDatos[nombre]		=$nombre;
+				$arregloDatos[codigo_ref]			=$codigo_ref;
+				$arregloDatos[ref_prove]			=$ref_prove;
+				$arregloDatos[nombre]				=$nombre;
+				$arregloDatos[observacion]			=$observacion;
+				$arregloDatos[cliente]				=$cliente;
+				$arregloDatos[parte_numero]			=$parte_numero;
+				$arregloDatos[unidad]				=$unidad;
+				$arregloDatos[unidad_venta]			=$unidad_venta;
+				$arregloDatos[presentacion_venta]	=$presentacion_venta;
+				$arregloDatos[fecha_expira]			=$fecha_expira; 
+				$arregloDatos[vigencia]				=$vigencia;
+				$arregloDatos[min_stock]			=$min_stock;
+                $arregloDatos[lote_cosecha]			=$lote_cosecha;
+				$arregloDatos[alto]					=$alto;
+				$arregloDatos[largo]				=$largo;
+				$arregloDatos[ancho]				=$ancho;
+				$arregloDatos[serial]				=$serial;
+                $arregloDatos[tipo]					=$tipo;
+				$arregloDatos[grupo_item]			=$grupo_item;
+					
+				// se hacen las validaciones
+				$unaValidacion=new CargueReferencias();
+				$errorCliente=$unaValidacion->validarCliente($arregloDatos);
+				$arregloDatos[alerta]="";
+				if($errorCliente==0){
+					$arregloDatos[alerta]="Error el cliente $arregloDatos[cliente] NO existe ";
+				}
 				
-				$this->mantenerDatos($arregloDatos, $unaPlantilla);
-            }
-
-            $cont = $cont + 1;
+			
+            	if(trim($arregloDatos[codigo_ref]) <>""){
+					$this->mantenerDatos($arregloDatos, $unaPlantilla);
+					$unaPlantilla->parseCurrentBlock();	
+				}
+				
+		    }
+			$n = $n + 1;
+				
         }
+		$unaPlantilla->setVariable('registros', $n);
+		$arregloDatos[alerta]="";
         if ($cuentaError == 1) {
             $arregloDatos[mostrarBotonCrear] = 'none';
             $arregloDatos[carg] = '0';
@@ -243,9 +287,8 @@ class CargueReferenciasPresentacion {
             $arregloDatos[carg] = '1';
         }
 		
-		$this->mantenerDatos($arregloDatos, $unaPlantilla);
 		echo  $unaPlantilla->get();
-    }
+     }
 
   
     function checkDateTime($data) {
