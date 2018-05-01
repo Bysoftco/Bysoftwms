@@ -63,11 +63,13 @@
           <th>Codigo_ref</th>
           <th>Ref_prove</th>
           <th>Nombre </th>
-          <th> Cliente </th>
-          <th> Documento </th>
-          <th>Subtotal</th>
-          <th>Iva</th>
-          <th>Total</th>
+          <th> Cliente</th>
+          <th>Parte Numero</th>
+          <th>Unidad</th>
+          <th>Unidad Venta</th>
+          <th>Presentacion</th>
+          <th>Fecha Expira</th>
+          <th>&nbsp;</th>
           <!-- <th style="display: {ocultaColumna}"> -->
           <th> Acci&oacute;n </th>
         </tr>
@@ -75,25 +77,27 @@
       <tbody>
         <!-- BEGIN ROW -->
         <tr class="{odd}"> 
-          <td> {codigo} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
+          <td> {n} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
             </a> </td>
           <td> {codigo_ref} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
             </a> </td>
           <td> {ref_prove} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
             </a></td>
           <td>{nombre} </td>
-          <td>{razon_social} </td>
-          <td>{documento_transporte} </td>
-          <td>{subtotal_f}</td>
-          <td>{iva_f}</td>
-          <td>{total_f}</td>
-          <td>
-            <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor>
-              <img src="integrado/imagenes/{img_editar}" border="0" /> 
-            </a>
-            <a href="#" class="signup documento_id" title="Consultar Do {do_asignado}" id="{n}" cursor> 
-            </a>
-          </td>
+          <td>{cliente} </td>
+          <td>{parte_numero}</td>
+          <td>{unidad}</td>
+          <td>{unidad_venta}</td>
+          <td>{presentacion}</td>
+          <td>{fecha_expira}</td>
+          <td>&nbsp;
+		  </td>
+            <td> 
+			<a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
+            <img src="integrado/imagenes/{img_editar}" border="0" /> </a> <a href="#" class="signup documento_id" title="Consultar Do {do_asignado}" id="{n}" cursor> 
+            </a> 
+			
+			</td>
         </tr>
         <!-- END ROW -->
       </tbody>
@@ -101,3 +105,5 @@
     </table>
   </form>
 </div>
+<div id="referenciax" >
+			</div>

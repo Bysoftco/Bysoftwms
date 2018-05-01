@@ -145,6 +145,10 @@ class CargueReferenciasLogica {
 
         $this->pantalla->maestroCarga($arregloDatos);
     }
+	
+	function setReferencia($arregloDatos) {
+		 $this->datos->setReferencia($arregloDatos);
+	}
 
     function filtrocarnArchivo($arregloDatos) {
 
@@ -200,58 +204,7 @@ $error=0;
                
     }
 
-    function crearDoc($arregloDatos) {
-        $errores = 0;
-        $res = 0;
-        $arregloDatos[usuario] = $_SESSION['usuario'];
 
-        foreach ($arregloDatos[carga] as $value) {
-            $fecactual=FECHAACTUALTIME;
-            $valores = explode(',', $value);
-            $fecha = $valores[0];
-            $tip_doc = $valores[1];
-            $num_doc = $valores[2];
-            
-            if(substr($num_doc, 0, 2)== '40'){
-                $num_doc='1'.$num_doc;
-            }
-            
-            $val_doc = $valores[3];
-            $tip_error = $valores[4];
-            $des_error = $valores[5];
-            $val_ext = $valores[6];
-            $digito = $valores[7];
-            $cod_ban = $valores[8];
-            $tip_docnum_doc = $valores[9];
-            $val_cons = $valores[10];
-            $impuesto = $valores[11];
-            $fec_proc = $valores[12];
-            $descrip = $fecactual.'-'.$valores[13];
-            $fec_ing = $valores[14];
-            $ind_032 = $valores[15];
-
-
-            $x = $this->datos->nuevodoc($fecha, $tip_doc, $num_doc
-                    , $val_doc, $tip_error, $des_error, $val_ext
-                    , $digito, $cod_ban, $tip_docnum_doc, $val_cons, $impuesto, $fec_proc, $descrip, $fec_ing, $ind_032);
-
-            if (!$x) {
-                $errores++;
-            }
-        }
-        if ($errores >= 1) {
-            $arregloDatos[mensaje] = 'La informacion no se cargo por errores en la insercion de los datos !';
-            $arregloDatos[estilo] = 'ui-state-highlight';
-        } else {
-            $arregloDatos[mensaje] = 'La informacion se cargo Satisfactoriamente!';
-            $arregloDatos[estilo] = 'ui-state-highlight';
-        }
-
-        $this->pantalla->maestroCarga(&$arregloDatos);
-        //$this->filtrocarnArchivo($arregloDatos);
-    }
-
-    /** FIN* */
 }
 
 ?>

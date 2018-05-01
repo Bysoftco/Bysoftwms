@@ -96,11 +96,19 @@
 						primary: "ui-icon-search"
 					}
 				})
-				.click(function() {
-					
-				document.listaDocumentos.submit();	
-					
-				});
+				.click(function() 
+				{
+					$("div#referenciax").load("./scripts_index.php", 
+					   {clase:'cargueReferencias',metodo:'setReferencia',mostrar:'1',
+							codigo_ref:1,
+							ref_prove:2,
+							nombre:'productoX'
+						}, function(datos)
+						{
+							 alert(datos)
+				  		}
+					 );
+				 });
 		
                 $( "#dialog-form" ).dialog({
                     autoOpen: false,

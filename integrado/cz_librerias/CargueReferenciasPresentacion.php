@@ -87,6 +87,7 @@ class CargueReferenciasPresentacion {
             } else {
                 $odd = '';
             }
+		
             $n = $n + 1;
             $unaPlantilla->setCurrentBlock('ROW');
             $this->setDatos($arregloDatos, $unDatos, $unaPlantilla);
@@ -211,6 +212,7 @@ class CargueReferenciasPresentacion {
                     $odd = '';
                 }
                 $n = $n + 1;
+					echo "X".$n."<br>";
                 $unaPlantilla->setCurrentBlock('ROW');
 				$arregloDatos[n] = $n;
 				$Fecha = substr($Fecha_transaccion, 0, 4) . '/' . substr($Fecha_transaccion, 4, 2) . '/' . substr($Fecha_transaccion, 6, 2);
