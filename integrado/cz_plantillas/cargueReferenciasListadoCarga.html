@@ -17,33 +17,7 @@
 	  
       var metodo; 
         
-      switch('{accion}') {
-        case "habilitar":
-          if(cerrada > 0) { // La factura ya esta cerrada
-            metodo = 'getPreFactura'; 
-            if('{accion}' == "habilitar") {
-              if(!confirm("¿ Seguro que desea habilitar la factura "+factura+" para impresion ?")) return false;
-            }		
-            metodo = 'habilitaImpresion';
-          } else {
-            alert('La factura esta abierta, para que pueda imprimirla debe finalizarla') 
-            return false;
-          }   
-          break;
-        case "anular":
-          if(!confirm("¿ Seguro que desea anular la factura "+factura+" ?")) return false;
-          metodo = 'anularFactura';
-          break;
-        case "abrir":
-          if(!confirm("¿ Seguro que desea abrir la factura "+factura+" ?")) return false;
-          metodo = 'abrirFactura';
-          break;
-        case "Preliquidacion":
-          metodo = 'getPreFactura';
-          break;
-        default:
-          metodo = 'consultaFactura';
-      }
+     
     
       $("div#componente_central").load("./scripts_index.php", {
 	     clase:'Factura',metodo:	metodo,num_prefactura:num_prefactura,verToolbar:$("#toolbar").val(),num_factura:factura,accion:'{accion}'
@@ -59,17 +33,18 @@
     <table width="100%" class="ui-widget ui-widget-content" id="users">
       <thead>
         <tr class="ui-widget-header"> 
-          <th>Codigo</th>
+          <th>No
+            <input name="registros" type="hidden" id="registros" value="{registros} "></th>
           <th>Codigo_ref</th>
           <th>Ref_prove</th>
           <th>Nombre </th>
-          <th> Cliente</th>
+          <th> Cliente1</th>
           <th>Parte Numero</th>
           <th>Unidad</th>
           <th>Unidad Venta</th>
           <th>Presentacion</th>
           <th>Fecha Expira</th>
-          <th>&nbsp;</th>
+          <th>Obs</th>
           <!-- <th style="display: {ocultaColumna}"> -->
           <th> Acci&oacute;n </th>
         </tr>
@@ -79,25 +54,47 @@
         <tr class="{odd}"> 
           <td> {n} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
             </a> </td>
-          <td> {codigo_ref} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
+          <td> {codigo_ref}
+            <input name="codigo_ref" type="hidden" id="codigo_ref{n}" value="{codigo_ref} "> 
+            <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
             </a> </td>
           <td> {ref_prove} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
+            <input name="ref_prove" type="hidden" id="ref_prove{n}" value="{ref_prove} ">
             </a></td>
-          <td>{nombre} </td>
-          <td>{cliente} </td>
+          <td>{nombre} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
+            <input name="nombre" type="hidden" id="nombre{n}" value="{nombre} ">
+            <input name="observacion" type="hidden" id="observacion{n}" value="{observacion} ">
+            </a></td>
+          <td>{cliente} <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
+            <input name="cliente" type="hidden" id="cliente{n}" value="{cliente} ">
+            <input name="observaciones" type="hidden" id="observaciones{n}" value="{observaciones}">
+			 <input name="parte_numero" type="hidden" id="parte_numero{n}" value="{parte_numero}">
+			 <input name="unidad" type="hidden" id="unidad{n}" value="{unidad} ">
+			 <input name="unidad_venta" type="hidden" id="unidad_venta{n}" value="{unidad_venta}">
+			 <input name="presentacion_venta" type="hidden" id="presentacion_venta{n}" value="{presentacion_venta}">
+			  <input name="fecha_expira" type="hidden" id="fecha_expira{n}" value="{fecha_expira}">
+			  <input name="vigencia" type="hidden" id="vigencia{n}" value="{vigencia}">
+			  <input name="min_stock" type="hidden" id="min_stock{n}" value="{min_stock}">
+			  <input name="lote_cosecha" type="hidden" id="lote_cosecha{n}" value="{lote_cosecha}">
+			  <input name="alto" type="hidden" id="alto{n}" value="{alto}">
+			  <input name="largo" type="hidden" id="largo{n}" value="{largo}">
+			  <input name="ancho" type="hidden" id="ancho{n}" value="{ancho}">
+			  <input name="serial" type="hidden" id="serial{n}" value="{serial}">
+			   <input name="tipo" type="hidden" id="tipo{n}" value="{tipo}">
+			   <input name="grupo_item" type="hidden" id="grupo_item{n}" value="{grupo_item}">
+			   <input name="factor_conversion" type="hidden" id="factor_conversion{n}" value="{factor_conversion}">
+			   
+            </a></td>
           <td>{parte_numero}</td>
           <td>{unidad}</td>
           <td>{unidad_venta}</td>
           <td>{presentacion}</td>
           <td>{fecha_expira}</td>
-          <td>&nbsp;
-		  </td>
-            <td> 
-			<a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
-            <img src="integrado/imagenes/{img_editar}" border="0" /> </a> <a href="#" class="signup documento_id" title="Consultar Do {do_asignado}" id="{n}" cursor> 
-            </a> 
-			
-			</td>
+          <td>{alerta}</td>
+            
+          <td> <div id="ok{n}" style="display:none"><img src="integrado/imagenes/checkin.gif" width="16" height="16" > 
+           
+            </div> </td>
         </tr>
         <!-- END ROW -->
       </tbody>

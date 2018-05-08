@@ -79,8 +79,7 @@
                 })
                 .click(function() {
                     $('#guardar').hide();
-			
-                    $( "#dialog-form" ).dialog( "open" );
+					$( "#dialog-form" ).dialog( "open" );
 	    
                     $("div#filtro").load("./index_scripts.php", {clase:'Extracto',metodo:'filtrocarnArchivo',mostrar:'1'}, function(datos){	
 			
@@ -98,16 +97,50 @@
 				})
 				.click(function() 
 				{
-					$("div#referenciax").load("./scripts_index.php", 
+					
+					var i = 0;
+					for(i=1;i< $("#registros").val()/1;i++){
+						//alert($("#codigo_ref"+i).val());
+						//alert($("#ref_prove"+i).val());
+						//alert($("#nombre"+i).val());
+						//alert($("#observacion"+i).val());
+						//alert($("#cliente"+i).val());
+						$("div#referenciax").load("./scripts_index.php", 
 					   {clase:'cargueReferencias',metodo:'setReferencia',mostrar:'1',
-							codigo_ref:1,
-							ref_prove:2,
-							nombre:'productoX'
+					   		registro		:i,
+							codigo_ref			:$("#codigo_ref"+i).val(),
+							ref_prove			:$("#ref_prove"+i).val(),
+							nombre				:$("#nombre"+i).val(),
+							observaciones		:$("#observaciones"+i).val(),
+							cliente				:$("#cliente"+i).val(),
+							parte_numero		:$("#parte_numero"+i).val(),
+							unidad				:$("#unidad"+i).val(),
+							unidad_venta		:$("#unidad_venta"+i).val(),
+							presentacion_venta	:$("#presentacion_venta"+i).val(),
+							fecha_expira		:$("#fecha_expira"+i).val(),
+							vigencia			:$("#vigencia"+i).val(),
+							min_stock 			:$("#min_stock"+i).val(),
+							lote_cosecha 		:$("#lote_cosecha"+i).val(),
+							alto 				:$("#alto"+i).val(),
+							largo 				:$("#largo"+i).val(),
+							ancho 				:$("#ancho "+i).val(),
+							serial 				:$("#serial "+i).val(),
+							tipo 				:$("#tipo "+i).val(),
+							grupo_item 			:$("#grupo_item "+i).val(),
+							factor_conversion 	:$("#factor_conversion "+i).val()
+							
 						}, function(datos)
 						{
-							 alert(datos)
+							//alert(datos) 
+							
+							$("#ok"+datos).show();
 				  		}
 					 );
+						
+					}// fin for
+					
+					
+					
 				 });
 		
                 $( "#dialog-form" ).dialog({
@@ -121,9 +154,9 @@
 							
 							
 							$("div#listado").load("./scripts_index.php", {clase: 'CargueReferencias', metodo: 'uploadArchivoBancos', mostrar: '1',
-                id_levante: $('#id_levante').val(), tipo_movimiento: $('#tipo_movimiento').val()}, function(datos) {
-						alert(datos);
-              });
+                			id_levante: $('#id_levante').val(), tipo_movimiento: $('#tipo_movimiento').val()}, function(datos) {
+							//alert(datos);
+             		 });
 							
 								//document.subirfile.submit();
                            		$( this ).dialog( "close" );

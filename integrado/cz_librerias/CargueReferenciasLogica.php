@@ -35,16 +35,7 @@ class CargueReferenciasLogica {
         $this->pantalla->setFuncion($arregloDatos, &$this->datos);
     }
 
-    function editarCargueReferencias($arregloDatos) {
-
-
-        $arregloDatos[mostrar] = 1;
-        $arregloDatos[plantilla] = "CargueReferenciasFormaActualizar.html";
-        $arregloDatos[thisFunction] = 'listarCargueReferencias';
-        $arregloDatos[band] = "1";
-        $this->pantalla->setFuncion($arregloDatos, &$this->datos);
-    }
-
+    
     function filtroCargueReferencias($arregloDatos) {
         $arregloDatos[mostrar] = 1;
         $arregloDatos[plantilla] = "CargueReferenciasFiltro.html";
@@ -52,50 +43,6 @@ class CargueReferenciasLogica {
         $this->pantalla->setFuncion($arregloDatos, &$this->datos);
     }
 
-    function updateCargueReferencias($arregloDatos) {
-
-        $this->datos->updateCargueReferencias(&$arregloDatos);
-
-
-        unset($arregloDatos[codigo_id]);
-
-
-        $arregloDatos[mostrar] = 1;
-        $arregloDatos[plantilla] = "CargueReferenciasListado.html";
-        $arregloDatos[thisFunction] = 'listarCargueReferencias';
-        $this->pantalla->setFuncion($arregloDatos, &$this->datos);
-    }
-
-    function borrarCargueReferencias($arregloDatos) {
-
-        $extr = new CargueReferencias();
-        $extr->getCargueReferencias($arregloDatos);
-
-        while ($extr->fetch()) {
-            $arregloDatos[registrom] = $extr->Fecha . ', ' . $extr->tip_doc . ', ' . $extr->num_doc . ', ' . $extr->val_doc . ',' . $extr->cod_alu . ', ' . $extr->ano_ref . ', ' . $extr->per_ref . ', ' . $extr->tip_ref . ', ' . $extr->Tip_error . ', ' . $extr->des_error . ', ' . $extr->val_ext . ', ' . $extr->cod_con . ', ' . $extr->digito . ', ' . $extr->cod_suc . ', ' . $extr->cod_cco . ', ' . $extr->cod_cl1 . ', ' . $extr->semestr . ', ' . $extr->ciclo . ', ' . $extr->ano_alu . ', ' . $extr->cod_ban . ', ' . $extr->num_ext . ', ' . $extr->val_cons . ', ' . $extr->impuesto . ', ' . $extr->fec_proc . ', ' . $extr->descrip . ', ' . $extr->num_ing . ', ' . $extr->fec_ing . ', ' . $extr->ind_032 . ', ' . $extr->id_cxcpl;
-        }
-        $this->datos->borrarCargueReferencias(&$arregloDatos);
-        unset($arregloDatos[codigo_id]);
-      
-        $arregloDatos[mostrar] = 1;
-        $arregloDatos[plantilla] = "CargueReferenciasListado.html";
-        $arregloDatos[thisFunction] = 'listarCargueReferencias';
-        $this->pantalla->setFuncion(&$arregloDatos, &$this->datos);
-    }
-
-    function updateExtConfirmar($arregloDatos) {
-
-        $this->datos->updateExtConfirmar(&$arregloDatos);
-
-
-
-
-        unset($arregloDatos[codigo_id]);
-        $arregloDatos[mostrar] = 1;
-        $arregloDatos[plantilla] = "CargueReferenciasListado.html";
-        $arregloDatos[thisFunction] = 'listarCargueReferencias';
-        $this->pantalla->setFuncion($arregloDatos, &$this->datos);
-    }
 
     function titulo($arregloDatos) {
         $vartitulo = "Filtrado por: ";
@@ -103,29 +50,9 @@ class CargueReferenciasLogica {
         if (!empty($arregloDatos[numero])) {
             $vartitulo.="Numero de Documento " . $arregloDatos[numero];
         }
-        if (!empty($arregloDatos[fecha_inicio]) && !empty($arregloDatos[fecha_fin])) {
-            $vartitulo.=" Fecha entre " . $arregloDatos[fecha_inicio] . " y " . $arregloDatos[fecha_fin];
-        }
-        if (!empty($arregloDatos[banco])) {
-            $vartitulo.=" Banco " . $arregloDatos[banco];
-        }
-        if (!empty($arregloDatos[valor])) {
-            $vartitulo.=" Valor " . $arregloDatos[valor];
-        }
+       
         $arregloDatos[titulo] = $vartitulo;
         return ucwords(strtolower($titulo));
-    }
-
-    function reporte($arregloDatos) {
-        $titulo = "Reporte del CargueReferencias ";
-        if (!empty($arregloDatos[desde])) {
-            $titulo.=" $arregloDatos[desde] hasta $arregloDatos[hasta]";
-        }
-
-        $arregloDatos['titulo'] = $titulo;
-        $arregloDatos['sql'] = $this->datos->reporte($arregloDatos);
-        $unExcel = new ReporteExcel($arregloDatos);
-        $unExcel->generarExcel();
     }
 
     function excel($arregloDatos) {
@@ -148,6 +75,7 @@ class CargueReferenciasLogica {
 	
 	function setReferencia($arregloDatos) {
 		 $this->datos->setReferencia($arregloDatos);
+		 echo $arregloDatos[registro];
 	}
 
     function filtrocarnArchivo($arregloDatos) {
@@ -162,8 +90,6 @@ class CargueReferenciasLogica {
 
     function uploadArchivoBancos($arregloDatos) {
 
-
-
         $file = new Archivo();
         $error = 0;
         if ($arregloDatos[dejar_subir]) {
@@ -172,8 +98,6 @@ class CargueReferenciasLogica {
             $subir = false;
         }
 		
-		
-
         if ($file->subir('archivo', '_files/referencias/', $subir, false)) {
             $mensaje = 'El Archivo se subio correctamente en : ' . $file->nombreCompleto . "\n<br>";
             $mensaje .= "<pre>
@@ -191,15 +115,14 @@ class CargueReferenciasLogica {
             $error = 2;
             $arregloDatos['mensaje'] = 'Problemas al intentar subir el archivo, ' . $file->_error;
         }
-$error=0;
-       
-                //subir archhivo segun la extension
+			$error=0;
+       		//subir archhivo segun la extension
 				
-              			$nombreCompleto="./integrado/_files/referencias.csv";
-                        //$archivo = fopen("./$file->nombreCompleto", "r");
-						 $archivo = fopen("$nombreCompleto", "r");
-                        $arregloDatos[nomarchivo] = $file->nombre;
-                        $this->pantalla->crearPreuploadDocumentoscsv(&$arregloDatos, $archivo);
+         $nombreCompleto="./integrado/_files/referencias2.csv";
+         //$archivo = fopen("./$file->nombreCompleto", "r");
+		 $archivo = fopen("$nombreCompleto", "r");
+         $arregloDatos[nomarchivo] = $file->nombre;
+         $this->pantalla->crearPreuploadDocumentoscsv(&$arregloDatos, $archivo);
                     
                
     }
