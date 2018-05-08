@@ -242,7 +242,7 @@ class CargueReferenciasPresentacion {
 				$arregloDatos[codigo_ref]			=$codigo_ref;
 				$arregloDatos[ref_prove]			=$ref_prove;
 				$arregloDatos[nombre]				=$nombre;
-				$arregloDatos[observacion]			=$observacion;
+				$arregloDatos[observaciones]		=$observacion;
 				$arregloDatos[cliente]				=$cliente;
 				$arregloDatos[parte_numero]			=$parte_numero;
 				$arregloDatos[unidad]				=$unidad;
@@ -267,6 +267,7 @@ class CargueReferenciasPresentacion {
 					$arregloDatos[alerta]="Error el cliente $arregloDatos[cliente] NO existe ";
 				}
 				
+				$errorUnidad=$unaValidacion->validarUnidad($arregloDatos);
 			
             	if(trim($arregloDatos[codigo_ref]) <>""){
 					$this->mantenerDatos($arregloDatos, $unaPlantilla);
