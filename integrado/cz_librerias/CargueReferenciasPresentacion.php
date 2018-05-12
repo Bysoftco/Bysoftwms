@@ -267,6 +267,21 @@ class CargueReferenciasPresentacion {
 					$arregloDatos[alerta]="Error el cliente $arregloDatos[cliente] NO existe ";
 				}
 				
+				//$errorReferencia=$unaValidacion->validarReferencia($arregloDatos);
+				//if($errorReferencia==0){
+					//$arregloDatos[alerta].="Error el cliente $arregloDatos[cliente] NO existe,  ";
+				//}
+				
+				$errorReferencia=$unaValidacion->validarUnidadInventaria($arregloDatos);
+				if($errorReferencia==0){
+					$arregloDatos[alerta].="Error la unidad de inventario $arregloDatos[unidad] NO existe,  ";
+				}
+				$errorReferencia=$unaValidacion->validarGrupoItem($arregloDatos);
+				if($errorReferencia==0){
+					$arregloDatos[alerta].="Error en el Grupo Items $arregloDatos[grupo_item] NO existe,  ";
+				}
+				
+				//$arregloDatos[alerta]="Error la referencia $arregloDatos[codigo_ref] NO existe $arregloDatos[sql] ";
 				$errorUnidad=$unaValidacion->validarUnidad($arregloDatos);
 			
             	if(trim($arregloDatos[codigo_ref]) <>""){

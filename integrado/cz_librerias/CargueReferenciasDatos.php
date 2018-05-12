@@ -30,6 +30,92 @@ class CargueReferencias extends MYDB {
         return $this->N;
    }
    
+    function validarCliente1(&$arregloDatos) {
+   		$sql = "SELECT numero_documento
+				FROM clientes
+				WHERE  numero_documento='$arregloDatos[cliente]'
+				";
+		$arregloDatos[sql]=$sql;		
+		$this->query($sql);
+		if ($this->_lastError) {
+            echo "<div class=error>" . 'Error al crear el documento<BR>' . $sql . "<BR></div>";
+            $this->_lastError = FALSE;
+        }
+		//echo 	$sql."<br>";
+        return $this->N;
+   }
+   
+   function validarReferencia(&$arregloDatos) {
+   		$sql = "SELECT * FROM tipos_referencias
+				WHERE codigo='$arregloDatos[cliente]'
+				";
+		$arregloDatos[sql]=$sql;		
+		$this->query($sql);
+		if ($this->_lastError) {
+            echo "<div class=error>" . 'Error al crear el documento<BR>' . $sql . "<BR></div>";
+            $this->_lastError = FALSE;
+        }
+		//echo 	$sql."<br>";
+        return $this->N;
+   }
+     function validarTipoReferencia(&$arregloDatos) {
+   		$sql = "SELECT * FROM tipos_referencias
+				WHERE codigo='$arregloDatos[cliente]'
+				";
+		$arregloDatos[sql]=$sql;		
+		$this->query($sql);
+		if ($this->_lastError) {
+            echo "<div class=error>" . 'Error al crear el documento<BR>' . $sql . "<BR></div>";
+            $this->_lastError = FALSE;
+        }
+		//echo 	$sql."<br>";
+        return $this->N;
+   }
+    function validarUnidadInventaria(&$arregloDatos) {
+   		$sql = "SELECT codigo FROM tipos_referencias
+				WHERE codigo='$arregloDatos[tipo]'
+				";
+		$arregloDatos[sql]=$sql;		
+		$this->query($sql);
+		if ($this->_lastError) {
+            echo "<div class=error>" . 'Error al crear el documento<BR>' . $sql . "<BR></div>";
+            $this->_lastError = FALSE;
+        }
+		//echo 	$sql."<br>";
+        return $this->N;
+   }
+   
+   function validarUnidadComercial(&$arregloDatos) {
+   		$sql = "SELECT id FROM unidades_medida 
+				WHERE id='$arregloDatos[unidad_venta]'
+				";
+		$arregloDatos[sql]=$sql;		
+		$this->query($sql);
+		if ($this->_lastError) {
+            echo "<div class=error>" . 'Error al crear el documento<BR>' . $sql . "<BR></div>";
+            $this->_lastError = FALSE;
+        }
+		//echo 	$sql."<br>";
+        return $this->N;
+   }
+   
+   function validarGrupoItem(&$arregloDatos) {
+   		$sql = "SELECT codigo FROM grupo_items
+				WHERE codigo='$arregloDatos[grupo_item]'
+				";
+		$arregloDatos[sql]=$sql;		
+		$this->query($sql);
+		if ($this->_lastError) {
+            echo "<div class=error>" . 'Error al crear el documento<BR>' . $sql . "<BR></div>";
+            $this->_lastError = FALSE;
+        }
+		//echo 	$sql."<br>";
+        return $this->N;
+   }
+   
+   
+   
+   
    
     function validarUnidad($arregloDatos) {
    		$sql = "SELECT * 
