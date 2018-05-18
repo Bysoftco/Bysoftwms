@@ -60,7 +60,7 @@ class CargueReferencias extends MYDB {
    }
      function validarTipoReferencia(&$arregloDatos) {
    		$sql = "SELECT * FROM tipos_referencias
-				WHERE codigo='$arregloDatos[cliente]'
+				WHERE codigo='$arregloDatos[tipo]'
 				";
 		$arregloDatos[sql]=$sql;		
 		$this->query($sql);
@@ -133,7 +133,7 @@ class CargueReferencias extends MYDB {
    
    
 
-    function setReferencia($arregloDatos) {
+    function setReferencia(&$arregloDatos) {
         $sql = "INSERT INTO referencias 
                         (
                         codigo_ref, 
@@ -179,6 +179,7 @@ class CargueReferencias extends MYDB {
 						)
                         ";
         $this->query($sql);
+		 $arregloDatos[sql]=$sql;
 		//echo $sql."<BR>";
         if ($this->_lastError) {
             echo "<div class=error>" . 'Error al crear el documento<BR>' . $sql . "<BR></div>";

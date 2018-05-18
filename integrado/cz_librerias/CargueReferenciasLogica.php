@@ -75,6 +75,7 @@ class CargueReferenciasLogica {
 	
 	function setReferencia($arregloDatos) {
 		 $this->datos->setReferencia($arregloDatos);
+		 // echo $arregloDatos[sql];
 		 echo $arregloDatos[registro];
 	}
 
@@ -97,30 +98,9 @@ class CargueReferenciasLogica {
         } else {
             $subir = false;
         }
-		
-        if ($file->subir('archivo', '_files/referencias/', $subir, false)) {
-            $mensaje = 'El Archivo se subio correctamente en : ' . $file->nombreCompleto . "\n<br>";
-            $mensaje .= "<pre>
-				directorio           : $file->directorio
-				archivo              : $file->nombre
-				extension            : $file->extension
-				tamaño               : $file->tamano
-				ultima modificacion  : $file->fechaModificacion</pre>";
-
-            if (strtolower($file->extension) != 'csv' && strtolower($file->extension) != 'xlsx' && strtolower($file->extension) != 'xls' && strtolower($file->extension) != 'fil' && strtolower($file->extension) != 'mrn') {
-                $error = 1;
-                $arregloDatos['mensaje'] = 'Formato inapropiado el archivo debe tener al guna de las siguientes extensiones: cvs, xlsx, xls';
-            }
-        } else {
-            $error = 2;
-            $arregloDatos['mensaje'] = 'Problemas al intentar subir el archivo, ' . $file->_error;
-        }
-			$error=0;
-       		//subir archhivo segun la extension
-				
-         $nombreCompleto="./integrado/_files/referencias2.csv";
-         //$archivo = fopen("./$file->nombreCompleto", "r");
-		 $archivo = fopen("$nombreCompleto", "r");
+	
+         $nombreCompleto="./integrado/_files/$arregloDatos[nombre_archivo]";
+       	 $archivo = fopen("$nombreCompleto", "r");
          $arregloDatos[nomarchivo] = $file->nombre;
          $this->pantalla->crearPreuploadDocumentoscsv(&$arregloDatos, $archivo);
                     

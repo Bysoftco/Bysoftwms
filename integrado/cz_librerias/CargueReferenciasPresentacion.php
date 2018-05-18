@@ -274,14 +274,30 @@ class CargueReferenciasPresentacion {
 				
 				$errorReferencia=$unaValidacion->validarUnidadInventaria($arregloDatos);
 				if($errorReferencia==0){
-					$arregloDatos[alerta].="Error la unidad de inventario $arregloDatos[unidad] NO existe,  ";
+					$arregloDatos[alerta].="Error la Unidad de inventario $arregloDatos[unidad] NO existe,  ";
 				}
+			
 				$errorReferencia=$unaValidacion->validarGrupoItem($arregloDatos);
 				if($errorReferencia==0){
 					$arregloDatos[alerta].="Error en el Grupo Items $arregloDatos[grupo_item] NO existe,  ";
 				}
+				$errorReferencia=$unaValidacion->validarTipoReferencia($arregloDatos);
+				if($errorReferencia==0){
+					$arregloDatos[alerta].="Error en el Tipo $arregloDatos[tipo] NO existe,  ";
+				}
 				
-				//$arregloDatos[alerta]="Error la referencia $arregloDatos[codigo_ref] NO existe $arregloDatos[sql] ";
+				$anio = substr($arregloDatos[vigencia], 0, 4);
+				$mes = substr($arregloDatos[vigencia], 6, 2);
+				$dia = substr($arregloDatos[vigencia], 8, 2);
+			
+				if($mes > 12){
+					$arregloDatos[alerta].="Error en el Formato de la fecha  $arregloDatos[vigencia] debe ser AAAA/MM/DD,  ";
+				}
+				
+				if($dia > 30){
+					$arregloDatos[alerta].="Error en el Formato de la fecha  $arregloDatos[vigencia] debe ser AAAA/MM/DD,  ";
+				}
+			
 				$errorUnidad=$unaValidacion->validarUnidad($arregloDatos);
 			
             	if(trim($arregloDatos[codigo_ref]) <>""){

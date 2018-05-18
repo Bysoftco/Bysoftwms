@@ -105,6 +105,7 @@
 						//alert($("#nombre"+i).val());
 						//alert($("#observacion"+i).val());
 						//alert($("#cliente"+i).val());
+						
 						$("div#referenciax").load("./scripts_index.php", 
 					   {clase:'cargueReferencias',metodo:'setReferencia',mostrar:'1',
 					   		registro		:i,
@@ -123,15 +124,15 @@
 							lote_cosecha 		:$("#lote_cosecha"+i).val(),
 							alto 				:$("#alto"+i).val(),
 							largo 				:$("#largo"+i).val(),
-							ancho 				:$("#ancho "+i).val(),
-							serial 				:$("#serial "+i).val(),
-							tipo 				:$("#tipo "+i).val(),
-							grupo_item 			:$("#grupo_item "+i).val(),
-							factor_conversion 	:$("#factor_conversion "+i).val()
+							ancho 				:$("#ancho"+i).val(),
+							serial 				:$("#serial"+i).val(),
+							tipo 				:$("#tipo"+i).val(),
+							grupo_item 			:$("#grupo_item"+i).val(),
+							factor_conversion 	:$("#factor_conversion"+i).val()
 							
 						}, function(datos)
 						{
-							//alert(datos) 
+							alert(datos) 
 							
 							$("#ok"+datos).show();
 				  		}
@@ -150,11 +151,11 @@
                     modal: true,
                     //Botones que se utilizan en la ventana
                     buttons: {
-                        Aceptar1: function() {
+                        Aceptar: function() {
 							
 							
 							$("div#listado").load("./scripts_index.php", {clase: 'CargueReferencias', metodo: 'uploadArchivoBancos', mostrar: '1',
-                			id_levante: $('#id_levante').val(), tipo_movimiento: $('#tipo_movimiento').val()}, function(datos) {
+                			id_levante: $('#id_levante').val(), tipo_movimiento: $('#tipo_movimiento').val(), nombre_archivo: $('#nombre_archivo').val()}, function(datos) {
 							//alert(datos);
              		 });
 							
@@ -267,8 +268,9 @@
         </tr>
         <tr>         
             <td class="tituloForm" width="30%">Seleccionar Archivo:</td>
-          <td><input id="archivo" type="file" name="archivo" onchange="seleccionado();" /></td>
-          <td colspan="2" id="imgfoto" width="30%" style="text-align: center;"></td>
+          <td><input id="archivo" type="file" name="archivo" onchange="seleccionado();" />
+              <input type="hidden" name="nombre_archivo" id="nombre_archivo"></td>
+            <td colspan="2" id="imgfoto" width="30%" style="text-align: center;">&nbsp;</td>
         </tr>
       </table>
 	  </fieldset>
@@ -323,6 +325,7 @@
 				//Recibimos la respuesta de php
 				var msg = Req.responseText;
 				//alert(msg)
+				 $('#nombre_archivo').val(msg);
         $("#imgfoto").html("<img src='integrado/_files/"+msg+"' width='130px' height='120px'>");
 			} else {
 				alert("No se recibe una respuesta");
