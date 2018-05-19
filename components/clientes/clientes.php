@@ -192,7 +192,7 @@ class clientes {
     $lista_unidad = $this->datos->build_list("unidades_medida", "id", "medida"," ORDER BY medida ");
     $arreglo['select_unidad'] = $this->datos->armSelect($lista_unidad, 'Seleccione Unidad...', 1);
 
-    $lista_tipoemb = $this->datos->build_list("tipos_embalaje", "codigo", "nombre"," ORDER BY nombre ");
+    $lista_tipoemb = $this->datos->build_list("embalajes ", "codigo", "nombre"," ORDER BY nombre ");
     $arreglo['select_tipoemb'] = $this->datos->armSelect($lista_tipoemb, 'Seleccione Presentacion Venta...', 0);
     
     $lista_grupo = $this->datos->build_list("grupo_items", "codigo", "nombre"," ORDER BY nombre ");
@@ -231,10 +231,10 @@ class clientes {
     $arreglo['select_tiporef'] = $this->datos->armSelect($lista_tiporef, 'Seleccione Tipo Referencia...', $arreglo['infoReferencia']->tipo);
 
     $lista_unidad = $this->datos->build_list("unidades_medida", "id", "medida");
-    $arreglo['select_unidad'] = $this->datos->armSelect($lista_unidad, 'Seleccione Unidad...', $arreglo['infoReferencia']->unidad_venta);
+    $arreglo['select_unidad'] = $this->datos->armSelect($lista_unidad, 'Seleccione Unidad Comercial...', $arreglo['infoReferencia']->unidad_venta);
 
-    $lista_tipoemb = $this->datos->build_list("tipos_embalaje", "codigo", "nombre");
-    $arreglo['select_tipoemb'] = $this->datos->armSelect($lista_tipoemb, 'Seleccione Presentacion Venta...', $arreglo['infoReferencia']->presentacion_venta);
+    $lista_tipoemb = $this->datos->build_list("embalajes ", "codigo", "nombre");
+    $arreglo['select_tipoemb'] = $this->datos->armSelect($lista_tipoemb, 'Seleccione Unidad Inventario...', $arreglo['infoReferencia']->presentacion_venta);
     
     $lista_grupo = $this->datos->build_list("grupo_items", "codigo", "nombre");
     $arreglo['select_grupo'] = $this->datos->armSelect($lista_grupo, 'Seleccione Grupo Items...', $arreglo['infoReferencia']->grupo_item);

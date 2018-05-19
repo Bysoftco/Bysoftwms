@@ -71,9 +71,9 @@ class CargueReferencias extends MYDB {
 		//echo 	$sql."<br>";
         return $this->N;
    }
-    function validarUnidadInventaria(&$arregloDatos) {
-   		$sql = "SELECT codigo FROM tipos_referencias
-				WHERE codigo='$arregloDatos[tipo]'
+    function validarUnidadInventario(&$arregloDatos) {
+   		$sql = "SELECT codigo FROM embalajes 
+				WHERE cd_embalaje='$arregloDatos[unidad_inventario]'
 				";
 		$arregloDatos[sql]=$sql;		
 		$this->query($sql);
@@ -87,7 +87,7 @@ class CargueReferencias extends MYDB {
    
    function validarUnidadComercial(&$arregloDatos) {
    		$sql = "SELECT id FROM unidades_medida 
-				WHERE id='$arregloDatos[unidad_venta]'
+				WHERE codigo='$arregloDatos[unidad_comercial]'
 				";
 		$arregloDatos[sql]=$sql;		
 		$this->query($sql);
@@ -144,6 +144,7 @@ class CargueReferencias extends MYDB {
 						parte_numero,
 						unidad,
 						unidad_venta,
+						presentacion_venta,
 						fecha_expira,
 						vigencia,
 						min_stock,
@@ -164,7 +165,8 @@ class CargueReferencias extends MYDB {
 						 '$arregloDatos[cliente]',
 						 '$arregloDatos[parte_numero]',
 						  '$arregloDatos[unidad]',
-						  '$arregloDatos[unidad_venta]',
+						  '$arregloDatos[unidad_comercial]',
+						  '$arregloDatos[unidad_inventario]',
 						  '$arregloDatos[fecha_expira]',
 						  '$arregloDatos[vigencia]',
 						  '$arregloDatos[min_stock]',

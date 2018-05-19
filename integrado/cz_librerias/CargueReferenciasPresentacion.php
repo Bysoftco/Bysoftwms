@@ -193,6 +193,7 @@ class CargueReferenciasPresentacion {
         $status = '';
   		$cuentaError = 0;
         $cont = 0;
+		$errores=0;
         while (!feof($archivo)) 
 		{
  			$linea = fgets($archivo, 4092);
@@ -246,8 +247,8 @@ class CargueReferenciasPresentacion {
 				$arregloDatos[cliente]				=$cliente;
 				$arregloDatos[parte_numero]			=$parte_numero;
 				$arregloDatos[unidad]				=$unidad;
-				$arregloDatos[unidad_venta]			=$unidad_venta;
-				$arregloDatos[presentacion_venta]	=$presentacion_venta;
+				$arregloDatos[unidad_comercial]		=$unidad_venta;
+				$arregloDatos[unidad_inventario]	=$presentacion_venta;
 				$arregloDatos[fecha_expira]			=$fecha_expira; 
 				$arregloDatos[vigencia]				=$vigencia;
 				$arregloDatos[min_stock]			=$min_stock;
@@ -258,33 +259,63 @@ class CargueReferenciasPresentacion {
 				$arregloDatos[serial]				=$serial;
                 $arregloDatos[tipo]					=$tipo;
 				$arregloDatos[grupo_item]			=$grupo_item;
+				$arregloDatos[factor_conversion]	=$factor_conversion;
 					
 				// se hacen las validaciones
 				$unaValidacion=new CargueReferencias();
 				$errorCliente=$unaValidacion->validarCliente($arregloDatos);
+			
+				
+				
+				
+				
 				$arregloDatos[alerta]="";
 				if($errorCliente==0){
 					$arregloDatos[alerta]="Error el cliente $arregloDatos[cliente] NO existe ";
+					$errores=$errores+1;
 				}
 				
-				//$errorReferencia=$unaValidacion->validarReferencia($arregloDatos);
-				//if($errorReferencia==0){
-					//$arregloDatos[alerta].="Error el cliente $arregloDatos[cliente] NO existe,  ";
-				//}
 				
-				$errorReferencia=$unaValidacion->validarUnidadInventaria($arregloDatos);
+				$errorReferencia=$unaValidacion->validarUnidadComercial($arregloDatos);
 				if($errorReferencia==0){
-					$arregloDatos[alerta].="Error la Unidad de inventario $arregloDatos[unidad] NO existe,  ";
+					$arregloDatos[alerta].="Error en la Unidad Comercial $arregloDatos[unidad_comercial] NO existe,  ";
+					$errores=$errores+1;
+				}else{
+				
+					$unaValidacion->fetch();
+					$arregloDatos[unidad_comercial_aux]=$arregloDatos[unidad_comercial];
+					$arregloDatos[unidad_comercial]=$unaValidacion->id;
+					//$arregloDatos[alerta].="Se cambio Unidad Comercial $arregloDatos[presentacion_venta_aux] a $arregloDatos[presentacion_venta],  $arregloDatos[sql] ";
+				}
+				
+				
+				$errorReferencia=$unaValidacion->validarUnidadInventario($arregloDatos);
+				if($errorReferencia==0){
+					$arregloDatos[alerta].="Error la Unidad de inventario $arregloDatos[unidad_inventario] NO existe,  $arregloDatos[sql] ";
+					$errores=$errores+1;
+				}else{
+					$unaValidacion->fetch();
+					$arregloDatos[unidad_inventario_aux]=$arregloDatos[unidad_inventario];
+					$arregloDatos[unidad_inventario]=$unaValidacion->codigo;
+					//$arregloDatos[alerta].="Se cambia unidad $arregloDatos[unidad_inventario_aux]  a $arregloDatos[unidad_inventario]   $arregloDatos[sql]";
+				}
+				
+				$errorReferencia=$unaValidacion->validarTipoReferencia($arregloDatos);
+				if($errorReferencia==0){
+					$arregloDatos[alerta].="Error en el Tipo $arregloDatos[tipo] NO existe, $arregloDatos[sqlX] ";
+					$errores=$errores+1;
 				}
 			
 				$errorReferencia=$unaValidacion->validarGrupoItem($arregloDatos);
 				if($errorReferencia==0){
 					$arregloDatos[alerta].="Error en el Grupo Items $arregloDatos[grupo_item] NO existe,  ";
+					$errores=$errores+1;
 				}
-				$errorReferencia=$unaValidacion->validarTipoReferencia($arregloDatos);
-				if($errorReferencia==0){
-					$arregloDatos[alerta].="Error en el Tipo $arregloDatos[tipo] NO existe,  ";
-				}
+				
+			
+			
+				
+				
 				
 				$anio = substr($arregloDatos[vigencia], 0, 4);
 				$mes = substr($arregloDatos[vigencia], 6, 2);
@@ -292,13 +323,15 @@ class CargueReferenciasPresentacion {
 			
 				if($mes > 12){
 					$arregloDatos[alerta].="Error en el Formato de la fecha  $arregloDatos[vigencia] debe ser AAAA/MM/DD,  ";
+					$errores=$errores+1;
 				}
 				
 				if($dia > 30){
 					$arregloDatos[alerta].="Error en el Formato de la fecha  $arregloDatos[vigencia] debe ser AAAA/MM/DD,  ";
+					$errores=$errores+1;
 				}
 			
-				$errorUnidad=$unaValidacion->validarUnidad($arregloDatos);
+				//$errorUnidad=$unaValidacion->validarUnidad($arregloDatos);
 			
             	if(trim($arregloDatos[codigo_ref]) <>""){
 					$this->mantenerDatos($arregloDatos, $unaPlantilla);
@@ -310,6 +343,7 @@ class CargueReferenciasPresentacion {
 				
         }
 		$unaPlantilla->setVariable('registros', $n);
+		$unaPlantilla->setVariable('errores', $errores-4);
 		$arregloDatos[alerta]="";
         if ($cuentaError == 1) {
             $arregloDatos[mostrarBotonCrear] = 'none';
