@@ -107,7 +107,7 @@
 						//alert($("#cliente"+i).val());
 						
 						$("div#referenciax").load("./scripts_index.php", 
-					   {clase:'cargueReferencias',metodo:'setReferencia',mostrar:'1',
+					   {clase:'CargueReferencias',metodo:'setReferencia',mostrar:'1',
 					   		registro		:i,
 							codigo_ref			:$("#codigo_ref"+i).val(),
 							ref_prove			:$("#ref_prove"+i).val(),
@@ -132,7 +132,7 @@
 							
 						}, function(datos)
 						{
-							alert(datos) 
+							//alert(datos) 
 							
 							$("#ok"+datos).show();
 				  		}
