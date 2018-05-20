@@ -117,6 +117,8 @@ class CargueReferencias extends MYDB {
    
    
    
+   
+   
     function validarUnidad($arregloDatos) {
    		$sql = "SELECT * 
 				FROM unidades_medida 
@@ -131,7 +133,18 @@ class CargueReferencias extends MYDB {
         return $this->N;
    }
    
-   
+     function existeReferencia(&$arregloDatos) {
+   		$sql = "SELECT * FROM referencias WHERE cliente='$arregloDatos[cliente]' AND codigo_ref='$arregloDatos[codigo_ref]'
+				";
+		$arregloDatos[sql]=$sql;		
+		$this->query($sql);
+		if ($this->_lastError) {
+            echo "<div class=error>" . 'Error al crear el documento<BR>' . $sql . "<BR></div>";
+            $this->_lastError = FALSE;
+        }
+		//echo 	$sql."<br>";
+        return $this->N;
+   }
 
     function setReferencia(&$arregloDatos) {
         $sql = "INSERT INTO referencias 

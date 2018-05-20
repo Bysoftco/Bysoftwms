@@ -263,17 +263,24 @@ class CargueReferenciasPresentacion {
 					
 				// se hacen las validaciones
 				$unaValidacion=new CargueReferencias();
+				
+				
 				$errorCliente=$unaValidacion->validarCliente($arregloDatos);
-			
-				
-				
-				
-				
 				$arregloDatos[alerta]="";
 				if($errorCliente==0){
 					$arregloDatos[alerta]="Error el cliente $arregloDatos[cliente] NO existe ";
 					$errores=$errores+1;
 				}
+				
+				$errorRef=$unaValidacion->existeReferencia($arregloDatos);
+				
+				if($errorRef > 0){
+					$arregloDatos[alerta].="Error la referencia $arregloDatos[codigo_ref] YA existe ";
+					$errores=$errores+1;
+				}
+				
+				//$arregloDatos[alerta]="referencia ";
+				
 				
 				
 				$errorReferencia=$unaValidacion->validarUnidadComercial($arregloDatos);
