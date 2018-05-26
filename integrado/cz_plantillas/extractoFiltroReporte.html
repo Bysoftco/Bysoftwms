@@ -1,0 +1,80 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link href="./_estilos/estilos.css" rel="stylesheet" type="text/css">
+        <title>Recibos</title>
+        <script language="JavaScript" type="text/javascript" src="./_javascript/validar.js"></script>
+        <script language="javascript" src="./_javascript/popup.js" type="text/javascript"></script>
+        <script language="javascript" src="./_javascript/overlib.js" type="text/javascript"></script>
+        <script language="javascript" type="text/javascript">
+
+            function validar(formulario){
+	
+                //if(!checkString (formulario.desde, 'Especifique Fecha inicial', false))
+                //return false;
+                //if(!checkString (formulario.hasta, 'Especifique Fecha final', false))
+                //return false;
+            }
+            function calendario() {
+                popupModalDialog('./_scripts/calendarioJS.php', document.formularioIndicadores.desde,'290','230')
+            }
+            function calendario1() {
+                popupModalDialog('./_scripts/calendarioJS.php', document.formularioIndicadores.hasta,'290','230')
+            }
+	
+	
+        </script>
+        <style type="text/css">
+            <!--
+            .Estilo1 {font-weight: bold}
+            -->
+        </style>
+    <div align="center" class="{estilo} "> </div> 
+
+
+
+    <table width="90%" height="49" border="0" align="center" class="texto" >
+        <tr > 
+            <td width="615" height="25" colspan="6" class="tituloLinea">Extracto/Reporte 
+                de documentos</td>
+        </tr>
+        <td height="18" > <form action="./index_scripts.php" method="post" name="formularioIndicadores">
+                <table cellpadding="1" cellspacing="1" class="tablaBlanco" border="0" width="90%" align="center">
+                    <tr> 
+                        <td colspan="25"> </td>
+                    </tr>
+                    <tr> 
+                        <td align="left" colspan="25"> </td>
+                    </tr>
+                    <tr class="titulosTabla"> 
+                        <th height="23" colspan="8" >Parametros de Filtrado </th>
+                    </tr>
+                    <tr class="filasTabla"> 
+                        <td >Documento</td>
+                        <td colspan="3"><input name="documento" type="text" id="documento" class="lista"></td>
+                    </tr>
+                    <tr class="filasTabla"> 
+                        <td width="69" >Desde</td>
+                        <td width="209" ><input name="desde" type="text" class="lista" id="desde" size="12" >
+                            <img src="imagenes/calendario.gif" width="15" height="15" border="0"  onClick="calendario()"> 
+                            aaaa/mm/dd <font color="#FF0000">*</font></td>
+                        <td width="109"  class="filasTabla">Hasta</td>
+                        <td width="231" ><input name="hasta" type="text" class="lista" id="hasta" size="12" > 
+                            <img src="imagenes/calendario.gif" width="15" height="15" border="0"  onClick="calendario1()"> 
+                            aaaa/mm/dd<font color="#FF0000">*</font></td>
+                    </tr>
+                    <tr> 
+                        <td colspan="24" class="filasTitulo"> <div align="right"><font color="#FF0000">* 
+                                    fec_ing</font> 
+                                <input name="clase" type="hidden" id="clase" value="Extracto">
+                                <input name="metodo" type="hidden" id="metodo" value="reporte">
+                                <input name="submit" type="submit"    class="boton" onClick="javascript: return validar(this.form)" value="Enviar">
+                            </div></td>
+                    </tr>
+                </table>
+            </form ></td>
+    </table>
+</body>
+</html>

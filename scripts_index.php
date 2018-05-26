@@ -28,15 +28,19 @@ if(!empty($_GET['clase'])) {
   $unKernel->$metodo($_GET);
 } else {
     if(!empty($_FILES)) {
-      $info = explode("|",$_GET['folder']);
-      $kernel = $info[2];
-      $metodo = $info[3];
+      //$info = explode("|",$_GET['folder']);
+      //$kernel = $info[2];
+      //$metodo = $info[3];
+	  $kernel = $_POST['clase'];
+      $metodo = $_POST['metodo'];
     } else {
       $kernel = $_POST['clase'];
       $metodo = $_POST['metodo'];
     }  
     $clase  = $kernel.'Logica';
-    require_once(LIBRERIAS .$kernel."Logica.php");
+
+    //require_once(LIBRERIAS .$kernel."Logica.php");
+	require_once(LIBRERIAS .$kernel."Logica.php");
     $unKernel= new $clase();
     $unKernel->$metodo($_POST);
 }

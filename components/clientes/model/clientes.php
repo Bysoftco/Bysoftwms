@@ -167,6 +167,7 @@ class ClientesModelo extends BDControlador {
   function datosReferencias($arreglo) {
     $db = $_SESSION['conexion'];
     $query = "SELECT * FROM referencias WHERE cliente = '$arreglo[documento]'";
+   //echo  $query;
     $db->query($query);
     return $db->getArray();
   }
