@@ -51,7 +51,7 @@ class CargueReferenciasPresentacion {
         $formularioPlantilla = new HTML_Template_IT();
         $formularioPlantilla->loadTemplateFile(PLANTILLAS . $arregloDatos[plantilla], false, false);
         $formularioPlantilla->setVariable('comodin', ' ');
-        $this->mantenerDatos($arregloDatos, &$formularioPlantilla);
+        $this->mantenerDatos($arregloDatos, $formularioPlantilla);
 
         $this->$arregloDatos[thisFunction]($arregloDatos, $this->datos, $formularioPlantilla);
         if ($arregloDatos[mostrar]) {
@@ -78,7 +78,7 @@ class CargueReferenciasPresentacion {
         $this->mantenerDatos($arregloDatos, $unaPlantilla);
         if ($arregloDatos[thisFunctionAux]) {
             //$unDatos->fetch();  no puede ir aqui
-            $this->$arregloDatos[thisFunctionAux]($arregloDatos, &$unDatos, $unaPlantilla);
+            $this->$arregloDatos[thisFunctionAux]($arregloDatos, $unDatos, $unaPlantilla);
         }
         $n = 0;
         while ($unDatos->fetch()) {
@@ -116,7 +116,7 @@ class CargueReferenciasPresentacion {
 		$arregloDatos[mostrar] = 0; //  en php o ajax
 		$arregloDatos[plantilla] = 'cargueReferenciasUpload.html'; //plantilla a la que me dirijo
 		$arregloDatos[thisFunction] = 'filtro'; // funcion que debe estar en presentacion y datos
-		$htmlCargueReferenciasFormulario = $this->cargaPlantilla($arregloDatos, &$unDatos); //variable a la que le asigno la plantilla
+		$htmlCargueReferenciasFormulario = $this->cargaPlantilla($arregloDatos); //variable a la que le asigno la plantilla
 		$this->plantilla->setVariable('filtro_entrada', $htmlCargueReferenciasFormulario); //funcion que recibe nombre etiqueta donde carga{xxx} y la plantilla
         $this->plantilla->show(); //muestra la ventana
     }
@@ -138,7 +138,7 @@ class CargueReferenciasPresentacion {
             $arregloDatos[val_doc] = number_format($valor);
         }
 
-        $this->mantenerDatos($arregloDatos, &$formularioPlantilla);
+        $this->mantenerDatos($arregloDatos, $formularioPlantilla);
     }
 
     function filtroConsulta($arregloDatos) {
@@ -151,7 +151,7 @@ class CargueReferenciasPresentacion {
     }
 
     function updateExtConfirmar($arregloDatos, $datos, $formularioPlantilla) {
-        $this->mantenerDatos($arregloDatos, &$formularioPlantilla);
+        $this->mantenerDatos($arregloDatos, $formularioPlantilla);
     }
 
     /*     * FUNCIONES PARA CARGAR BANCOS* */
@@ -165,7 +165,7 @@ class CargueReferenciasPresentacion {
         $arregloDatos[plantilla] = 'cargarFoto.html';
         $arregloDatos[thisFunction] = 'filtroCarga';
 
-        $htmlFormulario = $this->cargaPlantilla($arregloDatos, &$unDatos);
+        $htmlFormulario = $this->cargaPlantilla($arregloDatos);
         $this->plantilla->setVariable('entrada', $htmlFormulario);
         $this->plantilla->show();
     }
