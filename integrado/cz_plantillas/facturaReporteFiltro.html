@@ -65,8 +65,7 @@
     <form class="formularioFactura{accion}" id="formularioFactura{accion}" method="post" action="javascript:EnviarformularioFactura()" name="formularioFactura{accion}">
       <fieldset class="ui-widget ui-widget-content ui-corner-all">
         <legend class="ui-widget ui-widget-header ui-corner-all">
-          
-      <div id="nombre_reporte">Filtro de Consulta </div>
+          <div id="nombre_reporte">Filtro de Consulta </div>
         </legend>
         <p>
           <label>Por Cuenta de:</label>
@@ -92,13 +91,9 @@
           <label for="ap">Orden:</label>
           <input name="do_filtro" type="text" class="ui-widget-content"  id="do_filtro" />
         </p>
-        <p style="display:{mostrarFacturaX};">
+        <p style="display:{mostrarFactura};">
           <label for="factura_filtro">Factura:</label>
           <input name="factura_filtro_consulta" type="text" class="ui-widget-content"  id="factura_filtro_consulta" />
-        </p>
-        <p style="display:{mostrarPreFactura};">
-          <label for="consecutivo">Prefactura:</label>
-          <input name="consecutivo" type="text" class="ui-widget-content"  id="consecutivo" />
         </p>
         <p style="display:{mostrarConsultaAnular};"> 
           <input type="radio" name="ver_anuladas" value="1" />
@@ -107,7 +102,9 @@
           Ver Todas
         </p>
       </fieldset>
+      {restrinje1} 
       <input type="hidden" name="aux" id="aux2" value="{restrinje}" />
+      {metodoAux} 
       <input type="hidden" name="clase" id="claseOrden" value="Factura" />
       <input type="hidden" name="metodo" id="metodoOrden" value="{metodoAux}" />
       <input type="hidden" name="filtro" id="filtro" value="1" />
@@ -116,6 +113,7 @@
       <input type="hidden" name="usuario" id="usuario" value="{usuario}" />
       <input type="hidden" name="cliente" id="cliente" value="{cliente}" />
       <input type="hidden" name="soloLectura" id="soloLectura" value="{soloLectura}" />
+      {accion} 
     </form>
   </div>
 </div>

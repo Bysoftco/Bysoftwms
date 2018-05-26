@@ -16,7 +16,6 @@
 	 $(function() 
     {
       
-			
 	   $("#btnImprimir").hide();
 	   $("#por_cuenta_nombre").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
                 width: 260,
@@ -83,7 +82,7 @@
 			{	
 				$("div#contenedor").html("Espere mientras se consultan la BD..")
 				$( "#dialog-form-factura" ).dialog( "open" );
-				$("div#contenedor").load("./scripts_index.php", {clase:'Factura',metodo:'paraFacturar',por_cuenta_filtro:$('#por_cuenta_nit').val()}, function(data){
+				$("div#contenedor").load("./scripts_index.php", {clase:'Factura',metodo:'paraFacturar',por_cuenta_filtro:$('#por_cuenta_nit').val()}, 		        function(data){
 						
 				});
 			}
@@ -91,21 +90,18 @@
 			{	
 				$("div#contenedor").html("Espere mientras se consultan la BD..")
 				$( "#dialog-form-factura" ).dialog( "open" );
-				$("div#contenedor").load("./scripts_index.php", {clase:'Factura',metodo:'paraFacturar',por_cuenta_filtro:$('#por_cuenta_nit').val(),documento_transporte:$('#documento_transporte').val()},function(data){
+				$("div#contenedor").load("./scripts_index.php", {clase:'Factura',metodo:'paraFacturar',por_cuenta_filtro:$('#por_cuenta_nit').val(),		               documento_transporte:$('#documento_transporte').val()}, 		        function(data){
 						
 				});
 			}
 		
 	 	});
 		
-		
-		
 		$("#orden").blur(function()
 		{
-			
 				$("div#contenedor").html("Espere mientras se consultan la BD..")
-				$( "#dialog-form-factura" ).dialog( "open" );
-				$("div#contenedor").load("./scripts_index.php", {clase:'Factura',metodo:'paraFacturar',por_cuenta_filtro:$('#por_cuenta_nit').val(),orden:$('#orden').val()}, function(data){
+				//$( "#dialog-form-factura" ).dialog( "open" );
+				$("div#contenedor").load("./scripts_index.php", {clase:'Factura',metodo:'paraFacturar',por_cuenta_filtro:$('#por_cuenta_nit').val(),		               orden:$('#orden').val()}, 		        function(data){
 						
 				});
 		});
@@ -117,9 +113,6 @@
 				$("div#contenedor").load("./scripts_index.php", {clase:'Factura',metodo:'paraFacturarRemesas',por_cuenta_filtro:$('#por_cuenta_nit').val(),		               remesa:$('#remesa').val()}, 		        function(data){
 						
 				});
-				//$("#datos_orden").load("./scripts_index.php", {clase:'Factura',metodo:'getDatosUnaOrden',por_cuenta_filtro:$('#por_cuenta_nit').val(),		               remesa:$('#remesa').val()}, 		        function(data){
-							
-				//});
 		});
 		
 		/*
@@ -136,7 +129,7 @@
 				});
 			}
 		*/
-		
+	 	
 		
 		$("#numeroAnticipos").blur(function()
 		{
@@ -159,9 +152,9 @@
   <legend class="ui-widget ui-widget-header ui-corner-all"> 
   	
   <div id="label_title"> Informaci&oacute;n de la PreFactura {num_prefactura} 
-    :: {num_factura} 
+  **{num_factura}  
     <input name="num_factura" type="hidden" id="num_factura" value="{num_factura}" />
-    Pr&oacute;ximo consecutivo disponible :{proxima_factura}</div>
+  </div>
   </legend>
    
   	
@@ -261,7 +254,7 @@
     <td><input name="credito" type="checkbox" id="credito" value="4" onClick="totales(this.form)" ></td>
     <td><input name="anticipo" type="checkbox" id="anticipo" value="3" onClick="totales(this.form)" {checkedAnticipo}></td>
     <td><input name="recibo" type="text" class="lista" id="recibo" value="{recibo}" size="10" {disabled}></td>
-      <td><input name="valor_anticipo" type="text" class="lista" id="valor_anticipo" value="{valor_anticipo}" size="5" {disabled}>
+      <td><input name="valor_anticipo" type="text" class="lista" id="valor_anticipo" value="{valor_anticipo}" size="8" {disabled}>
         + 
         <input name="numeroAnticipos" type="text" class="lista" value="{numeroAnticipo}" size="1" onBlur="javascript: return masAnticipos()" id="numeroAnticipos"> 
         <input name="aux_anticipo" type="hidden" id="aux_anticipo" value="{numeroAnticipo}"> 
@@ -273,31 +266,17 @@
   <tr style="display:{mostrarAnticipos};"> 
     <td height="21" colspan="9"><div id="mas_anticipos">{anticipos} 
           <input type="hidden" name="tope_minimo_retencion" id="tope_minimo_retencion" value="{tope_minimo_retencion}">
-		  <input type="hidden" name="tope_minimo_rete_ica" id="tope_minimo_rete_ica" value="{tope_minimo_rte_ica}">
           <input name="ciudad" type="hidden" id="ciudad" value="{ciudad}">
         </div></td>
   </tr>
 </table>
-  
-  <div align="center">
-    <table width="80%"  border="0">
-      <tr> 
-        <td width="50%" class="filasTabla"><button id="calcular">Calcular</button>
+<button id="calcular">Calcular</button>
  	
   <button class="submit" type="submit"  id="btnGuardar" >Guardar</button> 
     <button class="submit" type="submit"  id="btnFinalizar" >Finalizar</button>
 	
-  <button class="submit" type="submit"  id="btnPreliquidar"  onClick="javascript: ventanaPreforma('./scripts_index.php?clase=Factura&metodo=preforma&num_prefactura={num_prefactura}&formulario=this.form')">Preview 
-  </button></td>
-        <td width="24%" class="titulosTabla"><div align="center">Facturar en Dolares 
-            <input name="en_dolares" type="checkbox" id="en_dolares" value="1" {en_dolares}>
-          </div></td>
-        <td width="26%" class="titulosTabla">TRM 
-          <input name="trm" type="text" class="lista" id="trm" value="{trm}" size="10"></td>
-      </tr>
-    </table>
-  </div>
-  </fieldset>	
+  <button class="submit" type="submit"  id="btnPreliquidar"  onClick="javascript: ventanaPreforma('./scripts_index.php?clase=Factura&metodo=preforma&num_prefactura={num_prefactura}&formulario=this.form')">Preview</button>
+   </fieldset>	
 <input name="clase" type="hidden" id="clase" value="Factura">
 <input name="metodo" type="hidden" id="metodo" value="updateFactura">
   <input name="para_cerrar" type="hidden" id="para_cerrar" value="0">

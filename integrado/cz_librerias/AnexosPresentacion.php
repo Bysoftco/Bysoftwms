@@ -22,7 +22,7 @@ class AnexosPresentacion {
     }
   }
 
-  //Función que coloca los datos que vienen de la BD
+  //FunciÃ³n que coloca los datos que vienen de la BD
   function setDatos($arregloDatos,&$datos,&$plantilla) {
     foreach($datos as $key => $value) {
       $plantilla->setVariable($key, $value);
@@ -42,7 +42,7 @@ class AnexosPresentacion {
     else return $formularioPlantilla->get();
   }
 
-  //Arma cada Formulario o función en pantalla
+  //Arma cada Formulario o funciÃ³n en pantalla
   function setFuncion($arregloDatos,$unDatos) {
     $unDatos = new Anexos();
 

@@ -55,7 +55,7 @@ class LevanteLogica {
 
     switch(trim($arregloDatos[tipo_movimiento])) {
       case 2: // Nacionalizacion
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30";
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,19,30";
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercancia.html";
         $arregloDatos[metodoMercanciaCuerpo] = "listaInventario";
 
@@ -73,7 +73,7 @@ class LevanteLogica {
         break;
       case 3: // Retiro
       case 7: // Alistamiento
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30"; 
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,19,30"; 
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         $arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
         
@@ -89,7 +89,7 @@ class LevanteLogica {
         $arregloDatos[v_aux_nonac] = "0";
         break;
       case 8: //Envia Productos en Proceso
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30"; 
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,19,30"; 
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         $arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
         
@@ -105,7 +105,7 @@ class LevanteLogica {
         $arregloDatos[v_aux_nonac] = "0";
         break;
       case 13: //Enndoso
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30";
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,19,30";
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         $arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
         
@@ -172,7 +172,7 @@ class LevanteLogica {
         	$arregloDatos[v_aux_nonac] = "0";
 		break;
       default: // Cualquier movimiento que no este definido se presenta como retiro
-        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,30"; 
+        $arregloDatos[movimiento] = "1,2,3,7,10,15,16,19,30"; 
         $arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         $arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
         

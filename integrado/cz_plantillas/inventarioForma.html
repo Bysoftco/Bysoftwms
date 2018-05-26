@@ -1,64 +1,61 @@
 <script>
-  function EnviarFormulario(item) {
-  }
+  function EnviarFormulario(item) { }
+
   function seleccionar(e,i) {
   	$("#nombre_ubicacion"+i).select();	
   }
+  
   function pistola(e,i,campo) {
- 
-  var entrada= e.target.value;
-  var n = entrada.length;
-   $.ajax({
-      url: './scripts_index.php?clase=Inventario&metodo=findPosicionPistola&q='+entrada+'&p=1',
+    var entrada = e.target.value;
+    var n = entrada.length;
+    
+    $.ajax({
+      url: './scripts_index.php?clase=Inventario&metodo=findPosicion&q='+entrada+'&p=1',
       type: "POST",
       async: false,
       success: function(msm) {
         var arreglo = msm.split("|");
         var id_ubicacion = parseInt(arreglo[1]);
 		
-	
-		if(id_ubicacion != 0){
-			if($("#rango"+i).is(":checked")) {
-				//tablas.remove(tablas.selectedIndex);
-				for(indice = 0;indice < tablas.length;indice++) { //Se verifica que no se halla agregado
-        			var inicio =$("#inicio_aux"+i).val();
-					var fin =$("#fin_aux"+i).val();
-						
-					if(tablas.options[indice].value!=inicio && tablas.options[indice].value !=fin){
-								tablas.options[indice].selected=true;
+        if(id_ubicacion != 0) {
+          if($("#rango"+i).is(":checked")) {
+				    //tablas.remove(tablas.selectedIndex);
+            for(indice = 0;indice < tablas.length;indice++) { //Se verifica que no se halla agregado
+        			var inicio = $("#inicio_aux"+i).val();
+              var fin = $("#fin_aux"+i).val();
+
+              if(tablas.options[indice].value!=inicio && tablas.options[indice].value!=fin) {
+								tablas.options[indice].selected = true;
 								tablas.remove(tablas.selectedIndex);
-					}
-      			}
-			}
-			var existe=0;
-			for(indice = 0;indice < tablas.length;indice++) { //Se verifica que no se halla agregado
-				if(tablas.options[indice].value==id_ubicacion ){
+              }
+            }
+          }
+          
+          var existe = 0;
+          
+          for(indice = 0;indice < tablas.length;indice++) { //Se verifica que no se halla agregado
+            if(tablas.options[indice].value==id_ubicacion) {
               existe = 1;
-				}
-			}
+            }
+          }
+          
           if(existe==0) agregarUbicacion(id_ubicacion,arreglo[0]);
 			
-			
-			
-			$("#"+campo+i).val(id_ubicacion);
-			if(campo=='inicio' && $("#rango"+i).is(":checked") && id_ubicacion != 0){
-		
-				if(!isNaN(id_ubicacion)){
-					$("#fin_aux"+i).val("");
-					$("#fin_aux"+i).focus();
-				}
-			}
-			
-		}
+          $("#"+campo+i).val(id_ubicacion);
+          if(campo=='inicio' && $("#rango"+i).is(":checked") && id_ubicacion != 0) {
+            if(!isNaN(id_ubicacion)) {
+              $("#fin_aux"+i).val("");
+              $("#fin_aux"+i).focus();
+            }
+          }
+        }
       }
     });
-		
   }
+  
   function teclado(e) {
-  	 tecla = (document.all) ? e.keyCode : e.which;
-
-  ;
-   }
+    tecla = (document.all) ? e.keyCode : e.which;
+  }
 
   function quitarElemento(formulario) {
     with(document.formInventario{item}) {
@@ -72,19 +69,19 @@
 
   function agregarUbicacion(elemento,nombre) {
     var valor = "";
+
     with(document.formInventario{item}) {
       index = tablas.length;
       agregado = 0;
       
       for(indice = 0;indice < tablas.length;indice++) { //Se verifica que no se halla agregado
         if(tablas.options[indice].value == valor) {
-          agregado = 1
+          agregado = 1;
         }
       }
-	 if(!isNaN(elemento)){
-	  	tablas[index] = new Option(nombre,elemento);
-	  }
-	  
+      if(!isNaN(elemento)) {
+        tablas[index] = new Option(nombre,elemento);
+      }
     }
   }
 
@@ -97,13 +94,6 @@
       }
     }, '* Debe seleccionar una referencia de la lista!');
   });
-  $.validator.addMethod("mayor_cero", function(value){
-		if(value > 0 ){
-			return true;	
-		}else{
-			return false;
-		}
-	}, '* El valor indicado no puede ser cero!');
 
   $.validator.setDefaults({
     submitHandler: function() {
@@ -124,11 +114,12 @@
         data: $("#formInventario{item}").serialize(),
         success: function(msm) {
           $('#htmlunItem{item}').html(msm);
-          //Aqui actualizamos la informaci髇 General donde se muestra el control de pesos y valores
+          //Aqui actualizamos la informaci贸n General donde se muestra el control de pesos y valores
           $("div#encabezado").load("./scripts_index.php", {clase:'Inventario',metodo:'getEncabezado',mostrar:'1',
             id_arribo:{arribo}}, function(datos) {
-			 $("#msgbox_arribo{item}").html('El item se guardo correctamente').addClass('ui-state-highlight');
-          });	
+              $("#msgbox_arribo{item}").html('El item se guardo correctamente').addClass('ui-state-highlight');
+            }
+          );	
         }
       });			
     },
@@ -139,14 +130,16 @@
       $(input).removeClass("ui-state-highlight");
     }
   });
+  
   $(function() {
-    //Verifica si la Referencia trae fecha de expiraci髇 y seriales
+    //Verifica si la Referencia trae fecha de expiraci贸n y seriales
     if($("#fexpira").val()==1) $("#fecha{item}").css("display", "block");
     else $("#fecha{item}").css("display", "none");
     if($("#serial").val()==1) $("#btnSerialesItem{item}").css("display", "block");
     else $("#btnSerialesItem{item}").css("display", "none");
+
     $("#formInventario{item}").validate({
-      rules: {referencia: "justifique",cantidad:"mayor_cero",peso:"mayor_cero"}
+      rules: {referencia: "justifique"}
     });
     $("#referencia_nombre{item}").autocomplete("./scripts_index.php?clase=Inventario&metodo=findReferencia&id_cliente="+
       $("#cliente_filtro").val(), {
@@ -156,20 +149,14 @@
     );
     $("#referencia_nombre{item}").result(function(event, data, formatted) {
       if(data) $("#referencia{item}").val(data[1]);
-      //Valida si la referencia seleccionada tiene Fecha de Expiraci髇
-      if(data[2]==1) $("#fecha{item}").css("display", "block"); //Captura Fecha Expiraci髇
-      else $("#fecha{item}").css("display", "none"); //No Captura Fecha Expiraci髇
+      //Valida si la referencia seleccionada tiene Fecha de Expiraci贸n
+      if(data[2]==1) $("#fecha{item}").css("display", "block"); //Captura Fecha Expiraci贸n
+      else $("#fecha{item}").css("display", "none"); //No Captura Fecha Expiraci贸n
       //Valida si la referencia seleccionada tiene Serial
-      //if($("#fmm{item}").val()=="" || $("#fmm{item}").val()==1){
-	  	$("#fmm{item}").val(data[5]);
-	  //}
-		$("#modelo{item}").val(data[7]);
-	  	$("#vigencia{item}").val(data[6]);
-	  
-	  if(data[3]==1) {
-        $("#btnSerialesItem{item}").css("display", "block"); //Visualiza el Bot髇 Seriales
+      if(data[3]==1) {
+        $("#btnSerialesItem{item}").css("display", "block"); //Visualiza el Bot贸n Seriales
         $("#codReferencia").attr("value",data[4]);
-      } else $("#btnSerialesItem{item}").css("display", "none"); //Oculta el Bot髇 Seriales
+      } else $("#btnSerialesItem{item}").css("display", "none"); //Oculta el Bot贸n Seriales
     });
     $("#nombre_ubicacion{item}").autocomplete("./scripts_index.php?clase=Inventario&metodo=findPosicion&id_cliente="+
       $("#id_cliente").val(), {
@@ -177,47 +164,50 @@
         selectFirst: false
       }
     );
+    
     $("#nombre_ubicacion{item}").result(function(event, data, formatted) {
       agregarUbicacion(data[1],data[0])
       $("#posicion{item}").val(data[1]);
     });
 	
-	 $("#inicio_aux{item}").autocomplete("./scripts_index.php?clase=Inventario&metodo=findPosicion&id_cliente="+
+    $("#inicio_aux{item}").autocomplete("./scripts_index.php?clase=Inventario&metodo=findPosicion&id_cliente="+
       $("#id_cliente").val(), {
         width: 260,
         selectFirst: false
       }
     );
+    
     $("#inicio_aux{item}").result(function(event, data, formatted) {
-		// se elimina el conteniso de la caja previo
-		for(var i = tablas.length - 1; i >= 0; i--) {
+      // Se elimina el contenido de la caja previo
+      for(var i = tablas.length - 1; i >= 0; i--) {
 				tablas.remove(i);
     	}
-		
-		 agregarUbicacion(data[1],data[0]);
+      agregarUbicacion(data[1],data[0]);
      	$("#inicio{item}").val(data[1]);
     });
-	
-	 $("#fin_aux{item}").autocomplete("./scripts_index.php?clase=Inventario&metodo=findPosicion&id_cliente="+
+
+    $("#fin_aux{item}").autocomplete("./scripts_index.php?clase=Inventario&metodo=findPosicion&id_cliente="+
       $("#id_cliente").val(), {
         width: 260,
         selectFirst: false
       }
     );
     $("#fin_aux{item}").result(function(event, data, formatted) {
-		for(var i = tablas.length - 1; i >= 0; i--) {
-				tablas.remove(i);
-    	}
-		 agregarUbicacion(data[1],data[0]);
-     	$("#fin{item}").val(data[1]);
+		  for(var i = tablas.length - 1; i >= 0; i--) {
+        tablas.remove(i);
+      }
+      agregarUbicacion(data[1],data[0]);
+      $("#fin{item}").val(data[1]);
     });
-    //Configuraci髇 del DatePicker
+    
+    //Configuraci贸n del DatePicker
     $(".fechapicker").datepicker({
       dateFormat: 'yy-mm-dd',
       changeYear: true,
       changeMonth: true,
     });
   });
+  
   $("#btnSerialesItem{item}").button({
     text: true,
     icons: {
@@ -236,6 +226,7 @@
 			}, function(datos) {});
     }
   });
+  
   $("#btnBorrarItem{item}").button({
     text: true,
     icons: {
@@ -244,82 +235,77 @@
   }).click(function() {
     $('.eliminarItem a').click();
   });
+  
   $("#btnGuardarItem{item}").button({
     text: true,
     icons: {
       primary: "ui-icon-disk"
     }
   }).click(function() {
-	if($("#rango{item}").is(":checked")) { 
-	   if($("#inicio{item}").val()==""){
+    if($("#rango{item}").is(":checked")) { 
+      if($("#inicio{item}").val()=="") {
 	      alert("debe especificar el rango inicial");
-		  $("#inicio{item}").focus();
-		  return false;
-	   }
-	    if($("#fin{item}").val()==""){
+        $("#inicio{item}").focus();
+        return false;
+      }
+	    if($("#fin{item}").val()=="") {
 	      alert("debe especificar el rango final");
-		  $("#fin{item}").focus();
-		  return false;
-	   }
-	}
+        $("#fin{item}").focus();
+        return false;
+      }
+    }
     seleccionar()
   });
+  
   $("#btnDividirItem{item}").button({
     text: true,
     icons: {
       primary: "ui-icon-circle-plus"
     }
   }).click(function() {
-  
-  	// se actualiza el retiro padre con el peso igual al retirado y se crea uno nuevo con el saldo 07/09/2016
-	var peso_bruto =0;
-	// aqui se debe colocar un confirm para validar la accion de dividir el inventario
-	if(!confirm('Seguro que quiere dividir el inventario ? \n El nuevo registro se crea con el saldo del peso, peso ingresado-peso retirado')){
-		return 0;
-	}
+    // se actualiza el retiro padre con el peso igual al retirado y se crea uno nuevo con el saldo 07/09/2016
+    var peso_bruto = 0;
+    // aqui se debe colocar un confirm para validar la accion de dividir el inventario
+    if(!confirm('Seguro que quiere dividir el inventario ? \n El nuevo registro se crea con el saldo del peso, peso ingresado-peso retirado')) {
+      return 0;
+    }
 	
-	
-	$("#nuevo_peso").load("./scripts_index.php", {clase:'Inventario',metodo:'setNuevoPeso',mostrar:'1',id_item:$("#item_seleccionado").val(),peso_total:$("#peso"+$("#item_seleccionado").val()).val(),valor_total:$("#peso"+$("#item_seleccionado").val()).val()}, 
-		function(datos) {
-		  
-		    // agregar script para que el nuevo aitem arrastre datos , se enviaron parametros adicionales 10/09/2016
-			$("#nuevo_peso").val(datos);
+    $("#nuevo_peso").load("./scripts_index.php", {clase:'Inventario',metodo:'setNuevoPeso',mostrar:'1',id_item:$("#item_seleccionado").val(),peso_total:$("#peso"+$("#item_seleccionado").val()).val(),valor_total:$("#peso"+$("#item_seleccionado").val()).val()}, 
+		  function(datos) {
+        // agregar script para que el nuevo aitem arrastre datos , se enviaron parametros adicionales 10/09/2016
+        $("#nuevo_peso").val(datos);
 			
-			var modelo=$("#modelo"+$("#item_seleccionado").val()).val();
-			var fmm=$("#fmm"+$("#item_seleccionado").val()).val();
-			var un_empaque=$("#un_empaque"+$("#item_seleccionado").val()).val();
-			var embalaje=$("#embalaje"+$("#item_seleccionado").val()).val();
-			var referencia=$("#referencia"+$("#item_seleccionado").val()).val();
+        var modelo = $("#modelo"+$("#item_seleccionado").val()).val();
+        var fmm = $("#fmm"+$("#item_seleccionado").val()).val();
+        var un_empaque = $("#un_empaque"+$("#item_seleccionado").val()).val();
+        var embalaje = $("#embalaje"+$("#item_seleccionado").val()).val();
+        var referencia = $("#referencia"+$("#item_seleccionado").val()).val();
 			
-			 var url = 'scripts_index.php?clase=Inventario&metodo=addInventario&do_asignado='
-			 +$("#do_asignado").val()
-     		 +'&do_asignado_full='
-			 +$("#do_asignado_full").val()
-			 +'&id_arribo='
-			 +$("#arribo_seleccionado").val()
-			 +'&peso_bruto='+datos
-			 +'&origen=dividir&modelo='+modelo
-			 +'&fmm='+fmm
-			 +'&un_empaque='+un_empaque
-			 +'&embalaje='+embalaje
-			 +'&referencia='+referencia
-			 ; 
-			 		
-			$.ajax({
+        var url = 'scripts_index.php?clase=Inventario&metodo=addInventario&do_asignado='
+          +$("#do_asignado").val()
+          +'&do_asignado_full='
+          +$("#do_asignado_full").val()
+          +'&id_arribo='
+          +$("#arribo_seleccionado").val()
+          +'&peso_bruto='+datos
+          +'&origen=dividir&modelo='+modelo
+          +'&fmm='+fmm
+          +'&un_empaque='+un_empaque
+          +'&embalaje='+embalaje
+          +'&referencia='+referencia; 
+
+        $.ajax({
        		url: url,
       		type: "POST",
       		async: false,
       		success: function(msm) {
-        	$('#componente_central').html(msm);
-      			}
-			});
+            $('#componente_central').html(msm);
+          }
+        });
      	}
-	 );
-	 
-	 
-  	
-   
+    );
   });
+  
   function seleccionar() {
     with(document.formInventario{item}) {
       for(indice = 0;indice < tablas.length;indice++) { //Se verifica que no se halla agregado
@@ -327,43 +313,27 @@
       }
     }
   }
-    $(document).ready(function(){
-	
-	    if({unrango}==1){
-		   	$("div#rangos{item}").show();
-			$("#nombre_ubicacion{item}").hide();
-			 
-		}else{
-		   $("div#rangos{item}").hide(); 
+
+  $(document).ready(function() {
+    if({unrango}==1) {
+      $("div#rangos{item}").show();
+      $("#nombre_ubicacion{item}").hide();
+    } else {
+      $("div#rangos{item}").hide(); 
 		}
 		
-        $("#rango{item}").change(function() { 
-		
-            if($("#rango{item}").is(":checked")) { 
-               	$("div#rangos{item}").show();
+    $("#rango{item}").change(function() { 
+      if($("#rango{item}").is(":checked")) { 
+        $("div#rangos{item}").show();
 				$("#nombre_ubicacion{item}").hide();
-            } else {
+      } else {
 				$("div#rangos{item}").hide();
 				$("#inicio{item}").val("");
 				$("#fin{item}").val("");
 				$("#nombre_ubicacion{item}").show();
-                
-            }
-        }); 
-		
-    });
-	$("#vigencia").datepicker();
-		$("#vigencia").datepicker('option', 
-		{
-	    	dateFormat: 'yy/mm/dd',
-			changeYear: true,
-			changeMonth: true,
-			showOn: 'both',
-			buttonImage: 'integrado/imagenes/calendar.png',
-			buttonImageOnly: true
-		});
-		
-		$("#vigencia").val($("#vigencia_aux").val());
+      }
+    }); 
+  });
 </script>
 <style>
   .fechapicker::-webkit-input-placeholder { /* WebKit, Blink, Edge */
@@ -386,60 +356,62 @@
 </style>
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
 <span id="msgbox_arribo{item}" style="display:block" class="{estilo_aux}"> {mensaje_aux} </span> 
-<form class="formInventario{item}" name="formInventario{item}" id="formInventario{item}" method="post" 
-  action="javascript:EnviarFormulario()">
+<form class="formInventario{item}" name="formInventario{item}" id="formInventario{item}"
+  method="post" action="javascript:EnviarFormulario()">
   <fieldset class="ui-widget ui-widget-content ui-corner-all">
-  <legend class="ui-widget ui-widget-header ui-corner-all"> Mercanc&iacute;a {item} 
-  <input type="hidden" name="clase" id="clase" value="Inventario" />
-  <input type="hidden" name="metodo" id="metodo" value="saveItem" />
-  <input type="hidden" name="item" id="item" value="{item} " />
-  <input type="hidden" name="arribo" id="arribo_aux" value="{arribo} " />
-  <input type="hidden" name="id_item" id="id_item{item}" value="{id_item} " />
-  <input type="hidden" name="codReferencia" id="codReferencia" value="" />
-  <input name="cliente_filtro" type="hidden" id="cliente_filtro" value="{cliente} " />
-  <input type="hidden" name="nuevo_peso" id="nuevo_peso">
+    <legend class="ui-widget ui-widget-header ui-corner-all"> Mercanc&iacute;a {item} 
+      <input type="hidden" name="clase" id="clase" value="Inventario" />
+      <input type="hidden" name="metodo" id="metodo" value="saveItem" />
+      <input type="hidden" name="item" id="item" value="{item} " />
+      <input type="hidden" name="arribo" id="arribo_aux" value="{arribo} " />
+      <input type="hidden" name="id_item" id="id_item{item}" value="{id_item} " />
+      <input type="hidden" name="codReferencia" id="codReferencia" value="" />
+      <input name="cliente_filtro" type="hidden" id="cliente_filtro" value="{cliente} " />
+      <input type="hidden" name="nuevo_peso" id="nuevo_peso" />
       <input name="fexpira" type="hidden" id="fexpira" value="{chkfecha_expira}" />
       <input name="serial" type="hidden" id="serial" value="{chkserial}" />
-  </legend>
-  <table width="100%" border="0">
-    <tr class="ui-widget ui-widget-header ui-corner-all">
-      <th width="41%">Referencia 
-        <input type="hidden" name="referencia" id="referencia{item}" value="{referencia}" {disabled} /> 
-      </th>
-      <th width="20%">Modelo/Lote/Cosecha</th>
-      <th width="20%" >FMM/ParteN./Reg.N.</th>
-	  <th width="19%">Vigencia</th>
-    </tr>
-    <tr>
-      <td><input type="text" name="referencia_nombre" id="referencia_nombre{item}" value="{nombre_referencia}"
-          size="70"  class="required   ui-widget-content" /> </td>
-      <td><input name="modelo" type="text" id="modelo{item}" value="{modelo}" class="required ui-widget-content" /></td>
-      <td>
-<input name="fmm" type="text" id="fmm{item}" value="{fmm}" class="required  ui-widget-content"/></td>
-	  <td><input name="vigencia"   type="text" id="vigencia{item}" style="width:70px" value="{vigencia}" readonly="">
-        <input type="hidden" name="vigencia_aux" id="vigencia_aux{item}" value="{vigencia}" /></td>
-    </tr>
-  </table>
+    </legend>
     <table width="100%" border="0">
       <tr class="ui-widget ui-widget-header ui-corner-all"> 
-        
-        <th >Embalajes</th>
-        <th >U. Empaque</th>
-        <th >Cantidad</th>
-        <th>Peso</th>
-      <th>Valor</th>
+        <th>Referencia 
+          <input type="hidden" name="referencia" id="referencia{item}" value="{referencia}" {disabled} />
+        </th>
+        <th width="25%">Modelo/Lote/Cosecha</th>
+        <th>FMMN/ParteNo</th>
       </tr>
       <tr> 
-        
-        
-      <td><input name="embalaje" type="text" id="embalaje{item}" value="{embalaje}" class="required  ui-widget-content"/></td>
+        <td>
+          <input type="text" name="referencia_nombre" id="referencia_nombre{item}" value="{nombre_referencia}"
+            size="70"  class="required   ui-widget-content" /> 
+        </td>
+        <td>
+          <input name="modelo" type="text" id="modelo{item}" value="{modelo}" class="required ui-widget-content" />
+        </td>
+        <td>
+          <input name="fmm" type="text" id="fmm{item}" value="{fmm}" class="required  ui-widget-content"/>
+        </td>
+      </tr>
+    </table>
+    <table width="100%" border="0">
+      <tr class="ui-widget ui-widget-header ui-corner-all"> 
+        <th>Embalajes</th>
+        <th>U. Empaque</th>
+        <th>Cantidad</th>
+        <th>Peso</th>
+        <th>Valor</th>
+      </tr>
+      <tr> 
+        <td>
+          <input name="embalaje" type="text" id="embalaje{item}" value="{embalaje}" class="required  ui-widget-content"/>
+        </td>
         <td>
           <select name="un_empaque" id="un_empaque{item}" class="required  ui-widget-content">
             {listaEmbalajes}
           </select>
         </td>
-        <td><input type="text" name="cantidad" class="required number ui-widget-content" value="{cantidad}" 
-          size="7" {disabled}/>
+        <td>
+          <input type="text" name="cantidad" class="required number ui-widget-content" value="{cantidad}" 
+            size="7" {disabled}/>
         </td>
         <td>
           <input type="text" name="peso" class="required number ui-widget-content" id="peso{item}" value="{peso}"
@@ -462,9 +434,8 @@
         <td>
           <table width="100%" border="0">
             <tr> 
-              
-            <td width="64%">Posiciones Consecutivas 
-              <input type="checkbox" name="rango" id="rango{item}" value="Si" {checked} />
+              <td width="64%">Posiciones Consecutivas 
+                <input type="checkbox" name="rango" id="rango{item}" value="Si" {checked} />
               </td>
               <td width="36%" rowspan="3">
                 <select name="posxy[]" size="5" multiple class="required number  ui-widget-content" id="tablas">
@@ -476,19 +447,16 @@
             </tr>
             <tr> 
               <td>
-              <div id="rangos{item}" style=" visibility: visible"> Inicio
-                <input name="inicio" type="hidden" id="inicio{item}"  class=" ui-widget-content" value="{inicio}"  >
-				
-                <input name="inicio_aux" type="text"  id="inicio_aux{item}" value="{inicio_label}" 
-          size="15" maxlength="15" {disabled}  oninput="javascript:pistola(event,{item},'inicio')" onkeypress="teclado(event)"/>
-              Fin
-                <input name="fin_aux" type="text" class="ui-widget-content" id="fin_aux{item}" value="{fin_label}"
-          size="15" maxlength="15" {disabled} oninput="javascript:pistola(event,{item},'fin')" />
-		  
-                <input name="fin" type="hidden" id="fin{item}"  class=" ui-widget-content" value="{fin}">
-              </div>
-          
-          </td>
+                <div id="rangos{item}" style=" visibility: visible"> Inicio
+                  <input name="inicio" type="hidden" id="inicio{item}"  class=" ui-widget-content" value="{inicio}" />
+                  <input name="inicio_aux" type="text"  id="inicio_aux{item}" value="{inicio_label}" 
+                    size="15" maxlength="15" {disabled}  oninput="javascript:pistola(event,{item},'inicio')" onkeypress="teclado(event)"/>
+                    Fin
+                  <input name="fin_aux" type="text" class="ui-widget-content" id="fin_aux{item}" value="{fin_label}"
+                    size="15" maxlength="15" {disabled} oninput="javascript:pistola(event,{item},'fin')" />
+                  <input name="fin" type="hidden" id="fin{item}"  class=" ui-widget-content" value="{fin}" />
+                </div>
+              </td>
             </tr>
             <tr> 
               <td>
@@ -498,7 +466,8 @@
             </tr>
           </table>
         </td>
-        <td><textarea name="observacion" cols="80" rows="2" id="observacion" {disabled} class="  ui-widget-content" >{observacion}</textarea> 
+        <td>
+          <textarea name="observacion" cols="80" rows="2" id="observacion" {disabled} class="  ui-widget-content" >{observacion}</textarea> 
         </td>
       </tr>
     </table>
@@ -506,17 +475,17 @@
       <tr> 
         <td><button type="submit" class="submit" id="btnGuardarItem{item}">Guardar</button></td>
         <td><button type="button" class="submit" id="btnBorrarItem{item}">Borrar</button></td>
-      <td><button type="button" class="submit" id="btnDividirItem{item}" style="display: {dividir};">Dividir</button></td>
+        <td><button type="button" class="submit" id="btnDividirItem{item}" style="display: {dividir};">Dividir</button></td>
         <td><button type="button" class="submit" id="btnSerialesItem{item}" style="display: none;">Seriales</button></td>
         <td id="fecha{item}" style="display:none;">
           <input type="text" style="background-color:red;color:white;height:22px;text-align:center;" 
-            class="fechapicker " name="fechaexpira" id="fechaexpira{item}" 
-            placeholder="Fecha Expiraci髇: aaaa-mm-dd" size="25" value="{fecha_expira}"/>
+            class="fechapicker required" name="fechaexpira" id="fechaexpira{item}" 
+            placeholder="Fecha Expiraci贸n: aaaa-mm-dd" size="25" value="{fecha_expira}"/>
         </td>
       </tr>
     </table>
-  <input name="dividir" type="hidden" id="dividir{item}" value="{dividir}">
-  <div width="16%" class="{estiloEditar}">&nbsp;{mensajeEditarItem} </div>
+    <input name="dividir" type="hidden" id="dividir{item}" value="{dividir}" />
+    <div width="16%" class="{estiloEditar}">&nbsp;{mensajeEditarItem} </div>
   </fieldset>
   <br/>
 </form>

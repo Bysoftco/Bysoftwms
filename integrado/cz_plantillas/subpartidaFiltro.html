@@ -11,21 +11,56 @@
   }
 ?> 
 <script>
- function EnviarFormulario(){
-		alert("EnviarFormulario");
-	}
-$(function(){
-        $("#buscarSubpartida").autocomplete("./scripts_index.php?clase=Subpartida&metodo=findSupartida", {
+
+    
+
+
+
+    function EnviarFormulario()
+
+    {
+
+        alert("EnviarFormulario");
+
+        
+
+	
+
+    }
+
+	
+
+    $(function() 
+
+    {
+
+	
+
+         	
+
+        $("#buscarClienteretiros").autocomplete("./scripts_index.php?clase=Subpartida&metodo=findSupartida", {
 
                 width: 260,
-			    selectFirst: false
 
-});
+                selectFirst: false
 
 
-$("#buscarSubpartida").result(function(event, data, formatted){
-		$("#por_cuenta_filtro_retiros").val(data[1]);                         
-});
+
+        });
+
+
+
+
+
+        $("#buscarClienteretiros").result(function(event, data, formatted) 
+
+     	{
+
+            $("#por_cuenta_filtro_retiros").val(data[1]);                         
+
+          
+
+        });
 
         
 
@@ -85,15 +120,35 @@ $("#buscarSubpartida").result(function(event, data, formatted){
 
     {
 
-	$("#formularioSubpartidaFiltro").validate({
-			submitHandler: function(form) {
+	$("#maestro").validate(
+
+        {
+
+            
+
+            submitHandler: function(form) 
+
+            {
 
                  //alert("test ready");
 
                 //form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text;
-					var bValid = true;
-					if (bValid){
-						$.ajax({
+
+             
+
+                    var bValid = true;
+
+                   
+
+                    
+
+                    if (bValid) 
+
+                    {
+
+                        $.ajax(
+
+                        {
 
                                 url:'scripts_index.php',
 
@@ -101,11 +156,13 @@ $("#buscarSubpartida").result(function(event, data, formatted){
 
                                 async:false,
 
-                                data:$('#formularioSubpartidaFiltro').serialize(),
+                                data:$('#maestro').serialize(),
 
-                                success: function (msm){
+                                success: function (msm)
 
-                                    $( "#window_filtro_subpartida" ).dialog( "close" );
+                                {
+
+                                    $( "#ventana_reporte" ).dialog( "close" );
 
                                                                 //$( "#num_levante" ).val( " ");
 
@@ -116,7 +173,10 @@ $("#buscarSubpartida").result(function(event, data, formatted){
                         });
 
                      }   
-			}
+
+               
+
+            }
 
 	});	
 
@@ -174,13 +234,13 @@ $("#buscarSubpartida").result(function(event, data, formatted){
 
 
 
-<form class="formularioSubpartidaFiltro" id="formularioSubpartidaFiltro" method="post" action="javascript:EnviarFormulario()" name="formularioSubpartidaFiltro">
+<form class="formularioReporte" id="maestro" method="post" action="javascript:EnviarFormulario()" name="maestro">
 
     <fieldset class="ui-widget ui-widget-content ui-corner-all">
 
 	<legend class="ui-widget ui-widget-header ui-corner-all">
 
-            <div id="nombre_reporte">Filtro Subpartida
+            <div id="nombre_reporte">Formulario de Consulta 
 
             <input name="filtro_levante" type="hidden" id="filtro_levante" value="1">
 
@@ -200,7 +260,7 @@ $("#buscarSubpartida").result(function(event, data, formatted){
     <label>Nombre:</label>
 
             
-    <input name="nombre" type="text" id="buscarSubpartida" size="50" />
+    <input name="nombre" type="text" id="buscarClienteretiros" size="50" />
 
 	</p>
 
@@ -230,8 +290,7 @@ $("#buscarSubpartida").result(function(event, data, formatted){
      
   <input name="metodo" type="hidden" id="metodoReporte" value="getListado">
 
-     
- <input name="un_formulario" type="hidden"  id="un_formulario" value="formularioSubpartidaFiltro">
+     <input name="este_formulario" type="hidden"  id="formularioReporte" value="">
 
      
 

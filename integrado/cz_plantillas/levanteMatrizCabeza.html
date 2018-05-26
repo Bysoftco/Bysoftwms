@@ -1,102 +1,101 @@
-
-
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
-<html>
-
-<head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-
-<link href="./integrado/cz_estilos/reporteGerencial.css" rel="stylesheet" type="text/css">
-
-<title>Remesas</title>
-
-<script language="JavaScript" type="text/javascript" src="./cz_javascript/validar.js"></script>
-
-<script language="javascript" type="text/javascript">
-
-print()
-
-</script>
-
-<style type="text/css">
-
-<!--
-
-.Estilo1 {font-weight: bold }
-
-.Estilo2 {color: #FF0000}
-
--->
-
-</style>
-{comodin}
-<div align="center" class="{estilo} ">
-
-{mensajeError} 
-
-
-
-</head>
-
-
-
-<body>
-
-</div> 
-
-
-
-
-
-<table width="90%" height="94" border="0" align="center" class="tabla_general" >
-  <tr class="titulos"  bgcolor="ffffff" > 
-    <td height="21" colspan="5" align="center" class="tabla_general1"> <div align="center">MATRIZ 
-        DE INTEGRACI&Oacute;N [{nit}] - {razon_social}</div></td>
-  </tr>
-  <tr > 
-    <td height="21" colspan="4" > <div align="left">Referencia [{codigo}]{nombre_producto}</div></td>
-    <td width="15%" height="21" bgcolor="ffffff"><div align="right">Movimiento 
-        {id_levante}</div></td>
-  </tr>
-  <tr > 
-    <td height="21" colspan="6"  class="Estilo1">Información del Producto Transformado: 
-      <div align="right" class="Estilo2"> 
-        <div align="right"></div>
-      </div></td>
-  </tr>
- 
-</table>
-<table width="90%" height="71" border="0" align="center" class="texto" >
-  <tr > 
-    <td class="titulosTabla">Fecha</td>
-    <td class="titulosTabla">Unidad</td>
-    <td height="21" class="titulosTabla"><div align="center">Cantidad</div></td>
-    <td class="titulosTabla"><div align="center">Valor Fob</div></td>
-    <td class="titulosTabla"><div align="center">Peso Producto</div></td>
-    <td class="titulosTabla"><div align="center">FMM</div></td>
-    <td class="titulosTabla"><div align="center">Orden</div></td>
-    <td class="titulosTabla"><div align="center">DocTransporte</div></td>
-    <td class="titulosTabla"><div align="center">Pos. Arancelaria</div></td>
-  </tr>
-  <tr > 
-    <td width="81" class="filasTabla">{fecha}</td>
-    <td width="47" class="filasTabla">{unidad}</td>
-    <td width="75" height="21" class="filasTabla"><div align="center">{cantidad}</div></td>
-    <td width="79" class="filasTabla"><div align="right">{valor}</div></td>
-    <td width="94" class="filasTabla"><div align="right">{peso}</div></td>
-    <td width="92" class="filasTabla"><div align="center">{fmm}</div></td>
-    <td width="99" class="filasTabla"><div align="center">{orden}</div></td>
-    <td width="122" class="filasTabla"><div align="center">{doc_tte}</div></td>
-    <td width="114" class="filasTabla"><div align="center">{pos_arancelaria}</div></td>
-  </tr>
-  <tr > 
-    <td height="21" colspan="10" class="filasTabla">{obs}</td>
-  </tr>
-</table>
-
-<p>{cuerpoRetiro} </p>
-</body>
-
+
+
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link href="./integrado/cz_estilos/reporteGerencial.css" rel="stylesheet" type="text/css">
+
+<title>Remesas</title>
+
+<script language="JavaScript" type="text/javascript" src="./cz_javascript/validar.js"></script>
+
+<script language="javascript" type="text/javascript">
+
+print()
+
+</script>
+
+<style type="text/css">
+
+<!--
+
+.Estilo1 {font-weight: bold }
+
+.Estilo2 {color: #FF0000}
+
+-->
+
+</style>
+{comodin}
+<div align="center" class="{estilo} ">
+
+{mensajeError} 
+
+
+
+</head>
+
+
+
+<body>
+
+</div> 
+
+
+
+
+
+<table width="90%" height="94" border="0" align="center" class="tabla_general" >
+  <tr class="titulos"  bgcolor="ffffff" > 
+    <td height="21" colspan="5" align="center" class="tabla_general1"> <div align="center">MATRIZ 
+        DE INTEGRACI&Oacute;N [{nit}] - {razon_social}</div></td>
+  </tr>
+  <tr > 
+    <td height="21" colspan="4" > <div align="left">Referencia [{codigo}]{nombre_producto}</div></td>
+    <td width="15%" height="21" bgcolor="ffffff"><div align="right">Producto {id_levante}</div></td>
+  </tr>
+  <tr > 
+    <td height="21" colspan="6"  class="Estilo1">Información del Producto : 
+      <div align="right" class="Estilo2"> 
+        <div align="right"></div>
+      </div></td>
+  </tr>
+ 
+</table>
+<table width="90%" height="71" border="0" align="center" class="texto" >
+  <tr > 
+    <td class="titulosTabla">Fecha</td>
+    <td class="titulosTabla">Unidad</td>
+    <td height="21" class="titulosTabla"><div align="center">Cantidad</div></td>
+    <td class="titulosTabla"><div align="center">Valor Fob</div></td>
+    <td class="titulosTabla"><div align="center">Peso Producto</div></td>
+    <td class="titulosTabla"><div align="center">FMM</div></td>
+    <td class="titulosTabla"><div align="center">Orden</div></td>
+    <td class="titulosTabla"><div align="center">DocTransporte</div></td>
+    <td class="titulosTabla"><div align="center">Pos. Arancelaria</div></td>
+  </tr>
+  <tr > 
+    <td width="81" class="filasTabla">{fecha}</td>
+    <td width="47" class="filasTabla">{unidad}</td>
+    <td width="75" height="21" class="filasTabla"><div align="center">{cantidad}</div></td>
+    <td width="79" class="filasTabla"><div align="right">{valor}</div></td>
+    <td width="94" class="filasTabla"><div align="right">{peso}</div></td>
+    <td width="92" class="filasTabla"><div align="center">{fmm}</div></td>
+    <td width="99" class="filasTabla"><div align="center">{orden}</div></td>
+    <td width="122" class="filasTabla"><div align="center">{doc_tte}</div></td>
+    <td width="114" class="filasTabla"><div align="center">{pos_arancelaria}</div></td>
+  </tr>
+  <tr > 
+    <td height="21" colspan="10" class="filasTabla">{obs}</td>
+  </tr>
+</table>
+
+<p>{cuerpoRetiro} </p>
+</body>
+
 </html>

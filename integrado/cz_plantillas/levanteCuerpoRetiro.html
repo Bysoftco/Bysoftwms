@@ -25,7 +25,6 @@
         switch(parseInt($('#tipo_movimiento').val())) {
           case 13: // Endoso
           case 3: // Retiro
-		  case 17: // Retiro
           case 7:
             getmetodo = 'getCuerpoRetiro';    // Método que trae el formulario que abre
             break;
@@ -45,17 +44,12 @@
         } else {
           if(confirm('\u00BFConfirma que desea quitar el item?')) {
             var id_item=$('#id_item'+$column).val();
-			
-			var orden_retiro=$('#orden_reti'+$column).val();
-			var cod_ref=$('#cod_ref'+$column).val();
-			
-			//alert(orden_retiro);
             
             //Cuerpo del movimiento
             $("div#htmlCuerpo").load("./scripts_index.php", {clase: 'Levante',
               metodo: 'delMercancia', mostrar: '1', id_levante: $('#id_levante').val(),
               id_retiro_del: id_retiro, tipo_movimiento: $('#tipo_movimiento').val(),
-              id_item:id_item,orden_retiro:orden_retiro,cod_ref:cod_ref}, function(datos) {
+              id_item:id_item}, function(datos) {
             });
 
             //Cuerpo de la mercancia
@@ -99,7 +93,7 @@
   <form id="forMercancia" name="forMercancia">   
     <fieldset class="ui-widget ui-widget-content ui-corner-all">
       <legend class="ui-widget ui-widget-header ui-corner-all"> Datos de la Mercanc&iacute;a</legend>
-    <input type="hidden" name="aplica_matriz" id="aplica_matriz" />
+      <input type="hidden" name="aplica_matriz" id="aplica_matriz" />
       <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
       
     <table width="100%" class="ui-widget ui-widget-content" id="users"
@@ -108,7 +102,6 @@
         <tr class="ui-widget-header"> 
           <th>#</th>
           <th>Orden</th>
-          <th>DocTTE</th>
           <th>Ref</th>
           <th>Mercanc&iacute;a 
             <input type="hidden" name="ver_matriz" id="ver_matriz" /> </th>
@@ -127,13 +120,11 @@
       <tr class="{odd}"> 
         <td>{n}</td>
         <td><div id="label_concepto{n}">{orden}</div></td>
-        <td>{doc_tte}</td>
         <td>{ref_cliente}</td>
         <td> {nombre_referencia} 
           <input name="id_retiro[]" type="hidden" id="id_retiro{n}" value="{id_retiro}" /> 
           <input name="id_item[]" type="hidden" id="id_item{n}" value="{id_item}" /> 
           <input name="orden_reti{n}" type="hidden" id="orden_reti{n}" value="{orden}" /> 
-          <input name="cod_ref{n}" type="hidden" id="cod_ref{n}" value="{cod_referencia}"> 
         </td>
         <td>{cantidad_f} {sn} {cant_nonac_f}</td>
         <td>{peso_f} {snt} {peso_nonac_f}</td>
@@ -147,18 +138,16 @@
         <td>Totales</td>
         <td>{n}</td>
         <td>&nbsp;</td>
-        <td>&nbsp;</td>
         <td>{n}</td>
         <td>{tot_cant_nac} {sn_aux} {tot_cant_nonac}</td>
         <td>{tot_peso_nacf} {sn_aux} {tot_peso_nonacf} 
-          <input name="tot_peso_nac" type="hidden" id="tot_peso_nacsf" value="{tot_peso_nac}" /> 
-          <input name="tot_peso_nonac" type="hidden" id="tot_peso_nonacsf"
+          <input name="tot_peso_nac" type="hidden" id="tot_peso_nac" value="{tot_peso_nac}" /> 
+          <input name="tot_peso_nonac" type="hidden" id="tot_peso_nonac"
                 value="{tot_peso_nonac}" /> </td>
         <td>{tot_cif} {sn_aux} {tot_fob}</td>
         <td>{n}</td>
       </tr>
       <tr> 
-        <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>&nbsp;</td>

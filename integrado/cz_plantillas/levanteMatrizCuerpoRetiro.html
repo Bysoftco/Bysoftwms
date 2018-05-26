@@ -1,94 +1,88 @@
-{comodin} 
-
-
-
-<table width="100%" height="217" border="0" align="center" >
-  <tr > 
-    <td height="21" colspan="12" class="Estilo1">Detalle del Producto :</td>
-  </tr>
-  <tr class="titulosTabla"> 
-    <td width="4%" height="21" ><div align="center"><strong>Do</strong></div></td>
-    <td width="30%" ><div align="center"><strong>Referencia</strong></div></td>
-    <td width="8%" >U.Comercial</td>
-    <td width="17%" ><div align="center"><strong>Cantidad</strong></div></td>
-    <td width="18%" ><div align="center"><strong>Peso</strong></div></td>
-    <td width="22%" ><div align="center"><strong>Valor CIF/FOB</strong></div></td>
-  </tr>
-  <!-- BEGIN ROW -->
-  <tr class="filasTabla"> 
-    <td width="9%" height="21" class="">{orden}</td>
-    <td>[{codigo_referencia}]{nombre_referencia}</td>
-    <td >{medida}</td>
-    <td ><div align="right">{cantidad_f}{sn} {cant_nonac_f}</div></td>
-    <td ><div align="right">{peso_f}{sn}{peso_nonac_f}</div></td>
-    <td ><div align="right">{cif_f} {sn}{fob_nonac_f}</div></td>
-  </tr>
-  <!-- END ROW -->
-  <tr class="filasTabla"> 
-    <td height="21" colspan="2" class=""><div align="right"><strong>Totales</strong></div></td>
-    <td>&nbsp;</td>
-    <td><div align="right"><strong>{tot_cant_nac} {sn_aux}{tot_cant_nonac}</strong></div></td>
-    <td><div align="right"><strong>{tot_peso_nacf} {sn_aux}{tot_peso_nonacf}</strong></div></td>
-    <td><div align="right"><strong>{tot_cif} {sn_aux}{tot_fob_nonac}</strong></div></td>
-  </tr>
-  <tr class="textoGris"> 
-    <td height="50" colspan="96"> <table width="50%" border="0">
-        <tr class="filasTabla"> 
-          <td class="titulosTabla1"><div align="center"><strong><font size="2">Tipo 
-              Mercancia</font></strong></div></td>
-          <td class="titulosTabla1"><div align="center"><font size="2"><strong>Cantidad</strong></font></div></td>
-          <td width="152" class="titulosTabla1"><div align="center"><font size="2"><strong>Peso</strong></font></div></td>
-        </tr>
-        <tr > 
-          <td class="filasTabla">EXTRANJERA</td>
-          <td class="filasTabla"><div align="right"><strong>{tot_cant_nonac}</strong></div></td>
-          <td class="filasTabla"><div align="right"><strong>{tot_peso_nonac}</strong></div></td>
-        </tr>
-        <tr > 
-          <td class="filasTabla"><div align="left">NACIONALIZADA</div></td>
-          <td class="filasTabla"><div align="right"><strong>{t_cant_nac}</strong></div></td>
-          <td class="filasTabla"><div align="right"><strong>{t_peso_nac}</strong></div></td>
-        </tr>
-        <tr> 
-          <td class="filasTabla">NACIONAL</td>
-          <td class="filasTabla"><div align="right"><strong>{tot_cant_nal}</strong></div></td>
-          <td class="filasTabla"><div align="right"><strong>{tot_peso_nal}</strong></div></td>
-        </tr>
-        <tr> 
-          <td class="filasTabla">DESPERDICIOS</td>
-          <td class="filasTabla"><div align="right">{cantidadd_f}{ld_ext}{des_cantidad_ext}</div></td>
-          <td><div align="right">{pesod_f}{ld_ext}{des_peso_ext}</div></td>
-        </tr>
-        <tr> 
-          <td width="113" class="filasTabla"><div align="left">AJUSTES</div></td>
-          <td width="153" class="filasTabla"><div align="right">{ajustes_cantidad}{l_ext}{ajustes_cantidad_ext}</div></td>
-          <td width="152"><div align="right">{ajustes_peso} {l_ext}{ajustes_peso_ext}</div></td>
-        </tr>
-      </table>
-      </div>
-      </td>
-  </tr>
-  <tr class="textoGris"> 
-    <td> <div align="justify" class="Estilo1"> <div align="center"> <img src="integrado/imagenes/bysoft.png" width="79" height="37"></div></td>
-    <td height="10" colspan="16"><div align="justify" class="Estilo1"> <div align="right"> 
-        <img src="integrado/imagenes/cliente.png" width="79" height="37"></div></td>
-  </tr>
-  <tr class="textoGris"> 
-    <td height="36"  colspan="95"><div align="justify" class="Estilo1"> 
-        <div align="left"> 
-          <form name="atras" method="post" action="">
-            <div align="right"> 
-              <input name="undeposito" type="hidden" id="ingresos" value="{comodin}">
-              <input name="operacion" type="hidden" id="ingresos" value="{operacion}">
-              <input name="kernel" type="hidden" id="kernel" value="Remesa">
-              <input name="tipo" type="hidden" id="tipo" value="{tipo}">
-              <input name="metodo" type="hidden" id="metodo" value="{metodo}">
-            </div>
-          </form>
-        </div>
-      </div></td>
-  </tr>
-</table>
-
-
-
+{comodin} 
+
+
+
+<table width="100%" height="217" border="0" align="center" >
+  <tr > 
+    <td height="21" colspan="12" class="Estilo1">Detalle del Producto :</td>
+  </tr>
+  <tr class="titulosTabla"> 
+    <td width="11%" height="21" ><div align="center"><strong>Do</strong></div></td>
+    <td width="24%" ><div align="center"><strong>Referencia</strong></div></td>
+    <td width="17%" >U.Comercial</td>
+    <td width="17%" ><div align="center"><strong>Cantidad</strong></div></td>
+    <td width="19%" ><div align="center"><strong>Peso</strong></div></td>
+    <td width="17%" ><div align="center"><strong>Valor CIF</strong></div></td>
+  </tr>
+  <!-- BEGIN ROW -->
+  <tr class="filasTabla"> 
+    <td width="11%" height="21" class="">{orden}</td>
+    <td>[{codigo_referencia}]{nombre_referencia}</td>
+    <td >{u_comercial}</td>
+    <td ><div align="right">{cantidad_f}{sn} {cant_nonac_f}</div></td>
+    <td ><div align="right">{peso_f}{sn}{peso_nonac_f}</div></td>
+    <td ><div align="right">{fob_f} {sn}{fob_nonac_f}</div></td>
+  </tr>
+  <!-- END ROW -->
+  <tr class="filasTabla"> 
+    <td height="21" colspan="2" class=""><div align="right"><strong>Totales</strong></div></td>
+    <td>&nbsp;</td>
+    <td><div align="right"><strong>{tot_cant_nac} {sn_aux}{tot_cant_nonac}</strong></div></td>
+    <td><div align="right"><strong>{tot_peso_nac} {sn_aux}{tot_peso_nonac}</strong></div></td>
+    <td><div align="right"><strong>{tot_fob_nac} {sn_aux}{tot_fob_nonac}</strong></div></td>
+  </tr>
+  <tr class="textoGris"> 
+    <td height="50" colspan="96"> <table width="50%" border="0">
+        <tr class="filasTabla"> 
+          <td class="titulosTabla1"><div align="center"><strong><font size="2">Tipo 
+              Mercancia</font></strong></div></td>
+          <td class="titulosTabla1"><div align="center"><font size="2"><strong>Peso</strong></font></div></td>
+          <td width="152" class="titulosTabla1"><div align="center"><font size="2"><strong>Cantidad</strong></font></div></td>
+        </tr>
+        <tr >
+          <td class="filasTabla">EXTRANJERA</td>
+          <td class="filasTabla"><div align="right"><strong>{tot_peso_nonac}</strong></div></td>
+          <td class="filasTabla"><div align="right"><strong>{tot_cant_nonac}</strong></div></td>
+        </tr>
+        <tr > 
+          <td class="filasTabla"><div align="left">NACIONALIZADA</div></td>
+          <td class="filasTabla"><div align="right"><strong>{tot_peso_nac} </strong></div></td>
+          <td class="filasTabla"><div align="right"><strong>{tot_cant_nac}</strong></div></td>
+        </tr>
+        <tr>
+          <td class="filasTabla">NACIONAL</td>
+          <td class="filasTabla"><div align="right"><strong>{tot_peso_nacf1} </strong></div></td>
+          <td class="filasTabla"><div align="right"><strong>{tot_cant_nac1} </strong></div></td>
+        </tr>
+        <tr> 
+          <td width="113" class="filasTabla"><div align="left">DESPERDICIOS</div></td>
+          <td width="153" class="filasTabla"><div align="right">{peso_desp}</div></td>
+          <td width="152"><div align="right">{cantidad_desp}</div></td>
+        </tr>
+      </table></div>
+      </td>
+  </tr>
+  <tr class="textoGris"> 
+    <td> <div align="justify" class="Estilo1"> <div align="center"> <img src="integrado/imagenes/bysoft.png" width="79" height="37"></div></td>
+    <td height="10" colspan="16"><div align="justify" class="Estilo1"> <div align="right"> 
+        <img src="integrado/imagenes/cliente.png" width="79" height="37"></div></td>
+  </tr>
+  <tr class="textoGris"> 
+    <td height="36"  colspan="95"><div align="justify" class="Estilo1"> 
+        <div align="left"> 
+          <form name="atras" method="post" action="">
+            <div align="right"> 
+              <input name="undeposito" type="hidden" id="ingresos" value="{comodin}">
+              <input name="operacion" type="hidden" id="ingresos" value="{operacion}">
+              <input name="kernel" type="hidden" id="kernel" value="Remesa">
+              <input name="tipo" type="hidden" id="tipo" value="{tipo}">
+              <input name="metodo" type="hidden" id="metodo" value="{metodo}">
+            </div>
+          </form>
+        </div>
+      </div></td>
+  </tr>
+</table>
+
+
+

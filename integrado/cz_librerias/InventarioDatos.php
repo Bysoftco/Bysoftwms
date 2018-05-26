@@ -50,8 +50,7 @@ class Inventario extends MYDB {
     $sql = "SELECT inv.cantidad, inv.codigo AS item, inv.arribo, inv.orden, inv.peso, inv.valor, inv.fmm, inv.referencia, inv.modelo,
               inv.posicion, inv.observacion, inv.un_empaque, inv.embalaje, do_asignados.por_cuenta AS cliente,
               embalajes.nombre AS nombre_empaque, posiciones.nombre AS nombre_posicion, ref.nombre AS nombre_referencia,
-              inv.fecha_expira, ref.fecha_expira AS chkfecha_expira, ref.serial AS chkserial, ref.codigo_ref, ref.parte_numero,ref.vigencia,
-			  ref.lote_cosecha 
+              inv.fecha_expira, ref.fecha_expira AS chkfecha_expira, ref.serial AS chkserial, ref.codigo_ref 
             FROM inventario_entradas inv,referencias ref,embalajes,posiciones,do_asignados
             WHERE inv.referencia = ref.codigo
               AND embalajes.codigo = inv.un_empaque
@@ -93,9 +92,6 @@ class Inventario extends MYDB {
   }
 
   function saveItem($arregloDatos) {
-  if(empty($arregloDatos[fechaexpira])){
-  	$arregloDatos[fechaexpira]='19000101';
-  }
     $sql = "UPDATE inventario_entradas
               SET cantidad = $arregloDatos[cantidad],
               peso = $arregloDatos[peso],
@@ -203,12 +199,12 @@ class Inventario extends MYDB {
     if(empty($arregloDatos[fin])) { 
       $arregloDatos[fin] = 0;
     }
-    if(empty($arregloDatos[rango])) { 
-      //$arregloDatos[posicion] = $arregloDatos[inicio];
+    if(!empty($arregloDatos[rango])) { 
+      $arregloDatos[posicion] = $arregloDatos[inicio];
   	}
     $sql = "INSERT INTO referencias_ubicacion(item, ubicacion, rango,inicio,fin)
             VALUES('$arregloDatos[id_item]','$arregloDatos[posicion]','$arregloDatos[rango]','$arregloDatos[inicio]','$arregloDatos[fin]')";
-//echo  $sql;
+
     $this->query($sql);
     if($this->_lastError) {
       echo $sql;
@@ -229,46 +225,28 @@ class Inventario extends MYDB {
     }
   }
 
- function findPosicion($arregloDatos) {
+  function findPosicion($arregloDatos) {
     $sql = "SELECT codigo, nombre FROM posiciones WHERE nombre LIKE '%$arregloDatos[q]%'
-            ";
-	if($arregloDatos[p]<>"1"){
-	 $sql.="UNION SELECT codigo, nombre FROM posiciones WHERE codigo = 1";		
-    }
-	
-    $this->query($sql);
-    if($this->_lastError) {
-      echo $sql;
-      return TRUE;
-    }
-  }
-  function findPosicionPistola($arregloDatos) {
-  $arregloDatos[q]=trim($arregloDatos[q]);
-    $sql = "SELECT codigo, nombre FROM posiciones WHERE nombre = '$arregloDatos[q]'
-            ";
-	
-	
-    $this->query($sql);
-    if($this->_lastError) {
-      echo $sql;
-      return TRUE;
-    }
-  }
+            UNION SELECT codigo, nombre FROM posiciones WHERE codigo = 1";
 
- 
+    $this->query($sql);
+    if($this->_lastError) {
+      echo $sql;
+      return TRUE;
+    }
+  }
 
   function findReferencia($arregloDatos) {
    $arregloDatos[qmin]=strtolower($arregloDatos[q]);
    $arregloDatos[qmay]=strtoupper($arregloDatos[q]);
-    $sql = "SELECT codigo, nombre, fecha_expira, serial, codigo_ref ,parte_numero,vigencia, lote_cosecha
-	       FROM referencias
+    $sql = "SELECT codigo, nombre, fecha_expira, serial, codigo_ref FROM referencias
             WHERE (nombre LIKE '%$arregloDatos[q]%' OR codigo_ref LIKE '%$arregloDatos[q]%' OR codigo_ref LIKE '%$arregloDatos[qmin]%' OR codigo_ref LIKE '%$arregloDatos[qmay]%')
               AND cliente = '$arregloDatos[id_cliente]'
            ";
 	if($arregloDatos[filtro_arribo]){// si la invoca referencias solo busca las referencias de 1 arribo
 		$sql .= " AND codigo IN( SELECT referencia FROM inventario_entradas where arribo=$arregloDatos[arribo])";
 	}		
-	$sql .= "  UNION SELECT codigo, nombre, fecha_expira, serial, codigo_ref,parte_numero,vigencia, lote_cosecha FROM referencias WHERE codigo IN(1,2)";
+	$sql .= "  UNION SELECT codigo, nombre, fecha_expira, serial, codigo_ref FROM referencias WHERE codigo IN(1,2)";
    //echo $sql;
     $this->query($sql);
     if($this->_lastError) {
