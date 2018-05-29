@@ -292,14 +292,9 @@
 
 
                                 {
-
-									
-									//alert( $("#un_formulario").val())
-
-
                                     var bValid = true;
 
-                                    $("#" + $("#un_formulario").val()).submit();
+                                    $("#" + $("#un_formulario_editar").val()).submit();
 
                                 },
 
@@ -339,7 +334,7 @@
 
 
 
-        $("#window_filtro").dialog(
+        $("#window_filtro_subpartida").dialog(
 
                 {
 
@@ -357,27 +352,13 @@
 
                                 "Aceptar": function()
 
-
+									
 
                                 {
+								   var bValid = true;
 
-
-
-
-
-
-
-
-
-
-
-                                    var bValid = true;
-
-                                    //alert($("#un_formulario_aux").val()+"x")
-
-
-
-                                    $("#filtroMovimientoFiltro").submit();
+								   $("#" + $("#un_formulario").val()).submit();
+                                    //$("#filtroMovimientoFiltro").submit();
 
                                 },
 
@@ -389,7 +370,7 @@
 
 
 
-                                    $("#window_filtro").dialog("close");
+                                    $("#window_filtro_subpartida").dialog("close");
 
                                 }
 
@@ -468,34 +449,13 @@
 
 
     });
-
-            if ({abre_ventana})
-
-
-
-    {    // Abre la ventana por defecto
-
-
-
-
-
-
-
-    $("#dialog-form-levante{metodo}").dialog("open");
-
-    } else{
-
-
-
-    $("#dialog-form-levante{metodo}").dialog("close");
-
-    }
-
-
-
-
-
-
+	if ({abre_ventana}) {    // Abre la ventana por defecto
+ 		$("#window_filtro_subpartida").dialog("open");
+  
+      } else{
+ 
+ 		 $("#window_filtro_subpartida").dialog("close");
+ 	}
 
 </script>
 
@@ -591,7 +551,7 @@
     <div id="contenedor_opciones"> {toolbarLevante} </div>
 
 
-
+	<div id="contenedor_opciones"> {toolbarLevante} </div>
 
 
 
@@ -677,7 +637,7 @@
 
 
 
-<div id="dialog-form-levante{metodo}" title="Filtro">
+<div id="dialog-form-levante{metodo}" title="Filtro Subpartida">
 
 
 
@@ -701,7 +661,7 @@
 
 
 
-    <div id="ventana_levante"> </div>
+    <div id="ventana_levante_subpartida"> </div>
 
 
 
@@ -717,11 +677,11 @@
 
 
 
-<div id="window_filtro" title="Filtro">
+<div id="window_filtro_subpartida" title="Filtro Subpartidas">
 
 
 
-    <div id="cuerpo_filtro"> {filtroFiltro}</div>
+    <div id="cuerpo_filtro_subpartida"> {filtroFiltro}</div>
 
 
 
