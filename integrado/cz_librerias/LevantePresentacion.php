@@ -15,6 +15,7 @@ class LevantePresentacion {
   //VERSION 20032017
     $this->datos =& $datos;
     $this->plantilla = new HTML_Template_IT();
+    
   }
 
   function mantenerDatos($arregloCampos, &$plantilla) {
@@ -26,7 +27,7 @@ class LevantePresentacion {
     }
   }
 
-  //FunciÃ³n que coloca los datos que vienen de la BD
+  //Función que coloca los datos que vienen de la BD
   function setDatos($arregloDatos, &$datos, &$plantilla) {
     foreach($datos as $key => $value) {
       $plantilla->setVariable($key, $value);
@@ -56,7 +57,7 @@ class LevantePresentacion {
     }
   }
 
-  // Arma cada Formulario o funciÃ³n en pantalla
+  // Arma cada Formulario o función en pantalla
   function setFuncion($arregloDatos, $unDatos) {
     $unDatos = new Levante();
     if(!empty($arregloDatos[setCharset])) {
@@ -106,6 +107,7 @@ class LevantePresentacion {
   }
 
   function maestro($arregloDatos) {
+  
     if($arregloDatos[tipo_retiro_label] == "Matriz") {
       $this->plantilla->setVariable('tipo_retiro_label', 'Matriz');
     }
@@ -130,7 +132,7 @@ class LevantePresentacion {
       $this->plantilla->setVariable('abre_ventana', 1);
     } else {
       $this->plantilla->setVariable('abre_ventana', 0);
-      // el mÃ©todo controlarTransaccion de la Logica envia la plantilla y el mÃ©todo para pintar el TAB de mercancia
+      // el método controlarTransaccion de la Logica envia la plantilla y el método para pintar el TAB de mercancia
       $arregloDatos[mostrar] = 0;
       $arregloDatos[plantilla] = $arregloDatos[plantillaMercanciaCuerpo];
       $arregloDatos[thisFunction] = $arregloDatos[metodoMercanciaCuerpo];
@@ -152,12 +154,12 @@ class LevantePresentacion {
       $this->plantilla->setVariable('htmlCuerpo', $htmlLevante);
     }
 
-    //Carga informaciÃ³n del Perfil
+    //Carga información del Perfil
     $arregloDatos[perfil] = $_SESSION['datos_logueo']['perfil_id'];
     //Valida el Perfil para identificar el Tercero
     if($arregloDatos[perfil] == 23) {
       $arregloDatos[soloLectura] = "readonly=''";
-      //Carga informaciÃ³n del usuario
+      //Carga información del usuario
       $arregloDatos[usuario] = $_SESSION['datos_logueo']['usuario'];
       $arregloDatos[cliente] = $this->datos->findClientet($arregloDatos[usuario]);
     } else {
@@ -184,7 +186,7 @@ class LevantePresentacion {
     $this->plantilla->loadTemplateFile(PLANTILLAS . 'levanteMaestroConsulta.html', true, true);
     $this->mantenerDatos($arregloDatos, $this->plantilla);
     $this->plantilla->setVariable('comodin', '');
-    // Carga informaciÃ³n del Perfil
+    // Carga información del Perfil
     $arregloDatos[perfil] = $_SESSION['datos_logueo']['perfil_id'];
     $arregloDatos[ocultaColumna] = $arregloDatos[perfil] == 23 ? 'none' : 'block';
     $arregloDatos[verColumna] = $arregloDatos[perfil] == 23 ? 'none' : 'block';
@@ -204,7 +206,7 @@ class LevantePresentacion {
       // Valida el Perfil para identificar el Tercero
       if($arregloDatos[perfil] == 23) {
         $arregloDatos[soloLectura] = "readonly=''";
-        // Carga informaciÃ³n del Usuario
+        // Carga información del Usuario
         $arregloDatos[usuario] = $_SESSION['datos_logueo']['usuario'];
         $arregloDatos[cliente] = $this->datos->findClientet($arregloDatos[usuario]);
       } else {
@@ -225,7 +227,7 @@ class LevantePresentacion {
     $plantilla->setVariable("listaTiposRemesa", $lista);
 
     $unaLista = new Inventario();
-    $lista = $unaLista->lista("inventario_tipos_movimiento", "2,3,4,5,6,7,8,9,10", 'codigo');
+    $lista = $unaLista->lista("inventario_tipos_movimiento", "2,3,4,5,6,7,8,9,10,16,17", 'codigo');
 
     $lista = armaSelect($lista, '[seleccione]', NULL);
     $plantilla->setVariable("listaTipos", $lista);
@@ -246,7 +248,7 @@ class LevantePresentacion {
     $this->mantenerDatos($arregloDatos, $plantilla);
   }
 
-  //MÃ©todo que muestra la mercancia para Nacionalizacion
+  //Método que muestra la mercancia para Nacionalizacion
   function getMercancia($arregloDatos, $unDatos, $plantilla) {
     //se valida si se puede elejir mercancia nacional no nacional o ambas
     $this->validaCapturaDeclaraciones($arregloDatos, $unDatos, $plantilla);
@@ -258,7 +260,7 @@ class LevantePresentacion {
     if($unDatos->cod_referencia == 1) { // Si es Bultos
       $arregloDatos[cantidad_nonac] = $arregloDatos[cant_bultos] - $unDatos->cantidad_naci;
       //saldo por nacionalizar
-      // si ya llenÃ³ el encabezado se arrastra la cantidad del encabezado
+      // si ya llenó el encabezado se arrastra la cantidad del encabezado
       $arregloDatos[cantidad] = $arraegloDatos[cant_bultos];
       $arregloDatos[valor] = $unDatos->peso_naci + $unDatos->fob_nonac;
       $arregloDatos[readonly] = "readonly=''";
@@ -276,6 +278,37 @@ class LevantePresentacion {
       $arregloDatos[sum_cant_naci] = 0;
     }
     $arregloDatos[prefijo]="03".date('Y')."000";
+	
+	// Si es un levante Mixto se traen los datos del levante anterior
+	if($arregloDatos[mixto])
+	{
+		//var_dump($arregloDatos);
+	}
+	//Se averigua si ya existe una declaracion para mantener datos 
+	$unaConsulta = new Levante();
+	$unaConsulta->datosDeclaracion($arregloDatos);
+	$unaConsulta->fetch();
+	$arregloDatos[tipo_declaracion]="Inicial";
+	$arregloDatos[modalidad]="C100";
+	$arregloDatos[arancel]="5";
+	$arregloDatos[iva]="16";
+	if($unaConsulta->N > 0){
+		
+		$arregloDatos[prefijo]=$unaConsulta->num_levante;
+		$arregloDatos[fecha]=$unaConsulta->fecha;
+		$arregloDatos[tipo_declaracion]=$unaConsulta->tipo_declaracion;
+		$arregloDatos[subpartida]=$unaConsulta->subpartida;
+		$arregloDatos[cod_subpartida]=$unaConsulta->subpartida;
+		$arregloDatos[obs]=$unaConsulta->obs;
+		$arregloDatos[modalidad]=$unaConsulta->modalidad;
+		//$arregloDatos[fob]=$unaConsulta->fob;
+		//$arregloDatos[flete]=$unaConsulta->fletes;
+		//$arregloDatos[valor_aduana]=$unaConsulta->aduana;
+		$arregloDatos[arancel]=$unaConsulta->arancel;
+		//$arregloDatos[total]=$unaConsulta->total;
+		$arregloDatos[trm]=$unaConsulta->trm;
+	}
+	
     $this->setValores($arregloDatos, $unDatos, $plantilla);
     $this->mantenerDatos($arregloDatos, $plantilla);
   }
@@ -292,18 +325,24 @@ class LevantePresentacion {
   }
 
   function getCabezaLevante($arregloDatos, $unDatos, $unaPlantilla) {
-    // si es procesamiento parcial interno	
+    
+	
+	// si es procesamiento parcial interno	
     $unaConsulta = new Levante();
     $arregloDatos[cuenta_grupos] = $unDatos->lev_cuenta_grupo;
     $unaConsulta->cuentaDeclaraciones($arregloDatos);
-    // si hay mÃ¡s de un parcial se muestra el nÃºmero
+    // si hay más de un parcial se muestra el número
     $unaPlantilla->setVariable("parcial", $unDatos->lev_cuenta_grupo);
     if($unDatos->lev_cuenta_grupo > 1) {
       //".$unDatos->lev_cuenta_grupo;
       $unaPlantilla->setVariable("parcial", $unDatos->lev_cuenta_grupo);
     }
+	if($unDatos->prefactura == 1) {
+      $unaPlantilla->setVariable("checked_multiple", "checked");
+    }
 
-    if($arregloDatos[parcial] == 1) {
+    if($unDatos->lev_cuenta_grupo >= 1) {
+	
       $unaPlantilla->setVariable("checked", "checked");
     }
 
@@ -371,7 +410,7 @@ class LevantePresentacion {
   }
 
   function getCuerpoLevante($arregloDatos, $unDatos, $unaPlantilla) {
-    // Contamos el nÃºmero de levantes
+    // Contamos el número de levantes
     $unConteo = new Levante();
     $unConteo->ultimoGrupo($arregloDatos);
     $unConteo->cuentaDeclaraciones($arregloDatos);
@@ -403,7 +442,7 @@ class LevantePresentacion {
   }
 
   function setValores(&$arregloDatos, &$datos, $plantilla) {  
-    // Si los valores son negativos significa que  ya se retirÃ³ la mercancÃ­a por lo tanto se forza a cero
+    // Si los valores son negativos significa que  ya se retiró la mercancía por lo tanto se forza a cero
     if($arregloDatos[tipo_ajuste] == 15) {
       $arregloDatos[tipo_retiro_filtro] = 7;
     }
@@ -516,24 +555,27 @@ class LevantePresentacion {
 			$arregloDatos[t_cant_nonac] = $this->tot_cant_nonac;
 		}
     // Aqui se formatean las cifras y se muestra valor absoluto para el caso de retiros
+	
 		if($datos->cod_referencia <> 4) {
 			$arregloDatos[peso_f] = number_format(abs($datos->peso_naci), DECIMALES, ".", ",");
 			$arregloDatos[cantidad_f] = number_format(abs($datos->cantidad_naci), DECIMALES, ".", ",");
 		
-			$this->tot_cif = $this->tot_cif + $datos->cif;
-			$arregloDatos[tot_cif] = number_format(abs($this->tot_cif), DECIMALES, ".", ",");
+			$this->tot_cif = $this->tot_cif + abs($datos->cif);
+			$arregloDatos[tot_cif] = number_format($this->tot_cif, DECIMALES, ".", ",");
 	
-			$this->tot_fob = $this->tot_fob + $datos->fob_nonac;
-			$arregloDatos[tot_fob] = number_format(abs($this->tot_fob), DECIMALES, ".", ",");
+			$this->tot_fob = $this->tot_fob + abs($datos->fob_nonac);
+			$arregloDatos[tot_fob] = number_format($this->tot_fob, DECIMALES, ".", ",");
+							
 		} else {
 			$arregloDatos[peso_f] = number_format($datos->peso_naci, DECIMALES, ".", ",");
 			$arregloDatos[cantidad_f] = number_format($datos->cantidad_naci, DECIMALES, ".", ",");
-
-			$this->tot_cif = $this->tot_cif + $datos->cif;
+			
+			$this->tot_cif = $this->tot_cif + $datos->cif; 
 			$arregloDatos[tot_cif] = number_format($this->tot_cif, DECIMALES, ".", ",");
 	
 			$this->tot_fob = $this->tot_fob + $datos->fob_nonac;
 			$arregloDatos[tot_fob] = number_format($this->tot_fob, DECIMALES, ".", ",");
+				
 		}
 	
 		if(empty($arregloDatos[tipo_retiro_filtro])) {
@@ -574,12 +616,19 @@ class LevantePresentacion {
         $arregloDatos[fob_nonaci_aux] = $datos->fob_nonaci;
         $arregloDatos[ext] = "/FOB";
         break;
+		case 16: // garantiza valores positivos en mercancia acondicionada
+		case 17: // garantiza valores positivos en rechazados
+			  $arregloDatos[cantidad_naci] = abs($datos->cantidad_naci);
+        	$arregloDatos[peso_naci] = abs($datos->peso_naci);
+        	$arregloDatos[cif] = abs($datos->cif);
+		break;
+		
       default:
         break;
     }
 	
-		// Garantiza mostrar valores y etiquetas de Extranjero cuando aplique 23/11/2016
-		if(($this->tot_peso_nonac <> 0 or  $this->tot_cant_nonac <> 0) && $arregloDatos[tipo_retiro_filtro] <> 1) {
+		// Garantiza mostrar valores y etiquetas de Extranjero cuando aplique 23/11/2016, se agrego  or $this->tot_peso_nac <> 0 09122017
+		if(($this->tot_peso_nonac <> 0 or  $this->tot_cant_nonac <> 0 or $this->tot_peso_nac <> 0) && $arregloDatos[tipo_retiro_filtro] <> 1) {
 			
 			$arregloDatos[sn] = " | [EXT] ";
 			$arregloDatos[snt] = " | [EXT] ";
@@ -590,7 +639,7 @@ class LevantePresentacion {
 			$arregloDatos[fob_nonaci_aux] = $datos->fob_nonaci;
 			$arregloDatos[ext] = "/FOB";
 			$arregloDatos[mostrarCaptura]='none';
-			
+			// se garantizan  valores positivos 04/01/2018
 		} else {
 			
 			$arregloDatos[tot_cant_nonac] = "";
@@ -603,6 +652,10 @@ class LevantePresentacion {
 			$arregloDatos[snt] = "";
 			$arregloDatos[mostrarCaptura]='block';
 		}
+		// se garantizan valores positivos
+	
+		
+		
   }
 
   function listaInventario($arregloDatos, $datos, $plantilla) {
@@ -653,7 +706,7 @@ class LevantePresentacion {
   function getInvParaRetiro($arregloDatos, $datos, $plantilla) {
     $unaConsulta = new Levante();
     $otraConsulta = new Levante();
-    // Se averigua si el DO estÃ¡ bloqueado
+    // Se averigua si el DO está bloqueado
     $arregloDatos[orden_bloqueo] = $datos->orden;
     $arregloDatos[id_bloqueo] = $unaConsulta->getIdBloqueo($arregloDatos);
     $bloqueado = $otraConsulta->getEstadoBloqueo($arregloDatos);
@@ -670,6 +723,8 @@ class LevantePresentacion {
 		$plantilla->setVariable('verRetiroRapido', 'none');
 	}
 	
+	
+	
     $arregloDatos[type_nonac] = "hidden";
     $arregloDatos[cantidad_nonaci_aux] = "0";
     $arregloDatos[peso_nonaci_aux] = "0";
@@ -677,7 +732,7 @@ class LevantePresentacion {
     //aqui se decide si se deja editar o no la mercancia sin nacionalizar;
     $this->setValores($arregloDatos, $datos, $plantilla);
     /*
-      Si es producto terminado  se muestra el detalle para armar la matriz de integraciÃ³n
+      Si es producto terminado  se muestra el detalle para armar la matriz de integración
     */
     switch($arregloDatos[accion_aux]) {
       case 'getItemRetiro':
@@ -762,7 +817,7 @@ class LevantePresentacion {
       $arregloDatos[ext_cantidad] = number_format($unaConsulta->cantidad_nonac, DECIMALES, ".", ",");
       $arregloDatos[fob_ret] = number_format($unaConsulta->fob_nonac, DECIMALES, ".", ",");
     }
-    // Se pintan los ajustes y los totales despuÃ©s de ajustes
+    // Se pintan los ajustes y los totales después de ajustes
     $unAjuste = new Levante();
     $unAjuste->getDatosAjustes($arregloDatos);
     $unAjuste->fetch();
@@ -849,6 +904,7 @@ class LevantePresentacion {
   }
 
   function getTitulo(&$arregloDatos) {
+  //var_dump($arregloDatos);
     if(empty($arregloDatos[doc_filtro])) {
       $arregloDatos[doc_filtro] = $arregloDatos[documento_filtro];
     }
@@ -900,7 +956,7 @@ class LevantePresentacion {
   }
   
   function getDatosInventario($arregloDatos) {
-    echo "GeneraciÃ³n de Datos ....";
+    echo "Generación de Datos ....";
     
   }
 
@@ -916,7 +972,7 @@ class LevantePresentacion {
 		}
 		echo "<script type='text/javascript'>alert('$msg');</script>";
 		if($registrar) {
-			//Registra informaciÃ³n del correo en la tabla de Tracking
+			//Registra información del correo en la tabla de Tracking
 			$unCorreo = new Orden();
 			$unCorreo = $unCorreo->registroCorreo($arregloDatos);
 			//Notifica resultado del registro
