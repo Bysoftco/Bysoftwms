@@ -28,11 +28,11 @@ class CargueReferenciasLogica {
     }
 
     function listarCargueReferencias($arregloDatos) {
-        $this->titulo(&$arregloDatos);
+        $this->titulo($arregloDatos);
         $arregloDatos[mostrar] = 1;
         $arregloDatos[plantilla] = "CargueReferenciasListado.html";
         $arregloDatos[thisFunction] = 'listarCargueReferencias';
-        $this->pantalla->setFuncion($arregloDatos, &$this->datos);
+        $this->pantalla->setFuncion($arregloDatos, $this->datos);
     }
 
     
@@ -40,7 +40,7 @@ class CargueReferenciasLogica {
         $arregloDatos[mostrar] = 1;
         $arregloDatos[plantilla] = "CargueReferenciasFiltro.html";
         $arregloDatos[thisFunction] = 'filtro';
-        $this->pantalla->setFuncion($arregloDatos, &$this->datos);
+        $this->pantalla->setFuncion($arregloDatos, $this->datos);
     }
 
 
@@ -57,7 +57,7 @@ class CargueReferenciasLogica {
 
     function excel($arregloDatos) {
 
-        $this->titulo(&$arregloDatos);
+        $this->titulo($arregloDatos);
         $arregloDatos[excel] = 1;
         $arregloDatos['titulo'] = "Lista de CargueReferenciass " . ucfirst($arregloDatos[titulo]);
         $arregloDatos['sql'] = $this->datos->listarCargueReferencias($arregloDatos);
@@ -86,7 +86,7 @@ class CargueReferenciasLogica {
         $arregloDatos[thisFunction] = 'filtroCarga';
         $arregloDatos[thisFunctionAux] = 'filtroCarga';
 
-        $this->pantalla->cargaPlantilla($arregloDatos, &$this->datos);
+        $this->pantalla->cargaPlantilla($arregloDatos, $this->datos);
     }
 
     function uploadArchivoBancos($arregloDatos) {
@@ -102,7 +102,7 @@ class CargueReferenciasLogica {
          $nombreCompleto="./integrado/_files/$arregloDatos[nombre_archivo]";
        	 $archivo = fopen("$nombreCompleto", "r");
          $arregloDatos[nomarchivo] = $file->nombre;
-         $this->pantalla->crearPreuploadDocumentoscsv(&$arregloDatos, $archivo);
+         $this->pantalla->crearPreuploadDocumentoscsv($arregloDatos, $archivo);
                     
                
     }

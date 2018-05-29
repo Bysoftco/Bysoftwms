@@ -45,4 +45,159 @@
             h1 { font-size: 1.2em; margin: .6em 0; }
 
             div#users-contain { width: 100%; margin: 0px 0; margin-left: 0%; }
-            div#users-contain table { margin: 1em 0; border-collapse: co
+            div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+            div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .5em 4px; text-align: left; }
+            td{
+                height:5px;
+            }
+            .ui-dialog .ui-state-error { padding: .3em; }
+            tbody tr.odd th,tbody tr.odd td {border-color:#EBE5D9;background:#F7F4EE;}
+            tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
+
+            div#tabs { width: 95%; margin: 0px 0; margin-left: 2%;  }
+            #toolbar {
+                padding: 10px 4px;
+                margin-left: 70%;
+                margin-top: 0em;
+            }
+
+        </style>
+        <script>
+	
+            $(function() {
+                //$( "#dialog-form2" ).dialog( "open" );
+                // Tabs
+                $('#tabs').tabs();
+		
+
+		
+
+
+                $( "#excel_enviados" ).button({
+			
+                    text: true,
+                    icons: {
+                        primary: "ui-icon-search"
+                    }
+                })
+                .click(function() {
+                    excel(); 
+			
+                });
+
+		
+                $( "#imprimir" ).button({
+			
+                    text: true,
+                    icons: {
+                        primary: "ui-icon-disk"
+                    }
+                })
+                .click(function() {
+			
+			 
+			 
+                    window.print(); 
+   
+			
+                });
+
+
+		
+		
+		
+                $( "#filtro_enviados" ).button({
+			
+                    text: true,
+                    icons: {
+                        primary: "ui-icon-search"
+                    }
+                })
+                .click(function() {
+			
+                    $("div#filtro").html("Cargando espere un momento");
+		
+                    $( "#dialog-form" ).dialog( "open" );
+	    
+                    $("div#filtro").load("./index_scripts.php", {clase:'Extracto',metodo:'filtroCargueReferencias',mostrar:'1'}, function(datos){	
+                    });
+		
+                });
+		
+                $( "#dialog-form" ).dialog({
+                    autoOpen: false,
+                    height: 450,
+                    width: 650,
+                    modal: true,
+                    //Botones que se utilizan en la ventana
+                    buttons: {
+                        Aceptar: function() {
+
+							alert($( "#elije_formulario" ).val() );
+                           // $( "#"+$( "#elije_formulario" ).val() ).submit();
+				
+                        },
+                        Cancelar: function() {
+                            $( this ).dialog( "close" );
+                        }
+                    },
+		
+                    close: function() {
+                    }
+                }); 
+	
+	  
+
+                $( "#dialog-form" ).dialog( "open" );
+		
+            });
+	
+
+            function excel() {
+	
+                document.listaExtracto.metodo.value='excel' ;
+                document.listaExtracto.submit();
+            }
+	
+        </script>
+    </head>
+    <body>
+<!-- Tabs -->
+<h2 class="demoHeaders" id="titulo">Cargue de Referencias</h2>
+
+
+        <div id="tabs"> 
+            <ul>
+
+                <li><a href="#tabs-2">Cargue de Referencias</a></li>
+
+            </ul>
+
+
+
+
+            <div id="tabs-2">
+
+                <span id="toolbar" class="ui-widget-header ui-corner-all">
+
+                    <button id="filtro_enviados" > Filtro</button>
+                    <button id="excel_enviados" > Excel</button>
+                    <button id="imprimir"> Imprimir</button>
+
+                </span>
+                <div id="extracto"></div>
+            </div> 
+
+            <div id="dialog-form" title="Extractos1">
+                <div id="filtro">
+                    {filtro_entrada}
+                </div><!-- End contenedor -->
+
+            </div><!-- End ventana -->
+
+
+        </div>
+
+    </body>
+</html>
+
