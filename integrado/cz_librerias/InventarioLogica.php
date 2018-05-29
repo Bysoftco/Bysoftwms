@@ -99,7 +99,7 @@ class InventarioLogica {
     
     while($unaConsulta->fetch()) {
       $nombre ='['.$unaConsulta->codigo_ref.']' .trim($unaConsulta->nombre);
-      echo "$nombre|$unaConsulta->codigo|$unaConsulta->fecha_expira|$unaConsulta->serial|$unaConsulta->codigo_ref|$unaConsulta->parte_numero|$unaConsulta->vigencia|$unaConsulta->lote_cosecha\n";
+      echo "$nombre|$unaConsulta->codigo|$unaConsulta->fecha_expira|$unaConsulta->serial|$unaConsulta->codigo_ref\n";
     }
 
     if($unaConsulta->N == 0) {
@@ -122,21 +122,7 @@ class InventarioLogica {
       echo "No hay Resultados|0\n";
     }
   }
-  function findPosicionPistola($arregloDatos) {
-    $unaConsulta = new Inventario();
 
-    $unaConsulta->findPosicionPistola($arregloDatos);
-    $arregloDatos[q] = strtolower($_GET["q"]);
-
-    while($unaConsulta->fetch()) {
-      $nombre = trim($unaConsulta->nombre);
-      echo "$nombre|$unaConsulta->codigo\n";
-    }
-
-    if($unaConsulta->N == 0) {
-      echo "No hay Resultados|0\n";
-    }
-  }
   function getEncabezado($arregloDatos) {
     $arregloDatos[mensaje] = "x";
     $arregloDatos[mostrar] = 1;
@@ -177,39 +163,14 @@ class InventarioLogica {
   function saveItem($arregloDatos) {
     $this->datos->delUbicacion($arregloDatos);
 
-    if(is_array($arregloDatos[posxy]) && empty($arregloDatos[rango])) {
-	
+    if(is_array($arregloDatos[posxy])) {
       foreach($arregloDatos[posxy] as $key=>$value) {
         $arregloDatos[posicion] = $value;
-		
         $this->datos->addUbicacion($arregloDatos);
       }
     } else {
       $this->datos->addUbicacion($arregloDatos);
     }	
-	
-	if(!empty($arregloDatos[rango]) ){  // si el usuario especifica  rango
-
-		if($arregloDatos[inicio] < $arregloDatos[fin]){
-			$inicio=$arregloDatos[inicio];
-			$fin=$arregloDatos[fin];
-
-		}else{
-			$inicio=$arregloDatos[fin];
-			$fin=$arregloDatos[inicio];
-		}
-		
-		$this->datos->delUbicacion($arregloDatos);
-			
-		for($i=$inicio;$i<=$fin;$i++){
-			// se inserta en la tabla de ubicaciones
-			
-			 $arregloDatos[posicion]=$i;
-			 
-			$this->datos->addUbicacion($arregloDatos);
-		}
-		
-	}
     $arregloDatos[id_form] = $arregloDatos[id_form]/1;
     $this->datos->saveItem($arregloDatos);
     $this->getItem($arregloDatos);

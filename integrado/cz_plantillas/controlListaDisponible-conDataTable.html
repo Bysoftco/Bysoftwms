@@ -1,0 +1,100 @@
+<script>
+  $(document).ready(function() {
+    $('#tblusers').dataTable({
+      "iDisplayLength": 20,
+      "aLengthMenu": [[20, 40, 60, -1], [20, 40, 60, "Todos"]],
+      "oLanguage": {
+        "sLengthMenu": "Mostrar _MENU_ registros por p&aacute;gina",
+        "sZeroRecords": "No hay registros para mostrar",
+        "sInfo": "Mostrando _START_ a _END_ registros de _TOTAL_",
+        "sInfoEmpty": "Mostrando 0 a 0 registros de 0",
+        "sInfoFiltered": "",
+        "sSearch": "Buscar:"
+      }
+    });
+  });
+  
+  $(function() {
+    $("a.id_mercancia").click(function() { //check for the first selection
+      var $column = $(this).attr('id'); // assign the ID of the column
+
+      with(document.listadoControlar) {
+        //Carga la Ventana de Datos de la Mercancia a Bloquear
+        $("#dialog-form-hacer-bloqueo").dialog("open");
+        //Mensaje de carga
+        $("#ventana_bloqueo").html("Cargando Ventana Datos Documentos Registro Control...");
+        $("div#ventana_bloqueo").load("./scripts_index.php", {
+          clase:'Control',
+          metodo:'getItemBloquear',
+          mostrar:'1',
+          por_cuenta_filtro:$("#por_cuenta_aux").val(),
+          razon_social:$("#razon_social").val(),
+          email:$("#email").val(),
+          doc_tte_aux:$("#doc_ttex"+$column).val(),
+          manifiesto_aux:$("#manifiestox"+$column).val(),
+          orden_aux:$("#do_asignado"+$column).val(),
+          orden_full:$("#do_asignado_full"+$column).val(),
+          arribo_aux:$("#arribox"+$column).val(),
+          fecha_manifiestox:$("#fechamanifiestox"+$column).val()
+        }, function(datos){});
+      }
+    });
+  });
+</script>
+<style>
+  .dataTables_filter input { width: 128px }
+  .dataTables_filter { margin-right: 82px; }
+  #listadoControlar {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+</style>
+<form id="listadoControlar" name="listadoControlar"> 
+  <fieldset class="ui-widget ui-widget-content ui-corner-all">
+    <legend class="ui-widget ui-widget-header ui-corner-all"> Documentos Disponibles</legend>
+    <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
+    <table width="100%" class="ui-widget ui-widget-content" id="tblusers" style="display:{mostrarCuerpo}">
+      <thead>
+        <tr class="ui-widget-header"> 
+          <th style="width: 4%;">No.</th>
+          <th>Orden</th>
+          <th>Documento TTE</th>
+          <th>Arribo</th>
+          <th>Manifiesto</th>
+          <th>Fecha Manifiesto</th>
+          <th style="width: 5%; text-align: center;">Aplicar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {comodin} 
+        <!-- BEGIN ROW -->
+        <tr class="{odd}"> 
+          <td>{n}</td>
+          <td>{orden}
+            <input type="hidden" name="do_asignado[]" id="do_asignado{n}" value="{orden}" />
+            <input type="hidden" name="do_asignado_full[]" id="do_asignado_full{n}" value="{do_asignado_full}" />
+          </td>
+          <td>{doc_tte}
+            <input type="hidden" name="doc_ttex[]" id="doc_ttex{n}" value="{doc_tte}" />
+          </td>
+          <td>{arribo}
+            <input type="hidden" name="arribox[]" id="arribox{n}" value="{arribo}" />
+          </td>
+          <td>{manifiesto}
+            <input type="hidden" name="manifiestox[]" id="manifiestox{n}" value="{manifiesto}" />
+          </td>
+          <td>{fecha_manifiesto}
+            <input type="hidden" name="fechamanifiestox[]" id="fechamanifiestox{n}" value="{fecha_manifiesto}" />
+          </td>
+          <td style="text-align: center;">
+            <a href="#" class="signup id_mercancia" title="Registrar Control Documento {doc_tte}"
+              id="{n}">
+              <img src="integrado/imagenes/bloqueo.gif" border="0" width="20px" height="20px"/>
+            </a>
+          </td>
+        </tr>          
+        <!-- END ROW -->
+      </tbody>
+    </table>
+  </fieldset>
+</form>

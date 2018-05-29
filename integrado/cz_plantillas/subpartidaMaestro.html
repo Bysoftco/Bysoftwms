@@ -292,9 +292,14 @@
 
 
                                 {
+
+									
+									//alert( $("#un_formulario").val())
+
+
                                     var bValid = true;
 
-                                    $("#" + $("#un_formulario_editar").val()).submit();
+                                    $("#" + $("#un_formulario").val()).submit();
 
                                 },
 
@@ -334,7 +339,7 @@
 
 
 
-        $("#window_filtro_subpartida").dialog(
+        $("#window_filtro").dialog(
 
                 {
 
@@ -352,13 +357,27 @@
 
                                 "Aceptar": function()
 
-									
+
 
                                 {
-								   var bValid = true;
 
-								   $("#" + $("#un_formulario").val()).submit();
-                                    //$("#filtroMovimientoFiltro").submit();
+
+
+
+
+
+
+
+
+
+
+                                    var bValid = true;
+
+                                    //alert($("#un_formulario_aux").val()+"x")
+
+
+
+                                    $("#filtroMovimientoFiltro").submit();
 
                                 },
 
@@ -370,7 +389,7 @@
 
 
 
-                                    $("#window_filtro_subpartida").dialog("close");
+                                    $("#window_filtro").dialog("close");
 
                                 }
 
@@ -449,13 +468,34 @@
 
 
     });
-	if ({abre_ventana}) {    // Abre la ventana por defecto
- 		$("#window_filtro_subpartida").dialog("open");
-  
-      } else{
- 
- 		 $("#window_filtro_subpartida").dialog("close");
- 	}
+
+            if ({abre_ventana})
+
+
+
+    {    // Abre la ventana por defecto
+
+
+
+
+
+
+
+    $("#dialog-form-levante{metodo}").dialog("open");
+
+    } else{
+
+
+
+    $("#dialog-form-levante{metodo}").dialog("close");
+
+    }
+
+
+
+
+
+
 
 </script>
 
@@ -551,7 +591,7 @@
     <div id="contenedor_opciones"> {toolbarLevante} </div>
 
 
-	<div id="contenedor_opciones"> {toolbarLevante} </div>
+
 
 
 
@@ -661,7 +701,7 @@
 
 
 
-    <div id="ventana_levante_subpartida"> </div>
+    <div id="ventana_levante"> </div>
 
 
 
@@ -677,11 +717,11 @@
 
 
 
-<div id="window_filtro_subpartida" title="Filtro">
+<div id="window_filtro" title="Filtro">
 
 
 
-    <div id="cuerpo_filtro_subpartida"> {filtroFiltro}</div>
+    <div id="cuerpo_filtro"> {filtroFiltro}</div>
 
 
 

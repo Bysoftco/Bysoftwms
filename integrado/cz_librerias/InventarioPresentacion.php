@@ -11,7 +11,6 @@ class InventarioPresentacion {
   function InventarioPresentacion(&$datos) {
     $this->datos = $datos;
     $this->plantilla = new HTML_Template_IT();
-		////VERSION 13052017 
   }
   	
   function mantenerDatos($arregloCampos,&$plantilla) {
@@ -60,13 +59,13 @@ class InventarioPresentacion {
   function setFuncion($arregloDatos,$unDatos) {
     $unDatos = new Inventario();
 
-    if(empty($arregloDatos[mensaje])) {
+    /*if(empty($arregloDatos[mensaje])) {
       header('Content-type: text/html; charset=iso-8859-1');
-    }	
+    }*/
 		$r = $unDatos->$arregloDatos[thisFunction]($arregloDatos);
 
     $unaPlantilla = new HTML_Template_IT();
-	
+
     $unaPlantilla->loadTemplateFile(PLANTILLAS . $arregloDatos[plantilla],true,true);
 		if(!empty($unDatos->mensaje)) {
       $unaPlantilla->setVariable('mensaje', $unDatos->mensaje);
@@ -166,20 +165,20 @@ class InventarioPresentacion {
     $lista = armaSelectSinTitulo($lista, '[seleccione]', NULL);
     $plantilla->setVariable('listaUbicacion', $lista);
     $plantilla->setVariable('ubicaciones', $ubicaciones);
-	$plantilla->setVariable('unrango', '0');
+    $plantilla->setVariable('unrango', '0');
     if($unaLista->rango == 'Si') {
       $plantilla->setVariable('checked', 'checked');
-	  $plantilla->setVariable('unrango', '1');
-	  $plantilla->setVariable('inicio', $unaLista->inicio);
-	  $plantilla->setVariable('fin', $unaLista->fin);
-	   $plantilla->setVariable('inicio_label', $unaLista->nombre);
-	  $plantilla->setVariable('fin_label', $unaLista->fin_label);
+      $plantilla->setVariable('unrango', '1');
+      $plantilla->setVariable('inicio', $unaLista->inicio);
+      $plantilla->setVariable('fin', $unaLista->fin);
+      $plantilla->setVariable('inicio_label', $unaLista->nombre);
+      $plantilla->setVariable('fin_label', $unaLista->fin_label);
       $plantilla->setVariable('es_rango', 'Consecutivas');
-	  $plantilla->setVariable('desde_hasta', " Desde $unaLista->nombre hasta $unaLista->fin_label");
+      $plantilla->setVariable('desde_hasta', " Desde $unaLista->nombre hasta $unaLista->fin_label");
     } else {
       $plantilla->setVariable('es_rango', '');
     }
-	$this->mantenerDatos($arregloDatos,$plantilla);
+    $this->mantenerDatos($arregloDatos,$plantilla);
   }
   
   function listaInventario($arregloDatos,&$datos,&$plantilla) {

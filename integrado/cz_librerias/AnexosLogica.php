@@ -17,7 +17,6 @@ class AnexosLogica {
   }
 
   function verFotos($arregloDatos) {
-    //var_dump($arregloDatos); Ver el contenido de arregloDatos
     $arregloDatos[mostrar] = 1;
     $arregloDatos[plantilla] = 'anexosListado.html';
     $arregloDatos[thisFunction] = 'listar'; 

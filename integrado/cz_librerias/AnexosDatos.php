@@ -9,7 +9,7 @@ class Anexos extends MYDB {
 
   function findOrdenDoc($arregloDatos) {
     $sql = "SELECT DISTINCT doc_tte, do_asignado, por_cuenta FROM do_asignados
-              WHERE doc_tte like '$arregloDatos[q]%' AND por_cuenta='$arregloDatos[idCliente]'";
+            WHERE doc_tte LIKE '$arregloDatos[q]%' AND por_cuenta='$arregloDatos[idCliente]'";
 
     $this->query($sql);
     if($this->_lastError) {

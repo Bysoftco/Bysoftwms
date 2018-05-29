@@ -115,22 +115,7 @@
 		
 		//formulario = formulario / 1;
     formulario = parseInt(formulario);
-		//$("#formArribo"+formulario).validate();
-		
-		$("#formArribo"+formulario).validate({
-			rules: 
-				{peso_planilla: "mayor_cero",peso_bruto:"mayor_cero",repeso:"mayor_cero",cantidad:"mayor_cero"}
-				
-	    });
-		
-		$.validator.addMethod("mayor_cero", function(value){
-		if(value > 0 ){
-			return true;	
-		}else{
-			return false;
-		}
-	}, '* El valor indicado no puede ser cero!');
-		
+		$("#formArribo"+formulario).validate();
 		
 		$( "#btnGuardar{id_form}" ).button({
 			text: true,
@@ -294,15 +279,6 @@
 		//Enviamos la petición 
 		Req.send(data);
 	}
-	function cambiar(moneda,tipo_operacion,objeto){
-		if(tipo_operacion/1==24){
-			alert("La moneda para Producto Nacional debe ser PESO");
-			objeto[2].selected = true;
-		}
-		
-	}
-	
-		
 </script>
 <style>
 	.ui-datepicker-trigger { position: relative; top: 5px; right: 1px; height: 22px; }
@@ -493,11 +469,11 @@
               		<input name="otros_gastos" type="text" style="text-align:right;" id="otros_gastos" value="{otros_gastos}" size="10" class="required number ui-widget-content" /> 
 								</td>
 								<td style="white-space:nowrap;">
-              		<input name="valor_fob" type="text" style="text-align:right;" id="valor_fob" value="{valor_fob}" size="20" 
+              		<input name="valor_fob" type="text" style="text-align:right;" id="valor_fob" value="{valor_fob}" size="20"
                 		class="required number ui-widget-content" />
               	</td>
 								<td style="white-space:nowrap;">
-                  <select  name="moneda" id="select" class="required ui-widget-content" onChange="javascript:cambiar('{moneda}','{tipo_operacion}',this)">{selectMonedas}</select>
+                  <select name="moneda" id="select" class="required ui-widget-content">{selectMonedas}</select>
                 </td>
 							</tr>
 						</table>
@@ -506,8 +482,7 @@
 								<th>Dice Contener: </th>
 								<th>FMM</th>
 								<th>Observaci&oacute;n</th>
-                
-            <th>SitioEntrega</th>
+                <th>SitioEntrega</th>
 							</tr>
 							<tr> 
 								<td><textarea name="dice_contener" cols="52" class="required ui-widget-content" id="dice_contener">{dice_contener}</textarea></td>

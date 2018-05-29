@@ -45,7 +45,7 @@
                         // OJo Revizar dependiendo Tipo de Operacion se llama metodo
 
 						//Cuerpo de la mercancia
-			
+
                         $("div#htmlMercancia").load("./scripts_index.php", {clase:'Levante',metodo:'getMercancia',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val(),por_cuenta_filtro:$("#por_cuenta_aux").val(),tipo_retiro:$("#tipo_retiro_filtro").val(),doc_filtro:$("#doc_filtro_aux").val(),orden_filtro:$("#orden_filtro").val()}, function(datos){
 
                         
@@ -140,7 +140,8 @@
 
  <fieldset class="ui-widget ui-widget-content ui-corner-all">
 
-    <legend class="ui-widget ui-widget-header ui-corner-all"> Datos de la Mercanc&iacute;a</legend>
+  <legend class="ui-widget ui-widget-header ui-corner-all"> Datos de la Mercanc&iacute;a</legend>
+
     <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} 
 
     </span> 

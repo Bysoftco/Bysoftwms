@@ -330,7 +330,11 @@
       <td colspan="3" style="width: 13%">{valor}</td>
     </tr>
   </table>
+<<<<<<< HEAD
+  <canvas id="canvas" width="1200" height="710"></canvas>
+=======
   <canvas id="canvas" width="1200" height="900"></canvas>
+>>>>>>> 52dd12c9bc4f58de764e585a57627eaed091b5cf
   <script>
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext('2d');

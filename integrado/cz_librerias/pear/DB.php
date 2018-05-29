@@ -47,7 +47,7 @@ require_once 'PEAR.php';
 define('DB_OK', 1);
 
 /**
- * Unkown error
+ * Unknown error
  */
 define('DB_ERROR', -1);
 
@@ -62,7 +62,7 @@ define('DB_ERROR_SYNTAX', -2);
 define('DB_ERROR_CONSTRAINT', -3);
 
 /**
- * An identifier in the query refers to a non-existant object
+ * An identifier in the query refers to a non-existent object
  */
 define('DB_ERROR_NOT_FOUND', -4);
 

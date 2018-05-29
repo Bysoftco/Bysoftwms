@@ -1,0 +1,131 @@
+<script>
+  $(document).ready(function() {
+    $('#llstusers').dataTable({
+      "iDisplayLength": 20,
+      "aLengthMenu": [[20, 40, 60, -1], [20, 40, 60, "Todos"]],
+      "oLanguage": {
+        "sLengthMenu": "Mostrar _MENU_ registros por p&aacute;gina",
+        "sZeroRecords": "No hay registros para mostrar",
+        "sInfo": "Mostrando _START_ a _END_ registros de _TOTAL_",
+        "sInfoEmpty": "Mostrando 0 a 0 registros de 0",
+        "sInfoFiltered": "",
+        "sSearch": "Buscar:"
+      }
+    });
+  });
+  
+  $(function() {
+    $("a.id_mercancia").click(function() { //check for the first selection
+      var $column = $(this).attr('id'); // assign the ID of the column
+
+      with (document.listadoMercancia) {
+        $("#tipo_movimiento_send").val(parseInt($("#tipo_movimiento_consulta"+$column).val()));
+        $("#do_asignado_consulta").val(parseInt($("#do_asignado_listado"+$column).val()));
+        $("#tipo_retiro_send").val(parseInt($("#tipo_retiro"+$column).val()));
+        
+        var url;
+        url = 'scripts_index.php';
+
+        switch(parseInt($("#tipo_movimiento_send").val())) {
+          case 5:
+          case 4: //Reempaque
+            $("#clase").val("Reempaque");
+            $("#metodo").val("verReempaque");
+            break;
+          case 10: //Kits
+            var registro = $("#cod_mov"+$column).val();
+            url = 'index_blank.php?component=Kits&method=mostrarKitsAlistados&id_registro='+registro;
+            break;
+          case 15: //Alistamiento
+            var registro = $("#cod_mov"+$column).val();
+            url = 'index_blank.php?component=Alistamientos&method=mostrarAlistamiento&id_registro='+registro;
+            break;
+          default: //Cualquier otro movimiento que no esté definido
+            $("#clase").val("Levante");
+            $("#metodo").val("verRetiro");
+        }
+      }
+      $("#id_levante_consulta").val($("#cod_mov"+$column).val()); //Se cambia método para ver los retiros
+      $("#doc").val($("#num_documento_aux"+$column).val())
+      $("#por_cuenta").val($("#por_cuenta_aux"+$column).val())
+      $("#cliente").val($("#nombre_cliente_ax"+$column).val())
+      $("#tipo_retiro_label").val($("#nombre_movimiento_aux"+$column).val())
+
+      $.ajax({
+        url: url,
+        type: "POST",
+        async: false,
+        data: $("#listadoMercancia").serialize(),
+        success: function(msm) {
+          $('#componente_central').html(msm);
+        }
+      });
+    });
+    
+    $(":submit").button();
+  });
+</script>
+<style>
+  .dataTables_filter input { width: 141px }
+  .dataTables_filter { margin-right: 55px; margin-bottom: 1px; }
+  #listado {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+</style>
+<p></p>
+<fieldset class="ui-widget ui-widget-content ui-corner-all" id="listado">
+  <legend class="ui-widget ui-widget-header ui-corner-all"> Movimientos</legend>
+  <table width="100%" class="ui-widget ui-widget-content" id="llstusers" style="display:{mostrarCuerpo}">
+    <thead>
+      <tr class="ui-widget-header "> 
+        <th>#</th>
+        <th>Fecha</th>
+        <th>Movimiento</th>
+        <th>Cliente</th>
+        <th>DocTTE/Placa/DO/Fmm</th>
+        <th>Ag Aduana/Conductor</th>
+        <th style="{verColumna}text-align:center;">Acci&oacute;n</th>
+      </tr>
+    </thead>
+    <tbody>
+      {comodin}
+      <!-- BEGIN ROW -->
+      <tr class="{odd}"> 
+        <td width="1%" >{n}</td>
+        <td> {fecha}</td>
+        <td title="{descripcion}">[{cod_mov}]{nombre_movimiento} {tipo_retiro} </td>
+        <td> {nombre_cliente} </td>
+        <td>{lev_documento}/{placa}/{do_asignado}/{fmm} 
+          <input name="un_do" type="hidden" id="do_asignado_listado{n}" value="{do_asignado}"/>
+        </td>
+        <td>{nombre_aduana}/{conductor_nombre}</td>
+        <td style="{verColumna}"> 
+          <input name="cod_mov" type="hidden" id="cod_mov{n}" value="{cod_mov}"/>
+          <input name="tipo_movimiento_all" type="hidden" id="tipo_movimiento_consulta{n}" value="{movimiento_tipo}"/>
+          <input name="tipo_retiro" type="hidden" id="tipo_retiro{n}" value="{tipo_retiro}"/>
+          <a href="#" class="signup id_mercancia" title="Ver Movimiento {n}" id="{n}" cursor>
+            <img src="integrado/imagenes/checkin.gif" border="1" style="display:block;margin:0 auto;"/> 
+          </a> 
+          <input name="num_documento" type="hidden" id="num_documento_aux{n}" value="{lev_documento}"/> 
+          <input name="por_cuenta" type="hidden" id="por_cuenta_aux{n}" value="{numero_documento}"/> 
+          <input name="nombre_cliente" type="hidden" id="nombre_cliente_ax{n}" value="{nombre_cliente}"/>
+          <input name="nombre_movimiento" type="hidden" id="nombre_movimiento_aux{n}" value="{nombre_movimiento}"/>
+        </td>
+      </tr>
+      <!-- END ROW -->
+    </tbody>
+  </table>
+</fieldset>
+<form id="listadoMercancia" name="listadoMercancia">
+  <input name="doc_filtro" type="hidden" id="doc" value=""/>
+  <input type="hidden" id="clase" name="clase" value="Levante"/>
+  <input type="hidden" id="metodo" name="metodo" value="verRetiro"/>
+  <input name="por_cuenta_filtro" type="hidden" id="por_cuenta" value=""/>
+  <input name="id_levante" type="hidden" id="id_levante_consulta" value="0"/>
+  <input name="tipo_movimiento" type="hidden" id="tipo_movimiento_send"/>
+  <input type="hidden" name="tipo_retiro" id="tipo_retiro_send"/>
+  <input name="orden_filtro" type="hidden" id="do_asignado_consulta"/>
+  <input name="cliente" type="hidden" id="cliente" value=""/>
+  <input name="tipo_retiro_label" type="hidden" id="tipo_retiro_label" value=""/>
+</form>
