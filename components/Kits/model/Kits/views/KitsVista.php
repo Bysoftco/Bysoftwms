@@ -127,7 +127,7 @@ class KitsVista{
         $this->template->setVariable('nombre_cliente' , isset($datosCliente->razon_social)?$datosCliente->razon_social:'');
         
         $lista_ucomercial = $this->datos->build_list("unidades_medida", "id", "medida");
-        $lista_pventa = $this->datos->build_list("tipos_embalaje", "codigo", "nombre");
+        $lista_pventa = $this->datos->build_list("embalajes", "codigo", "nombre");
         
         $infoDetalle=array();
         if(isset($arreglo['idKit'])){
@@ -229,7 +229,7 @@ class KitsVista{
         $this->template->loadTemplateFile( COMPONENTS_PATH . 'Kits/views/tmpl/alistamientoKits.php' );
         $this->template->setVariable('COMODIN', '' );
         
-        $lista_unidades = $this->datos->build_list("tipos_embalaje", "codigo", "nombre");
+        $lista_unidades = $this->datos->build_list("embalajes", "codigo", "nombre");
     	$unidadesEmpaque = $this->datos->armSelect($lista_unidades ,'Seleccione Unidad...');
         
         $cliente = new Clientes();

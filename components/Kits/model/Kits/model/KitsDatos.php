@@ -158,7 +158,7 @@ class KitsDatos extends BDControlador {
                 cl.numero_documento, cl.razon_social, km.codigo_kit
               FROM inventario_maestro_movimientos imm
                 INNER JOIN referencias ref ON ref.codigo = imm.producto
-                INNER JOIN tipos_embalaje te ON te.codigo = imm.unidad
+                INNER JOIN embalajes te ON te.codigo = imm.unidad
                 INNER JOIN inventario_movimientos im ON im.cod_maestro = imm.codigo AND im.tipo_movimiento = 1
                 INNER JOIN inventario_entradas ie ON ie.codigo = im.inventario_entrada
                 INNER JOIN do_asignados da ON da.do_asignado = ie.orden
