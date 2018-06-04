@@ -1283,6 +1283,7 @@ class Levante extends MYDB {
   }
 
   function getLevante($arregloDatos) {
+  //var_dump($arregloDatos);
     $sql = "SELECT codigo FROM inventario_maestro_movimientos
             WHERE orden = '$arregloDatos[orden_filtro]' AND tip_movimiento = 2";
 
