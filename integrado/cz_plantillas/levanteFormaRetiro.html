@@ -57,7 +57,7 @@
 
   $.validator.setDefaults({
     submitHandler: function() {
-      // Se toma el parámetro del cliente y se pasa al formulario de envío, los toma de la plantilla levanteMaestro
+      // se toma el parámetro del cliente y se pasa al formulario de envío, los toma de la plantilla levanteMaestro
       $("#por_cuenta").val($("#por_cuenta_aux").val());
       $("#tipo_retiro").val($("#tipo_retiro_filtro").val());
       $("#do_asignado").val($("#orden_maestro").val());
@@ -122,6 +122,7 @@
         async: false,
         data: $("#formParaRetiro").serialize(),
         success: function(msm) {
+          // alert(msm)
           $('#htmlMercancia').html("");
           $('#htmlMercancia').html(msm);
           $("#dialog-form-hacer-levante").dialog("close");
@@ -143,13 +144,15 @@
   });
 
   $('#cantidad_naci_para').blur(function() {//Nacional
-    // Solo si es mayor a cero
+    // solo si es mayor a cero
+	
     if($('#peso_naci_aux').val() > 0) {
+	
       var pesoProp = ($('#peso_naci_aux').val() / $('#cantidad_naci_aux').val()) * $('#cantidad_naci_para').val();
       pesoProp = pesoProp.toFixed(2);
       $('#peso_naci_para').val(pesoProp);
     }
-
+	
     if($('#fob_yanaci_aux').val() > 0) {
       var fobProp = ($('#fob_yanaci_aux').val() / $('#cantidad_naci_aux').val()) * $('#cantidad_naci_para').val();
       fobProp = fobProp.toFixed(2);
@@ -285,8 +288,7 @@
       <input name="metodo" type="hidden" id="metodo" value="{sendmetodo}" />
       <input name="id_form" type="hidden" id="id_form" value="{id_form}" />
       <input name="id_item" type="hidden" id="arribo_aux" value="{id_item}" />
-      {sendmetodox}
-    </legend>
+  {sendmetodoX} </legend>
     <input name="guia_filtro" type="hidden" id="guia_filtro" value="{filtro_guia_aux}" />
     <input name="tipo_movimiento" type="hidden" id="tipo_movimiento_retiro" value="{tipo_movimiento} " />
     <input name="id_levante_retiro" type="hidden" id="id_levante_retiro" value="" />
@@ -337,8 +339,8 @@
         <td>
           <input name="cantidad_naci_para" type="text" class="required number ui-widget-content" id="cantidad_naci_para" size="10"   {disableNonac} />
           de: {cant_naci_f} 
-          <input name="cantidad_naci_aux" type="{type_nac}hidden" class="required number ui-widget-content" id="cantidad_naci_aux" value="{cantidad_naci}" size="10"  {disableNonac} /> 
-        </td>
+          <input name="cantidad_naci_aux" type="hidden" class="required number ui-widget-content" id="cantidad_naci_aux" value="{cantidad_naci}" size="10"  {disableNonac} />
+      </td>
         <td>{cantidad} </td>
       </tr>
       <tr> 
@@ -349,8 +351,8 @@
         </td>
         <td> <input name="peso_naci_para" type="text" class="required number ui-widget-content" id="peso_naci_para" size="10" />
           de: {peso_naci_f} 
-          <input name="peso_naci_aux" type="hidden" id="peso_naci_aux" value="{peso_naci}" /> 
-        </td>
+          <input name="peso_naci_aux" type="hidden" id="peso_naci_aux" value="{peso_naci}" />
+      </td>
         <td>{peso} </td>
       </tr>
       <tr> 
@@ -361,8 +363,8 @@
         </td>
         <td> <input name="cif_ret" type="text" class="required number ui-widget-content" id="cif_ret" size="10" />
           {v_aux_nac} de: {cif_f} 
-          <input name="fob_yanaci_aux" type="hidden" id="fob_yanaci_aux" value="{cif}" /> 
-        </td>
+          <input name="fob_yanaci_aux" type="hidden" id="fob_yanaci_aux" value="{cif}" />
+      </td>
         <td>{valor} </td>
       </tr>
     </table>
@@ -385,5 +387,5 @@
   <input type="hidden" name="mercancia" id="mercancia" value="[{cod_referencia}] {nombre_referencia}" />
   <input name="cod_ref_aux" type="hidden" id="cod_ref_aux" value="{cod_ref} " />
   <input name="orden_retiro_aux" type="hidden" id="orden_retiro_aux" value="{orden_retiro} " />
-  {tipo_retiro_filtrox} 
+  {tipo_retiro_filtroX}{ordenX} {tipo_retiro_filtroX} {tipo_movimientoX} 
 </form>

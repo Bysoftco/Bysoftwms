@@ -196,6 +196,8 @@ class LevanteLogica {
   }
   
   function newLevante($arregloDatos) {
+   //var_dump($arregloDatos);
+   
     $arregloDatos[cliente] = $arregloDatos[por_cuenta_filtro];
     $arregloDatos[tipo_movimiento] = 2;
     

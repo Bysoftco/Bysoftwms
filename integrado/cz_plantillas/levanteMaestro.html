@@ -22,11 +22,10 @@
             //$("div#contenedor_opciones").load("./scripts_index.php", {clase:'Inventario',metodo:'getOrdenToolbar',mostrar:'1',do_asignado:{do_asignado}}, function(datos){});
             $('#btnBuscar').hide();
             break;
-          case 2: //  Arribo  Listado de mercancia no se recarga
+          case 2:    //  Arribo  Listado de mercancia no se recarga
             // var por_cuenta_filtro={por_cuenta_filtro}
             //$("div#htmlMercancia").load("./scripts_index.php", {clase:'Levante',metodo:'getMercancia',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val(),por_cuenta_filtro:por_cuenta_filtro}, function(datos){
             //});
-
             //Crear Boton Actualizar para esta opcion
             if($('#tipo_movimiento').val() == 3) {
               $('#btnBuscar').show();
@@ -36,11 +35,8 @@
         }
       }
     });
-
     $('#btnAdicionales').hide();
-
     $('#btnMatriz').hide();
-
     switch($('#tipo_movimiento').val() / 1) {
       case 3: // Retiro
         break;
@@ -52,7 +48,6 @@
         break;
     }
   });
-
   $(function() {
     //$("#accordion").accordion({ header: "h3",active: false ,autoHeight:false});
     
@@ -66,7 +61,6 @@
         "Aceptar {metodoX}": function() {
           //replicar();
           var bValid = true;
-
           $("#{metodo}").submit();
         },
         Cancelar: function() {
@@ -75,16 +69,14 @@
       },
       close: function() {}
     }); /*Fin Ventana*********************************************/
-
     $("#dialog-form-hacer-levante").dialog({
       autoOpen: false,
-      height: 540,
+      height: 400,
       width: 1050,
       modal: true,
       buttons: {
         "Aceptar": function() {
           var bValid = true;
-
           $("#" + $("#un_formulario").val()).submit();
         },
         Cancelar: function() {
@@ -93,7 +85,6 @@
       },
       close: function() {}
     }); /*Fin Ventana*********************************************/
-
     $("#window_filtro").dialog({
       autoOpen: false,
       height: 420,
@@ -102,7 +93,6 @@
       buttons: {
         "Aceptar": function() {
           var bValid = true;
-
           //alert($("#un_formulario_aux").val()+"x")
           $("#filtroMovimientoFiltro").submit();
         },
@@ -112,16 +102,14 @@
       },
       close: function() {}
     }); /*Fin Ventana*********************************************/
-
     $("#dialog-addCamion").dialog({
       autoOpen: false,
-      height: 450,
-      width: 650,
+      height: 490,
+      width: 700,
       modal: true,
       buttons: {
         "Aceptar": function() {
           var bValid = true;
-
           $("#formularioAddCamion").submit();
         },
         Cancelar: function() {
@@ -131,7 +119,6 @@
       close: function() {}
     }); /*Fin Ventana*********************************************/
   });
-
   if({abre_ventana}) {    // Abre la ventana por defecto
     $("#dialog-form-levante{metodo}").dialog("open");
   } else {

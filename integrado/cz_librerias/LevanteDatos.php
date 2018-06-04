@@ -330,7 +330,10 @@ class Levante extends MYDB {
 	//Lista la mercancía para Levante al sumar los campos peso_nonac calcula valores
 	function listaInventario($arregloDatos) { //Para borrar reemplazada por getInvParaProceso
 		//Verificar si se utiliza para un registro
-		$arregloDatos[where] .= " AND do_asignados.do_asignado = '$arregloDatos[orden_filtro]'"; //Filtro por orden
+		if(!empty($arregloDatos[orden_filtro])){
+			$arregloDatos[where] .= " AND do_asignados.do_asignado = '$arregloDatos[orden_filtro]'"; //Filtro por orden
+		}
+		
 		$arregloDatos[donde] = " sendlevante";
 		$arregloDatos[having] = " HAVING peso_nonac > 0";
 		$arregloDatos[GroupBy] = " codigo_referencia"; //Por Referencia
