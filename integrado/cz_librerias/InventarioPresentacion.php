@@ -33,7 +33,7 @@ class InventarioPresentacion {
   function getLista($arregloDatos,$seleccion,&$plantilla) {
     $unaLista = new Inventario();
 	
-    $lista = $unaLista->lista($arregloDatos[tabla],$arregloDatos[condicion],$arregloDatos[campoCondicion]);
+    $lista = $unaLista->lista_medida($arregloDatos[tabla],$arregloDatos[condicion],$arregloDatos[campoCondicion]);
     $lista = armaSelect($lista,'[seleccione]',$seleccion);
 
     $plantilla->setVariable($arregloDatos[labelLista], $lista);

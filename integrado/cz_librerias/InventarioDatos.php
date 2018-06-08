@@ -49,11 +49,12 @@ class Inventario extends MYDB {
   function getInventario($arregloDatos) {
     $sql = "SELECT inv.cantidad, inv.codigo AS item, inv.arribo, inv.orden, inv.peso, inv.valor, inv.fmm, inv.referencia, inv.modelo,
               inv.posicion, inv.observacion, inv.un_empaque, inv.embalaje, do_asignados.por_cuenta AS cliente,
-              embalajes.nombre AS nombre_empaque, posiciones.nombre AS nombre_posicion, ref.nombre AS nombre_referencia,
+              unidades_medida.medida  AS nombre_empaque, posiciones.nombre AS nombre_posicion, ref.nombre AS nombre_referencia,
               inv.fecha_expira, ref.fecha_expira AS chkfecha_expira, ref.serial AS chkserial, ref.codigo_ref 
-            FROM inventario_entradas inv,referencias ref,embalajes,posiciones,do_asignados
+            FROM referencias ref,posiciones,do_asignados,inventario_entradas inv
+			LEFT JOIN unidades_medida ON inv.un_empaque=unidades_medida.id 
             WHERE inv.referencia = ref.codigo
-              AND embalajes.codigo = inv.un_empaque
+             
               AND inv.posicion = posiciones.codigo
               AND do_asignados.do_asignado = inv.orden
               AND inv.codigo = $arregloDatos[id_item]";
@@ -90,6 +91,33 @@ class Inventario extends MYDB {
 
     return $arreglo;
   }
+  
+  
+  function lista_medida($tabla,$condicion = NULL,$campoCondicion = NULL) {
+    $sede = $_SESSION['sede'];
+    
+    if($orden == NULL) $orden = $nombre;
+    
+    $sql = "SELECT id as codigo,medida as nombre
+            FROM unidades_medida 
+            WHERE id NOT IN('0')";
+    if($condicion <> NULL and $condicion <> '%') $sql .= " AND $campoCondicion IN ($condicion)";
+    if($tabla == 'do_bodegas') $sql .= " AND sede = '$sede'";
+    $sql .= "	ORDER BY medida";
+		
+    $this->query($sql); 
+    if($this->_lastError) {
+      return FALSE;
+    } else {
+      $arreglo = array();
+      while($this->fetch()) {
+        $arreglo[$this->codigo] = ucwords(strtolower($this->nombre));
+      }
+    }
+
+    return $arreglo;
+  }
+  
 
   function saveItem($arregloDatos) {
     $sql = "UPDATE inventario_entradas

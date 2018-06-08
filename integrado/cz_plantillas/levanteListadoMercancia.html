@@ -35,11 +35,13 @@
                 } else 
 				{
 				
-				var mixto=0;
-				if( $('input[name="multiple"]').is(":checked"))
-				{
-					var mixto=1;
-				}
+				//var mixto=0;
+				//if( $('input[name="multiple"]').is(":checked"))
+				//{
+				//	var mixto=1;
+				//}
+				var mixto=$("#multiple_lista").val();
+				
 				if ($("#cant_declaraciones").val() / 1 >= $("#lev_cant").val() / 1 && $('input[name="multiple"]').is(":checked")/1==0) 
 				{
 					alert("para agregar mas levantes cree un nuevo parcial marcando la casilla parcial");
@@ -92,96 +94,57 @@
 
             <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
 
-            <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
-
-                <thead>
-
-                    <tr class="ui-widget-header "> 
-
-                        <th >#</th>
-
-                        <th >Orden</th>
-
-                        <th >Mercanc&iacute;a</th>
-
-                        <th >Cantidad</th>
-
-                        <th>Peso</th>
-
-                        <th >FOB</th>
-
-                        
-          <th >Acci&oacute;n
-<input name="n" type="hidden" id="n" value="{num_registros}"> <input name="id_tab" type="hidden" id="id_tab" value="{id_tab}"> 
-
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {comodin} 
-
-                    <!-- BEGIN ROW -->
-
-                    <tr class="{odd}"> 
-
-                        <td width="1%" >{n}</td>
-
-                        <td> <div id="label_concepto{n}">
-
-                                <input name="orden_detalle{n}" type="hidden" id="orden_detalle{n}" value="{orden}" />
-
-                                {orden}
-                                <input name="item[]" type="hidden" id="id_unitem{n}" value="{item}">
-
-                                <input name="cod_ref[]" type="hidden" id="cod_ref{n}" value="{codigo_referencia}">
-
-                                <input name="fob[]" type="hidden" id="fob{n}" value="{fob_nonac}">
+            
+    <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
+      <thead>
+        <tr class="ui-widget-header "> 
+          <th >#</th>
+          <th >Orden</th>
+          <th >Documento</th>
+          <th >Mercanc&iacute;a</th>
+          <th >Cantidad</th>
+          <th>Peso</th>
+          <th >FOB</th>
+          <th >Acci&oacute;n 
+            <input name="n" type="hidden" id="n" value="{num_registros}"> <input name="id_tab" type="hidden" id="id_tab" value="{id_tab}"> 
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      {comodin} 
+      <!-- BEGIN ROW -->
+      <tr class="{odd}"> 
+        <td width="1%" >{n}</td>
+        <td> <div id="label_concepto{n}"> 
+            <input name="orden_detalle{n}" type="hidden" id="orden_detalle{n}" value="{orden}" />
+            {orden} 
+            <input name="item[]" type="hidden" id="id_unitem{n}" value="{item}">
+            <input name="cod_ref[]" type="hidden" id="cod_ref{n}" value="{codigo_referencia}">
+            <input name="fob[]" type="hidden" id="fob{n}" value="{fob_nonac}">
             <a href="#" class="signup id_mercancia" title="Nuevo Levante {n}" id="{n}" cursor> 
             </a></div></td>
-
-                        <td> [{cod_referencia}]{nombre_referencia} </td>
-
-                        <td>{cant_nonac_f}</td>
-
-                        <td>{peso_nonac_f}</td>
-
-                        <td>{fob_f} 
-
-                            <div id="lab_valores{n}" class="ui-priority-primary"></div></td>
-
-                        <td> <a href="#" class="signup id_mercancia" title="Agregar Mercancia {n}" id="{n}" cursor><img src="integrado/imagenes/checkin.gif" border="1"  > 
-
-                            </a> </td>
-
-                    </tr>
-
-                    <!-- END ROW -->
-
-                    <tr> 
-
-                        <td>Totales</td>
-
-                        <td>{n}</td>
-
-                        <td>{n}</td>
-
-                        <td>{tot_cant_nonac}</td>
-
-                        <td>{tot_peso_nonac}</td>
-
-                        <td>{total_fob}</td>
-
-                        <td>{n}</td>
-
-                    </tr>
-
-                <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}">
-
-            </table>
+        <td>{doc_tte_aux}</td>
+        <td> [{cod_referencia}]{nombre_referencia} </td>
+        <td>{cant_nonac_f}</td>
+        <td>{peso_nonac_f}</td>
+        <td>{fob_f} 
+          <div id="lab_valores{n}" class="ui-priority-primary"></div></td>
+        <td> <a href="#" class="signup id_mercancia" title="Agregar Mercancia {n}" id="{n}" cursor><img src="integrado/imagenes/checkin.gif" border="1"  > 
+          </a> </td>
+      </tr>
+      <!-- END ROW -->
+      <tr> 
+        <td>Totales</td>
+        <td>{n}</td>
+        <td>&nbsp;</td>
+        <td>{n}</td>
+        <td>{tot_cant_nonac}</td>
+        <td>{tot_peso_nonac}</td>
+        <td>{total_fob}</td>
+        <td>{n}</td>
+      </tr>
+      <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}">
+    </table>
 
 
 
