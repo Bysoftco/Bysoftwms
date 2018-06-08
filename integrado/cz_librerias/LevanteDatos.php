@@ -949,7 +949,7 @@ class Levante extends MYDB {
                 id_camion               = '$arregloDatos[id_camion]',
                 destinatario            = '$arregloDatos[destinatario]',
                 direccion               = '$arregloDatos[direccion]',
-				prefactura               = '$arregloDatos[multiple]'
+				prefactura               = '$arregloDatos[multiple_lista]'
             WHERE codigo = $arregloDatos[id_levante]";
 
     $this->_lastError = NULL;

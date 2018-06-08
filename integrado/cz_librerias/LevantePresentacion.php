@@ -284,7 +284,7 @@ class LevantePresentacion {
 	{
 		//var_dump($arregloDatos);
 	}
-	//Se averigua si ya existe una declaracion para mantener datos 
+	//Se averigua si ya existe una declaracion para mantener datos CUANDO ES MIXTO
 	$unaConsulta = new Levante();
 	$unaConsulta->datosDeclaracion($arregloDatos);
 	$unaConsulta->fetch();
@@ -292,7 +292,9 @@ class LevantePresentacion {
 	$arregloDatos[modalidad]="C100";
 	$arregloDatos[arancel]="5";
 	$arregloDatos[iva]="16";
-	if($unaConsulta->N > 0){
+	
+	//var_dump($arregloDatos);// MIXTO
+	if($unaConsulta->N > 0 and $arregloDatos[mixto]==1 ){
 		
 		$arregloDatos[prefijo]=$unaConsulta->num_levante;
 		$arregloDatos[fecha]=$unaConsulta->fecha;
@@ -337,6 +339,12 @@ class LevantePresentacion {
       //".$unDatos->lev_cuenta_grupo;
       $unaPlantilla->setVariable("parcial", $unDatos->lev_cuenta_grupo);
     }
+	
+	
+	$lista=multple();
+	$lista	= armaSelect($lista,'[seleccione]',$unDatos->prefactura);
+    $unaPlantilla->setVariable('selectMultiple', $lista);
+	
 	if($unDatos->prefactura == 1) {
       $unaPlantilla->setVariable("checked_multiple", "checked");
     }
@@ -684,6 +692,8 @@ class LevantePresentacion {
     $arregloDatos[labelLista] = 'listaEmbalajes';
     $this->getLista($arregloDatos, NULL, $plantilla);
     //$this->setValores(&$arregloDatos,$datos,$plantilla);
+	//echo "XXXXXXXXXXXXX";
+	
     $this->mantenerDatos($arregloDatos, $plantilla);
   }
 
