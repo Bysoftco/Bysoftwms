@@ -468,7 +468,7 @@ class LevanteLogica {
     $this->datos->newDeclaracion($arregloDatos);
     $this->datos->addItemLevante($arregloDatos);
     $this->datos->getAcomulaCif($arregloDatos);
-    
+   
     $this->getMercancia($arregloDatos); 
   }
   

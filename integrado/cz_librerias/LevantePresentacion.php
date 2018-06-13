@@ -75,7 +75,8 @@ class LevantePresentacion {
     }
 
     $this->mantenerDatos($arregloDatos, $unaPlantilla);
-    $$arregloDatos[n] = 0;
+    
+	$$arregloDatos[n] = 0;
     while($unDatos->fetch()) {
       $odd = ($arregloDatos[n] % 2) ? 'odd' : '';
       $arregloDatos[n] = $arregloDatos[n] + 1;
@@ -250,6 +251,7 @@ class LevantePresentacion {
 
   //Método que muestra la mercancia para Nacionalizacion
   function getMercancia($arregloDatos, $unDatos, $plantilla) {
+  
     //se valida si se puede elejir mercancia nacional no nacional o ambas
     $this->validaCapturaDeclaraciones($arregloDatos, $unDatos, $plantilla);
     if($unDatos->cantidad_nonac <= 0) {
@@ -280,6 +282,7 @@ class LevantePresentacion {
     $arregloDatos[prefijo]="03".date('Y')."000";
 	
 	// Si es un levante Mixto se traen los datos del levante anterior
+	//var_dump($arregloDatos);
 	if($arregloDatos[mixto])
 	{
 		//var_dump($arregloDatos);
@@ -294,6 +297,7 @@ class LevantePresentacion {
 	$arregloDatos[iva]="16";
 	
 	//var_dump($arregloDatos);// MIXTO
+	//var_dump($arregloDatos);
 	if($unaConsulta->N > 0 and $arregloDatos[mixto]==1 ){
 		
 		$arregloDatos[prefijo]=$unaConsulta->num_levante;
