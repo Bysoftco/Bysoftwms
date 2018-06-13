@@ -65,7 +65,7 @@ function unidades() {
 function multple() {
   $multiple = array('0' => 'No Aplica',
                   '1' => 'Multiple',
-				  '2' => 'Multiple General'
+				  '2' => 'General'
             );
   return  $multiple;	  
 }
