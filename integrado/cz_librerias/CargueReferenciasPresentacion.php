@@ -319,11 +319,9 @@ class CargueReferenciasPresentacion {
 					$errores=$errores+1;
 				}
 				
-			
-			
-				
-				
-				
+				$arregloDatos[vigencia] = date('Y/m/d',strtotime($arregloDatos[vigencia]));  
+	
+	
 				$anio = substr($arregloDatos[vigencia], 0, 4);
 				$mes = substr($arregloDatos[vigencia], 6, 2);
 				$dia = substr($arregloDatos[vigencia], 8, 2);
