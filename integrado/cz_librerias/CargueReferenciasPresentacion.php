@@ -360,6 +360,8 @@ class CargueReferenciasPresentacion {
             $arregloDatos[carg] = '1';
         }
 		
+		 //fclose($nombreCompleto);
+		 unlink("./integrado/_files/$arregloDatos[nombre_archivo]");
 		echo  $unaPlantilla->get();
      }
 

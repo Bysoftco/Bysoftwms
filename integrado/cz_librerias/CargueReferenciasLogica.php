@@ -101,9 +101,13 @@ class CargueReferenciasLogica {
 	
          $nombreCompleto="./integrado/_files/$arregloDatos[nombre_archivo]";
        	 $archivo = fopen("$nombreCompleto", "r");
+		  
          $arregloDatos[nomarchivo] = $file->nombre;
+		
          $this->pantalla->crearPreuploadDocumentoscsv($arregloDatos, $archivo);
-                    
+         //borrar el archivo
+		   
+		       
                
     }
 
