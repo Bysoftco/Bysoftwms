@@ -29,7 +29,7 @@
 
 				if ($("#lev_cant").val() / 1 == 0)
 				{
-					alert("Antes de hacer un levante debe ingresar la informacion General")
+					alert("Antes de hacer un levante debe ingresar la informacion General, no especifico la cantidad de levantes")
 					$('#tabs').tabs("select", 0);
 
                 } else 
@@ -40,9 +40,10 @@
 				//{
 				//	var mixto=1;
 				//}
+				//alert($('#multiple_lista').val())
 				var mixto=$("#multiple_lista").val();
 				
-				if ($("#cant_declaraciones").val() / 1 >= $("#lev_cant").val() / 1 && $('input[name="multiple"]').is(":checked")/1==0) 
+				if ($("#cant_declaraciones").val() / 1 >= $("#lev_cant").val() / 1 && $('#multiple_lista').val()/1==1) 
 				{
 					alert("para agregar mas levantes cree un nuevo parcial marcando la casilla parcial");
 
