@@ -49,7 +49,9 @@
 			$("#tot_peso_nac_cab").val($("#tot_peso_nac").val());
 			
 			if($('input[name="cierre"]').is(":checked")){
+				proporcion();
 				if(!confirm("Confirma que desea cerrar el moviento? al cerrarlo se creara la nueva orden y ya no podra modificar el movimiento"))
+				
 				return false;
 			}
 
@@ -77,12 +79,12 @@
 
 
 	$.validator.addMethod("maximo_cantidad", function(value) {
-		if($("#cantidad_ext_cab").val()/1 + $("#cantidad_nac_cab").val()/1 > $("#cantidad_cab").val()/1){
+		if($("#cantidad_ext_cab").val()/1 + $("#cantidad_nac_cab").val()/1 != $("#cantidad_cab").val()/1){
 		 	return false;	
 		}else{
 			return true;
 		}
-	}, '* La Cantidad Nacional + Extrangera debe Sumar '+$("#cantidad_cab").val());
+	}, '* La Cantidad Nacional + Extrangera debe Sumar la cantidad Total '+$("#cantidad_cab").val());
 
 	$(function() {
 		$("#formUpdateCabeza").validate(
@@ -107,30 +109,83 @@
 
 	$('#fecha').val('{fecha}');
 	$('#cantidad_cab').blur(function() {
-		proporcion();	
+		//proporcion();	
 	});
-
-	function proporcion(){
-			$("#tot_peso_nonac_cab").val($("#tot_peso_nonac").val());
-			$("#tot_peso_nac_cab").val($("#tot_peso_nac").val());
-		
-			var total=$("#tot_peso_nac").val()/1+$("#tot_peso_nonac").val()/1;
+	
+	$("#cierre").click(function(){
+   		 if($('input[name="cierre"]').is(":checked")){
+		 //	if($("#tot_peso_nac").val()==""){
 				
-			if(total > 0){
-				var porcentaje= $("#tot_peso_nonac").val()*100/total;
-				var extranjero=$('#cantidad_cab').val()/1*porcentaje/100
-				extranjero= extranjero.toFixed(0);
-				$("#cantidad_ext_cab").val(extranjero);
-				$("#cantidad_nac_cab").val($('#cantidad_cab').val()/1-extranjero/1);
-				}else{
-					alert("Se recomienda agregar la mercancía antes de especificar cantidad para calcular y sugerir las cantidades extranjera y nacional")
-				}	
-		} 
+				proporcion()
+			//}
+		}
+	}); 
+
+	function proporcion()
+	{
+		//Los totales se toman de levanteCuerpoRetiro
+		$("#tot_peso_nonac_cab").val($("#tot_peso_nonacsf").val());
+		$("#tot_peso_nac_cab").val($("#tot_peso_nac").val());
+			
+		// aseguramos que es un valor
+		var total_peso_extranjero =$("#tot_peso_nonacsf").val()
+		total_peso_extranjero= parseFloat(total_peso_extranjero.replace(",", "."));
+			
+		var total_peso_nacional =$("#tot_peso_nacsf").val()
+		total_peso_nacional= parseFloat(total_peso_nacional.replace(",", "."));
+			
+		var total=parseFloat(total_peso_extranjero+total_peso_nacional);
+		
+		
+	
+			
+		if(total==0)
+		{
+			alert("Debe agregar los componentes del nuevo producto!!")
+			$('input[name=cierre]').attr('checked', false);
+			return false;
+		}
+				
+		
+		var porcentaje= total_peso_extranjero*100/total;
+		
+		var extranjero=$('#cantidad_cab').val()/1*porcentaje/100
+		extranjero= extranjero.toFixed(0);
+		if(extranjero < 0){
+			extranjero =0;
+		}
+		if($("#cantidad_ext_cab").val()=="0")
+		{
+			$("#cantidad_ext_cab").val(extranjero);
+		}
+		
+		if($("#cantidad_nac_cab").val()=="0")
+		{
+			$("#cantidad_nac_cab").val($('#cantidad_cab').val()/1-extranjero/1);
+		}
+		
+		//prorrateo peso
+		var peso_extranjero_redondeado=0;
+		if($("#tot_peso_nonac").val()=="0" || $("#tot_peso_nonac").val()=="" )
+		{
+			//var peso_extranjero_redondeado =total*porcentaje/100
+			//peso_extranjero_redondeado=peso_extranjero_redondeado.toFixed(2);
+			$("#tot_peso_nonac").val(total_peso_extranjero);
+			
+		}
+		if($("#tot_peso_nac").val()=="0" || $("#tot_peso_nac").val()=="")
+		{
+			//$("#tot_peso_nac").val(total-peso_extranjero_redondeado);
+			$("#tot_peso_nac").val(total_peso_nacional);
+		}		
+	} 
 
 	if('{cantidad}'/1==0) { // si aun no hay producto no se habilita la matriz
 		$('#btnMatriz').hide();
 	}
-
+	//09/09/2017
+	$('#btnMatriz').hide();
+	$('#btnAjustes').hide();
 	if('{cierre}'/1==1){
 		$('#btnGuardarLevante').hide();
 	}
@@ -265,62 +320,28 @@
 
 
   <table width="100%" border="0">
-
-
     <tr  class="ui-widget ui-widget-header ui-corner-all" > 
-
-
-      <th >Placa</th>
-
-
-      <th >Cantidad Total:</th>
-
-
-      <th >Valor:</th>
-
-
-      <th >Cantidad Extrangera</th>
-
-
-      <th >Cantidad Nacional</th>
-
-
-      <th ><font color="#FF0000">Cerrar</font></th>
-
-
+      <th width="15%" >Placa</th>
+      <th width="18%" >Cantidad Total:</th>
+      <th width="15%" >Valor:</th>
+      <th width="19%" >Cantidad Ext</th>
+      <th width="25%" >Cantidad Nac</th>
+      <th width="25%" >Peso Ext</th>
+      <th width="25%" >Peso Nac</th>
+      <th width="8%" ><font color="#FF0000">Cerrar</font></th>
     </tr>
-
-
     <tr> 
-
-
       <td> <input name="placa" type="text" class=" required  ui-widget-content" id="placa" value="{placa}" size="10" > 
-
-
         <input name="id_camion" type="hidden" class=" required ui-widget-content" id="id_camion{id_form}" value="{id_camion}"> 
-
-
       </td>
-
-
-      <td><input name="cantidad" type="text" class=" required   ui-widget-content" id="cantidad_cab" value="{cantidad}" size="10"></td>
-
-
-      <td><input name="valor" type="text" class=" required   ui-widget-content" id="valor" value="{valor}" size="15"></td>
-
-
-      <td><input name="cantidad_ext" type="text" class=" required   ui-widget-content" id="cantidad_ext_cab" value="{cantidad_ext}" size="15"> 
-
-
-      <td><input name="cantidad_nac" type="text" class=" required   ui-widget-content" id="cantidad_nac_cab" value="{cantidad_nac}" size="15"></td>
-
-
-      <td> <input name="cierre" type="checkbox" value="1" {checked} > </td>
-
-
+      <td><input name="cantidad" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="cantidad_cab" value="{cantidad}" size="10"></td>
+      <td><input name="valor" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="valor" value="{valor}" size="15"></td>
+      <td><input name="cantidad_ext" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="cantidad_ext_cab" value="{cantidad_ext}" size="15"> 
+      <td><input name="cantidad_nac" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="cantidad_nac_cab" value="{cantidad_nac}" size="15"></td>
+      <td><input name="tot_peso_nonac" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="tot_peso_nonac" value="{peso_ext}" size="15" ></td>
+      <td><input name="tot_peso_nac" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="tot_peso_nac" value="{peso_nac}" size="15" ></td>
+      <td> <input name="cierre" type="checkbox" value="1" {checked}  id="cierre"> </td>
     </tr>
-
-
   </table>
 
 
@@ -332,16 +353,14 @@
 		
       <th> <div class="BytitulosTabla" ><span> Debe cerrar 
         para generar el DO de integraci&oacute;n </span> <div>
-		</th>
+		</div></div></th>
 	</tr>
 	<tr  class="ui-widget ui-widget-header ui-corner-all" > 
 		<th>observaci&oacute;n 
 		<input name="tipo_movimiento" type="hidden" id="tipo_movimiento" value="{tipo_movimiento} ">
         <input name="num_levante" type="hidden" id="num_levante" value="No">
         : 
-        <input name="tot_peso_nonac" type="hidden" id="tot_peso_nonac_cab">
-		<input name="tot_peso_nac" type="hidden" id="tot_peso_nac_cab" >
-		<input type="hidden" name="estadoCierre" value="{cierre}" id="estadoCierre">
+        <input type="hidden" name="estadoCierre" value="{cierre}" id="estadoCierre">
 		</th>
 	</tr>
 	

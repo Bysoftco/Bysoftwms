@@ -61,6 +61,14 @@ function unidades() {
             );
   return  $unidad;	  
 }
+
+function multple() {
+  $multiple = array('0' => 'No Aplica',
+                  '1' => 'Multiple',
+				  '2' => 'General'
+            );
+  return  $multiple;	  
+}
 	
 function armaLista($arreglo,  $titulo = '-',$seleccion='NA' ,$maxCaracteres = 50) {
   $seleccionado = ($seleccion=='NA')? '' : ' SELECTED ';

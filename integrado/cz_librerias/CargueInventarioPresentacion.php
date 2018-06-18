@@ -2,15 +2,15 @@
 
 require_once ("HTML/Template/IT.php");
 require_once ("Funciones.php");
-require_once ("CargueReferenciasDatos.php");
+require_once ("CargueInventarioDatos.php");
 
-class CargueReferenciasPresentacion {
+class CargueInventarioPresentacion {
 
     var $datos;
     var $plantilla;
     var $total;
 
-    function CargueReferenciasPresentacion(&$datos) {
+    function CargueInventarioPresentacion(&$datos) {
         $this->datos = &$datos;
         $this->plantilla = new HTML_Template_IT();
         $this->mensaje_color;
@@ -47,11 +47,11 @@ class CargueReferenciasPresentacion {
 
     function cargaPlantilla($arregloDatos) 
 	{
-		$unAplicaciones = new CargueReferencias();
+		$unAplicaciones = new CargueInventario();
         $formularioPlantilla = new HTML_Template_IT();
         $formularioPlantilla->loadTemplateFile(PLANTILLAS . $arregloDatos[plantilla], false, false);
         $formularioPlantilla->setVariable('comodin', ' ');
-        $this->mantenerDatos($arregloDatos, $formularioPlantilla);
+        $this->mantenerDatos($arregloDatos, &$formularioPlantilla);
 
         $this->$arregloDatos[thisFunction]($arregloDatos, $this->datos, $formularioPlantilla);
         if ($arregloDatos[mostrar]) {
@@ -64,7 +64,7 @@ class CargueReferenciasPresentacion {
     // Arma cada Formulario o funcion en pantalla
     function setFuncion($arregloDatos, $unDatos) 
 	{
-        $unDatos = new CargueReferencias();
+        $unDatos = new CargueInventario();
         header('Content-type: text/html; charset=iso-8859-1');
         $unDatos->$arregloDatos[thisFunction]($arregloDatos);
         //var_dump($arregloDatos);
@@ -78,7 +78,7 @@ class CargueReferenciasPresentacion {
         $this->mantenerDatos($arregloDatos, $unaPlantilla);
         if ($arregloDatos[thisFunctionAux]) {
             //$unDatos->fetch();  no puede ir aqui
-            $this->$arregloDatos[thisFunctionAux]($arregloDatos, $unDatos, $unaPlantilla);
+            $this->$arregloDatos[thisFunctionAux]($arregloDatos, &$unDatos, $unaPlantilla);
         }
         $n = 0;
         while ($unDatos->fetch()) {
@@ -112,12 +112,12 @@ class CargueReferenciasPresentacion {
 
     function maestro($arregloDatos) 
 	{
-		$this->plantilla->loadTemplateFile(PLANTILLAS . 'cargueReferenciasMaestro.html', false, false);
+		$this->plantilla->loadTemplateFile(PLANTILLAS . 'cargueInventarioMaestro.html', false, false);
 		$arregloDatos[mostrar] = 0; //  en php o ajax
-		$arregloDatos[plantilla] = 'cargueReferenciasUpload.html'; //plantilla a la que me dirijo
+		$arregloDatos[plantilla] = 'cargueInventarioUpload.html'; //plantilla a la que me dirijo
 		$arregloDatos[thisFunction] = 'filtro'; // funcion que debe estar en presentacion y datos
-		$htmlCargueReferenciasFormulario = $this->cargaPlantilla($arregloDatos); //variable a la que le asigno la plantilla
-		$this->plantilla->setVariable('filtro_entrada', $htmlCargueReferenciasFormulario); //funcion que recibe nombre etiqueta donde carga{xxx} y la plantilla
+		$htmlCargueInventarioFormulario = $this->cargaPlantilla($arregloDatos, &$unDatos); //variable a la que le asigno la plantilla
+		$this->plantilla->setVariable('filtro_entrada', $htmlCargueInventarioFormulario); //funcion que recibe nombre etiqueta donde carga{xxx} y la plantilla
         $this->plantilla->show(); //muestra la ventana
     }
 
@@ -125,7 +125,7 @@ class CargueReferenciasPresentacion {
         
     }
 
-    function listarCargueReferencias($arregloDatos, $datos, $formularioPlantilla) {
+    function listarCargueInventario($arregloDatos, $datos, $formularioPlantilla) {
 
         $arregloDatos[num_doc] = rtrim($datos->num_doc);
         $arregloDatos[val_doc] = rtrim($datos->val_doc);
@@ -138,34 +138,34 @@ class CargueReferenciasPresentacion {
             $arregloDatos[val_doc] = number_format($valor);
         }
 
-        $this->mantenerDatos($arregloDatos, $formularioPlantilla);
+        $this->mantenerDatos($arregloDatos, &$formularioPlantilla);
     }
 
     function filtroConsulta($arregloDatos) {
-        $unEstado = new CargueReferencias();
+        $unEstado = new CargueInventario();
         $estado = $unEstado->getEstados();
         $selectEstado = armaSelect($estado, NULL, '[Estado]');
-        $this->plantilla->loadTemplateFile(PLANTILLAS . 'CargueReferenciasFiltroReporte.html', false, false);
+        $this->plantilla->loadTemplateFile(PLANTILLAS . 'CargueInventarioFiltroReporte.html', false, false);
         $this->plantilla->setVariable('selectEstado', $selectEstado);
         $this->plantilla->show();
     }
 
     function updateExtConfirmar($arregloDatos, $datos, $formularioPlantilla) {
-        $this->mantenerDatos($arregloDatos, $formularioPlantilla);
+        $this->mantenerDatos($arregloDatos, &$formularioPlantilla);
     }
 
     /*     * FUNCIONES PARA CARGAR BANCOS* */
 
     function maestroCarga($arregloDatos) 
 	{
-		$this->plantilla->loadTemplateFile(PLANTILLAS . 'cargueReferenciasCargaMaestro.html', false, false	);
+		$this->plantilla->loadTemplateFile(PLANTILLAS . 'cargueInventarioMaestro.html', false, false	);
         $arregloDatos[mostrar] = 0;
         $arregloDatos[abrirv] = '1';
         $this->mantenerDatos($arregloDatos, $this->plantilla);
         $arregloDatos[plantilla] = 'cargarFoto.html';
         $arregloDatos[thisFunction] = 'filtroCarga';
 
-        $htmlFormulario = $this->cargaPlantilla($arregloDatos);
+        $htmlFormulario = $this->cargaPlantilla($arregloDatos, &$unDatos);
         $this->plantilla->setVariable('entrada', $htmlFormulario);
         $this->plantilla->show();
     }
@@ -177,7 +177,7 @@ class CargueReferenciasPresentacion {
 
     function crearPreuploadDocumentoscsv($arregloDatos, $archivo) 
 	{
-        $this->plantilla->loadTemplateFile(PLANTILLAS . 'CargueReferenciasCargaMaestro.html', true, true);
+        $this->plantilla->loadTemplateFile(PLANTILLAS . 'CargueInventarioCargaMaestro.html', true, true);
         $arregloDatos[mostrar] = 0;
         $htmlFormulario = $this->obtendatos($arregloDatos, $archivo);
         $this->plantilla->setVariable('auxt', $htmlFormulario);
@@ -186,8 +186,9 @@ class CargueReferenciasPresentacion {
 
     function obtendatos($arregloDatos, $archivo) 
 	{
-        $unaPlantilla = new HTML_Template_IT();
-        $unaPlantilla->loadTemplateFile(PLANTILLAS . 'cargueReferenciasListadoCarga.html', true, true);
+        echo "XXXX";
+		$unaPlantilla = new HTML_Template_IT();
+        $unaPlantilla->loadTemplateFile(PLANTILLAS . 'cargueInventarioListado.html', true, true);
 
         $n = 0;
         $status = '';
@@ -262,9 +263,9 @@ class CargueReferenciasPresentacion {
 				$arregloDatos[factor_conversion]	=$factor_conversion;
 					
 				// se hacen las validaciones
-				$unaValidacion=new CargueReferencias();
+				$unaValidacion=new CargueInventario();
 				
-				
+				/*
 				$errorCliente=$unaValidacion->validarCliente($arregloDatos);
 				$arregloDatos[alerta]="";
 				if($errorCliente==0){
@@ -319,9 +320,8 @@ class CargueReferenciasPresentacion {
 					$errores=$errores+1;
 				}
 				
-				$arregloDatos[vigencia] = date('Y/m/d',strtotime($arregloDatos[vigencia]));  
-	
-	
+			 */
+					
 				$anio = substr($arregloDatos[vigencia], 0, 4);
 				$mes = substr($arregloDatos[vigencia], 6, 2);
 				$dia = substr($arregloDatos[vigencia], 8, 2);
@@ -358,8 +358,6 @@ class CargueReferenciasPresentacion {
             $arregloDatos[carg] = '1';
         }
 		
-		 //fclose($nombreCompleto);
-		 unlink("./integrado/_files/$arregloDatos[nombre_archivo]");
 		echo  $unaPlantilla->get();
      }
 

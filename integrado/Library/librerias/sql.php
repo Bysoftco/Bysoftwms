@@ -130,8 +130,8 @@ switch($perfil)
    { 
     $sql="
 						SELECT * 
-						FROM  tipos_embalaje
-						WHERE   id ='$embalaje'
+						FROM  embalajes
+						WHERE   codigo ='$embalaje'
 						";
 				
 				   	//$result = pg_Exec ($co, $sql);

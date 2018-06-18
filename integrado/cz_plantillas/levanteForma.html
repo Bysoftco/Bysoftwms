@@ -14,7 +14,9 @@
 		$("#subpartida").val(data[0]);// 0 nombre, 1 codigo ,2 arancel,3
 		$("#cod_supartida").val(data[1]);
 		$("#arancel").val(data[2]);
-		//alert(data[0]);
+		$("#iva").val(data[6]);
+		
+		//alert(data[6]);
 	});
   	
   });
@@ -23,6 +25,13 @@
 		submitHandler: function(){
 			$.post("./scripts_index.php",{ clase:'Levante',metodo:'existeLevante',num_levante:$('#levante').val() } ,function(data){ 
 				var valida=1;
+				// si el MULTIPLE no se valida el nùmero de levante
+			
+				//alert($('#multiple_lista').val());
+				if($('#multiple_lista').val()/1==1)
+				{
+					data=0;
+				}
 				if(data >= 1){
 					var valida=0;
 					$("#msgbox_mov{id_form}").html('El Numero de Levante '+$('#levante').val()+' Ya Existe en la BD').addClass('ui-state-error');
@@ -74,7 +83,7 @@
 
    $(function(){
 		$("#formularioParaLevante").validate({
-			rules: {peso_naci_para: "peso_maximo"}
+			rules:{ peso_naci_para: "peso_maximo"}
 	});
 
 	// Calculo de valores que se pueden calcular
@@ -112,7 +121,7 @@
 			if({cant_declaraciones}/1=={num_declaraciones}/1){
 				//$("#cantidad_naci_para{id_form}").val( {cantidad} /1-{sum_cant_naci});
 				$("#peso_naci_para{id_form}").val({peso_nonac} );
-				$("#msgbox_mov{id_form}").html('ultima declaraci&oacute;n , debe nacionalizar todo el inventario restante,si no es mercanc&iacute;a con parciales').addClass('ui-state-error');
+				$("#msgbox_mov{id_form}").html('Ultima declaraci&oacute;n , debe nacionalizar todo el inventario restante,si no es mercanc&iacute;a con parciales').addClass('ui-state-error');
 				$('#peso_naci_para{id_form}').addClass("ui-state-error-text");
 			}else{
 				$("#cantidad_naci_para{id_form}").val(catProp)   
@@ -223,14 +232,14 @@
       <td> <input name="fecha" type="text" class=" required   ui-widget-content" id="fecha{id_form}" value="{fecha}" size="15" > 
         <input name="fmm" type="hidden" class=" required   ui-widget-content" id="fmm" value="0" size="15"> 
       </td>
-      <td> <input name="tipo_declaracion" type="text" id="tipo_declaracion" value="Inicial" size="15"> 
+      <td> <input name="tipo_declaracion" type="text" id="tipo_declaracion" value="{tipo_declaracion}" size="15"> 
       </td>
       <td> <input name="subpartida" type="text" id="subpartida" value="{subpartida}" size="15"> 
-        <input name="cod_supartida" type="hidden" id="cod_supartida" class=" required"   > 
+        <input name="cod_supartida" type="hidden" class=" required" id="cod_supartida" value="{cod_subpartida}"   > 
       </td>
-      <td> <input name="trm" type="text" id="trm" value="{obs}" size="10" class=" required  number"> 
+      <td> <input name="trm" type="text" id="trm" value="{trm}" size="10" class=" required  number"> 
       </td>
-      <td> <input name="modalidad" type="text" id="modalidad" value="C100" size="15"> 
+      <td> <input name="modalidad" type="text" id="modalidad" value="{modalidad}" size="15"> 
       </td>
     </tr>
   </table>
@@ -265,27 +274,27 @@
 
     <tr> 
 
-      <td> <input name="fob" type="text" id="fob" value="{fob}" size="15" class="   number"> 
+      <td> <input name="fob" type="text" id="fob" value="{fob}" size="15" class="  required  number"> 
 
       </td>
 
-      <td> <input name="fletes" type="text" id="flete" value="{flete}" size="15" class="  number"> 
+      <td> <input name="fletes" type="text" id="flete" value="{flete}" size="15" class=" required  number"> 
 
       </td>
 
-      <td> <input name="aduana" type="text" id="valor_aduana" value="{valor_aduana}" size="15" class="  number"> 
+      <td> <input name="aduana" type="text" id="valor_aduana" value="{valor_aduana}" size="15" class="required   number"> 
 
       </td>
 
-      <td> <input name="arancel" type="text" id="arancel" value="5" size="5" class="  number"> 
+      <td> <input name="arancel" type="text" id="arancel" value="{arancel}" size="5" class=" required  number"> 
 
       </td>
 
-      <td> <input name="iva" type="text" id="iva" value="16" size="5" class="  number"> 
+      <td> <input name="iva" type="text" id="iva" value="{iva}" size="5" class=" required  number"> 
 
       </td>
 
-      <td> <input name="total" type="text" id="total" size="15"> 
+      <td> <input name="total" type="text" id="total" value="{total}" size="15"> 
 
       </td>
 

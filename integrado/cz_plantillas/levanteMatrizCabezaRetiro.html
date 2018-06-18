@@ -1,149 +1,194 @@
-
-
- <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
-<html>
-
-<head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-	<link type="text/css" href="integrado/cz_estilos/jquery-ui-1.8.10.custom.css" rel="stylesheet" />
-<link href="./integrado/cz_estilos/reporteGerencial.css" rel="stylesheet" type="text/css">
-
-<title>Matriz</title>
-
-
-
- <script type="text/javascript" src="./integrado/integrado/cz_javascript/jquery-1.4.4.js"></script>
- <script type="text/javascript" src="./integrado/integrado/cz_javascript/jquery-ui-1.8.10.custom.min.js"></script>
-
-	
-	<script src="./integrado/cz_javascript/validaciones1.js"></script>
-	<script src="./integrado/cz_javascript/jquery-1.4.4.js"></script>
-	<script src="./integrado/cz_javascript/external/jquery.bgiframe-2.1.2.js"></script>
-	<script src="./integrado/cz_javascript/ui/jquery.ui.core.js"></script>
-	<script type="text/javascript" src="./integrado/cz_javascript/jquery-ui-1.8.10.custom.min.js"></script>
-	<script src="./integrado/cz_javascript/jquery.validate.js"></script>
-		
-
-
-
- <script>
-
-</script>
-<script language="javascript" type="text/javascript">
-
-
-
-print()
-function cambiar(id){
-	
-	$( "#dialog-message" ).dialog({
-			modal: true,
-		    height: 250,
-			width: 450,
-	buttons: {
-	Aceptar: function() 
-	{
-		
-		 $("#filtroCambio").submit();
-		
-	}
-  }
-});
-
-	//$("div#formCambio").html('XXXXXXXXXXXXXXXXX');	
-  
-	$("div#formCambio").load("./scripts_index.php", {clase: 'Levante', metodo: 'getMatrizCambio', mostrar: '1'}, function(datos) 	{
-	});
-	//$( "#dialog-message" ).dialog( "open" );
-	}
-
- $(function() {
- });
-$( "#dialog-message" ).dialog( "close" );		
-</script>
-
-<style type="text/css">
-
-<!--
- body { font-size: 82.5%; }
-.Estilo1 {font-weight: bold }
-
-.Estilo2 {color: #FF0000}
-
--->
-
-</style>
-	{comodin}
-<div align="center" class="{estilo} ">
-
-{mensajeError} 
-
-<table width="90%" height="30" border="0" align="center" class="tabla_general" >
-  <tr class="titulos"  bgcolor="ffffff" > 
-    <td height="21" colspan="5" align="center" class="tabla_general1"> <div align="center">MATRIZ 
-        DE INTEGRACI&Oacute;N [{nit}] - {razon_social}</div>
-    </td>
-  </tr>
- </table>
-  <!-- BEGIN ROW -->
-<table width="90%" height="142" border="0" align="center" class="texto" >
-  <tr > 
-    <td height="21" colspan="10"  class="Estilo1">Referencia [{codigo_pro}]{nombre_producto}</td>
-    <td height="21"  class="Estilo1">    Producto <a href="javascript: cambiar({id_levante})">{id_levante}</a></td>
-  </tr>
-  <tr > 
-    <td height="21" colspan="11"  class="Estilo1">Información del Producto : 
-      <div align="right" class="Estilo2"> 
-        <div align="right"></div>
-      </div></td>
-  </tr>
-  <tr > 
-    <td class="titulosTabla">Fecha</td>
-    <td class="titulosTabla">Ciudad</td>
-    <td class="titulosTabla">Unidad</td>
-    <td height="21" class="titulosTabla"><div align="center">Cantidad</div></td>
-    <td class="titulosTabla">Valor</td>
-    <td class="titulosTabla"><div align="center">C. Ext</div></td>
-    <td class="titulosTabla"><div align="center">C. Nal</div></td>
-    <td class="titulosTabla"><div align="center">FMM</div></td>
-    <td class="titulosTabla"><div align="center">Orden</div></td>
-    <td class="titulosTabla"><div align="center">DocTransporte</div></td>
-    <td class="titulosTabla"><div align="center">Pos. Arancelaria</div></td>
-  </tr>
-  <tr > 
-    <td width="81" class="filasTabla">{fecha}</td>
-    <td width="47" class="filasTabla">{ciudad}</td>
-    <td width="47" class="filasTabla">{unidad}</td>
-    <td width="75" height="23" class="filasTabla"><div align="center">{cantidad}</div></td>
-    <td width="79" class="filasTabla">{valor}<span class="Estilo1">
-      <input name="valor" type="hidden" id="valor" value="{valor_aux}">
-    </span></td>
-    <td width="79" class="filasTabla"><div align="right">{cantidad_nonac}</div></td>
-    <td width="94" class="filasTabla"><div align="right">{cantidad_nac}</div></td>
-    <td width="92" class="filasTabla"><div align="center">{fmm}<span class="Estilo1">
-      <input name="fmm" type="hidden" id="fmm" value="{fmm}">
-    </span></div></td>
-    <td width="99" class="filasTabla"><div align="center">{orden}<span class="Estilo1">
-      <input name="id_levante" type="hidden" id="id_levante" value="{orden}">
-    </span></div></td>
-    <td width="122" class="filasTabla"><div align="center">{doc_tte}</div></td>
-    <td width="114" class="filasTabla"><div align="center">{pos_arancelaria}</div></td>
-  </tr>
-  <tr > 
-    <td height="21" colspan="12" class="filasTabla">{obs}</td>
-  </tr>
-  <tr > 
-    <td height="21" colspan="12" class="filasTabla">{detalle} </td>
-  </tr>
-</table>
-<!-- END ROW -->
-<script>
-</script>
-
-<div id="dialog-message" title="Cambiar">
-	<div id="formCambio">
-	{valor}
-	</div>
-</div>
+
+<!-- Version 23/11/2016-->
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link type="text/css" href="integrado/cz_estilos/jquery-ui-1.8.10.custom.css" rel="stylesheet" />
+<link href="./integrado/cz_estilos/reporteGerencial.css" rel="stylesheet" type="text/css">
+
+<title>Matriz</title>
+
+
+
+ <script type="text/javascript" src="./integrado/integrado/cz_javascript/jquery-1.4.4.js"></script>
+ <script type="text/javascript" src="./integrado/integrado/cz_javascript/jquery-ui-1.8.10.custom.min.js"></script>
+
+	
+	<script src="./integrado/cz_javascript/validaciones1.js"></script>
+	<script src="./integrado/cz_javascript/jquery-1.4.4.js"></script>
+	<script src="./integrado/cz_javascript/external/jquery.bgiframe-2.1.2.js"></script>
+	<script src="./integrado/cz_javascript/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="./integrado/cz_javascript/jquery-ui-1.8.10.custom.min.js"></script>
+	<script src="./integrado/cz_javascript/jquery.validate.js"></script>
+		
+
+
+
+ <script>
+
+</script>
+<script language="javascript" type="text/javascript">
+
+
+
+print()
+function cambiar(id){
+	
+	$( "#dialog-message" ).dialog({
+			modal: true,
+		    height: 250,
+			width: 450,
+	buttons: {
+	Aceptar: function() 
+	{
+		
+		 $("#filtroCambio").submit();
+		
+	}
+  }
+});
+
+	//$("div#formCambio").html('XXXXXXXXXXXXXXXXX');	
+  
+	$("div#formCambio").load("./scripts_index.php", {clase: 'Levante', metodo: 'getMatrizCambio', mostrar: '1'}, function(datos) 	{
+	});
+	//$( "#dialog-message" ).dialog( "open" );
+	}
+
+ $(function() {
+ });
+$( "#dialog-message" ).dialog( "close" );		
+</script>
+
+<style type="text/css">
+
+<!--
+ body { font-size: 82.5%; }
+.Estilo1 {font-weight: bold }
+
+.Estilo2 {color: #FF0000}
+
+-->
+
+</style>
+	{comodin}
+<div align="center" class="{estilo} ">
+
+{mensajeError} 
+
+<table width="90%" height="30" border="0" align="center" class="tabla_general" >
+  <tr class="titulos"  bgcolor="ffffff" > 
+    <td height="21" colspan="5" align="center" class="tabla_general1"> <div align="center"> 
+        MATRIZ DE INTEGRACI&Oacute;N [{nit}] - {razon_social}</div>
+    </td>
+  </tr>
+ </table>
+  <!-- BEGIN ROW -->
+<table width="90%" height="188" border="0" align="center" class="texto" >
+  <tr > 
+    <td height="21" colspan="10"  class="Estilo1">Referencia [{codigo_pro}]{nombre_producto}</td>
+    <td height="21"  class="Estilo1"> Movimiento <a href="javascript: cambiar({id_levante})">{id_levante}</a></td>
+  </tr>
+  <tr > 
+    <td height="21" colspan="11"  class="Estilo1">Información del Producto Transformado: 
+      <div align="right" class="Estilo2"> 
+        <div align="right"></div>
+      </div></td>
+  </tr>
+  <tr > 
+    <td width="53" class="titulosTabla">Producto</td>
+    <td width="53" class="titulosTabla">Fecha</td>
+    <td class="titulosTabla">Unidad</td>
+    <td height="21" class="titulosTabla"><div align="center">Cantidad</div></td>
+    <td width="73" class="titulosTabla">Peso</td>
+    <td width="73" class="titulosTabla">Valor 
+      <div align="center"></div></td>
+    <td class="titulosTabla"><div align="center">Tipo Doc</div></td>
+    <td class="titulosTabla"><div align="center">FMM</div></td>
+    <td class="titulosTabla"><div align="center">Orden</div></td>
+    <td class="titulosTabla"><div align="center">DocTransporte</div></td>
+    <td class="titulosTabla"><div align="center">Pos. Arancelaria</div></td>
+  </tr>
+  <tr > 
+    <td class="filasTabla">{cod_producto}</td>
+    <td class="filasTabla">{fecha}</td>
+    <td width="97" class="filasTabla">{unidad}</td>
+    <td width="71" height="23" class="filasTabla"><div align="center">{cantidad}</div></td>
+    <td >{peso} </td>
+    <td >{valor} 
+      <input name="valor" type="hidden" id="valor" value="{valor_aux}"> </span> 
+      <div align="right"><span class="Estilo1"></span></div></td>
+    <td width="113" class="filasTabla"><div align="right">{tipo_documento}</div></td>
+    <td width="104" class="filasTabla"><div align="center">{fmm}<span class="Estilo1"> 
+        <input name="fmm" type="hidden" id="fmm" value="{fmm}">
+        </span></div></td>
+    <td width="115" class="filasTabla"><div align="center">{orden}<span class="Estilo1"> 
+        <input name="id_levante" type="hidden" id="id_levante" value="{orden}">
+        </span></div></td>
+    <td width="119" class="filasTabla"><div align="center">{doc_tte}</div></td>
+    <td width="155" class="filasTabla"><div align="center">{posicion}</div></td>
+  </tr>
+  <tr > 
+    <td height="21" colspan="12" class="filasTabla">{obs}</td>
+  </tr>
+  <tr > 
+    <td height="21" colspan="12" class="filasTabla"><strong>Información del Producto 
+      Retirado: </strong> </td>
+  </tr>
+  <tr > 
+    <td height="21" colspan="12" class="filasTabla"><table width="100%" height="113" border="0" align="center" class="texto" >
+        <tr > 
+          <td height="21" class="titulosTabla">Fecha</td>
+          <td width="167"  class="titulosTabla"><div align="center"></div>
+            <div align="center"></div>
+            <div align="center">Referencia</div></td>
+          <td class="titulosTabla"><div align="center">Orden</div></td>
+          <td class="titulosTabla"><div align="center">Cantidad</div></td>
+          <td class="titulosTabla"><div align="center">Peso</div></td>
+          <td class="titulosTabla"><div align="center">Valor</div></td>
+        </tr>
+        <tr > 
+          <td width="87" height="40" class="filasTabla">{fecha_retiro}</td>
+          <td  class="filasTabla"> <div align="center">[{codigo_pro}]<span class="Estilo1"> 
+              </span>{refe_retito}<span class="Estilo1"> </span></div></td>
+          <td width="97" class="filasTabla"><div align="center">{orden_ing}<span class="Estilo1"> 
+              </span></div></td>
+          <td width="205" class="filasTabla"><div align="center">{cant_nal}{l_ext}{ext_cantidad}<span class="Estilo1"> 
+              </span></div></td>
+          <td width="187" class="filasTabla"><div align="center">{peso_nal}{l_ext}{ext_peso}<span class="Estilo1"> 
+              </span></div></td>
+          <td width="163" class="filasTabla"><div align="center">{cif_ret}{l_ext}{fob_ret}</div></td>
+        </tr>
+        <tr > 
+          <td height="21" class="filasTabla">&nbsp;</td>
+          <td  class="filasTabla">{refe_ajuste}</td>
+          <td class="filasTabla">&nbsp;</td>
+          <td class="filasTabla"><div align="center">{cant_nal_a}{l_ext_a}{ext_cantidad_a}</div></td>
+          <td class="filasTabla"><div align="center">{peso_nal_a}{l_ext_a}{ext_peso_a}</div></td>
+          <td class="filasTabla"><div align="center">{cif_ret_a}{l_ext_a}{fob_ret_a}</div></td>
+        </tr>
+        <tr > 
+          <td  colspan="3" class="filasTabla"><strong>Totales</strong></td>
+          <td class="filasTabla"><div align="center"><strong>{total_cantidad_nal}{l_ext_a}{total_cantidad_ext}</strong></div></td>
+          <td class="filasTabla"><div align="center"><strong>{total_peso_nal}{l_ext_a}{total_peso_ext}</strong></div></td>
+          <td class="filasTabla"><div align="center"><strong>{total_cif_a}{l_ext_a}{total_fob_ext}</strong></div></td>
+        </tr>
+      </table></td>
+  </tr>
+  <tr > 
+    <td height="21" colspan="12" class="filasTabla">{detalle} </td>
+  </tr>
+</table>
+<!-- END ROW -->
+<script>
+</script>
+
+<div id="dialog-message" title="Cambiar">
+	<div id="formCambio">
+	{valor}
+	</div>
+</div>

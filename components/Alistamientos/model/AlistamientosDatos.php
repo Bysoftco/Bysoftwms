@@ -133,7 +133,7 @@ class AlistamientosDatos extends BDControlador {
                 cm.conductor_identificacion, cm.empresa, cm.placa, ci.nombre AS ciudad
               FROM inventario_maestro_movimientos imm
                 INNER JOIN referencias ref ON ref.codigo = imm.producto
-                INNER JOIN tipos_embalaje te ON te.codigo = imm.unidad
+                INNER JOIN embalajes te ON te.codigo = imm.unidad
                 INNER JOIN do_asignados da ON da.do_asignado = imm.orden
                 INNER JOIN clientes cl ON cl.numero_documento = da.por_cuenta
                 LEFT JOIN camiones cm ON imm.id_camion = cm.codigo

@@ -196,18 +196,20 @@ class LevanteLogica {
   }
   
   function newLevante($arregloDatos) {
+   //var_dump($arregloDatos);
+   
     $arregloDatos[cliente] = $arregloDatos[por_cuenta_filtro];
     $arregloDatos[tipo_movimiento] = 2;
     
-    $this->datos->getLevante($arregloDatos);  // por documento hay un solo movimiento
-    if($this->datos->N > 0) { // Si ya existe el levante
-      $this->datos->fetch();
-      $arregloDatos[id_levante] = $this->datos->codigo;
-      $arregloDatos[tab_seleccionado] = 0; 
-    } else {
+    // $this->datos->getLevante($arregloDatos);  // por documento hay un solo movimiento
+    // if($this->datos->N > 0) { // Si ya existe el levante
+     //  $this->datos->fetch();
+     //  $arregloDatos[id_levante] = $this->datos->codigo;
+     //  $arregloDatos[tab_seleccionado] = 0; 
+    //} else {
       $arregloDatos[id_levante] = $this->datos->newLevante($arregloDatos);
       $arregloDatos[tab_seleccionado] = 1; 
-    }
+   // }
     
     $this->controlarTransaccion($arregloDatos);
     $this->pantalla->maestro($arregloDatos);
@@ -466,7 +468,7 @@ class LevanteLogica {
     $this->datos->newDeclaracion($arregloDatos);
     $this->datos->addItemLevante($arregloDatos);
     $this->datos->getAcomulaCif($arregloDatos);
-    
+   
     $this->getMercancia($arregloDatos); 
   }
   

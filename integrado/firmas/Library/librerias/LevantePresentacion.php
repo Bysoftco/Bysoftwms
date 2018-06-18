@@ -337,7 +337,7 @@
     function getCabezaProceso($arregloDatos,$unDatos,$unaPlantilla)
     {
      
-        $arregloDatos[tabla]		='tipos_embalaje';
+        $arregloDatos[tabla]		='embalajes';
 	$arregloDatos[labelLista]	='selectUnidad';
         $this->getLista($arregloDatos,trim($unDatos->unidad),$unaPlantilla);
         

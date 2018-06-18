@@ -1,113 +1,156 @@
 <script>
-  $(function() {
-    $("a.id_mercancia").click(function() { //check for the first selection
-      var $column = $(this).attr('id'); // assign the ID of the column
 
-      with (document.listadoMercancia) {
-        var id_item = $("#id_unitem" + $column).val();
-        var cod_ref = $("#cod_ref" + $column).val();
-        var fob = $("#fob" + $column).val();
+    $(function()
 
-        if(fob == 0) {
-          if(confirm("La mercancia esta sin nacionalizar se aconseja costearla antes de nacionalizar,use el menu de Costeo")) {
-            $('.popupsCosteo a').click();
-            return false;
-          }
-        }
+    {
+		$("a.id_mercancia").click(function()
 
-        if($("#lev_cant").val() / 1 == 0) {
-          alert("Antes de hacer un levante debe ingresar la informacion General")
-          $('#tabs').tabs("select", 0);
-        } else {
-          if($("#cant_declaraciones").val() / 1 >= $("#lev_cant").val() / 1) { //cant_declaraciones, conteo declaraciones en LevanteCuerpo
-            alert("para agregar mas levantes cree un nuevo parcial marcando la casilla parcial");
-          } else {
-            alert($("#por_cuenta_aux").val());
-            //id_item
-            //alert($("#orden_detalle").val());
-            $("#dialog-form-hacer-levante").dialog("open");
-            $("#ventana_levante").html("Espere un momento....");
-            $("div#ventana_levante").load("./scripts_index.php", {clase: 'Levante', metodo: 'getItem', mostrar: '1',
-              id_item: id_item, doc_filtro: $("#doc_filtro_aux").val(),
-              id_levante: $("#id_levante").val(), num_declaraciones: $("#num_declaraciones_aux").val(),
-              cant_declaraciones: $("#cant_declaraciones").val(), cant_bultos: $("#bultos_aux").val(),
-              id_grupo: $("#id_grupo").val(), lev_bultos: $("#lev_bultos").val(), peso_declaraciones: $("#peso_declaraciones").val(),
-              cod_ref: cod_ref, tipo_movimiento: $("#tipo_movimiento").val(), por_cuenta_filtro: $("#por_cuenta_aux").val(),
-              orden_filtro: $("#orden_maestro").val()}, function(datos) {
-                //alert(datos)
-            });
-          }
-        }
-      }
+        { 
+
+            var $column = $(this).attr('id'); // assign the ID of the column
+
+            with (document.listadoMercancia)
+			{
+
+			   var id_item = $("#id_unitem" + $column).val();
+			   var cod_ref = $("#cod_ref" + $column).val();
+			   var fob = $("#fob" + $column).val();
+
+              if (fob == 0) 
+			  {
+				if (confirm("La mercancia esta sin nacionalizar se aconseja costearla antes de nacionalizar,use el menu de Costeo")) 
+				{
+					$('.popupsCosteo a').click();
+					return false;
+
+                 }
+
+              }
+
+				if ($("#lev_cant").val() / 1 == 0)
+				{
+					alert("Antes de hacer un levante debe ingresar la informacion General, no especifico la cantidad de levantes")
+					$('#tabs').tabs("select", 0);
+
+                } else 
+				{
+				
+				//var mixto=0;
+				//if( $('input[name="multiple"]').is(":checked"))
+				//{
+				//	var mixto=1;
+				//}
+				//alert($('#multiple_lista').val())
+				var mixto=$("#multiple_lista").val();
+				
+				if ($("#cant_declaraciones").val() / 1 >= $("#lev_cant").val() / 1 && $('#multiple_lista').val()/1==1) 
+				{
+					alert("para agregar mas levantes cree un nuevo parcial marcando la casilla parcial");
+
+                } else 
+				{
+					$("#dialog-form-hacer-levante").dialog("open");
+					$("#ventana_levante").html("Espere un momento....");
+					$("div#ventana_levante").load("./scripts_index.php", {clase: 'Levante', metodo: 'getItem', mostrar: '1', id_item: id_item, doc_filtro: $("#doc_filtro_aux").val(), id_levante: $("#id_levante").val(), num_declaraciones: $("#num_declaraciones_aux").val(), cant_declaraciones: $("#cant_declaraciones").val(), cant_bultos: $("#bultos_aux").val(), id_grupo: $("#id_grupo").val(), lev_bultos: $("#lev_bultos").val(), peso_declaraciones: $("#peso_declaraciones").val(), cod_ref: cod_ref, tipo_movimiento: $("#tipo_movimiento").val(), por_cuenta_filtro: $("#por_cuenta_aux").val(), orden_filtro: $("#orden_maestro").val(),mixto:mixto}, function(datos) {
+					});
+
+                  }
+				}
+			}
+		});
+
+        $(":submit").button();
+
     });
-    $(":submit").button();
-  });
+
+
+
 </script>
+
+
+
 <style>
-  .ui-button { margin-left: -1px; }
-  .ui-button-icon-only .ui-button-text { padding: 0.35em; } 
-  .ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; width:200px;}
-  #formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
+
+    .ui-button { margin-left: -1px; }
+
+    .ui-button-icon-only .ui-button-text { padding: 0.35em; } 
+
+    .ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; width:200px;}
+
+    #formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
+
 </style>
+
 <div id="users-contain" class="ui-widget" > 
-  <link rel="stylesheet" type="text/css" href="./_estilos/jquery.autocomplete.css" />
-  <form id="listadoMercancia" name="listadoMercancia">   
-    <fieldset class="ui-widget ui-widget-content ui-corner-all">
-      <legend class="ui-widget ui-widget-header ui-corner-all"> Datos de la Mercanc&iacute;a</legend>
-      <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
-      <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
-        <thead>
-          <tr class="ui-widget-header "> 
-            <th >#</th>
-            <th >Orden</th>
-            <th >Mercanc&iacute;a</th>
-            <th >Cantidad</th>
-            <th>Peso</th>
-            <th >FOB</th>
-            <th >Acci&oacute;n 
-              <input name="n" type="hidden" id="n" value="{num_registros}" /> <input name="id_tab" type="hidden" id="id_tab" value="{id_tab}" /> 
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {comodin} 
-          <!-- BEGIN ROW -->
-          <tr class="{odd}"> 
-            <td width="1%" >{n}</td>
-            <td>
-              <div id="label_concepto{n}">
-                <input name="orden_detalle{n}" type="hidden" id="orden_detalle{n}" value="{orden}" />
-                {orden}
-                <input name="item[]" type="hidden" id="id_unitem{n}" value="{item}" />
-                <input name="cod_ref[]" type="hidden" id="cod_ref{n}" value="{codigo_referencia}" />
-                <input name="fob[]" type="hidden" id="fob{n}" value="{fob_nonac}" />
-                <a href="#" class="signup id_mercancia" title="Nuevo Levante {n}" id="{n}" cursor> 
-                </a>{itemX}
-              </div>
-            </td>
-            <td> [{cod_referencia}]{nombre_referencia} </td>
-            <td>{cant_nonac_f}</td>
-            <td>{peso_nonac_f}</td>
-            <td>{fob_f} 
-              <div id="lab_valores{n}" class="ui-priority-primary"></div>
-            </td>
-            <td> <a href="#" class="signup id_mercancia" title="Agregar Mercancia {n}" id="{n}" cursor><img src="integrado/imagenes/checkin.gif" border="1" /> 
-              </a>
-            </td>
-          </tr>
-          <!-- END ROW -->
-          <tr> 
-            <td>Totales</td>
-            <td>{n}</td>
-            <td>{n}</td>
-            <td>{tot_cant_nonac}</td>
-            <td>{tot_peso_nonac}</td>
-            <td>{total_fob}</td>
-            <td>{n}</td>
-          </tr>
-          <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}" />
-        </tbody>
-      </table>
-    </fieldset>
-  </form>
+
+    <link rel="stylesheet" type="text/css" href="./_estilos/jquery.autocomplete.css" />
+
+
+
+    <form id="listadoMercancia" name="listadoMercancia">   
+
+        <fieldset class="ui-widget ui-widget-content ui-corner-all">
+
+            <legend class="ui-widget ui-widget-header ui-corner-all"> Datos de la Mercanc&iacute;a</legend>
+
+            <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
+
+            
+    <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
+      <thead>
+        <tr class="ui-widget-header "> 
+          <th >#</th>
+          <th >Orden</th>
+          <th >Documento</th>
+          <th >Mercanc&iacute;a</th>
+          <th >Cantidad</th>
+          <th>Peso</th>
+          <th >FOB</th>
+          <th >Acci&oacute;n 
+            <input name="n" type="hidden" id="n" value="{num_registros}"> <input name="id_tab" type="hidden" id="id_tab" value="{id_tab}"> 
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      {comodin} 
+      <!-- BEGIN ROW -->
+      <tr class="{odd}"> 
+        <td width="1%" >{n}</td>
+        <td> <div id="label_concepto{n}"> 
+            <input name="orden_detalle{n}" type="hidden" id="orden_detalle{n}" value="{orden}" />
+            {orden} 
+            <input name="item[]" type="hidden" id="id_unitem{n}" value="{item}">
+            <input name="cod_ref[]" type="hidden" id="cod_ref{n}" value="{codigo_referencia}">
+            <input name="fob[]" type="hidden" id="fob{n}" value="{fob_nonac}">
+            <a href="#" class="signup id_mercancia" title="Nuevo Levante {n}" id="{n}" cursor> 
+            </a></div></td>
+        <td>{doc_tte_aux}</td>
+        <td> [{cod_referencia}]{nombre_referencia} </td>
+        <td>{cant_nonac_f}</td>
+        <td>{peso_nonac_f}</td>
+        <td>{fob_f} 
+          <div id="lab_valores{n}" class="ui-priority-primary"></div></td>
+        <td> <a href="#" class="signup id_mercancia" title="Agregar Mercancia {n}" id="{n}" cursor><img src="integrado/imagenes/checkin.gif" border="1"  > 
+          </a> </td>
+      </tr>
+      <!-- END ROW -->
+      <tr> 
+        <td>Totales</td>
+        <td>{n}</td>
+        <td>&nbsp;</td>
+        <td>{n}</td>
+        <td>{tot_cant_nonac}</td>
+        <td>{tot_peso_nonac}</td>
+        <td>{total_fob}</td>
+        <td>{n}</td>
+      </tr>
+      <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}">
+    </table>
+
+
+
+        </fieldset>
+
+    </form>
+
 </div>

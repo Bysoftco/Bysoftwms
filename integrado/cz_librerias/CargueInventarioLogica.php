@@ -1,21 +1,21 @@
-          <?php
+<?php
 
-require_once("CargueReferenciasDatos.php");
-require_once("CargueReferenciasPresentacion.php");
+require_once("CargueInventarioDatos.php");
+require_once("CargueInventarioPresentacion.php");
 require_once("ReporteExcel.php");
 require_once("Archivo.php");
 
-class CargueReferenciasLogica {
+class CargueInventarioLogica {
 
     var $datos;
     var $pantalla;
     var $adjuntados;
     var $no_adjuntados;
 
-    function CargueReferenciasLogica() {
-        $this->datos = &new CargueReferencias();
+    function CargueInventarioLogica() {
+        $this->datos = &new CargueInventario();
 
-        $this->pantalla = &new CargueReferenciasPresentacion($this->datos);
+        $this->pantalla = &new CargueInventarioPresentacion($this->datos);
     }
 
     function mfiltro($arregloDatos) {
@@ -27,20 +27,20 @@ class CargueReferenciasLogica {
         $this->pantalla->maestro($arregloDatos);
     }
 
-    function listarCargueReferencias($arregloDatos) {
-        $this->titulo($arregloDatos);
+    function listarCargueInventario($arregloDatos) {
+        $this->titulo(&$arregloDatos);
         $arregloDatos[mostrar] = 1;
-        $arregloDatos[plantilla] = "CargueReferenciasListado.html";
-        $arregloDatos[thisFunction] = 'listarCargueReferencias';
-        $this->pantalla->setFuncion($arregloDatos, $this->datos);
+        $arregloDatos[plantilla] = "CargueInventarioListado.html";
+        $arregloDatos[thisFunction] = 'listarCargueInventario';
+        $this->pantalla->setFuncion($arregloDatos, &$this->datos);
     }
 
     
-    function filtroCargueReferencias($arregloDatos) {
+    function filtroCargueInventario($arregloDatos) {
         $arregloDatos[mostrar] = 1;
-        $arregloDatos[plantilla] = "CargueReferenciasFiltro.html";
+        $arregloDatos[plantilla] = "CargueInventarioFiltro.html";
         $arregloDatos[thisFunction] = 'filtro';
-        $this->pantalla->setFuncion($arregloDatos, $this->datos);
+        $this->pantalla->setFuncion($arregloDatos, &$this->datos);
     }
 
 
@@ -57,10 +57,10 @@ class CargueReferenciasLogica {
 
     function excel($arregloDatos) {
 
-        $this->titulo($arregloDatos);
+        $this->titulo(&$arregloDatos);
         $arregloDatos[excel] = 1;
-        $arregloDatos['titulo'] = "Lista de CargueReferenciass " . ucfirst($arregloDatos[titulo]);
-        $arregloDatos['sql'] = $this->datos->listarCargueReferencias($arregloDatos);
+        $arregloDatos['titulo'] = "Lista de CargueInventarios " . ucfirst($arregloDatos[titulo]);
+        $arregloDatos['sql'] = $this->datos->listarCargueInventario($arregloDatos);
 
         $unExcel = new ReporteExcel($arregloDatos);
         $unExcel->generarExcel();
@@ -73,8 +73,8 @@ class CargueReferenciasLogica {
         $this->pantalla->maestroCarga($arregloDatos);
     }
 	
-	function setReferencia($arregloDatos) {
-		 $this->datos->setReferencia($arregloDatos);
+	function setInventario($arregloDatos) {
+		 $this->datos->setInventario($arregloDatos);
 		 // echo $arregloDatos[sql];
 		 echo $arregloDatos[registro];
 	}
@@ -82,14 +82,14 @@ class CargueReferenciasLogica {
     function filtrocarnArchivo($arregloDatos) {
 
         $arregloDatos[mostrar] = 1;
-        $arregloDatos[plantilla] = "CargueReferenciasDocumentosCarga.html";
+        $arregloDatos[plantilla] = "CargueInventarioDocumentosCarga.html";
         $arregloDatos[thisFunction] = 'filtroCarga';
         $arregloDatos[thisFunctionAux] = 'filtroCarga';
 
-        $this->pantalla->cargaPlantilla($arregloDatos, $this->datos);
+        $this->pantalla->cargaPlantilla($arregloDatos, &$this->datos);
     }
 
-    function uploadArchivoBancos($arregloDatos) {
+    function uploadArchivoInventario($arregloDatos) {
 
         $file = new Archivo();
         $error = 0;
@@ -101,13 +101,9 @@ class CargueReferenciasLogica {
 	
          $nombreCompleto="./integrado/_files/$arregloDatos[nombre_archivo]";
        	 $archivo = fopen("$nombreCompleto", "r");
-		  
          $arregloDatos[nomarchivo] = $file->nombre;
-		
-         $this->pantalla->crearPreuploadDocumentoscsv($arregloDatos, $archivo);
-         //borrar el archivo
-		   
-		       
+         $this->pantalla->crearPreuploadDocumentoscsv(&$arregloDatos, $archivo);
+                    
                
     }
 
