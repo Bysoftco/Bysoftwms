@@ -100,12 +100,14 @@
 				.click(function() 
 				{
 				
+				
+				
 					
 	    			if($('#errores').val()/1 > 1){
 					
 						alert("El archivo no puede tener errores, por favor corrija antes de guardar!!")
 					}else{
-					
+					//alert($("#registros").val())
 					var i = 0;
 					for(i=1;i< $("#registros").val()/1;i++){
 						//alert($("#codigo_ref"+i).val());
@@ -113,6 +115,8 @@
 						//alert($("#nombre"+i).val());
 						//alert($("#observacion"+i).val());
 						//alert($("#cliente"+i).val());
+						
+						//alert(i)
 						
 						$("div#referenciax").load("./scripts_index.php", 
 					   {clase:'CargueReferencias',metodo:'setReferencia',mostrar:'1',
@@ -142,9 +146,9 @@
 							
 						}, function(datos)
 						{
+							//alert(datos)
 							
-							
-							$("#ok"+datos).show();
+							$("#ok"+datos/1).show();
 				  		}
 					 );
 						
