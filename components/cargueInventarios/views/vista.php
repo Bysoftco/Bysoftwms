@@ -33,6 +33,10 @@ class cargueInventariosVista {
         $this->template->setVariable('referencia', $value['E']);
         $this->template->setVariable('embalaje', $value['K']);
         $this->template->setVariable('unimedida', $value['L']);
+<<<<<<< HEAD
+        $this->template->setVariable('posicion', $value['M']);
+=======
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
         $this->template->setVariable('observacion', $value['O']);
         $this->template->parseCurrentBlock("ROW");
       }

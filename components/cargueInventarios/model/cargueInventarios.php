@@ -33,6 +33,10 @@ class cargueInventariosModelo extends BDControlador {
       $modelo = $allDataInSheet[$i]["J"];
       $embalaje = $allDataInSheet[$i]["K"];
       $un_empaque = $allDataInSheet[$i]["L"];
+<<<<<<< HEAD
+      $posicion = $allDataInSheet[$i]["M"];
+=======
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
       $observacion = $allDataInSheet[$i]["O"];
       /* Para versión PHP >= 5.3
       $fecha_expira = date_format(DateTime::createFromFormat('d-m-Y',$allDataInSheet[$i]["P"]),'Y-m-d'); */
@@ -45,11 +49,19 @@ class cargueInventariosModelo extends BDControlador {
 
       //Valida existencia del arribo
       $query = "SELECT MIN(ie.codigo) AS item,ref.codigo AS codigo,ie.arribo AS arribo,
+<<<<<<< HEAD
+                  ie.orden AS orden,emb.codigo AS codemb,um.id AS id,ps.codigo AS codpos
+=======
                   ie.orden AS orden,emb.codigo AS codemb,um.id AS id
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
                 FROM inventario_entradas ie
                   LEFT JOIN referencias ref ON ref.codigo_ref = '$referencia'
                   LEFT JOIN embalajes emb ON emb.cd_embalaje = '$embalaje'
                   LEFT JOIN unidades_medida um ON um.codigo = '$un_empaque'
+<<<<<<< HEAD
+                  LEFT JOIN posiciones ps ON ps.nombre = '$posicion'
+=======
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
                 WHERE (ie.arribo = $arribo) AND (ie.orden = $orden)";
 
       $db->query($query);
@@ -60,6 +72,10 @@ class cargueInventariosModelo extends BDControlador {
       $referencia = $regResult->codigo;
       $embalaje = $regResult->codemb;
       $un_empaque = $regResult->id;
+<<<<<<< HEAD
+      $posicion = $regResult->codpos;
+=======
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
       
       if($arribo=="") {
         $validador[$i]['A'] = $allDataInSheet[$i]["A"];
@@ -79,7 +95,15 @@ class cargueInventariosModelo extends BDControlador {
       }
       if($un_empaque=="") {
         $validador[$i]["L"] = $allDataInSheet[$i]["L"];
+<<<<<<< HEAD
+        $validador[$i]["O"] .= "Unidad de Empaque no existe ";
+      }
+      if($posicion=="") {
+        $validador[$i]["M"] = $allDataInSheet[$i]["M"];
+        $validador[$i]["O"] .= "Posicion no existe";
+=======
         $validador[$i]["O"] .= "Unidad de Empaque no existe";
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
       }
     }
     return $validador;
@@ -111,6 +135,10 @@ class cargueInventariosModelo extends BDControlador {
       $modelo = $allDataInSheet[$i]["J"];
       $embalaje = $allDataInSheet[$i]["K"];
       $un_empaque = $allDataInSheet[$i]["L"];
+<<<<<<< HEAD
+      $posicion = $allDataInSheet[$i]["M"];
+=======
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
       $observacion = $allDataInSheet[$i]["O"];
       /* Para versión PHP >= 5.3
       $fecha_expira = date_format(DateTime::createFromFormat('d-m-Y',$allDataInSheet[$i]["P"]),'Y-m-d'); */
@@ -122,20 +150,36 @@ class cargueInventariosModelo extends BDControlador {
            
       if($arribo!=$regArribo && $orden!=$regOrden) {
         $query = "SELECT MIN(ie.codigo) AS item,ref.codigo AS codigo,
+<<<<<<< HEAD
+                    emb.codigo AS codemb,um.id AS id,ps.codigo AS codpos
+=======
                     emb.codigo AS codemb,um.id AS id
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
                   FROM inventario_entradas ie 
                     INNER JOIN referencias ref ON ref.codigo_ref = '$referencia'
                     INNER JOIN embalajes emb ON emb.cd_embalaje = '$embalaje'
                     INNER JOIN unidades_medida um ON um.codigo = '$un_empaque'
+<<<<<<< HEAD
+                    INNER JOIN posiciones ps ON ps.nombre = '$posicion'
+=======
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
                   WHERE (ie.arribo = $arribo) AND (ie.orden = $orden)";        
         $actualizo = true;
       } else {
         $query = "SELECT ref.codigo AS codigo,emb.codigo AS codemb,
+<<<<<<< HEAD
+                    um.id AS id,ps.codigo AS codpos,da.tipo_operacion
+=======
                     um.id AS id,da.tipo_operacion
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
                   FROM inventario_entradas ie 
                     INNER JOIN referencias ref ON ref.codigo_ref = '$referencia'
                     INNER JOIN embalajes emb ON emb.cd_embalaje = '$embalaje'
                     INNER JOIN unidades_medida um ON um.codigo = '$un_empaque'
+<<<<<<< HEAD
+                    INNER JOIN posiciones ps ON ps.nombre = '$posicion'
+=======
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
                     INNER JOIN do_asignados da ON da.do_asignado = $orden
                   WHERE (ie.arribo = $arribo) AND (ie.orden = $orden)";        
       }
@@ -145,6 +189,10 @@ class cargueInventariosModelo extends BDControlador {
       $referencia = $regResult->codigo;
       $embalaje = $regResult->codemb;
       $un_empaque = $regResult->id;
+<<<<<<< HEAD
+      $posicion = $regResult->codpos;
+=======
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
       $tipo_operacion = $regResult->tipo_operacion;
       
       if($codigo!="" && $actualizo) {
@@ -158,7 +206,11 @@ class cargueInventariosModelo extends BDControlador {
                         modelo = '$modelo',
                         embalaje = $embalaje,
                         un_empaque = $un_empaque,
+<<<<<<< HEAD
+                        posicion = $posicion,
+=======
                         posicion = 1,
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
                         fecha_expira = '$fecha_expira' WHERE (codigo = $codigo)";
 
         $db->query($query);
@@ -170,7 +222,11 @@ class cargueInventariosModelo extends BDControlador {
                     peso,valor,fmm,modelo,embalaje,un_empaque,posicion,cant_declaraciones,
                     observacion,fecha_expira) 
                   VALUES($arribo,$orden,0,CURDATE(),'$referencia',$cantidad,$peso,$valor,'$fmm',
+<<<<<<< HEAD
+                    '$modelo',$embalaje,$un_empaque,$posicion,0,'$observacion',
+=======
                     '$modelo',$embalaje,$un_empaque,1,0,'$observacion',
+>>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
                     '$fecha_expira');";
 
         $db->query($query);
