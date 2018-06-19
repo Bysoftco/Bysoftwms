@@ -219,10 +219,10 @@ class CargueReferenciasPresentacion {
 				 $tipo,
 				 $grupo_item,
 				 $factor_conversion) = explode(";", $linea);
-				 
-			if($n > 0 or trim($arregloDatos[codigo_ref])<>"")
+			//echo "n".$n."xxx <br>".$arregloDatos[codigo_ref]	; 
+			if($n >= 1 and  trim($codigo_ref)<>"")
 			{
-			
+			//echo "n $n  $arregloDatos[codigo_ref] <br>";
 				$estado = '';
            		if ($n % 2) 
 				{
@@ -348,7 +348,7 @@ class CargueReferenciasPresentacion {
 				
         }
 		$unaPlantilla->setVariable('registros', $n);
-		$unaPlantilla->setVariable('errores', $errores-4);
+		$unaPlantilla->setVariable('errores', $errores);
 		$arregloDatos[alerta]="";
         if ($cuentaError == 1) {
             $arregloDatos[mostrarBotonCrear] = 'none';
