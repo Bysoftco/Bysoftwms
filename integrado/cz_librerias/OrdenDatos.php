@@ -108,9 +108,9 @@ class Orden extends MYDB {
 		$sql = "SELECT numero_documento,razon_social,correo_electronico,
               v.nombre AS nvendedor
 						FROM clientes,vendedores v
-            WHERE (razon_social LIKE '%$arregloDatos[q]%')           
+            WHERE (razon_social LIKE '%$arregloDatos[q]%' OR  numero_documento  LIKE '%$arregloDatos[q]%')           
               AND (v.codigo = vendedor)";
-
+//echo $sql;
 		$this->query($sql);
 		if($this->_lastError) {
 			echo $sql;

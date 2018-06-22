@@ -67,8 +67,7 @@
 
 </script>
 
-
-
+<!--
 <style>
 
     .ui-button { margin-left: -1px; }
@@ -79,9 +78,9 @@
 
     #formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
 
-</style>
+</style> -->
 
-<div id="users-contain" class="ui-widget" > 
+<div id="users-contain" class="ui-widget"> 
 
     <link rel="stylesheet" type="text/css" href="./_estilos/jquery.autocomplete.css" />
 
@@ -95,8 +94,7 @@
     <legend class="ui-widget ui-widget-header ui-corner-all"> Datos de la Mercanc&iacute;a</legend>
     <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
 
-            
-    <table width="100%" class="ui-widget ui-widget-content" id="users1"  style="display:{mostrarCuerpo}">
+    <table width="100%" class="ui-widget ui-widget-content" id="users2"  style="display:{mostrarCuerpo}">
       <thead>
         <tr class="ui-widget-header "> 
           <th >#</th>
@@ -111,7 +109,7 @@
           </th>
         </tr>
       </thead>
-      <tbody>
+     
       {comodin} 
       <!-- BEGIN ROW -->
       <tr class="{odd}"> 
@@ -134,6 +132,7 @@
           </a> </td>
       </tr>
       <!-- END ROW -->
+	
       <tr> 
         <td>Totales</td>
         <td>{n}</td>
@@ -144,6 +143,7 @@
         <td>{total_fob}</td>
         <td>{n}</td>
       </tr>
+	   
       <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}">
     </table>
 
@@ -156,7 +156,7 @@
 </div>
 <script>
 $(document).ready(function() {
-    $('#users1').dataTable({
+    $('#users2').dataTable({
       "aaSorting": [],
       "oLanguage": {
         "sLengthMenu": "Mostrar _MENU_ registros por página",
