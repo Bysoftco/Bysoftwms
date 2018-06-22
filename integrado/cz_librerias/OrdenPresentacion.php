@@ -128,17 +128,17 @@ class OrdenPresentacion {
 		$unDatos = new Orden();
 		$arregloDatos[id_tab] = 0;
 		
-    if(empty($arregloDatos[tab_index])) { $arregloDatos[tab_index] = 0; }
+    	if(empty($arregloDatos[tab_index])) { $arregloDatos[tab_index] = 0; }
 		$arregloDatos[mostar] = "0";
 		$arregloDatos[plantilla] = 'ordenArriboToolbar.html';
 		$arregloDatos[thisFunction] = 'getToolbar';
 		
 		
-    // Carga información del Perfil
-    $arregloDatos[perfil] = $_SESSION['datos_logueo']['perfil_id'];
-    // Valida el Perfil para identificar el Tercero
-    $arregloDatos[verToolbar] = $arregloDatos[perfil] == 23 ? 'none' : 'block';
-    $this->plantilla->setVariable('verToolbar', $arregloDatos[verToolbar]);
+    	// Carga información del Perfil
+    	$arregloDatos[perfil] = $_SESSION['datos_logueo']['perfil_id'];
+    	// Valida el Perfil para identificar el Tercero
+    	$arregloDatos[verToolbar] = $arregloDatos[perfil] == 23 ? 'none' : 'block';
+    	$this->plantilla->setVariable('verToolbar', $arregloDatos[verToolbar]);
 		$this->plantilla->setVariable('toolbarArribo', $this->cargaPlantilla($arregloDatos,$this->datos));
 		
 		//Si se está creando la orden se deja en modo edición
