@@ -723,7 +723,7 @@ class Orden extends MYDB {
     $nombre_sede = $_SESSION['nombre_sede'];    
     //Valida creación arribo desde Orden Crear
     if($arregloDatos[flgnewa]) {
-	var_dump($arregloDatos);
+	
       $arregloDatos[paiscompra] = $this->findCodigoPais($arregloDatos[paiscompra]);      
 		  $sql = "INSERT INTO arribos(orden,factura,fecha_arribo,manifiesto,fecha_manifiesto,fecha_doc_tt,
                 tipo_documento,cantidad,peso_bruto,repeso,metros,estibas,seguros,otros_gastos,valor_fob,

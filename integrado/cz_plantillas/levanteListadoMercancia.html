@@ -91,12 +91,12 @@
 
         <fieldset class="ui-widget ui-widget-content ui-corner-all">
 
-            <legend class="ui-widget ui-widget-header ui-corner-all"> Datos de la Mercanc&iacute;a</legend>
-
-            <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
+            
+    <legend class="ui-widget ui-widget-header ui-corner-all"> Datos de la Mercanc&iacute;a</legend>
+    <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
 
             
-    <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
+    <table width="100%" class="ui-widget ui-widget-content" id="users1"  style="display:{mostrarCuerpo}">
       <thead>
         <tr class="ui-widget-header "> 
           <th >#</th>
@@ -154,3 +154,18 @@
     </form>
 
 </div>
+<script>
+$(document).ready(function() {
+    $('#users1').dataTable({
+      "aaSorting": [],
+      "oLanguage": {
+        "sLengthMenu": "Mostrar _MENU_ registros por página",
+        "sZeroRecords": "No hay registros para mostrar",
+        "sInfo": "Mostrando _START_ a _END_ registros de _TOTAL_",
+        "sInfoEmpty": "Mostrando 0 a 0 registros de 0",
+        "sInfoFiltered": "",
+        "sSearch": "Buscar:"
+      }
+    });
+  });
+  </script>	

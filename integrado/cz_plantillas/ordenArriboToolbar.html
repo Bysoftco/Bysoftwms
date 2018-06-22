@@ -62,10 +62,13 @@
   $('.noImprimir').css('display','none');
 
   $('.popupsAgregar a').click(function() {
+  
+ 
     var url = 'scripts_index.php?clase=Orden&metodo=addArribo'+
       '&do_asignado={do_asignado}&do_asignado_full='+$("#do_asignado_full").val()+
       '&arribo='+$("#arribo_seleccionado").val()+'&doc_ttex='+$("#doc_ttex").val()+'&email='+
       $("#email").val()+'&flgnewa='+$("#flgnewa").val();
+	  //alert(url)
     $.ajax({
       url: url,
       type: "POST",

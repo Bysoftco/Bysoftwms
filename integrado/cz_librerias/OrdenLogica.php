@@ -274,15 +274,18 @@ class OrdenLogica {
 	}
 
 	function addArribo($arregloDatos) {
+	
 		$arregloDatos[tab_index] = 1;
     //Valida creación arribo desde Orden Crear
     if($arregloDatos[flgnewa]) {
+	
       $arregloDatos = $this->datos->newArribo($arregloDatos);
       $unaLista = new Orden();
       $lista = $unaLista->lista('transportador','','');
 		  $lista = armaSelect($lista,'[seleccione]',$arregloDatos['transportador']);		
       $arregloDatos[selectTransportador] = $lista;
     }
+	
 		$this->datos->addArribo($arregloDatos);
 
 		$this->pantalla->ordenArriboMaestro($arregloDatos,$this->datos);

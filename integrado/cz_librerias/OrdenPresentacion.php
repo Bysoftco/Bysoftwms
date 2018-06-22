@@ -118,6 +118,7 @@ class OrdenPresentacion {
 	}
 
 	function ordenArriboMaestro($arregloDatos) {
+	
 		$this->plantilla->loadTemplateFile(PLANTILLAS . 'ordenArriboMaestro.html',true,true);
 		$this->plantilla->setVariable('mensaje', $this->datos->mensaje);
 		$this->plantilla->setVariable('estilo', $this->datos->estilo);
@@ -131,6 +132,8 @@ class OrdenPresentacion {
 		$arregloDatos[mostar] = "0";
 		$arregloDatos[plantilla] = 'ordenArriboToolbar.html';
 		$arregloDatos[thisFunction] = 'getToolbar';
+		
+		
     // Carga información del Perfil
     $arregloDatos[perfil] = $_SESSION['datos_logueo']['perfil_id'];
     // Valida el Perfil para identificar el Tercero
@@ -154,6 +157,7 @@ class OrdenPresentacion {
 		$this->plantilla->setVariable('abre_ventana', 0);
 		$this->plantilla->setVariable('nombre_empleado', $arregloDatos[nombre_empleado]);
 		$this->plantilla->show();
+		die();
 	}
 	
 	function maestro($arregloDatos) {
