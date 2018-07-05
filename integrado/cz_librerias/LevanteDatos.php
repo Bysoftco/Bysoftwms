@@ -289,7 +289,8 @@ class Levante extends MYDB {
 			$arregloDatos[where] .= " AND do_asignados.do_asignado = '$arregloDatos[orden_filtro]'";
 		}
 		$arregloDatos[where] .= " AND ref.codigo = '$arregloDatos[cod_ref]'"; //Filtro por referencia
-		$arregloDatos[GroupBy] = " codigo_referencia "; //Orden Por Referencia
+		//$arregloDatos[GroupBy] = " codigo_referencia "; //Orden Por Referencia
+		$arregloDatos[GroupBy] = " orden,codigo_referencia "; //agrupa  Por ORDEN y  Referencia 04/07/2018
 		$this->getInvParaProceso($arregloDatos);
 	}
 
