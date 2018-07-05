@@ -40,10 +40,7 @@
       <th>Código Referencia</th>
       <th>Embalaje</th>
       <th>Unidad Empaque</th>
-<<<<<<< HEAD
       <th>Posici&oacute;n</th>
-=======
->>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
       <th>Observaciones</th>
     </tr>
   </thead>
@@ -56,10 +53,7 @@
       <td style="text-align: center;">{referencia}</td>
       <td style="text-align: center;">{embalaje}</td>
       <td style="text-align: center;">{unimedida}</td>
-<<<<<<< HEAD
       <td style="text-align: center;">{posicion}</td>
-=======
->>>>>>> c4a9fdc7fd5521c67a74d1c6e559033ce162631e
       <td style="text-align: center;">{observacion}</td>
     </tr>
     <!-- END ROW  -->
