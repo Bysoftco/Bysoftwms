@@ -179,6 +179,7 @@ class Levante extends MYDB {
 										$sql_alistamiento) AS inv 
 									GROUP BY $arregloDatos[GroupBy] $arregloDatos[having] $arregloDatos[orderBy]";
 		
+		//echo $sql."<br>";
 		$this->_lastError = NULL;
 		$this->query($sql);
 		//se rempalazo cruce con la tabla inventario_declaraciones 26022018 para no duplicar registros cuando es MULTIPLE
@@ -337,6 +338,7 @@ class Levante extends MYDB {
 		$arregloDatos[donde] = " sendlevante";
 		$arregloDatos[having] = " HAVING peso_nonac > 0";
 		$arregloDatos[GroupBy] = " codigo_referencia"; //Por Referencia
+		$arregloDatos[GroupBy] = "orden, codigo_referencia"; //Por documento y Referencia
 		$this->getInvParaProceso($arregloDatos);
 	}
 
