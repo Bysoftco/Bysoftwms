@@ -79,6 +79,7 @@ class Levante extends MYDB {
 	if(!empty($arregloDatos[una_orden])) {
       $ordenes_varios = preg_replace('/\\s+/', "','", $arregloDatos[una_orden]); 
       $arregloDatos[where] .= " AND arribos.orden  IN ('$ordenes_varios')";
+	  //echo $arregloDatos[where];
     }
     if(!empty($arregloDatos[guia_filtro])) {
       $documentos_varios = str_replace( "*" , "','" , $arregloDatos[guia_filtro] ) ;

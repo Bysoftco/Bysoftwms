@@ -15,6 +15,9 @@
 			   var id_item = $("#id_unitem" + $column).val();
 			   var cod_ref = $("#cod_ref" + $column).val();
 			   var fob = $("#fob" + $column).val();
+			   var orden = $("#orden_detalle" + $column).val();
+			   
+			  
 
               if (fob == 0) 
 			  {
@@ -51,7 +54,7 @@
 				{
 					$("#dialog-form-hacer-levante").dialog("open");
 					$("#ventana_levante").html("Espere un momento....");
-					$("div#ventana_levante").load("./scripts_index.php", {clase: 'Levante', metodo: 'getItem', mostrar: '1', id_item: id_item, doc_filtro: $("#doc_filtro_aux").val(), id_levante: $("#id_levante").val(), num_declaraciones: $("#num_declaraciones_aux").val(), cant_declaraciones: $("#cant_declaraciones").val(), cant_bultos: $("#bultos_aux").val(), id_grupo: $("#id_grupo").val(), lev_bultos: $("#lev_bultos").val(), peso_declaraciones: $("#peso_declaraciones").val(), cod_ref: cod_ref, tipo_movimiento: $("#tipo_movimiento").val(), por_cuenta_filtro: $("#por_cuenta_aux").val(), orden_filtro: $("#orden_maestro").val(),mixto:mixto}, function(datos) {
+					$("div#ventana_levante").load("./scripts_index.php", {clase: 'Levante', metodo: 'getItem', mostrar: '1', id_item: id_item, doc_filtro: $("#doc_filtro_aux").val(), id_levante: $("#id_levante").val(), num_declaraciones: $("#num_declaraciones_aux").val(), cant_declaraciones: $("#cant_declaraciones").val(), cant_bultos: $("#bultos_aux").val(), id_grupo: $("#id_grupo").val(), lev_bultos: $("#lev_bultos").val(), peso_declaraciones: $("#peso_declaraciones").val(), cod_ref: cod_ref, tipo_movimiento: $("#tipo_movimiento").val(), por_cuenta_filtro: $("#por_cuenta_aux").val(), orden_filtro: $("#orden_maestro").val(),mixto:mixto,una_orden:orden}, function(datos) {
 					});
 
                   }
