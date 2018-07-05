@@ -229,8 +229,8 @@ class cargueInventariosModelo extends BDControlador {
 					//Inserta información de la posición en la tabla referencias_ubicacion
 					$query = "INSERT INTO referencias_ubicacion(item,ubicacion,rango,inicio,fin) 
 										VALUES($codigo,$posicion,'',$posicion,0);";
-					$db->query($query);
-        }				
+        }
+				$db->query($query);				
       }
     }
     echo "<script>alert('Cargue del INVENTARIO ENTRADAS y MOVIMIENTOS satisfactoriamente');</script>";
