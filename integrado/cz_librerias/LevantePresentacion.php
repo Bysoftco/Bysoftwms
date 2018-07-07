@@ -298,7 +298,7 @@ class LevantePresentacion {
 	
 	//var_dump($arregloDatos);// MIXTO
 	//var_dump($arregloDatos);
-	if($unaConsulta->N > 0 and $arregloDatos[mixto]==1 ){
+	if($unaConsulta->N > 0 and $arregloDatos[mixto]>=1 ){
 		
 		$arregloDatos[prefijo]=$unaConsulta->num_levante;
 		$arregloDatos[fecha]=$unaConsulta->fecha;
@@ -344,8 +344,11 @@ class LevantePresentacion {
       $unaPlantilla->setVariable("parcial", $unDatos->lev_cuenta_grupo);
     }
 	
-	
-	$lista=multple();
+	 $lista = array('0' => 'Simple',
+                  '1' => 'Multiple',
+				  '2' => 'General'
+            );
+ 	
 	$lista	= armaSelect($lista,'[seleccione]',$unDatos->prefactura);
     $unaPlantilla->setVariable('selectMultiple', $lista);
 	
