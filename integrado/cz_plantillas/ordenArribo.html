@@ -279,6 +279,12 @@
 		//Enviamos la petición 
 		Req.send(data);
 	}
+	$('#transportador').change(function ()
+	{   //agente2
+		$("#agente2").val($('select[name="transportador"] option:selected').text());
+    	//alert($('select[name="transportador"] option:selected').text()) 
+	});
+	
 </script>
 <style>
 	.ui-datepicker-trigger { position: relative; top: 5px; right: 1px; height: 22px; }
