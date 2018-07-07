@@ -1041,12 +1041,20 @@ class Levante extends MYDB {
     if($arregloDatos[tipo_retiro_filtro]) {
       $arregloDatos[tipo_retiro_filtro] = $arregloDatos[tipo_movimiento];
     }
-
-    //Captura automática de fecha y hora 
+	// multiple_lista,prefactura
+    //Captura automática de fecha y hora
+	if($arregloDatos[doc_filtro]==""){
+		$arregloDatos[modalidad]=2;
+		
+	}else{
+		$arregloDatos[modalidad]=0;
+		
+	}
+	 
     $fecha = new DateTime();
     $fecha = $fecha->format('Y-m-d H:i');
-    $sql = "INSERT INTO inventario_maestro_movimientos(lev_documento,fecha,tip_movimiento,tipo_retiro,orden)
-            VALUES('$arregloDatos[doc_filtro]','$fecha','$arregloDatos[tipo_movimiento]','$arregloDatos[tipo_retiro]','$arregloDatos[orden_filtro]')";
+    $sql = "INSERT INTO inventario_maestro_movimientos(lev_documento,fecha,tip_movimiento,tipo_retiro,orden,prefactura)
+            VALUES('$arregloDatos[doc_filtro]','$fecha','$arregloDatos[tipo_movimiento]','$arregloDatos[tipo_retiro]','$arregloDatos[orden_filtro]','$arregloDatos[modalidad]')";
 
     $this->query($sql);
     if($this->_lastError) {
