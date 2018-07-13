@@ -1,120 +1,57 @@
     <script>
 
     $(function() 
+	{
+		$("a.borrar_id").click(function() 
+		{ //check for the first selection
+			var $column = $(this).attr('id'); // assign the ID of the column
+			with (document.forMercancia)
+			{
+				// Si la mercancia ya  paso al siguiente  proceso no se puede borrar
+				var num_levante=$("#num_levante"+$column ).val();
+				if(confirm('Confirma que desea quitar el item '+num_levante))
+				{
+					// Cuerpo del levante
+					$("div#htmlCuerpo").load("./scripts_index.php", {clase:'Levante',metodo:'delMercanciaLevante',mostrar:'1',id_levante:$('#id_levante').val(),num_levante_del:num_levante,tipo_movimiento:$('#tipo_movimiento').val(),grupo_borrado:$("#grupo_cuerpo"+$column ).val()}, function(datos){
+					});
 
-    {
+					// OJo Revizar dependiendo Tipo de Operacion se llama metodo
+					//Cuerpo de la mercancia
+					$("div#htmlMercancia").load("./scripts_index.php", {clase:'Levante',metodo:'getMercancia',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val(),por_cuenta_filtro:$("#por_cuenta_aux").val(),tipo_retiro:$("#tipo_retiro_filtro").val(),doc_filtro:$("#doc_filtro_aux").val(),orden_filtro:$("#orden_filtro").val()}, function(datos){
 
-        $("a.borrar_id").click(function() 
+ 					});
 
-        { //check for the first selection
+                    // cabeza del levante
 
-            var $column = $(this).attr('id'); // assign the ID of the column
-
-            with (document.forMercancia)
-
-            {
-
-              // Si la mercancia ya  paso al siguiente  proceso no se puede borrar
-
-              if(1){
-
-			  }
-
-              // if($("#id_grupo" ).val()==$("#grupo_cuerpo"+$column ).val())
-
-              // {
-
-                    
-
-					var num_levante=$("#num_levante"+$column ).val();
-
-                   
-
-                    if(confirm('Confirma que desea quitar el item '+num_levante))
-
-                    {
-
-                        // Cuerpo del levante
-
-                        $("div#htmlCuerpo").load("./scripts_index.php", {clase:'Levante',metodo:'delMercanciaLevante',mostrar:'1',id_levante:$('#id_levante').val(),num_levante_del:num_levante,tipo_movimiento:$('#tipo_movimiento').val(),grupo_borrado:$("#grupo_cuerpo"+$column ).val()}, function(datos){
-
-                        });
-
-
-
-                        // OJo Revizar dependiendo Tipo de Operacion se llama metodo
-
-						//Cuerpo de la mercancia
-
-                        $("div#htmlMercancia").load("./scripts_index.php", {clase:'Levante',metodo:'getMercancia',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val(),por_cuenta_filtro:$("#por_cuenta_aux").val(),tipo_retiro:$("#tipo_retiro_filtro").val(),doc_filtro:$("#doc_filtro_aux").val(),orden_filtro:$("#orden_filtro").val()}, function(datos){
-
-                        
-
-                        });
-
-                        
-
-                        // cabeza del levante
-
-                         $("div#htmlLevante").load("./scripts_index.php", {clase:'Levante',metodo:'getCabezaLevante',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val()}, function(datos){
-
-                         })
+                     $("div#htmlLevante").load("./scripts_index.php", {clase:'Levante',metodo:'getCabezaLevante',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val()}, function(datos){
+					 })
 
                     }
+				}
 
-		//}else{
-
-                   // alert("No puede borrar la mercancia de un parcial que no es el ultimo")
-
-                //}
-
-             }
-
-	
-
-         });
+			});
 
          
 
          $("a.ver_id").click(function() 
-
-         { //check for the first selection
-
-            var $column = $(this).attr('id'); // assign the ID of the column
-
-			
-
-            with (document.forMercancia)
-
-            {
-
-                var num_levante=$("#num_levante"+$column ).val();
-
-                 
-
-                $( "#dialog-form-hacer-levante" ).dialog( "open" );
-
-                $( "#ventana_levante" ).html( "Espere un momento...." );
-
-                $("div#ventana_levante").load("./scripts_index.php", {clase:'Levante',metodo:'getLevante',mostrar:'1',num_levante:num_levante}, function(datos){
-
-              //alert(datos);
-
-                });
-
-                            }
-
-            
-
-         });
+		 { //check for the first selection
+			var $column = $(this).attr('id'); // assign the ID of the column
+			with (document.forMercancia)
+			{
+				var num_levante=$("#num_levante"+$column ).val();
+				var declaracion=$("#declaracion"+$column ).val();
+				var codigo_referencia=$("#codigo_referencia"+$column ).val();
+				$( "#dialog-form-hacer-levante" ).dialog( "open" );
+				$( "#ventana_levante" ).html( "Espere un momento...." );
+				$("div#ventana_levante").load("./scripts_index.php", {clase:'Levante',metodo:'getLevante',mostrar:'1',num_levante:num_levante,declaracion:declaracion,codigo_referencia:codigo_referencia}, function(datos){
+				});
+			}
+		  });
 
 		$(":submit").button();;
+		});
 
-       });
-
-	
-
-    </script>
+	</script>
 
 
 
@@ -187,7 +124,8 @@
         <td> {grupo_label} {num_levante} 
 
           <input name="num_levante[]" type="hidden" id="num_levante{n}" value="{num_levante}"> 
-
+		 <input name="declaracion[]" type="hidden" id="declaracion{n}" value="{declaracion}">
+		  <input name="codigo_referencia[]" type="hidden" id="codigo_referencia{n}" value="{codigo_referencia}">
           <input name="grupo_cuerpo" type="hidden" id="grupo_cuerpo{n}" value="{un_grupo}"> 
 
         </td>
