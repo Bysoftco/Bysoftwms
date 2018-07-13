@@ -294,7 +294,13 @@ class LevantePresentacion {
 	$arregloDatos[tipo_declaracion]="Inicial";
 	$arregloDatos[modalidad]="C100";
 	$arregloDatos[arancel]="5";
-	$arregloDatos[iva]="16";
+	
+	
+	$unIva = new Levante();
+    $unIva->getIva( $arregloDatos);
+    $unIva->fetch();
+    $iva = $unIva->iva;
+	$arregloDatos[iva]=$iva ;
 	
 	//var_dump($arregloDatos);// MIXTO
 	//var_dump($arregloDatos);
