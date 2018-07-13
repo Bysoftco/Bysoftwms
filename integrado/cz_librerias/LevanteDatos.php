@@ -133,6 +133,7 @@ class Levante extends MYDB {
 									 cod_maestro,
 									 MIN(num_levante) AS num_levante,
 									 un_grupo,
+									 declaracion,
 									 numero_documento,
 									 razon_social
 						FROM (SELECT im.codigo,
@@ -154,6 +155,7 @@ class Levante extends MYDB {
 										im.num_levante,
 										im.tipo_movimiento,
 										id.grupo AS un_grupo,
+										id.declaracion,
 										CASE WHEN im.tipo_movimiento IN($arregloDatos[movimiento]) THEN peso_nonac ELSE 0
 										END AS peso_nonac,
 										CASE WHEN im.tipo_movimiento IN($arregloDatos[movimiento]) THEN peso_naci ELSE 0
@@ -170,7 +172,7 @@ class Levante extends MYDB {
 										razon_social
 									FROM  do_asignados, inventario_entradas ie,arribos,clientes,referencias ref,inventario_movimientos im
 									LEFT JOIN inventario_maestro_movimientos imm ON im.cod_maestro = imm.codigo
-									LEFT JOIN (SELECT MAX(num_levante ) AS num_levante,MIN(grupo) AS grupo  FROM inventario_declaraciones GROUP BY num_levante) id ON im.num_levante = id.num_levante
+									LEFT JOIN (SELECT MAX(num_levante ) AS num_levante,MIN(grupo) AS grupo,MAX(codigo) AS declaracion  FROM inventario_declaraciones GROUP BY num_levante) id ON im.num_levante = id.num_levante
 									WHERE im.inventario_entrada = ie.codigo
 										AND arribos.arribo = ie.arribo
 										AND arribos.orden = do_asignados.do_asignado
@@ -1674,8 +1676,11 @@ class Levante extends MYDB {
               AND arribos.orden = do_asignados.do_asignado
               AND ie.referencia = ref.codigo
               AND embalajes.codigo = ie.un_empaque
-              AND inventario_movimientos.tipo_movimiento = 2";
-
+              AND inventario_movimientos.tipo_movimiento = 2
+			  AND inventario_declaraciones.codigo=$arregloDatos[declaracion]
+			  AND ref.codigo=$arregloDatos[codigo_referencia]
+			  ";
+//echo $sql;
     $this->query($sql);
     if($this->_lastError) {
       echo $sql;
