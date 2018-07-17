@@ -155,7 +155,7 @@ class LevanteLogica {
 		break;
 		 case 17: // Retiro de Rechazados
 		 	//echo "XXXX".$arregloDatos[tipo_movimiento];die();
-		 	$arregloDatos[movimiento] = "16,17,18"; 
+		 	$arregloDatos[movimiento] = "16,17,18,19"; 
         	$arregloDatos[plantillaMercanciaCuerpo] = "levanteListadoMercanciaRetiro.html";
         	$arregloDatos[metodoMercanciaCuerpo] = "getInvParaRetiro";
 			
@@ -291,7 +291,9 @@ class LevanteLogica {
   }
   
   function newRetiro($arregloDatos) {
-    $arregloDatos[tab_seleccionado] = 1;
+    
+	
+	$arregloDatos[tab_seleccionado] = 1;
     
     switch($arregloDatos[tipo_retiro]) {
       case 1:
@@ -312,7 +314,7 @@ class LevanteLogica {
         $arregloDatos[tipo_movimiento] = 8;
         $arregloDatos[tipo_retiro_filtro] = 8;// para que muestre extrangero
         break;
-		case 17: // procesogetToolbar //Salida para Proceso a Transformar
+		case 17: // procesogetToolbar //Salida mercancia defectuosa
         $arregloDatos[tipo_movimiento] = 17;
         $arregloDatos[tipo_retiro_filtro] = 8;// para que muestre extrangero
         break;

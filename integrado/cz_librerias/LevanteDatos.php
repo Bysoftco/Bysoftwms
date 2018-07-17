@@ -101,7 +101,7 @@ class Levante extends MYDB {
 		}
 		//var_dump($arregloDatos);
 		if(($arregloDatos[tipo_retiro]==17) OR $arregloDatos[tipo_retiro_filtro]==17){ // retiro de alistamientos
-			$sql_alistamiento=" AND  im.estado_mcia NOT IN(0,1)";
+			$sql_alistamiento=" AND  (im.estado_mcia NOT IN(0,1) OR im.tipo_movimiento =19)";
 			$arregloDatos[having] = " HAVING peso_nonac  <> 0 OR peso_naci <> 0 ";
 			
 		}
