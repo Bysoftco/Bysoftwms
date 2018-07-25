@@ -23,6 +23,13 @@
  	
 	$.validator.setDefaults({
 		submitHandler: function(){
+		 
+			if($('#envio').val()/1==1){
+			    return 0;
+			 }
+			 $('#envio').val(1);
+			 
+			  
 			$.post("./scripts_index.php",{ clase:'Levante',metodo:'existeLevante',num_levante:$('#levante').val() } ,function(data){ 
 				var valida=1;
 				// si el MULTIPLE no se valida el nùmero de levante
@@ -51,9 +58,11 @@
 						data:$("#formularioParaLevante").serialize(),
 						success: function (msm){
 							$('#htmlMercancia').html(msm);
-					}
-				});
-			} 
+					    }
+				     });
+			   }else{
+			   
+			     } 
 				   $("#dialog-form-hacer-levante").dialog("close");
 
         });
@@ -483,5 +492,5 @@
 
   <input name="un_formulario" type="hidden" id="un_formulario" value="formularioParaLevante">
   <input type="hidden" name="orden_filtro" id="orden_filtro" value="{orden_filtro}">
-
+  <input name="envio" type="hidden" id="envio" value="0" >
 </form>
