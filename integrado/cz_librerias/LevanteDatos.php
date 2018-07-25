@@ -1632,6 +1632,9 @@ class Levante extends MYDB {
     if(!empty($arregloDatos[do_filtro])) {
       $sql .= " AND do_asignados.do_asignado = '$arregloDatos[do_filtro]' ";
     }
+	 if(!empty($arregloDatos[movimiento])) {
+	 	$sql .= " AND imm.codigo='$arregloDatos[movimiento]'";
+	 }
     $sql .= " ORDER BY imm.codigo DESC";
     //echo $sql;
     $this->query($sql);
