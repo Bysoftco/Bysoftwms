@@ -1,0 +1,83 @@
+<script>
+	function reapertura(do_asignado) {
+		if(confirm('\u00BFSeguro que desea hacer Reapertura Para el DO '+do_asignado)){
+			$("div#mensaje").load("./scripts_index.php", {
+	    	clase:'Orden',metodo:'reapertura',do_asignado:do_asignado },
+			function(data) {
+				$("#mensaje").removeClass().addClass('ui-state-highlight').text(data).fadeIn(1000);
+            	if('{estilo_aux}'=='ui-state-error')
+            	{
+                	$("#mensaje").removeClass().addClass('ui-state-error').text(data).fadeIn(1000);	
+            	}else
+           		{
+                    setTimeout ("$('#mensaje').removeClass().addClass('').text('').delay();", 5000); 
+            	}
+      		});
+		}
+	}
+  	$(function() {
+    $("a.documento_id").click(function() { //check for the first selection
+	  var $column = $(this).attr('id'); // assign the ID of the column
+
+      with(document.listaRegistros) {
+        if($column == 1 && n.value==1) {
+          var orden = $('#do_asignado').val();
+        } else {
+          var orden = do_asignado[$column-1].value;
+          //$( "#dialog-form" ).dialog( "close" );
+		}	
+	  }
+
+      $("div#componente_central").load("./scripts_index.php", {
+	    clase:'Orden',metodo:'getOrden',do_asignado:orden },
+		function(data) {
+      });
+    });
+  });
+</script>
+	
+<span id="msgbox" style="display:block;text-align:left" class="{estilo}"> {mensaje} </span>
+<div id="users-contain" class="ui-widget">
+<form  name="listaRegistros" method="post" id="listaRegistros" action="scripts_index.php">
+  <table width="100%" class="ui-widget ui-widget-content" id="users" >
+    <thead>
+      <tr class="ui-widget-header "> 
+        <th>
+		  <input name="do_filtro" type="hidden" id="do_filtro_aux" value="{do_filtro}">
+          <input name="clase" type="hidden" id="clase" value="Orden"><input name="metodo" type="hidden" id="metodo" value="excel">
+          DOs
+          <input name="por_cuenta_filtro" type="hidden" id="por_cuenta_filtro_aux" value="{por_cuenta_filtro}">
+        </th>
+        <th>Cliente</th>
+        <th>Fecha</th>
+        <th>Documento
+          <input name="doc_filtro" type="hidden" id="doc_filtro_aux" value="{doc_filtro}"></th>
+        <th>Ubicaci&oacute;n
+          <input name="ubicacion_filtro" type="hidden" id="ubicacion_filtro_aux" value="{ubicacion_filtro}"></th>
+        <th>Operaci&oacute;n
+          <input name="fecha_inicio" type="hidden" id="fecha_inicio_aux" value="{fecha_inicio}">
+          <input name="fecha_fin" type="hidden" id="fecha_fin_aux" value="{fecha_fin}"></th>
+        <th>Acci&oacute;n 
+          <input name="n" type="hidden" id="n" value="{num_registros}"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- BEGIN ROW -->
+      <tr class="{odd}" height="0" bordercolor="#FF0000"> 
+        <td >{do_asignado} </td>
+        <td>{razon_social} </td>
+        <td>{fecha}<a href="#" class="signup documento_id" title="Reapertura Do {do_asignado}" id="{n}" cursor> 
+          </a></td>
+        <td>{doc_tte} </td>
+        <td>{bodega_nombre}</td>
+        <td>{operacion_nombre}<a href="#" class="signup documento_id" title="Consultar Do {do_asignado}" id="{n}" cursor> 
+          </a></td>
+        <td><a href="#" class="signup documento_id" title="Consultar Do {do_asignado}" id="{n}" cursor><img src="integrado/imagenes/{img_editar}" border="0"  > 
+          <input name="do_asignado[]" type="hidden" id="do_asignado" value="{do_asignado}">
+          </a>{linkReapertura}</td>
+      </tr>
+      <!-- END ROW -->
+    </tbody>
+  </table>
+</form>
+</div>

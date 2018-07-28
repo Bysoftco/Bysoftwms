@@ -1,0 +1,154 @@
+<script>
+	function EnviarFormulario(id_form) {}
+
+	$.validator.setDefaults({
+		submitHandler: function() { 
+			id_form = {id_form}
+			$.ajax({
+				url: './scripts_index.php',
+				type: "POST",
+				async: false,
+				data: $('#formItem'+id_form).serialize(),
+				success: function(msm) {
+					$('#htmlunItem'+id_form).html(msm);
+				}
+			});			
+		},
+		highlight: function(input) {
+			$(input).addClass("ui-state-highlight");
+		},
+		unhighlight: function(input) {
+			$(input).removeClass("ui-state-highlight");
+		}
+	});
+
+	$(function() {
+		$("#item_seleccionado").val({item});
+		var formulario = {id_form}
+		formulario = formulario/1;
+		$("#formItem"+formulario).validate();
+		//$( "#btnGuardar{id_form}" ).button();
+
+	  $("#msgbox_arribo{id_form}").removeClass().addClass('{estilo_aux}').text('{mensaje_aux}').fadeIn(1000);
+		if('{estilo_aux}'=='ui-state-error') {
+			$("#msgbox_arribo{id_form}").removeClass().addClass('{estilo_aux}').text('{mensaje_aux}').fadeIn(1000);	
+		} else {
+			setTimeout ("$('#msgbox_arribo{id_form}').removeClass().addClass('').text('').delay();", 5000); 
+		}
+    //Verifica si la Referencia trae fecha de expiración y seriales
+    if($("#fexpira").val()==1) $("#fecexpira").css("display", "block");
+    else $("#fecexpira").css("display", "none");
+    if($("#serial").val()==1) $("#btnSerialesItem{id_form}").css("display", "block");
+    else $("#btnSerialesItem{id_form}").css("display", "none");
+	});
+
+	$(function() {
+		$( "#btnEditarItem{id_form}" ).button({
+			text: true,
+			icons: {
+				primary: "ui-icon-pencil"
+			}
+		}).click(function() {
+			$('.popupsEditar a').click();
+		});
+		
+		$( "#btnBorrarItem{id_form}" ).button({
+			text: true,
+			icons: {
+				primary: "ui-icon-trash"
+			}
+		}).click(function() {
+			$('.eliminarItem a').click();
+		});
+    
+    $("#btnSerialesItem{id_form}").button({
+      text: true,
+      icons: {
+        primary: "ui-icon-battery-3"
+      }
+    }).click(function() {
+		  with(document.formInventario{id_form}) {
+        //Carga la Ventana de Serial
+        $("#dialog-seriales").dialog("open");
+        $("div#ventana_seriales").load("./index_blank.php", {
+				  component:'seriales',
+				  method:'listadoSeriales',
+				  codreferencia: $("#codReferencia").val(),
+				  numorden: $("#do_asignado").val(),
+				  numordenfull: $("#do_asignado_full").val()
+        }, function(datos) {});
+      }
+    });
+	});	
+</script>
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+<span id="msgbox_arribo{id_form}" style="display:block" class="{estilo_aux}">{mensaje_aux}</span>
+<form class="formItem{id_form}" name="formItem{id_form}" id="formItem{id_form}" method="post" action="javascript:EnviarFormulario({id_form})">
+	<fieldset class="ui-widget ui-widget-content ui-corner-all">
+  <legend class="ui-widget ui-widget-header ui-corner-all"> Item {item} 
+  	<input name="clase" type="hidden" id="clase" value="Inventario" />
+  	<input name="metodo" type="hidden" id="metodo" value="editarInventario" />
+  	<input name="id_form" type="hidden" id="id_form" value="{id_form} " />
+  	<input name="arribo" type="hidden" id="arribo_aux" value="{arribo} " />
+  	<input name="id_item" type="hidden" id="id_item" value="{item}" />
+    <input name="fexpira" type="hidden" id="fexpira" value="{chkfecha_expira}" />
+    <input name="serial" type="hidden" id="serial" value="{chkserial}" />
+    <input name="codReferencia" type="hidden" id="codReferencia" value="{codigo_ref}" />
+    <input name="numero_do" type="hidden" id="numero_do" value="{orden}"/>
+  </legend>
+  <table width="100%" border="0">
+			<tr class="ui-widget ui-widget-header ui-corner-all" > 
+				<th>Referencia</th>
+				<th title="Modelo/Lote/Cosecha">M/L/C</th>
+				<th>FMMN/ParteNo</th>
+				<th>Embalajes</th>
+				
+      <th>U. Empaque</th>
+				<th>Cantidad</th>
+				<th>Peso</th>
+      <th>Valor.</th>
+			</tr>
+			<tr> 
+				<td>{nombre_referencia} </td>
+				<td>{modelo} </td>
+				<td>{fmm} </td>
+				<td>{embalaje} </td>
+				<td>{nombre_empaque} </td>
+				<td>{cantidad} </td>
+				<td>{peso}</td>
+				<td>{valor}</td>
+			</tr>
+		</table>
+		<table width="100%" border="0">
+			<tr class="ui-widget ui-widget-header ui-corner-all" > 
+				<th>Posici&oacute;n(es) : 
+					<input name="posicion" type="hidden" id="posicion{id_form}" value="{posicion}">
+        {es_rango} {desde_hasta}</th>
+				<th>Observaci&oacute;n</th>
+			</tr>
+			<tr> 
+				<td><textarea name="textarea" cols="60" rows="3" id="textarea" {disabled} class="estilotextarea">{ubicaciones} </textarea></td>
+				<td><textarea name="observacion" cols="80" rows="3" id="observacion" {disabled} class="estilotextarea">{observacion} </textarea></td>
+			</tr>
+		</table>
+    <table border="0">
+			<tr> 
+				<td>
+        	<button class="submit" type="submit"  id="btnEditarItem{id_form}"  style="display:{mostrarEditar};">Editar</button>
+        </td>
+        <td>
+          <button class="submit" type="button"  id="btnBorrarItem{id_form}"  style="display:{mostrarEditar};">Borrar</button>
+        </td>
+        <td>
+          <button class="submit" type="button" id="btnSerialesItem{id_form}" style="display: none;">Seriales</button>
+        </td>
+        <td>
+          <input style="display: none;background-color:red;color:white;height:22px;text-align:center;" name="fecexpira" type="text" id="fecexpira" value="{fecha_expira}" readonly="" size="25"/>
+		      <input name="dividir" type="hidden" id="dividir{item}" value="{dividir}" />
+        </td>
+				<div width="16%" class="{estiloEditar}">&nbsp;{mensajeEditar} </div>
+			</tr>
+    </table>
+	</fieldset>
+	<br>
+</form>

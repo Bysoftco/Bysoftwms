@@ -66,7 +66,7 @@ class Control extends MYDB {
   //Lista la Mercancia Disponible para Bloquear
   function getMercanciaBloquear($arregloDatos) {
     $arregloDatos[cliente] = $arregloDatos[por_cuenta_filtro];
-    //Configura parÃ¡metros para consulta en inventario
+    //Configura parámetros para consulta en inventario
     $arregloDatos[movimiento] = "1,2,3,10,15,30";
     $arregloDatos[where] = ($arregloDatos[doc_tte_control]!= "") ? "AND do_asignados.doc_tte = '$arregloDatos[doc_tte_control]'" : "";
     $arregloDatos[GroupBy] = "inv.orden, inv.referencia";
@@ -97,7 +97,7 @@ class Control extends MYDB {
     $arregloDatos[estilo] = $this->estilo_ok;  
   }
 
-  //Lista la MercancÃ­a en el TAB de Control
+  //Lista la Mercancía en el TAB de Control
   function getControlDocumento($arregloDatos) {
     $sede = $_SESSION['sede'];
     

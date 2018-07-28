@@ -1,0 +1,103 @@
+<script>
+<!-- Version 23/11/2016-->
+    function formAjuste(){
+	   		
+    }
+    
+   $(function(){
+	$("#producto_adicional").autocomplete("./scripts_index.php?clase=Inventario&metodo=findReferencia&id_cliente="+$("#por_cuenta_aux").val(), 
+		 {
+			width: 260,
+			selectFirst: false
+		});
+
+		$("#producto_adicional").result(function(event, data, formatted) 
+		{
+			$("#id_producto_adicional").val(data[1]);
+		});
+		
+    });	
+
+    $.validator.setDefaults({
+        submitHandler: function(){
+          $("#id_levante_adicional_ajuste").val($("#id_levante").val());
+		 	$.ajax({ 
+            	url:'./scripts_index.php',
+                type: "POST",
+                async:false,
+                data:$("#formAjuste").serialize(),
+                success: function (msm){
+					$("#dialog-form-hacer-levante").dialog( "close" );
+					$('#htmlCuerpo').html(msm);
+				}
+             });
+         },
+		highlight: function(input){
+        	$(input).addClass("ui-state-highlight");
+	},
+		unhighlight: function(input){
+        	$(input).removeClass("ui-state-highlight");
+		}
+    });
+
+	  $.validator.addMethod("maximo_cantidad", function(value){
+       	if($("#cantidad_ext_cab").val()/1 + $("#cantidad_nac_cab").val()/1 > $("#cantidad_cab").val()/1){
+                    return false;	
+            }else{
+                    return true;
+            }
+        }, '* La Cantidad Nacional + Extrangera debe Sumar '+$("#cantidad_cab").val());
+	
+    $(function(){
+		$("#formAjuste").validate({
+            rules: {cantidad_ext: "maximo_cantidad"}
+		});
+	})
+		
+</script>
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+<p id="msgbox_levante"></p>
+<span id="msgbox_proceso" style="display:block" class="{estilox}"  > {mensajex} 
+</span> 
+<form class="formAjuste" name="formGuardaLevante"  id="formAjuste"  method="post" action="javascript:formAjuste()">
+  <fieldset class="ui-widget ui-widget-content ui-corner-all">
+  <legend class="ui-widget ui-widget-header ui-corner-all"> Datos del Nuevo Ajuste 
+  <input name="clase" type="hidden" id="clase" value="Levante">
+  <input name="metodo" type="hidden" id="metodo" value="addItemAjuste">
+  <input name="plantilla" type="hidden" id="plantilla" value="ordenDatosInfo.html">
+  <input name="comodin" type="hidden" id="comodin" value="{comodin}">
+  <input name="id_levante" type="hidden" id="id_levante" value="{id_levante}">
+  {id_levante}
+  <input type="hidden" name="por_cuenta" id="por_cuenta_proceso">
+  </legend>
+  <table width="100%" border="0">
+    <tr  class="ui-widget ui-widget-header ui-corner-all" > 
+      <th width="13%" >Tipo</th>
+      <th width="7%" >Unidad</th>
+      <th width="14%" >Cantidad</th>
+      <th width="14%" >Peso</th>
+      <th width="14%" >Valor</th>
+    </tr>
+    <tr> 
+      <td height="26"><select name="tipo_ajuste" id="naturaleza_mercancia" class="required" >
+        
+	  			{listaTipos}		
+        
+      </select>
+        <input name="producto_adicional" type="hidden" class=" ui-widget-content" id="id_producto_adicional" value="{producto_adicional}" />
+        <input name="un_formulario" type="hidden" class="  ui-widget-content" id="un_formulario" value="formAjuste" />
+        <input type="hidden" name="id_levante_adicional" id="id_levante_adicional_ajuste" value="" /></td>
+      <td><select name="unidad" id="unidad" class="required" >
+	  			{listaEmbalajes}		
+        </select></td>
+      <td><input name="cantidad_ajuste" type="text" class="" id="cantidad_ajuste" size="15" disabled></td>
+      <td><input name="peso_ajuste" type="text" class=" required   ui-widget-content" id="peso_ajuste" size="15"></td>
+      <td><input name="valor" type="text" class=" required   ui-widget-content" id="valor" size="15"></td>
+    </tr>
+  </table>
+  
+
+ 
+   	</fieldset>
+ 
+ </form>

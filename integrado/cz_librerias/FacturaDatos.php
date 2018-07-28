@@ -598,6 +598,7 @@ class Factura extends MYDB {
     $arregloDatos[regimen] = $this->regimen;
     $arregloDatos[prefijo] = $this->prefijo;
     $arregloDatos[cree] = $this->cree;
+	$arregloDatos[vigencia] = $this->vigencia;
   }
 
   //Función que obtiene el ID de la ultima firma

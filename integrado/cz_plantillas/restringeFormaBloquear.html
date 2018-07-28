@@ -1,0 +1,112 @@
+<script>
+  function EnviarFormulario() {}
+  
+  $.validator.setDefaults({
+    submitHandler: function() {
+      $("#por_cuenta").val($("#por_cuenta_aux").val());
+      $.ajax({
+        url: './scripts_index.php',
+        type: "POST",
+        async: false,
+        data: $("#formParaBloquear").serialize(),
+        success: function(msm) {
+          $("#dialog-form-hacer-bloqueo").dialog("close");
+          $("#mostrar").val("1");
+          $('#tabs').tabs("select", 0);
+        }
+      });
+    },
+    highlight: function(input) {
+      $(input).addClass("ui-state-highlight");
+    },
+    unhighlight: function(input) {
+      $(input).removeClass("ui-state-highlight");
+    }
+  });
+
+  // Limpia los campos del formulario
+  $("#formParaBloquear")[0].reset();
+
+  $(function() {
+    $("#formParaBloquear").validate({
+      rules: {referencia: "justifique"}
+    });
+    
+    $("#fecha").datepicker({dateFormat:"yy-mm-dd"}).datepicker("setDate",new Date());
+    
+    $("#fecha").datepicker('option', {
+      dateFormat: 'yy-mm-dd',
+      changeYear: true,
+      changeMonth: true,
+      showOn: 'both',
+      buttonImage: 'integrado/imagenes/calendar.png',
+      buttonImageOnly: true
+    });
+  });
+</script>
+<style>
+  .ui-datepicker-trigger { position: relative; top: 5px; right: 1px; height: 22px; } /* Configuración tamaño imagen del DatePicker */
+</style>
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+<span id="msgbox_mov" style="display:block" class="{estilo}"> {mensaje} </span> 
+<form class="formParaBloquear" name="formParaBloquear"  id="formParaBloquear"  method="post" action="javascript:EnviarFormulario()">
+  <p id="msgbox_control"></p>
+  <fieldset class="ui-widget ui-widget-content ui-corner-all" style="width:90%">
+    <legend class="ui-widget ui-widget-header ui-corner-all"> Formulario Registro Control - Documento de Transporte: {doc_tte_aux}
+      <input name="clase" type="hidden" id="clase" value="Control"/>
+      <input name="metodo" type="hidden" id="metodo" value="addItemBloquear"/>
+    </legend>
+    <table width="100%" border="0">
+      <tr class="ui-widget ui-widget-header ui-corner-all"> 
+        <th style="width:60px;">Documento</th>
+        <th style="width:70px;">Manifiesto</th>
+        <th style="width:70px;">Entidad</th>
+        <th style="width:70px;">Control</th>
+        <th style="width:80px;">Fecha</th>
+      </tr>
+      <tr> 
+        <td style="text-align:center;">{doc_tte_aux}</td>
+        <td style="text-align:center;">{manifiesto_aux}</td> 
+        <td style="text-align:center;"><select style="width:auto;" name="entidades" id="entidades" class="required">{listaEntidades}</select></td> 
+        <td style="text-align:center;"><select style="width:auto;" name="controles" id="controles" class="required">{listaControles}</select></td>
+        <td style="text-align:center;">
+          <input type="text" name="fecha" class="required ui-widget-content" id="fecha" value="{fecha}" />
+        </td>
+      </tr>
+    </table>
+    <table width="100%" border="0">
+			<tr class="ui-widget ui-widget-header ui-corner-all">
+      	<th style="width:110px;">Bloquear</th>
+				<th style="width:157px;">Auto</th>
+        <th style="width:100px;">Periodicidad</th>
+      </tr>
+			<tr>
+        <td style="text-align: center;"><b>Si</b>&nbsp;<input type="checkbox" name="bloquear" id="bloquear"
+          value="Si"/></td>
+				<td style="text-align:center;"><input type="text" name="auto_adm" id="auto_adm" size="80"/></td>
+        <td style="text-align:center;">
+          <input type="text" name="periodicidad" id="periodicidad" size="11" style="text-align:right;"value="1"/>
+        </td>
+      </tr>
+    </table>
+    <table width="100%" border="0">
+      <tr class="ui-widget ui-widget-header ui-corner-all"> 
+        <th>Observaciones</th>
+      </tr>
+      <tr> 
+        <td><textarea name="obs" rows="3" cols="113" style="resize:none;"></textarea></td>
+      </tr>
+    </table>
+  </fieldset>
+  <br/>
+  <input type="hidden" name="por_cuenta" id="por_cuenta" value="{por_cuenta_filtro}"/>
+  <input type="hidden" name="razon_social" id="razon_social" value="{razon_social}"/>  
+  <input type="hidden" name="email" id="email" value="{email}"/>
+  <input type="hidden" name="doc_tte" id="doc_tte" value="{doc_tte_aux}"/>
+  <input type="hidden" name="manifiesto" id="manifiesto" value="{manifiesto_aux}"/>
+  <input type="hidden" name="fecha_manifiesto" id="fecha_manifiesto" value="{fecha_manifiestox}"/>
+  <input type="hidden" name="do_asignado_full" id="do_asignado_full" value="{orden_full}"/>
+  <input type="hidden" name="do_asignado" id="do_asignado" value="{orden_aux}"/>
+  <input type="hidden" name="arribo" id="arribo" value="{arribo_aux}"/>
+  <input name="un_formulario" type="hidden" id="un_formulario" value="formParaBloquear"/>
+</form>

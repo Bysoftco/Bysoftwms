@@ -1,0 +1,58 @@
+<script>
+  function EnviarFormulario() {}
+</script>
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+<span id="msgbox_mov" style="display:block" class="{estilo}"  > {mensaje} </span> 
+<!-- BEGIN ROW -->
+<form class="formVerBloqueos" name="formVerBloqueos"  id="formVerBloqueos"  method="post" action="javascript:EnviarFormulario()">
+  <p id="msgbox_control"></p>
+  <fieldset class="ui-widget ui-widget-content ui-corner-all">
+    <legend class="ui-widget ui-widget-header ui-corner-all"> Informaci&oacute;n del Control - Documento de Transporte: {doc_tte_aux}
+      <input name="clase" type="hidden" id="clase" value="Control"/>
+      <input name="metodo" type="hidden" id="metodo" value="getControlDocumento"/>
+    </legend>
+    <table width="100%" border="0">
+      <tr class="ui-widget ui-widget-header ui-corner-all"> 
+        <th style="width: 15%;">Documento</th>
+        <th style="width: 15%;">Manifiesto</th>
+        <th style="width: 15%;">Entidad</th>
+        <th style="width: 15%;">Control</th>
+      </tr>
+      <tr> 
+        <td style="text-align:center;">{doc_tte_aux}</td>
+        <td style="text-align:center;">{manifiesto}</td> 
+        <td style="text-align: center;">{nombre_entidad}</td> 
+        <td style="text-align: center;">{nombre_control}</td>
+      </tr>
+    </table>
+    <table width="100%" border="0">
+			<tr class="ui-widget ui-widget-header ui-corner-all">
+      	<th style="width: 15%;">Fecha</th>
+      	<th style="width: 15%;">Bloqueo</th>
+				<th style="width: 15%;">Auto</th>
+        <th style="width: 15%;">Periodicidad</th>
+      </tr>
+			<tr>
+        <td style="text-align: center;">{fecha}</td>
+        <td style="text-align: center;"><b>{bloquea}</b></td>
+				<td style="text-align: center;">{auto_adm}</td>
+        <td style="text-align: center;">{periodicidad}</td>
+      </tr>
+    </table>
+    <table width="100%" border="0">
+      <tr class="ui-widget ui-widget-header ui-corner-all"> 
+        <th>Observaciones</th>
+      </tr>
+      <tr> 
+        <td>{observaciones}</td>
+      </tr>
+    </table>
+  </fieldset>
+  <p>Registre el <b>Auto</b> administrativo DIAN o Ente que determina o Registra el Control y Chequee Bloqueo
+     si impide Retiro de Dep&oacute;sito.</p>
+  <input type="hidden" name="por_cuenta_filtro" id="por_cuenta" value="{por_cuenta_filtro}"/>
+  <input type="hidden" name="doc_tte" id="doc_tte" value="{doc_tte_aux}"/>
+  <input type="hidden" name="orden" id="orden" value="{orden_aux}"/>
+  <input type="hidden" name="arribo" id="arribo" value="{arribo_aux}"/>
+</form>
+<!-- END ROW -->

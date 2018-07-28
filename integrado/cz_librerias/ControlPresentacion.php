@@ -22,7 +22,7 @@ class ControlPresentacion {
     }
   }
 
-  //Funci贸n que coloca los datos que vienen de la BD
+  //Funci髇 que coloca los datos que vienen de la BD
   function setDatos($arregloDatos,&$datos,&$plantilla) {
     foreach($datos as $key => $value) {
       $plantilla->setVariable($key , $value);
@@ -44,14 +44,14 @@ class ControlPresentacion {
     }
   }
 
-  //Arma cada Formulario o funci贸n en pantalla
+  //Arma cada Formulario o funci髇 en pantalla
   function setFuncion($arregloDatos,$unDatos) {
     $unDatos = new Control();
 
     //Comprueba si se han enviado las cabeceras HTTP
-    /*if(!headers_sent()) {
+    if(!headers_sent()) {
       header( 'Content-type: text/html; charset=iso-8859-1' );
-    }*/
+    }
     
     $r = $unDatos->$arregloDatos[thisFunction]($arregloDatos);
     $unaPlantilla = new HTML_Template_IT();
@@ -93,7 +93,7 @@ class ControlPresentacion {
 		$this->plantilla->loadTemplateFile(PLANTILLAS .'controlMaestro.html',true,true);
     $this->plantilla->setVariable('comodin',' ');
 
-    //Captura y Coloca el T铆tulo
+    //Captura y Coloca el T韙ulo
     $this->getTitulo($arregloDatos);    
 		$this->mantenerDatos($arregloDatos,$this->plantilla);
     $arregloDatos[mostrar] = 0;
@@ -106,13 +106,13 @@ class ControlPresentacion {
     } else {
       //Indica que no debe abrir la ventana de filtro de Controles
       $this->plantilla->setVariable('abre_ventana', 0);
-      //La L贸gica env铆a la plantilla y el m茅todo para pintar el TAB de Mercanc铆a
+      //La L骻ica env韆 la plantilla y el m閠odo para pintar el TAB de Mercanc韆
       $arregloDatos[mostrar] = 0;
       $arregloDatos[plantilla] = $arregloDatos[plantillaMercancia];
       $arregloDatos[thisFunction] = $arregloDatos[metodoMercancia];  
       $htmlMercancia = $this->setFuncion($arregloDatos,$this->datos);
       $this->plantilla->setVariable('htmlMercancia', $htmlMercancia);
-      //Muestra informaci贸n en el TAB Control
+      //Muestra informaci髇 en el TAB Control
       $arregloDatos[mostrar] = 0;
       $arregloDatos[plantilla] = $arregloDatos[plantillaControl];
       $arregloDatos[thisFunction] = $arregloDatos[metodoControl]; 
@@ -140,7 +140,7 @@ class ControlPresentacion {
     $this->plantilla->show();
   }
   
-  //Funci贸n visualiza documentos bloqueados
+  //Funci髇 visualiza documentos bloqueados
   function getControlDocumento($arregloDatos,$datos,$plantilla) {
     $this->mantenerDatos($arregloDatos,$plantilla);
   }
@@ -200,7 +200,7 @@ class ControlPresentacion {
 		}
 		echo "<script type='text/javascript'>alert('$msg');</script>";
 		if($registrar) {
-			//Registra informaci贸n del correo en la tabla de Tracking
+			//Registra informaci髇 del correo en la tabla de Tracking
 			$unCorreo = new Orden();
 			$unCorreo = $unCorreo->registroCorreo($arregloDatos);
 			//Notifica resultado del registro

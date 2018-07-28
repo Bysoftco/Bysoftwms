@@ -1,0 +1,83 @@
+<script>
+  $(function() {
+    $("a.id_documento").click(function() { //check for the first selection
+      var $column = $(this).attr('id'); // assign the ID of the column
+
+      with(document.formDocumento) {
+        //Carga la Ventana de Datos de la Mercancia a Bloquear
+        $( "#dialog-form-ver-bloqueos" ).dialog("open");
+        //Mensaje de carga
+        $("#htmlControles").html("Cargando Ventana Controles Mercanc&iacute;a Seleccionada...");
+        $("div#htmlControles").load("./scripts_index.php", {
+          clase:'Control',
+          metodo:'getListaControl',
+          mostrar:'1',
+          por_cuenta_filtro:$("#por_cuenta_aux").val(),
+          doc_tte_aux:$("#doc_tte"+$column).val(),
+          manifiesto_aux:$("#manifiesto"+$column).val(),
+          orden_aux:$("#orden"+$column).val(),
+          arribo_aux:$("#arribo"+$column).val()
+        }, function(datos){});
+      }
+    });
+  }); 
+</script>
+<style>
+  .ui-button { margin-left: -1px; }
+  .ui-button-icon-only .ui-button-text { padding: 0.35em; } 
+  .ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; width:200px;}
+  #formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
+</style>
+<div id="users-contain" class="ui-widget" > 
+  <link rel="stylesheet" type="text/css" href="./_estilos/jquery.autocomplete.css" />
+  <form id="formDocumento" name="formDocumento"> 
+    <fieldset class="ui-widget ui-widget-content ui-corner-all">
+      <legend class="ui-widget ui-widget-header ui-corner-all"> Documentos Bloqueados</legend>
+      <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
+      <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
+        <thead>
+          <tr class="ui-widget-header"> 
+            <th style="width: 4%;">No.</th>
+            <th>Orden</th>
+            <th>Documento TTE</th>
+            <th style="text-align: center;">Bloqueado</th>
+            <th>Manifiesto</th>
+            <th style="text-align: center;">Fecha Manifiesto</th>
+            <th>Entidad</th>
+            <th>Control</th>
+            <th style="text-align: center;">Fecha Control</th>
+            <th style="text-align: center;">Acci&oacute;n 
+              <input name="n" type="hidden" id="n" value="{num_registros}" />
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {comodin} 
+          <!-- BEGIN ROW -->
+          <tr class="{odd}"> 
+            <td>{n}</td>
+            <td>{orden}
+              <input type="hidden" name="orden[]" id="orden{n}" value="{orden}" />
+              <input type="hidden" name="arribo[]" id="arribo{n}" value="{arribo}" />
+            </td>
+            <td>{documento_transporte}<input type="hidden" name="doc_tte[]" id="doc_tte{n}" 
+              value="{documento_transporte}" />
+            </td>
+            <td style="text-align: center;">{bloquea}</td>
+            <td>{manifiesto}<input type="hidden" name="manifiesto[]" id="manifiesto{n}" value="{manifiesto}" /></td>
+            <td style="text-align: center;">{fecha_manifiesto}</td>
+            <td>{nombre_entidad}</td>
+            <td>{nombre_control}</td>
+            <td style="text-align: center;">{fecha_control}</td>
+            <td style="text-align: center;"><a href="#" class="signup id_documento" 
+              title="Ver Controles Documento {documento_transporte}" id="{n}">
+              <img src="img/acciones/buscar.png" border="0" width="20px;" height="20px;"/></a>
+            </td>
+          </tr>
+          <!-- END ROW -->
+          <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}"/>
+        </tbody>
+      </table>
+    </fieldset>
+  </form>
+</div>

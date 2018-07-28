@@ -1,0 +1,134 @@
+<script>
+  $(function() {
+    $('#tabs').tabs(); //Crea los TABS
+    $('#tabs').tabs("select", {tab_seleccionado}); //Selecciona un TAB
+    $('#tabs').tabs({
+      select: function(event, ui) { 
+        var n = ui.index + 1
+        
+        //Valida Clic sobre los TABS
+        switch(n) {
+          case 1: //Dibuja contenido del TAB Control
+            if($('#mostrar').val()=='1') {
+              $("div#htmlBloquear").load("./scripts_index.php", {
+                clase:'Control',
+                metodo:'getControlDocumento',
+                mostrar:'0',
+                por_cuenta_filtro:'{por_cuenta_filtro}',
+                fecha_desde:'{fecha_desde}',
+                fecha_hasta:'{fecha_hasta}'
+              }, function(datos){});
+            }
+            break;
+          case 2: // Recarga vista de la Mercancia Disponible para asignar Controles
+            $('#mostrar').val("0");
+            break;			
+        }
+      }
+    });
+  });
+
+  $(function() {
+    /*Ventana*********************************************/
+    $("#dialog-form-control").dialog({
+      autoOpen: false,
+      resizable: false,
+      height: 400,
+      width: 600, 
+      modal: true,
+      buttons: {
+        "Aceptar": function() {
+          var bValid = true;
+          $("#control").submit();
+        },
+        Cancelar: function() {
+          $("#dialog-form-control").dialog("close");
+        }
+      },
+    });/*Fin Ventana*********************************************/
+
+    $("#dialog-form-hacer-bloqueo").dialog({
+      autoOpen: false,
+      resizable: false,
+      height: 350,
+      width: 878, 
+      modal: true,
+      buttons: {
+        "Aceptar": function() {
+          var bValid = true;
+          
+          $("#"+$("#un_formulario").val()).submit();
+        },
+        Cancelar: function() {
+          $("#dialog-form-hacer-bloqueo").dialog("close");
+        }
+      },
+    }); /*Fin Ventana*********************************************/
+    
+    $("#dialog-form-ver-bloqueos").dialog({
+      autoOpen: false,
+      resizable: false,
+      height: 470,
+      width: 878,
+      modal: true,
+      buttons: {
+        "Aceptar": function() {
+          $("#dialog-form-ver-bloqueos").dialog("close");
+        }
+      },
+    }); /*Fin Ventana*********************************************/
+  });
+  //Abre la ventana por defecto
+  accion = ({abre_ventana}) ? "open" : "close";
+  $("#dialog-form-control").dialog(accion);
+</script>
+<style>
+  body { font-size: 62.5%; }
+  label { display: inline-block; width: 100px; }
+  legend { padding: 0.5em; }
+  fieldset fieldset label { display: block; }
+  #formulario label { width: 160px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
+  h1 { font-size: 1.2em; margin: .6em 0; }
+  div#users-contain { width: 100%; margin: 5px 0; margin-left: 0%; }
+  div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+  div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+  .ui-dialog .ui-state-error { padding: .3em; }
+  tbody tr.odd th,tbody tr.odd td {border-color:#EBE5D9;background:#F7F4EE;}
+  tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
+</style>
+<div class="div_barra">
+  <div id="titulo_ruta">
+		<table align="right" cellpadding="5" cellspacing="0" border="0">
+			<tr><td>{titulo}</td></tr>
+		</table>
+	</div>
+  <div id="contenedor_opciones" align="left"> {toolbarControl} </div>
+</div>
+<div style="padding-top:43px"></div>
+<div id="mensaje" class="{estilo}">{mensaje}</div>
+<!-- Tabs -->
+<div id="tabs"> 
+  <ul>
+    <li><a href="#tabs-1">Control</a></li>
+    <li><a href="#tabs-2">Mercanc&iacute;a</a></li>
+  </ul>
+  <div id="tabs-1">
+    <div id="htmlBloquear">{htmlBloquear}</div>
+  </div>
+  <div id="tabs-2">
+    <div id="htmlMercancia">{htmlMercancia}</div>   
+  </div>
+</div>
+<div id="dialog-form-control" title="Controles">
+  <div id="contenedor1"> {filtroControl} </div>
+  <!-- End contenedor -->
+</div><!-- End ventana -->
+<div id="dialog-form-hacer-bloqueo" title="Datos Mercancia Registro Control">
+  <div id="ventana_bloqueo"> </div>
+</div>
+<div id="dialog-form-ver-bloqueos" title="Controles Mercancia Seleccionada">
+  <div id="htmlControles"> {getListaControles} </div>
+</div>
+<input type="hidden" name="por_cuenta_aux" id="por_cuenta_aux" value="{por_cuenta_filtro}"/>
+<input type="hidden" name="titulo_aux" id="titulo_aux" value="{titulo}" />
+<input type="hidden" name="mostrar" id="mostrar" value="0" />

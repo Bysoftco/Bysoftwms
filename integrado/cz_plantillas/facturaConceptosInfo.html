@@ -1,0 +1,51 @@
+<span id="msgbox_factura_cuerpo1" style="display:block" class="{estilo}"> {mensaje} </span>
+  
+<table width="100%" class="ui-widget ui-widget-content" id="users" >
+  <tr class="ui-widget-header "> 
+    <th >Item</th>
+    <th ><table width="95%" border="0" cellpadding="0">
+        <tr> 
+          <td width="20%">Iva </td>
+          <td width="20%">RFuente</td>
+          <td width="20%">RIca</td>
+        </tr>
+      </table></th>
+    <th >Codigo</th>
+    <th >Concepto{comodin}</th>
+    <th ><strong>Medida</strong></th>
+    <th >base</th>
+    <th ><strong>*</strong></th>
+    <th >V. Unitario</th>
+    <th>Cantidad</th>
+    <th >Valor Total</th>
+  </tr>
+  <tbody>
+    <!-- BEGIN ROW -->
+    <tr class="{odd}"> 
+      <td>{n}</td>
+      <td> <table width="90%" border="0" cellpadding="0">
+          <tr> 
+            <td width="20%" >{iva} </td>
+            <td width="20%">{rte_fuente}</td>
+            <td width="20%">{rte_ica} </td>
+          </tr>
+        </table></td>
+      <td> <div id="label_concepto{n}"><a href="#" class="signup documento_id" title="Quitar Concepto {n}" id="{n}" cursor> 
+          </a> {concepto}</div></td>
+      <td> {nombre_servicio} 
+        <input name="id_conceptos[]" type="hidden" id="id_conceptos{n}" value="{codigo}"> 
+        <input name="v_iva[]" type="hidden" id="v_iva{n}"> <input name="vrte_fuentes[]" type="hidden" id="vrte_fuentes{n}" value="0"> 
+        <input name="vrte_icas[]" type="hidden" id="vrte_icas{n}"> </td>
+      <td><select name="concep_tarifa[]" id="concep_tarifa{n}" class=" required ui-widget-content" onChange="javascript: setValue('concep_tarifa',{n})">
+                {selectTipos}
+                 
+        </select> </td>
+      <td>{base}</td>
+      <td>{porcentaje}</td>
+      <td> {valor_unitario}</td>
+      <td>{cantidad}</td>
+      <td> {valorf}</div> </td>
+    </tr>
+    <!-- END ROW -->
+  </tbody>
+</table>

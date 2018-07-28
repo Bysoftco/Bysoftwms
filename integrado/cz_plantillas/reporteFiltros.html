@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Control Presupuestal</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="./_estilos/screen/screen.css" />
+	<link type="text/css" href="./_estilos/jquery-ui-1.8.10.custom.css" rel="stylesheet" />	
+	<script src="./_javascript/validar.js"></script>
+	<script src="./_javascript/jquery-1.4.4.js"></script>
+	<script src="./_javascript/external/jquery.bgiframe-2.1.2.js"></script>
+	<script src="./_javascript/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="./_javascript/jquery-ui-1.8.10.custom.min.js"></script>
+	<script type="text/javascript" src="./_javascript/jquery.ui.datepicker-es.js"></script>
+	<script src="./_javascript/jquery.validate.js" type="text/javascript"></script>
+	<script src="./_javascript/ui/jquery.ui.widget.js"></script>
+	<script src="./_javascript/ui/jquery.ui.mouse.js"></script>
+	<script src="./_javascript/ui/jquery.ui.button.js"></script>
+	<script src="./_javascript/ui/jquery.ui.draggable.js"></script>
+	<script src="./_javascript/ui/jquery.ui.position.js"></script>
+	<script src="./_javascript/ui/jquery.ui.resizable.js"></script>
+	<script src="./_javascript/ui/jquery.ui.dialog.js"></script>
+	<script src="./_javascript/ui/jquery.effects.core.js"></script>
+	
+	<style>
+		body { font-size: 62.5%; }
+		label { display: inline-block; width: 100px; }
+		legend { padding: 0.5em; }
+		fieldset fieldset label { display: block; }
+		#formulario { width: 400px; margin-left: 10px;}/*ancho del formulario* Y ESPACIO A LA ORILLA*/
+		#formulario label { width: 150px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
+		#formulario label.error, #commentForm button.submit { margin-left: 253px; }
+		#formulario { width: 600px; }
+		
+		h1 { font-size: 1.2em; margin: .6em 0; }
+		div#users-contain { width: 400px; margin: 20px 0; margin-left: 20%; }
+		div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+		div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+		.ui-dialog .ui-state-error { padding: .3em; }
+	</style>
+	<script>
+	$(function() {
+		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+	
+		$( "#dialog-form" ).dialog({
+			autoOpen: false,
+			height: 450,
+			width: 650,
+			modal: true,
+			buttons: {
+				"Enviar": function() {
+					var bValid = validaciones();
+					
+					if ( bValid ) {
+						
+						$( "#formulario" ).submit();
+						
+					}
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			},
+			close: function() {
+				//allFields.val( "" ).removeClass( "ui-state-error" );
+			}
+		});
+
+		$( "#create-user" )
+			.button()
+			$( "#por_dep" )
+			.button()
+			.click(function() {
+				mostrar_filtros();
+				$("#nombre_reporte").text('Agrupado por Dependencia');
+				$( "#metodo" ).val('reportePorDependencia');
+				$( "#dialog-form" ).dialog( "open" );
+			});
+			$( "#por_cuenta" )
+			.button()
+			.click(function() {
+				mostrar_filtros();
+				$("#nombre_reporte").text('Agrupado Por Unidad Presupuestal');
+				$( "#metodo" ).val('reportePorCuenta');
+				$( "#dialog-form" ).dialog( "open" );
+			});
+		$( "#por_ap" )
+			.button()
+			.click(function() {
+				mostrar_filtros();
+				$("#nombre_reporte").text('Agrupado Por Ap');
+				$( "#metodo" ).val('reportePorAp');
+				$( "#dialog-form" ).dialog( "open" );
+			});		
+		$( "#detallado" )
+			.button()
+			.click(function() {
+				mostrar_filtros();
+				$("#nombre_reporte").text('Detallado de Solicitudes');
+				$( "#metodo" ).val('presupuestoReporte');
+				$( "#dialog-form" ).dialog( "open" );
+			});
+			
+			$( "#por_estado" )
+			.button()
+			.click(function() {
+				ocultar_filtros();
+				$("#nombre_reporte").text('Por Estado Agrupado Por Ap');
+				$( "#metodo" ).val('reportePorEstado');
+				$( "#dialog-form" ).dialog( "open" );
+				
+			});	
+           
+		   $( "#novedad" )
+			.button()
+			.click(function() {
+				mostrar_filtros();
+				$("#nombre_reporte").text('Reporte de Novedades');
+				$( "#metodo" ).val('reporteNovedades');
+				$( "#dialog-form" ).dialog( "open" );
+			});
+			
+		
+		$("#fechaDesde").datepicker();
+		$("#fechaDesde").datepicker('option', {dateFormat: 'yy/mm/dd',changeYear: true,changeMonth: true,showOn: 'both',buttonImage: 'imagenes/calendar.png',buttonImageOnly: true
+         });
+		$("#fechaHasta").datepicker();
+	    $("#fechaHasta").datepicker('option', {dateFormat: 'yy/mm/dd',changeYear: true,showOn: 'both',buttonImage: 'imagenes/calendar.png',buttonImageOnly: true
+        });
+		$("#cuenta").change(function(){
+			$.post("./index_scripts.php",{ clase:'Presupuesto',metodo:'listaCuentaAux',id:$(this).val() },function(data){
+			//alert(data)
+			$("#cuenta_aux").html(data);})
+	    });
+			//$( "#dialog-form" ).dialog( "open" );
+	});
+	
+	function ocultar_filtros(){
+		 $("#id_estado").css("display", "none");
+		  $("#id_fecha_desde").css("display", "none");
+		  $("#id_fecha_hasta").css("display", "none");
+	}
+	
+	function mostrar_filtros(){
+		 $("#id_estado").css("display", "block");
+		 $("#id_fecha_desde").css("display", "block");
+		 $("#id_fecha_hasta").css("display", "block");
+	}
+	
+	function validaciones(){
+		with(document.formulario){
+			nombrePresupuesto.value		= cuenta.options[cuenta.selectedIndex].text;
+			nombreEstado.value			= estado.options[estado.selectedIndex].text;
+			nombreSede.value			= sede.options[sede.selectedIndex].text;
+			nombreCuentaAux.value		= cuenta_aux.options[cuenta_aux.selectedIndex].text;
+			
+			if(!checkString (anio, 'Año', false)){
+				anio.focus();
+				return false;
+			}
+			if(aux.value=='1'){
+				if(!checkString (cuenta, 'Seleccione un Presupuesto', false)){
+					cuenta.focus();
+					return false;
+				}
+			}
+			if(!checkInteger (pre_id, 'Aprobación Presupuestal es numerico', true)){
+				pre_id.focus();
+				return false;
+			}
+		}//fin with
+		return true;	
+	}
+	</script>
+</head>
+<body>
+     <div align="center"></div>
+<div class="demo">
+
+<div id="dialog-form" title="Control Presupuestal">
+	<p class="validateTips">Seleccione uno o varios filtros para delimitar resultados. 
+      </p>
+
+	<form class="formulario" id="formulario" method="post" action="./index_scripts.php" name="formulario">
+	<fieldset class="ui-widget ui-widget-content ui-corner-all">
+	<legend class="ui-widget ui-widget-header ui-corner-all"><div id="nombre_reporte">Formulario de Consulta</div></legend>
+		
+		<p>
+			<label for="cname">Año</label>
+			<select name="anio" class="ui-widget-content" id="anio" >
+	  	   {selectAnios}
+           </select>
+		<p>
+		<p>
+			<label for="cname">Sede</label>
+			<select name="sede" class="ui-widget-content" id="sede" >
+	  	   {selectSedes}
+           </select>
+		<p>
+			<label for="dependencia">Presupuesto</label>
+			<select name="cuenta" class="ui-widget-content" id="cuenta">
+	  		{selectCuenta}
+        	</select>
+		</p>
+		<p>
+			
+        <label for="curl">Unidad Presupuestal</label>
+    		<select name="cuenta_aux" class="ui-widget-content" id="cuenta_aux">
+          <option value='0' >[Seleccione una Dependencia]</option>
+        </select>
+		</p>
+		<p style="display:{mostrarFiltroEstadoAux};" id="id_estado">
+			<label for="curl">Estado</label>
+    		<select name="estado" id="estado" class=" ui-widget-content">
+          		{selectEstadoAux}
+        	</select>
+		</p>
+		<p style="display:{mostrarFiltroEstado};" id="id_fecha_desde">
+		
+			<label for="curl">Fecha Desde</label>
+    		<input type="text" name="fechaDesde" id="fechaDesde" class=" ui-widget-content"> aaaa/mm/dd
+		</p>
+		
+		<p style="display:{mostrarFiltroEstado};"  id="id_fecha_hasta">
+			<label for="curl">Fecha Hasta</label>
+    		<input type="text" name="fechaHasta" id="fechaHasta" class=" ui-widget-content">  aaaa/mm/dd
+		</p>
+		
+		<p style="display:{mostrarFiltroEstado};">
+			<label for="ap">AP</label>
+    		<input name="pre_id" type="text" class=" ui-widget-content"  id="pre_id">
+		</p>
+		
+		
+	</fieldset>
+	   <input name="nombreCuentaAux" type="hidden" id="nombreCuentaAux">
+          <input name="nombreSede" type="hidden" id="nombreSede">
+          {restrinje1} 
+          <input name="nombreEstado" type="hidden" id="nombreEstado">
+          <input name="nombrePresupuesto" type="hidden" id="nombrePresupuesto">
+          <input name="aux" type="hidden" id="aux2" value="{restrinje}">
+      {metodox} 
+      <input name="clase" type="hidden" id="clase" value="Presupuesto">
+          <input name="metodo" type="hidden" id="metodo" value="{metodo}">
+</form>
+
+</div>
+
+
+<div id="users-contain" class="ui-widget"  >
+	<h1>Control Presupuestal -Reportes Disponibles:</h1>
+
+	<div >
+	  <table id="users" class="ui-widget ui-widget-content" align="center">
+        <thead>
+          <tr class="ui-widget-header "> 
+            <th width="10%">#</th>
+            <th width="64%">Nombre</th>
+            <th width="26%">Consultar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr> 
+            <td height="20">1.</td>
+            <td>Detallado de Solicitudes</td>
+            <td><button id="detallado">Generar</button></td>
+          </tr>
+          <tr> 
+            <td height="20">2.</td>
+            <td>Agrupado por Dependencia</td>
+            <td><button id="por_dep">Generar</button></td>
+          </tr>
+          <tr> 
+            <td height="20">3.</td>
+            <td>Agrupado Por Unidad Presupuestal</td>
+            <td><button id="por_cuenta">Generar</button></td>
+          </tr>
+		   <tr> 
+            <td height="20">4.</td>
+            <td>Agrupado Por Ap</td>
+            <td><button id="por_ap">Generar</button></td>
+          </tr>
+		   <tr> 
+            <td height="20">5.</td>
+            <td>Por Estado Agrupado Por Ap</td>
+            <td><button id="por_estado">Generar</button></td>
+          </tr>
+		   <tr> 
+            <td height="20">6.</td>
+            <td>Reporte de Novedades</td>
+            <td><button id="novedad">Generar</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>&nbsp;</p>
+	</div>
+</div>
+
+
+</div><!-- End demo -->
+
+
+
+</body>
+</html>

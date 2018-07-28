@@ -1,0 +1,144 @@
+<script>
+	function EnviarFormulario() {
+		alert("EnviarFormulario");
+	}
+
+	$(function() {
+    $("#buscarClienteControl").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
+      width: 260,
+      selectFirst: false
+    });
+
+    $("#buscarClienteControl").result(function(event, data, formatted) {
+      $("#razon_social").val(data[0]);
+      $("#por_cuenta_filtro_control").val(data[1]);
+      $("#email").val(data[2]);
+      $("#doc_tte_control").autocomplete("./scripts_index.php?clase=Control&metodo=findDocumento&cliente="+
+        $("#por_cuenta_filtro_control").val(), {
+        width: 260,
+        selectFirst: false
+      });
+
+      $("#doc_tte_control").result(function(event, data, formatted) {
+        $("#doc_tte_control").val(data[1]);
+      });
+    });                    
+  });
+
+  $(document).ready(function() {
+    //#control - nombre del formulario
+    $("#control").validate({
+      submitHandler: function(form) {
+        //Asignamos el tipo de operación de Reempaque seleccionada
+        //form.tipo_reempaque_label.value = form.tipo_reempaque.options[form.tipo_reempaque.selectedIndex].text;
+        $.post("./scripts_index.php",{clase:'Control',metodo:'existeCliente',por_cuenta:$('#por_cuenta_filtro_control').val()} ,function(data) {
+          //Validación información del formulario
+          var bValid = true;
+          if(data == 0) {
+            bValid = false;
+            $("#msgbox_filtro_control").html('El Cliente con Identificaci&oacute;n '+$('#por_cuenta_filtro_control').val()+' No se encuentra en la BD').addClass('ui-state-error');
+            setTimeout(function(){ $("#msgbox_filtro_control").html('Seleccione uno o varios filtros para delimitar resultados.').removeClass('ui-state-error');}, 3000);
+          }
+
+          if(bValid) {
+            //Parámetros de envío de información
+            $.ajax({
+              url: 'scripts_index.php',
+              type: "POST",
+              async: false,
+              data: $('#control').serialize(),
+              success: function(msm) {
+                $("#dialog-form-control").dialog("close");
+                $('#componente_central').html(msm);
+              }
+            });
+          }   
+        });
+      }
+    });	
+  });
+  
+  // Limpia los campos del formulario
+  $("#control")[0].reset();
+
+  //Inicializa fecha_desde y fecha_hasta con la fecha actual
+  $(function() {
+    //$("#fecha_desdec").datepicker({dateFormat:"yy-mm-dd"}).datepicker("setDate",new Date());	  
+		$("#fecha_desdec").datepicker();
+    $("#fecha_desdec").datepicker('option', {
+      dateFormat: 'yy-mm-dd',
+      changeYear: true,
+      changeMonth: true,
+      showOn: 'both',
+      buttonImage: 'integrado/imagenes/calendar.png',
+      buttonImageOnly: true
+    });
+    
+    //$("#fecha_hastac").datepicker({dateFormat:"yy-mm-dd"}).datepicker("setDate",new Date());    
+		$("#fecha_hastac").datepicker();		
+    $("#fecha_hastac").datepicker('option', {
+      dateFormat: 'yy-mm-dd',
+      changeYear: true,
+      changeMonth: true,
+      showOn: 'both',
+      buttonImage: 'integrado/imagenes/calendar.png',
+      buttonImageOnly: true
+    });
+  });
+</script>
+<style>
+  body { font-size: 62.5%; }
+  label { display: inline-block; width: 100px; }
+  legend { padding: 0.5em; }
+  fieldset fieldset label { display: block; }
+  #control label { width: 160px; margin-left: 10px;} /*ancho de las etiquetas de los campos*/
+  h1 { font-size: 1.2em; margin: .6em 0; }
+  div#users-contain { width: 100%; margin: 5px 0; margin-left: 0%; }
+  div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+  div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+  .ui-dialog .ui-state-error { padding: .3em; }
+  tbody tr.odd th,tbody tr.odd td {border-color:#EBE5D9;background:#F7F4EE;}
+  tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
+  .ui-datepicker-trigger { position:relative; top: 5px; right: 1px; height:22px; } /* Configuración tamaño imagen del DatePicker */
+</style>	
+
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+
+<p id="msgbox_filtro_control">Seleccione uno o varios filtros para delimitar resultados.</p>
+
+<form class="control" id="control" method="post" action="javascript:EnviarFormulario()" name="control">
+  <fieldset class="ui-widget ui-widget-content ui-corner-all">
+    <legend class="ui-widget ui-widget-header ui-corner-all">
+      <div id="nombre_control">B&uacute;squeda Documentos del Cliente 
+        <input type="hidden" name="comodin" id="comodin" value="{comodin}" />
+      </div> 
+    </legend>  
+    <p>
+      <label>Por Cuenta de:</label>
+      <input type="text" id="buscarClienteControl" size="50" />
+    </p>
+    <p> 
+      <label>Nit <span style="color:red;">*</span>: </label>
+      <input type="text" name="por_cuenta_filtro" class="required ui-widget-content" id="por_cuenta_filtro_control" />
+    </p> 
+    <p> 
+      <label>Documento de Transporte: </label>
+      <input type="text" name="doc_tte_control" id="doc_tte_control" size="20"/>
+    </p>
+    <p>
+      <label>Fecha Desde:</label>
+      <input type="text" name="fecha_desdec" id="fecha_desdec" class="ui-widget-content" title="aaaa-mm-dd" />
+    </p>
+    <p>
+      <label>Fecha Hasta:</label>
+      <input type="text" name="fecha_hastac" id="fecha_hastac" class="ui-widget-content" title="aaaa-mm-dd" />
+    </p>
+  </fieldset> 
+  <input type="hidden" name="clase" id="clase" value="Control" />
+  <input type="hidden" name="metodo" id="metodo_control" value="getListaControlar" />
+  <input type="hidden" name="titulo" id="titulo" value="{titulo}"/>
+  <input type="hidden" name="mostrar" id="mostrar" value="0" />
+  <input type="hidden" name="razon_social" id="razon_social" value="" />
+  <input type="hidden" name="email" id="email" value="" />
+</form>
+<p id="msgbox_filtro_requerido">El campo marcado con un asterisco (<font color="#FF0000">*</font>) es obligatorio.</p> 

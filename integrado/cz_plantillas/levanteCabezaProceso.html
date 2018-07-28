@@ -1,0 +1,373 @@
+<script>
+
+
+    function formUpdateCabeza(){
+	}
+
+	$(function() {
+		$("#nombre_posicion").autocomplete("./scripts_index.php?clase=Inventario&metodo=findPosicion&id_cliente="+$("#por_cuenta_aux").val(), {
+		width: 260,
+		selectFirst: false
+	});
+
+	$("#nombre_posicion").result(function(event, data, formatted) {
+		$("#posicion").val(data[1]);
+	});
+
+	$("#msgbox_proceso").removeClass().addClass('{estilo}').text('{mensaje}').fadeIn(1000);
+
+	 if('{estilo}'=='ui-state-highlight'){setTimeout ("$('#msgbox_proceso').removeClass().addClass('').text('').delay();", 5000); }
+
+	$("#placa").autocomplete("./scripts_index.php?clase=Orden&metodo=findConductor", {
+		width: 260,
+		selectFirst: false
+	});
+
+	$("#placa").result(function(event, data, formatted) {
+		$("#placa").val(data[1]);
+		$("#conductor").val(data[3]);
+		$("#id_camion").val(data[4]);
+	});
+
+	$("#producto").autocomplete("./scripts_index.php?clase=Inventario&metodo=findReferencia&id_cliente="+$("#por_cuenta_aux").val(),  
+	{
+		width: 260,
+		selectFirst: false
+	});
+
+	$("#producto").result(function(event, data, formatted) {
+		$("#id_producto").val(data[1]);
+
+	});
+
+});	
+
+	$.validator.setDefaults( {
+		submitHandler: function() {
+			$("#por_cuenta_proceso").val($("#por_cuenta_aux").val());
+			$("#tot_peso_nonac_cab").val($("#tot_peso_nonac").val());
+			$("#tot_peso_nac_cab").val($("#tot_peso_nac").val());
+			
+			if($('input[name="cierre"]').is(":checked")){
+				proporcion();
+				if(!confirm("Confirma que desea cerrar el moviento? al cerrarlo se creara la nueva orden y ya no podra modificar el movimiento"))
+				
+				return false;
+			}
+
+			$("#msgbox_levante").html('').addClass(''); 
+			$.ajax({ 
+				url:'./scripts_index.php',
+				type: "POST",
+				async:false,
+				data:$("#formUpdateCabeza").serialize(),
+				success: function (msm){
+					$('#htmlLevante').html(msm);
+
+				}
+			});
+		},
+		highlight: function(input) 
+		{
+			$(input).addClass("ui-state-highlight");
+		},
+		unhighlight: function(input) 
+		{
+			$(input).removeClass("ui-state-highlight");
+		}
+	});
+
+
+	$.validator.addMethod("maximo_cantidad", function(value) {
+		if($("#cantidad_ext_cab").val()/1 + $("#cantidad_nac_cab").val()/1 != $("#cantidad_cab").val()/1){
+		 	return false;	
+		}else{
+			return true;
+		}
+	}, '* La Cantidad Nacional + Extrangera debe Sumar la cantidad Total '+$("#cantidad_cab").val());
+
+	$(function() {
+		$("#formUpdateCabeza").validate(
+		{
+			rules: {cantidad_ext: "maximo_cantidad"
+		}
+	});
+
+	$( "#btnGuardarLevante" ).button({
+		text: true,
+		icons: {primary: "ui-icon-disk"}
+	})
+	$("#fecha").datepicker();
+	$("#fecha").datepicker('option', { 
+	  	dateFormat: 'yy/mm/dd',
+		changeYear: true,
+		changeMonth: true,
+		showOn: 'both',
+		buttonImage: 'integrado/imagenes/calendar.png',
+		buttonImageOnly: true
+	});
+
+	$('#fecha').val('{fecha}');
+	$('#cantidad_cab').blur(function() {
+		//proporcion();	
+	});
+	
+	$("#cierre").click(function(){
+   		 if($('input[name="cierre"]').is(":checked")){
+		 //	if($("#tot_peso_nac").val()==""){
+				
+				proporcion()
+			//}
+		}
+	}); 
+
+	function proporcion()
+	{
+		//Los totales se toman de levanteCuerpoRetiro
+		$("#tot_peso_nonac_cab").val($("#tot_peso_nonacsf").val());
+		$("#tot_peso_nac_cab").val($("#tot_peso_nac").val());
+			
+		// aseguramos que es un valor
+		var total_peso_extranjero =$("#tot_peso_nonacsf").val()
+		total_peso_extranjero= parseFloat(total_peso_extranjero.replace(",", "."));
+			
+		var total_peso_nacional =$("#tot_peso_nacsf").val()
+		total_peso_nacional= parseFloat(total_peso_nacional.replace(",", "."));
+			
+		var total=parseFloat(total_peso_extranjero+total_peso_nacional);
+		
+		
+	
+			
+		if(total==0)
+		{
+			alert("Debe agregar los componentes del nuevo producto!!")
+			$('input[name=cierre]').attr('checked', false);
+			return false;
+		}
+				
+		
+		var porcentaje= total_peso_extranjero*100/total;
+		
+		var extranjero=$('#cantidad_cab').val()/1*porcentaje/100
+		extranjero= extranjero.toFixed(0);
+		if(extranjero < 0){
+			extranjero =0;
+		}
+		if($("#cantidad_ext_cab").val()=="0")
+		{
+			$("#cantidad_ext_cab").val(extranjero);
+		}
+		
+		if($("#cantidad_nac_cab").val()=="0")
+		{
+			$("#cantidad_nac_cab").val($('#cantidad_cab').val()/1-extranjero/1);
+		}
+		
+		//prorrateo peso
+		var peso_extranjero_redondeado=0;
+		if($("#tot_peso_nonac").val()=="0" || $("#tot_peso_nonac").val()=="" )
+		{
+			//var peso_extranjero_redondeado =total*porcentaje/100
+			//peso_extranjero_redondeado=peso_extranjero_redondeado.toFixed(2);
+			$("#tot_peso_nonac").val(total_peso_extranjero);
+			
+		}
+		if($("#tot_peso_nac").val()=="0" || $("#tot_peso_nac").val()=="")
+		{
+			//$("#tot_peso_nac").val(total-peso_extranjero_redondeado);
+			$("#tot_peso_nac").val(total_peso_nacional);
+		}		
+	} 
+
+	if('{cantidad}'/1==0) { // si aun no hay producto no se habilita la matriz
+		$('#btnMatriz').hide();
+	}
+	//09/09/2017
+	$('#btnMatriz').hide();
+	$('#btnAjustes').hide();
+	if('{cierre}'/1==1){
+		$('#btnGuardarLevante').hide();
+	}
+
+})	
+
+ $(document).ready(function() {
+  	$("#pos_arancelaria").autocomplete("./scripts_index.php?clase=Levante&metodo=findPosicion", {
+		width: 260,
+		selectFirst: false
+	});
+
+	$("#pos_arancelaria").result(function(event, data, formatted) {
+		//$("#subpartida").val(data[0]);// 0 nombre, 1 codigo ,2 arancel,3
+		$("#pos_arancelaria").val(data[1]);
+		//$("#arancel").val(data[2]);
+	});
+  	
+  });
+
+</script>
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+
+
+<style>
+
+
+.BytitulosTabla{ FONT-SIZE: 10px; 
+   COLOR:  #FF0000; 
+   FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; 
+   BACKGROUND-COLOR: #6699FF }
+</style>
+
+<p id="msgbox_levante"></p>
+
+
+<span id="msgbox_proceso" style="display:block" class="{estilo}"  > {mensaje} </span> 
+
+
+<form class="formUpdateCabeza" name="formGuardaLevante"  id="formUpdateCabeza"  method="post" action="javascript:formUpdateCabeza()">
+
+
+  <fieldset class="ui-widget ui-widget-content ui-corner-all">
+  <legend class="ui-widget ui-widget-header ui-corner-all"> Datos del Nuevo Producto
+<input name="clase" type="hidden" id="clase" value="Levante">
+  <input name="metodo" type="hidden" id="metodo" value="{metodoCabezaEnvia}">
+  <input name="plantilla" type="hidden" id="plantilla" value="ordenDatosInfo.html">
+  <input name="comodin" type="hidden" id="comodin" value="{comodin}">
+  <input name="id_levante" type="hidden" id="id_levante" value="{id_levante}">
+  {id_levante} 
+  <input type="hidden" name="por_cuenta" id="por_cuenta_proceso">
+  {metodoCabezaEnviax} </legend>
+  <table width="100%" border="0">
+
+
+    <tr  class="ui-widget ui-widget-header ui-corner-all" > 
+
+
+      <th >Producto</th>
+
+
+      <th >Unidad</th>
+
+
+      <th >Pos Arancelaria</th>
+
+
+      <th >Fmm:</th>
+
+
+      <th >Ubicaci&oacute;n: </th>
+
+
+      <th >Documento</th>
+
+
+      <th >DO</th>
+
+
+    </tr>
+
+
+    <tr> 
+
+
+      <td> <input name="producto_aux" type="text" class=" required  ui-widget-content" id="producto" value="{nombre_producto}" size="40" > 
+
+
+        <input name="referencia" type="hidden" class=" required ui-widget-content" id="id_producto{id_form}" value="{producto}"> 
+
+
+      </td>
+
+
+      <td><select name="unidad" id="unidad"  class=" required  ui-widget-content">
+
+
+	  		{selectUnidad}		
+
+
+        </select></td>
+
+
+      <td><input name="pos_arancelaria" type="text" class=" required   ui-widget-content" id="pos_arancelaria" value="{pos_arancelaria}"></td>
+
+
+      <td><input name="fmm" type="text" class=" required   ui-widget-content" id="fmm" value="{fmm}"></td>
+
+
+      <td><input name="nombre_posicion" type="text" id="nombre_posicion" value="{nombre_ubicacion}" size="30" {disabled}>
+
+
+        <input name="posicion" type="hidden" class=" required   ui-widget-content" id="posicion" value="{posicion}" size="15"> 
+
+
+      </td>
+
+
+      <td><input name="doc_tte" type="text" class=" required   ui-widget-content" id="doc_tte2" value="{doc_tte}" size="15"></td>
+
+
+      <td>{orden}</td>
+
+
+    </tr>
+
+
+  </table>
+
+
+  
+
+
+  <table width="100%" border="0">
+    <tr  class="ui-widget ui-widget-header ui-corner-all" > 
+      <th width="15%" >Placa</th>
+      <th width="18%" >Cantidad Total:</th>
+      <th width="15%" >Valor:</th>
+      <th width="19%" >Cantidad Ext</th>
+      <th width="25%" >Cantidad Nac</th>
+      <th width="25%" >Peso Ext</th>
+      <th width="25%" >Peso Nac</th>
+      <th width="8%" ><font color="#FF0000">Cerrar</font></th>
+    </tr>
+    <tr> 
+      <td> <input name="placa" type="text" class=" required  ui-widget-content" id="placa" value="{placa}" size="10" > 
+        <input name="id_camion" type="hidden" class=" required ui-widget-content" id="id_camion{id_form}" value="{id_camion}"> 
+      </td>
+      <td><input name="cantidad" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="cantidad_cab" value="{cantidad}" size="10"></td>
+      <td><input name="valor" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="valor" value="{valor}" size="15"></td>
+      <td><input name="cantidad_ext" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="cantidad_ext_cab" value="{cantidad_ext}" size="15"> 
+      <td><input name="cantidad_nac" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="cantidad_nac_cab" value="{cantidad_nac}" size="15"></td>
+      <td><input name="tot_peso_nonac" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="tot_peso_nonac" value="{peso_ext}" size="15" ></td>
+      <td><input name="tot_peso_nac" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="tot_peso_nac" value="{peso_nac}" size="15" ></td>
+      <td> <input name="cierre" type="checkbox" value="1" {checked}  id="cierre"> </td>
+    </tr>
+  </table>
+
+
+    
+
+
+  <table width="100%" border="0">
+  	<tr  class="ui-widget ui-widget-header ui-corner-all" > 
+		
+      <th> <div class="BytitulosTabla" ><span> Debe cerrar 
+        para generar el DO de integraci&oacute;n </span> <div>
+		</div></div></th>
+	</tr>
+	<tr  class="ui-widget ui-widget-header ui-corner-all" > 
+		<th>observaci&oacute;n 
+		<input name="tipo_movimiento" type="hidden" id="tipo_movimiento" value="{tipo_movimiento} ">
+        <input name="num_levante" type="hidden" id="num_levante" value="No">
+        : 
+        <input type="hidden" name="estadoCierre" value="{cierre}" id="estadoCierre">
+		</th>
+	</tr>
+	
+	 <td><textarea name="obs" cols="150" id="textarea">{obs}</textarea> 
+	<button class="submit" type="submit"  id="btnGuardarLevante" >Guardar</button>
+	</table>
+</fieldset>
+ </form>
+
+
