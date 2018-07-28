@@ -345,11 +345,14 @@ class Orden extends MYDB {
 	
 	function existeDocumento($arregloDatos) {
 		$anio = date('Y');
+		 $sede = $_SESSION['sede'];
 		$sql = "SELECT doc_tte
 						FROM do_asignados
 						WHERE doc_tte = '$arregloDatos[doc_tte]'
 							AND bodega = $arregloDatos[bodega]
-							AND YEAR(fecha) = '$anio'";
+							AND YEAR(fecha) = '$anio'
+							AND sede= '$sede'
+							";
 		
 		if(!empty($arregloDatos[id_no_incluir])) {
 			$sql .= " AND codigo <> $arregloDatos[id_no_incluir]";
