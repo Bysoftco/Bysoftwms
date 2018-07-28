@@ -492,7 +492,7 @@ class FacturaPresentacion {
 
   function conceptos($arregloDatos,$unDatos,$unaPlantilla) {
     $unaConsulta = new Factura();
-    
+    $unaConsulta->getCuenta($arregloDatos);
     $unaConsulta->getDatosResolucion($arregloDatos,$unDatos->id_resolucion);
     $unaConsulta->getRutaFirma($arregloDatos,$unDatos->id_firma);
     $this->valorLetras($arregloDatos,$unDatos);

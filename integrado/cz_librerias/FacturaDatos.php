@@ -405,6 +405,7 @@ class Factura extends MYDB {
 
   // Función que obtiene el Listado de Remesas Para Facturar
   function getParaFacturarRemesa($arregloDatos) {
+  	$sede = $_SESSION['sede']; 
     $sql = "SELECT DISTINCT MAX(imm.fecha) AS fecha, MAX(imm.codigo) AS remesa, MAX(imm.lev_documento) AS lev_documento, MAX(imm.prefactura) AS prefactura,
               MAX(im.tipo_movimiento) AS tipo_movimiento, MAX(itm.nombre) AS nombre_movimiento, MAX(clientes.numero_documento) AS numero_documento,
               MAX(clientes.razon_social) AS nombre_cliente, MAX(aduana.razon_social) AS nombre_aduana, MAX(camiones.placa) AS placa,
@@ -425,7 +426,9 @@ class Factura extends MYDB {
               AND arribos.orden = do_asignados.do_asignado
               AND do_asignados.por_cuenta = clientes.numero_documento
               AND do_asignados.factura = 0
-              AND do_asignados.por_cuenta = '$arregloDatos[por_cuenta_filtro]'";
+              AND do_asignados.por_cuenta = '$arregloDatos[por_cuenta_filtro]'
+			  AND do_asignados.sede='$sede'
+			  ";
       
     // Por_cuenta_filtro
     if(!empty($arregloDatos[tipo_movimiento])) {
@@ -435,7 +438,7 @@ class Factura extends MYDB {
     if(!empty($arregloDatos[remesa])) {
       $sql .= " AND imm.codigo=$arregloDatos[remesa] ";
     }         
-
+		
     $this->query($sql);
     if($this->_lastError) {
       $arregloDatos[mensaje] = " Error al obtener listado de Dos $sql".$this->_lastError->message;
@@ -631,6 +634,21 @@ class Factura extends MYDB {
     }
     $this->fetch();
     $arregloDatos[rutaFirma] = $this->ruta;
+  }
+  
+  function getCuenta( &$arregloDatos) {
+    $sede = $_SESSION['sede'];
+
+    $sql = "SELECT * FROM sedes WHERE  codigo = '$sede'";
+	
+    $this->query($sql);
+    if($this->_lastError) {
+      $this->mensaje_error = " error al consultar ID de resolucion ";
+      echo $this->mensaje_error." ".$sql;
+      return TRUE;
+    }
+    $this->fetch();
+    $arregloDatos[cuenta] = $this->cuenta;
   }
   
   //Función para Cargar Listas
