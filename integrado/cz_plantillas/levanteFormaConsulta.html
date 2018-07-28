@@ -1,258 +1,258 @@
-<script>
-    function EnviarFormulario(id_form){
-			
-    }
-	
-
-    $.validator.setDefaults(
-    {
-        submitHandler: function() 
-        {
-            
-            $( "#dialog-form-hacer-levante" ).dialog( "close" );
-            
-           
-	},
-	highlight: function(input) 
-        {
-            $(input).addClass("ui-state-highlight");
-	},
-	unhighlight: function(input) 
-        {
-            $(input).removeClass("ui-state-highlight");
-	}
-    });
-    
-    $(function() 
-    {
-    
-        $("#formParaLevante").validate(
-        {
-            rules: {peso_naci_para: "peso_maximo"}
-        });
-    });
-
-
-</script>
-
-<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
-<span id="msgbox_mov{id_form}" style="display:block" class="{estilo}"  > {mensaje} </span> 
-
-<form class="formParaLevante" name="formParaLevante"  id="formParaLevante"  method="post" action="javascript:EnviarFormulario()">
-  
-    <script>
-    $(function() 
-    {
-	
-		
-	$( "#btnGuardar" ).button(
-    	{
-        	text: true,
-			icons: {primary: "ui-icon-disk"}
-   	})
-        
-        $("#fecha{id_form}").datepicker();
-	$("#fecha{id_form}").datepicker('option', 
-        {   dateFormat: 'yy/mm/dd',
-            changeYear: true,
-            changeMonth: true,
-            showOn: 'both',
-            buttonImage: 'integrado/imagenes/calendar.png',
-            buttonImageOnly: true
-				 
-         });
-        $('#fecha{id_form}').val('{fecha}');
-   })	
-</script>
-<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
-<p id="msgbox_levante"></p>
-
-  <fieldset class="ui-widget ui-widget-content ui-corner-all" >
-    <legend class="ui-widget ui-widget-header ui-corner-all">
-        
-        Datos de la Declaraci&ograve;n  {cant_declaraciones}   {num_declaraciones} {id_levanteX} {comodin}
-            
-    </legend>
-   
-    <table width="100%" border="0">
-        <tr  class="ui-widget ui-widget-header ui-corner-all" > 
-           
-            <th ># Levante: </th>
-            <th ># de Formulario:</th>
-            <th >Fecha:</th>
-            
-            <th >FMM</th>
-            <th title="Tipo Declaraci&ograve;n">T Declaraci&ograve;n  </th>
-            <th >Sub. Arancelaria </th>
-            <th >TRM:</th>
-            <th >Modalidad: </th>
-        </tr>
-        
-        <tr> 
-            
-            <td>
-               {num_levante}
-            </td>
-            
-           <td>
-               {num_declaracion}
-           </td>
-           
-            <td>
-                 {fecha}
-            </td>
-            
-           
-            <td>
-                {fmm}
-            </td>
-            
-            <td>
-                 {tipo_declaracion}
-            </td>
-            
-            <td>
-                {subpartida}
-            </td>
-            <td>
-                {trm}
-            </td>
-             
-            <td>
-                 {modalidad}
-            </td>
-
-        </tr>
-         </table>
-      
-        <table width="100%" border="0">
-        <tr  class="ui-widget ui-widget-header ui-corner-all" > 
-           
-            
-            
-            <th >FOB</th>
-            <th >Fletes</th>
-            <th title="Valor de Aduana">Vlr Aduana</th>
-            <th >Arancel</th>
-            <th >Iva</th>
-            <th >Total</th>
-            <th >Observaci&ograve;n</th>
-        </tr>
-        
-        <tr> 
-            
-           
-            
-             <td>
-                 {fob}
-            </td>
-            
-             
-            
-             <td>
-                {fletes}
-            </td>
-            
-             <td>
-                 {aduana}
-            </td>
-            <td>
-                 {arancel}
-            </td>
-            <td>
-                  {iva}
-            </td>
-            
-             <td>
-                 {total}
-            </td>
-            
-            <td>
-                 {obs}
-            </td>
-        </tr>     
-    </table>
-  </fieldset>
- <input name="id_levante" type="hidden" id="clase" value="{id_levante}">
-    
-  
-    
-  <fieldset class="ui-widget ui-widget-content ui-corner-all">
-  <legend class="ui-widget ui-widget-header ui-corner-all"> Mercancia {item} 
-  <input name="clase" type="hidden" id="clase" value="Levante">
- <input name="metodo" type="hidden" id="metodo" value="addItemLevante">
-  <input name="id_form" type="hidden" id="id_form" value="{id_form} ">
-  <input name="id_item" type="hidden" id="arribo_aux" value="{id_item} ">
-  - {id_item}</legend>
-  
-  <input name="tipo_movimiento" type="hidden" id="tipo_movimiento" value="{tipo_movimiento} ">
- 
-   
-  <table width="100%" border="0">
-    <tr  class="ui-widget ui-widget-header ui-corner-all" > 
-        <th width="35%" >Referencia 
-            <input name="referencia" type="hidden" id="referencia{id_form}" value="{referencia}" {disabled}> 
-            <input name="id_levante" type="hidden" id="id_levante" value="{id_levante}" {disabled}></th>
-        <th >Documento</th>
-        <th title="Modelo/Lote/Cosecha">M/L/C</th>
-        <th >FMMN/ParteNo</th>
-        <th >Embalajes</th>
-        <th>U. Empaque</th>
-    </tr>
-    
-    <tr> 
-      <td>[{cod_referencia}]{nombre_referencia} </td>
-      <td>{doc_tte}</td> 
-      <td>{modelo}</td>
-      <td>{fmm}</td>
-      <td>{q_embalaje}</td>
-      <td>{nombre_empaque}</td>
-    </tr>
-  </table>
-		    
-       
-  <table width="100%" border="0">
-    <tr  class="ui-widget ui-widget-header ui-corner-all" > 
-      <th width="15%" >Item</th>
-      <th width="20%" >Extranjero</th>
-      <th width="20%" >Nacional</th>
-      </tr>
-    
-    <tr> 
-        <td>Cantidad </td>
-        <td>{cantidad_nonac} </td>
-        <td>
-            {cantidad_naci}
-        </td>
-      </tr>
-    
-    <tr> 
-        <td>Peso </td>
-        <td>{peso_nonac} </td>
-
-        <td> 
-                {peso_naci}
-        </td>
-
-      </tr>
-    
-    <tr> 
-        <td> V.Cif </td>
-
-        <td>{fob_nonac} </td>
-
-        <td>
-                 {cif}
-        </td>
-
-      </tr>
- 
-  
-  </table>
-  
-   
- </fieldset>
-
-</form>
-{cuenta}	
-	
+<script>
+    function EnviarFormulario(id_form){
+			
+    }
+	
+
+    $.validator.setDefaults(
+    {
+        submitHandler: function() 
+        {
+            
+            $( "#dialog-form-hacer-levante" ).dialog( "close" );
+            
+           
+	},
+	highlight: function(input) 
+        {
+            $(input).addClass("ui-state-highlight");
+	},
+	unhighlight: function(input) 
+        {
+            $(input).removeClass("ui-state-highlight");
+	}
+    });
+    
+    $(function() 
+    {
+    
+        $("#formParaLevante").validate(
+        {
+            rules: {peso_naci_para: "peso_maximo"}
+        });
+    });
+
+
+</script>
+
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+<span id="msgbox_mov{id_form}" style="display:block" class="{estilo}"  > {mensaje} </span> 
+
+<form class="formParaLevante" name="formParaLevante"  id="formParaLevante"  method="post" action="javascript:EnviarFormulario()">
+  
+    <script>
+    $(function() 
+    {
+	
+		
+	$( "#btnGuardar" ).button(
+    	{
+        	text: true,
+			icons: {primary: "ui-icon-disk"}
+   	})
+        
+        $("#fecha{id_form}").datepicker();
+	$("#fecha{id_form}").datepicker('option', 
+        {   dateFormat: 'yy/mm/dd',
+            changeYear: true,
+            changeMonth: true,
+            showOn: 'both',
+            buttonImage: 'integrado/imagenes/calendar.png',
+            buttonImageOnly: true
+				 
+         });
+        $('#fecha{id_form}').val('{fecha}');
+   })	
+</script>
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+<p id="msgbox_levante"></p>
+
+  <fieldset class="ui-widget ui-widget-content ui-corner-all" >
+    <legend class="ui-widget ui-widget-header ui-corner-all">
+        
+        Datos de la Declaraci&ograve;n  {cant_declaraciones}   {num_declaraciones} {id_levanteX} {comodin}
+            
+    </legend>
+   
+    <table width="100%" border="0">
+        <tr  class="ui-widget ui-widget-header ui-corner-all" > 
+           
+            <th ># Levante: </th>
+            <th ># de Formulario:</th>
+            <th >Fecha:</th>
+            
+            <th >FMM</th>
+            <th title="Tipo Declaraci&ograve;n">T Declaraci&ograve;n  </th>
+            <th >Sub. Arancelaria </th>
+            <th >TRM:</th>
+            <th >Modalidad: </th>
+        </tr>
+        
+        <tr> 
+            
+            <td>
+               {num_levante}
+            </td>
+            
+           <td>
+               {num_declaracion}
+           </td>
+           
+            <td>
+                 {fecha}
+            </td>
+            
+           
+            <td>
+                {fmm}
+            </td>
+            
+            <td>
+                 {tipo_declaracion}
+            </td>
+            
+            <td>
+                {subpartida}
+            </td>
+            <td>
+                {trm}
+            </td>
+             
+            <td>
+                 {modalidad}
+            </td>
+
+        </tr>
+         </table>
+      
+        <table width="100%" border="0">
+        <tr  class="ui-widget ui-widget-header ui-corner-all" > 
+           
+            
+            
+            <th >FOB</th>
+            <th >Fletes</th>
+            <th title="Valor de Aduana">Vlr Aduana</th>
+            <th >Arancel</th>
+            <th >Iva</th>
+            <th >Total</th>
+            <th >Observaci&ograve;n</th>
+        </tr>
+        
+        <tr> 
+            
+           
+            
+             <td>
+                 {fob}
+            </td>
+            
+             
+            
+             <td>
+                {fletes}
+            </td>
+            
+             <td>
+                 {aduana}
+            </td>
+            <td>
+                 {arancel}
+            </td>
+            <td>
+                  {iva}
+            </td>
+            
+             <td>
+                 {total}
+            </td>
+            
+            <td>
+                 {obs}
+            </td>
+        </tr>     
+    </table>
+  </fieldset>
+ <input name="id_levante" type="hidden" id="clase" value="{id_levante}">
+    
+  
+    
+  <fieldset class="ui-widget ui-widget-content ui-corner-all">
+  <legend class="ui-widget ui-widget-header ui-corner-all"> Mercancia {item} 
+  <input name="clase" type="hidden" id="clase" value="Levante">
+ <input name="metodo" type="hidden" id="metodo" value="addItemLevante">
+  <input name="id_form" type="hidden" id="id_form" value="{id_form} ">
+  <input name="id_item" type="hidden" id="arribo_aux" value="{id_item} ">
+  - {id_item}</legend>
+  
+  <input name="tipo_movimiento" type="hidden" id="tipo_movimiento" value="{tipo_movimiento} ">
+ 
+   
+  <table width="100%" border="0">
+    <tr  class="ui-widget ui-widget-header ui-corner-all" > 
+        <th width="35%" >Referencia 
+            <input name="referencia" type="hidden" id="referencia{id_form}" value="{referencia}" {disabled}> 
+            <input name="id_levante" type="hidden" id="id_levante" value="{id_levante}" {disabled}></th>
+        <th >Documento</th>
+        <th title="Modelo/Lote/Cosecha">M/L/C</th>
+        <th >FMMN/ParteNo</th>
+        <th >Embalajes</th>
+        <th>U. Empaque</th>
+    </tr>
+    
+    <tr> 
+      <td>[{cod_referencia}]{nombre_referencia} </td>
+      <td>{doc_tte}</td> 
+      <td>{modelo}</td>
+      <td>{fmm}</td>
+      <td>{q_embalaje}</td>
+      <td>{nombre_empaque}</td>
+    </tr>
+  </table>
+		    
+       
+  <table width="100%" border="0">
+    <tr  class="ui-widget ui-widget-header ui-corner-all" > 
+      <th width="15%" >Item</th>
+      <th width="20%" >Extranjero</th>
+      <th width="20%" >Nacional</th>
+      </tr>
+    
+    <tr> 
+        <td>Cantidad </td>
+        <td>{cantidad_nonac} </td>
+        <td>
+            {cantidad_naci}
+        </td>
+      </tr>
+    
+    <tr> 
+        <td>Peso </td>
+        <td>{peso_nonac} </td>
+
+        <td> 
+                {peso_naci}
+        </td>
+
+      </tr>
+    
+    <tr> 
+        <td> V.Cif </td>
+
+        <td>{fob_nonac} </td>
+
+        <td>
+                 {cif}
+        </td>
+
+      </tr>
+ 
+  
+  </table>
+  
+   
+ </fieldset>
+
+</form>
+{cuenta}	
+	

@@ -185,15 +185,13 @@
 <form class="formularioOrden" id="formularioOrden" method="post" action="javascript:crearOrden()" name="formularioOrden">
 	<fieldset class="ui-widget ui-widget-content ui-corner-all">
 		<legend class="ui-widget ui-widget-header ui-corner-all"> Nuevo {identificacion}</legend>
-    
-  <table width="100%" border="0" id="users-contain1">
-    <tr> 
+    <table width="100%" border="0" id="users-contain1">
+			<tr> 
 				<td width="16%">
 					<fieldset class="ui-widget ui-widget-content ui-corner-all">
 						<legend class="">Datos del Cliente </legend>
-						
-        <table width="100%" border="0">
-          <tr class="ui-widget ui-widget-header ui-corner-all" > 
+						<table width="100%" border="0">
+            	<tr class="ui-widget ui-widget-header ui-corner-all" > 
 								<th>&nbsp;&nbsp;Por Cuenta de: </th>
               	<th>&nbsp;&nbsp;Nit:</th>
               	<th>&nbsp;&nbsp;Correo Electr&oacute;nico:</th>
@@ -201,14 +199,10 @@
                 <th>&nbsp;&nbsp;ZF_Code:</th>
 							</tr>
 							<tr> 
-								<td>&nbsp;&nbsp;
-              <input type="text" name="name" class="ui-widget-content" id="buscarCliente" value="{cliente}" size="30" {soloLectura} /></td>
-								<td>&nbsp;&nbsp;
-              <input name="por_cuenta" type="text" class="ui-widget-content" id="por_cuenta" value="{usuario}" size="10" readonly="" /></td>
-								<td>&nbsp;&nbsp;
-              <input type="text" name="email" class="ui-widget-content" id="email" value="{email}" size="20" readonly="" /></td>
-								<td>&nbsp;&nbsp;
-              <input type="text" name="comercial" class="ui-widget-content" id="comercial" value="{comercial}" size="20" readonly="" /></td>
+								<td>&nbsp;&nbsp;<input type="text" name="name" class="ui-widget-content" id="buscarCliente" value="{cliente}" size="60" {soloLectura} /></td>
+								<td>&nbsp;&nbsp;<input type="text" name="por_cuenta" class="ui-widget-content" id="por_cuenta" value="{usuario}" readonly="" /></td>
+								<td>&nbsp;&nbsp;<input type="text" name="email" class="ui-widget-content" id="email" value="{email}" size="35" readonly="" /></td>
+								<td>&nbsp;&nbsp;<input type="text" name="comercial" class="ui-widget-content" id="comercial" value="{comercial}" size="40" readonly="" /></td>
                 <td>&nbsp;&nbsp;<input type="text" name="zfcode" class="ui-widget-content" id="zfcode" value="{zfcode}" size="10" /></td>
 							</tr>
 						</table>
@@ -219,9 +213,8 @@
 				<td width="16%">
 					<fieldset class="ui-widget ui-widget-content ui-corner-all">
 						<legend class="">Datos del Documento</legend>
-						
-        <table width="100%" border="0">
-          <tr class="ui-widget ui-widget-header ui-corner-all" >
+						<table width="100%" border="0">
+							<tr class="ui-widget ui-widget-header ui-corner-all" >
 								<th>&nbsp;&nbsp;Fecha:</th>
 								<th>&nbsp;&nbsp;Tipo Documento <font color="#FF0000">*</font>:</th>
 								<th>&nbsp;&nbsp;Documento <font color="#FF0000">*</font>:</th>
@@ -245,9 +238,8 @@
       	<td width="16%">
 					<fieldset class="ui-widget ui-widget-content ui-corner-all">
 						<legend class="">Datos de la Mercanc&iacute;a </legend>
-						
-        <table width="100%" border="0">
-          <tr class="ui-widget ui-widget-header ui-corner-all" > 
+						<table width="100%" border="0">
+							<tr class="ui-widget ui-widget-header ui-corner-all" > 
 								<th width="5%">&nbsp;&nbsp;&Aacute;rea Almacenamiento <font color="#FF0000">*</font>:</th>
 								<th width="12%">&nbsp;&nbsp;Operaci&oacute;n <font color="#FF0000">*</font>:</th>
 								<th width="19%">&nbsp;&nbsp;Tipo Carga:</th>
@@ -269,27 +261,22 @@
               	</td>
 							</tr>
             </table>
-						
-        <table width="100%" border="0">
-          <tr class="ui-widget ui-widget-header ui-corner-all" > 
+						<table width="100%" border="0">
+							<tr class="ui-widget ui-widget-header ui-corner-all" > 
 								<th>&nbsp;&nbsp;Origen <font color="#FF0000">*</font>:</th>
 								<th>&nbsp;&nbsp;Puerto <font color="#FF0000">*</font>:</th>
 								<th>&nbsp;&nbsp;Destino <font color="#FF0000">*</font>:</th>
 								<th>&nbsp;&nbsp;Puerto <font color="#FF0000">*</font>:</th>
 							</tr>
 							<tr> 
-								<td>&nbsp;&nbsp;
-              <input type="text" name="origen" class="required ui-widget-content" id="buscarOrigen" value="{origen}" size="30" /></td>
+								<td>&nbsp;&nbsp;<input type="text" name="origen" class="required ui-widget-content" id="buscarOrigen" value="{origen}" size="40" /></td>
                 <input type="hidden" name="paisori" id="paisori" value="" />
                 <input type="hidden" name="puertoini" id="puertoini" value="" />
-								<td>&nbsp;&nbsp;
-              <input type="text" name="puertori" class="required ui-widget-content" id="buscarPuertori" value="{puertori}" size="30" /></td>
-								<td>&nbsp;&nbsp;
-              <input type="text" name="destino" class="required ui-widget-content" id="buscarDestino" value="{destino}" size="30" /></td>
+								<td>&nbsp;&nbsp;<input type="text" name="puertori" class="required ui-widget-content" id="buscarPuertori" value="{puertori}" size="40" /></td>
+								<td>&nbsp;&nbsp;<input type="text" name="destino" class="required ui-widget-content" id="buscarDestino" value="{destino}" size="40" /></td>
                 <input type="hidden" name="paisdes" id="paisdes" value="" />
                 <input type="hidden" name="puertofin" id="puertofin" value="" />
-								<td>&nbsp;&nbsp;
-              <input type="text" name="puertodes" class="required ui-widget-content" id="buscarPuertodes" value="{puertodes}" size="30" /></td>
+								<td>&nbsp;&nbsp;<input type="text" name="puertodes" class="required ui-widget-content" id="buscarPuertodes" value="{puertodes}" size="40" /></td>
 							</tr>
 						</table>
 						<table width="100%" border="0">

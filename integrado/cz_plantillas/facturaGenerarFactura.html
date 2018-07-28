@@ -157,6 +157,9 @@
 				   var t_rte_cree       =0;
                    var total            =0;
 				   //regimen
+				   //if($('input[name="en_dolares"]').is(":checked")){
+				//	return false;
+					//}
 				   
 				    switch($('#regimen').val()/1)
 		   			{
@@ -213,12 +216,6 @@
 				  
 				   $('#rte_iva').val(total_iva*0.15);
 				   
-<<<<<<< HEAD
-				   // Si el subtotal es menor al tope minimo  NO HACE RETENCIONES
-				   if($('#subtotal').val()/1 <= $('#tope_minimo_retencion').val()/1){
-				   		retiene=0;  // Se aprovecha el if que ya existia para que NO HAGA NINGUNA RETENCION
-				   }
-=======
 				   // Si el subtotal es menor al tope minimo  NO HACE RETENCIONES  
 				   
 				   if($('#subtotal').val()/1 <= $('#tope_minimo_retencion').val()/1){ // valids contra la Base minima de retefuente
@@ -228,7 +225,6 @@
 					if($('#subtotal').val()/1 <= $('#tope_minimo_rete_ica').val()/1){
 				   		 $('#rte_ica').val(0);
 					}
->>>>>>> 52dd12c9bc4f58de764e585a57627eaed091b5cf
 				  // Si no se hacen retenciones se anulan los calculos
 				   if(retiene==0){
 				   		 $('#rte_fuente').val(0);
@@ -238,8 +234,6 @@
 						 t_rte_icas	 =0;
 						 
 				   }
-<<<<<<< HEAD
-=======
 				 
 				   if($('input[name="en_dolares"]').is(":checked"))
 				   {
@@ -250,18 +244,18 @@
 						 t_rte_icas	 =0;
 					
 				   }
->>>>>>> 52dd12c9bc4f58de764e585a57627eaed091b5cf
 			
 				   if($('#regimen').val()/1==2){ // Regimen Comun
 						$('#rte_iva').val(0);
 						
-						if($('#ciudad').val()=='11001'){
+						if($('#ciudad').val()=='11001'){  
 							
 						   		//Retiene ICA
 						}else{
 						//alert('no retiene')
-							t_rte_icas	 =0;
+							//t_rte_icas	 =0;  23/09/2017 TODOS LOS COMUNES SIN IMPORTAR SI ES BOGOTA RETIENEN
 						}
+						
 		 				//$('#rte_ica').val(0);  06/02/2017  AHORA REGIMEN COMUN TAMBIEN RETIENE, si es BOGOTA				
 						//t_rte_icas	 =0;
 					}

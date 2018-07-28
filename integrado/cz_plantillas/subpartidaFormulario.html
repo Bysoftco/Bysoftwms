@@ -116,71 +116,28 @@
 
   
 
-    $(document).ready(function()
-
-    {
-
-	$("#formularioSubpartida").validate(
-
-        {
-
-            
-
-            submitHandler: function(form) 
-
-            {
-
-                
-
-                //form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text;
-
-             
-
-                    var bValid = true;
-
-                   
-
-                    
-
-                    if (bValid) 
-
-                    {
-
-                        $.ajax(
-
-                        {
-
-                                url:'scripts_index.php',
-
-                                type: "POST",
-
-                                async:false,
-
-                                data:$('#formularioSubpartida').serialize(),
-
-                                success: function (msm)
-
-                                {
-									alert(msm)
+    $(document).ready(function(){
+		$("#formularioSubpartida").validate({
+			submitHandler: function(form){
+				 //form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text;
+				var bValid = true;
+				if (bValid){
+					$.ajax({
+						url:'scripts_index.php',
+						type: "POST",
+						async:false,
+						data:$('#formularioSubpartida').serialize(),
+						success: function (msm){	
+									alert('Se edito correctamente la subpartida')
                                     $( "#dialog-form-hacer-levante" ).dialog( "close" );
-
-                                                                //$( "#num_levante" ).val( " ");
-
-                                   // $('#componente_central').html(msm);
-
-                                }
-
-                        });
-
-                     }   
-
-               
-
-            }
-
-	});	
-
-    });
+											//$( "#num_levante" ).val( " ");
+									$('#componente_central').html(msm);
+                       	}
+					});
+				}   
+			}
+		});	
+	});
 
 </script>
 
@@ -249,7 +206,8 @@
             </div> 
 
       </legend>
-  Descripci&oacute;n: {descripcion} 
+  Descripci&oacute;n:
+  <textarea rows="3" cols="90" id="descripcion" name="descripcion">{descripcion}</textarea>
   <p> 
     <label>Subpartida: {subpartida}</label>
     <input name="subpartida" type="hidden" id="subpartida" value="{subpartida}">
@@ -277,7 +235,7 @@
      
   <input name="metodo" type="hidden" id="metodoReporte" value="updateSubpartida">
 
-     <input name="un_formulario" type="hidden"  id="un_formulario" value="formularioSubpartida">
+     <input name="un_formulario_editar" type="hidden"  id="un_formulario_editar" value="formularioSubpartida">
 
      
 

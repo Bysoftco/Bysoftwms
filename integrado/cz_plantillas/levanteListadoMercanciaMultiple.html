@@ -1,253 +1,253 @@
-    <script>
-    $(function() 
-    {
-        
-        $( "#btnGuardarMercancia" ).button(
-    	{
-        	text: true,
-			icons: {primary: "ui-icon-disk"}
-   	})
-        
-       	$(":submit").button();
-     });
-     
-      $.validator.setDefaults(
-    {
-        submitHandler: function() 
-        {
-            var sigue=1
-           
-          if(sigue==1){
-		   $("#por_cuenta_lev").val($("#por_cuenta_aux").val());
-		   $("#doc_filtro_lev").val($("#doc_filtro").val());
-            $.ajax(
-                {
-                    url:'./scripts_index.php',
-                    type: "POST",
-                    async:false,
-                    data:$("#listadoMercanciaMultiple").serialize(),
-                    success: function (msm)
-                    {
-						//alert(msm)
-                        $('#htmlMercancia').html(msm);
-
-                    }
-                });
-            }  
-                              
-        			
-	},
-	highlight: function(input) 
-        {
-            $(input).addClass("ui-state-highlight");
-	},
-	unhighlight: function(input) 
-        {
-            $(input).removeClass("ui-state-highlight");
-	}
-    });
-
-
-	
-    $(function() 
-    {
-	$("#listadoMercanciaMultiple").validate(
-        {
-            rules: {referencia: "justifique"}
-	});
-            
-        
-   })	
-	
-    </script>
-
-    <style>
-	.ui-button { margin-left: -1px; }
-	.ui-button-icon-only .ui-button-text { padding: 0.35em; } 
-	.ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; width:200px;}
-	#formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
-    </style>
-<div id="users-contain" class="ui-widget" > 
-<link rel="stylesheet" type="text/css" href="./_estilos/jquery.autocomplete.css" />
-
-
-<form id="listadoMercanciaMultiple" name="listadoMercanciaMultiple"> 
-<fieldset class="ui-widget ui-widget-content ui-corner-all" >
-    <legend class="ui-widget ui-widget-header ui-corner-all">
-        
-        Datos de la Declaraci&ograve;n  {cant_declaraciones}  de {num_declaraciones} {id_levanteX} {comodin}
-            
-    </legend>
-   
-    <table width="100%" border="0">
-        <tr  class="ui-widget ui-widget-header ui-corner-all" > 
-           
-            <th ># Levante: </th>
-            <th ># de Formulario:</th>
-            <th >Fecha:</th>
-            
-            <th >FMM</th>
-            <th title="Tipo Declaraci&ograve;n">T Declaraci&ograve;n  </th>
-            <th >Sub. Arancelaria </th>
-            <th >TRM:</th>
-            <th >Modalidad: </th>
-        </tr>
-        
-        <tr> 
-            
-            <td>
-                <input name="num_levante" type="text" class=" required   ui-widget-content" id="levante" value="032012000" size="20"  maxlength="15" minlength="15"> 
-            </td>
-           <td>
-                <input name="num_declaracion" type="text" class=" required   ui-widget-content" id="num_declaracion" value="032012000" size="20"  maxlength="15" minlength="15"> 
-           </td>
-           
-            <td>
-                <input name="fecha" type="text" class=" required   ui-widget-content" id="fecha{id_form}" value="{fecha}" size="15" >
-            </td>
-            
-            
-            
-            <td>
-                <input name="fmm" type="text" class=" required   ui-widget-content" id="fmm" value="{fmm}" size="15">
-            </td>
-            
-            <td>
-                <input name="tipo_declaracion" type="text" id="tipo_declaracion" value="Inicial" size="15">
-            </td>
-            
-            <td>
-                <input name="subpartida" type="text" id="subpartida" value="{subpartida}" size="15">
-            </td>
-            <td>
-                <input name="trm" type="text" id="trm" value="{obs}" size="10" class=" required  number">
-            </td>
-             
-            <td>
-                 <input name="modalidad" type="text" id="modalidad" value="C100" size="15">
-            </td>
-
-        </tr>
-         </table>
-      
-        <table width="100%" border="0">
-        <tr  class="ui-widget ui-widget-header ui-corner-all" > 
-           
-            
-            
-            <th >FOB</th>
-            <th >Fletes</th>
-            <th title="Valor de Aduana">Vlr Aduana</th>
-            <th >Arancel</th>
-            <th >Iva</th>
-            <th >Total</th>
-            <th >Pago Total</th>
-            <th >Observaci&ograve;n</th>
-        </tr>
-        
-        <tr> 
-            
-           
-            
-             <td>
-                 <input name="fob" type="text" id="fob" value="{fob}" size="15" class="   number">
-            </td>
-            
-             
-            
-             <td>
-                 <input name="fletes" type="text" id="flete" value="{flete}" size="15" class="  number">
-            </td>
-            
-             <td>
-                 <input name="aduana" type="text" id="valor_aduana" value="{valor_aduana}" size="15" class="  number">
-            </td>
-            <td>
-                 <input name="arancel" type="text" id="arancel" value="5" size="5" class="  number">
-            </td>
-            <td>
-                 <input name="iva" type="text" id="iva" value="16" size="5" class="  number">
-            </td>
-            
-             <td>
-                 <input name="total" type="text" id="total" value="{obs}" size="15">
-            </td>
-            
-             <td>
-                 <input name="pago_total" type="text" id="pago_total" value="0" size="15" >
-            </td>
-            
-            <td>
-                 <input name="obs" type="text" id="obs3" value="{obs}" size="30">
-            </td>
-        </tr>     
-    </table>
-  </fieldset>
-
-  
- <fieldset class="ui-widget ui-widget-content ui-corner-all">
-  <legend class="ui-widget ui-widget-header ui-corner-all">  Mercanc&iacute;a para Levante</legend>
-  <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
-  <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
-    <thead>
-      <tr class="ui-widget-header "> 
-        <th >#</th>
-       
-        <th >Orden</th>
-          <th >Arribo-Item</th>
-          <th >Mercanc&iacute;a</th>
-        <th >Peso</th>
-        <th>Cantidad</th>
-          <th >V.Cif</th>
-        
-      </tr>
-    </thead>
-    <tbody>
-        {comodin}
-      <!-- BEGIN ROW -->
-     <tr class="{odd}"> 
-        <td width="1%" >{n}</td>
-        
-        <td>
-            <div id="label_concepto{n}">{orden} 
-                <a href="#" class="signup id_mercancia" title="Nuevo Levante {n}" id="{n}" cursor> </a>
-            <input name="id_codigo[]" type="hidden" id="id_codigo[]" value="{codigo}">
-          </div>
-        </td>
-        
-        <td><input name="item[]" type="hidden" id="id_item{n}" value="{item}">
-          {arribo}- {item_aux}</td>
-        <td> [{cod_referencia}]{nombre_referencia} </td>
-        <td>{peso_nonac_f}
-          <input name="peso_nonac[]" type="text" size="5"  value="{peso_nonac_f}" id="peso_nonac_lev" required ></td>
-        <td>{cant_nonac_f}
-          <input name="textfield2" type="text" size="5"></td>
-        <td>{fob_nonac_f} 
-          <input name="textfield3" type="text" size="5">
-          <div id="lab_valores{n}" class="ui-priority-primary"></div></td>
-      
-        
-      </tr>
-      <!-- END ROW -->
-      <tr> 
-       <td>Totales</td>
-	   <td>{n}</td>
-         
-	   <td>{n}</td>
-	   <td>{n}</td>
-	    <td>{tot_peso_nonac}</td>
-	    <td>{tot_cant_nonac}</td> 
-            <td>{tot_fob_nonac}</td>
-	  
-      </tr>
-      <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}"> 
-       <input name="id_levante1" type="hidden" id="id_levante1" value="{id_levante}"> 
-	   <input name="metodo" type="hidden" id="metodo_lev" value="updateItemLevante">
-	   <input name="clase" type="hidden" id="clase_lev" value="Levante">
-	   <input name="por_cuenta_filtro" type="hidden" id="por_cuenta_lev" value="">
-	    <input name="doc_filtro" type="hidden" id="doc_filtro_lev" value="">
-  </table>
-            <button class="submit" type="submit"  id="btnGuardarMercancia" >Guardar</button>
-	</fieldset>
-    </form>
+    <script>
+    $(function() 
+    {
+        
+        $( "#btnGuardarMercancia" ).button(
+    	{
+        	text: true,
+			icons: {primary: "ui-icon-disk"}
+   	})
+        
+       	$(":submit").button();
+     });
+     
+      $.validator.setDefaults(
+    {
+        submitHandler: function() 
+        {
+            var sigue=1
+           
+          if(sigue==1){
+		   $("#por_cuenta_lev").val($("#por_cuenta_aux").val());
+		   $("#doc_filtro_lev").val($("#doc_filtro").val());
+            $.ajax(
+                {
+                    url:'./scripts_index.php',
+                    type: "POST",
+                    async:false,
+                    data:$("#listadoMercanciaMultiple").serialize(),
+                    success: function (msm)
+                    {
+						//alert(msm)
+                        $('#htmlMercancia').html(msm);
+
+                    }
+                });
+            }  
+                              
+        			
+	},
+	highlight: function(input) 
+        {
+            $(input).addClass("ui-state-highlight");
+	},
+	unhighlight: function(input) 
+        {
+            $(input).removeClass("ui-state-highlight");
+	}
+    });
+
+
+	
+    $(function() 
+    {
+	$("#listadoMercanciaMultiple").validate(
+        {
+            rules: {referencia: "justifique"}
+	});
+            
+        
+   })	
+	
+    </script>
+
+    <style>
+	.ui-button { margin-left: -1px; }
+	.ui-button-icon-only .ui-button-text { padding: 0.35em; } 
+	.ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; width:200px;}
+	#formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
+    </style>
+<div id="users-contain" class="ui-widget" > 
+<link rel="stylesheet" type="text/css" href="./_estilos/jquery.autocomplete.css" />
+
+
+<form id="listadoMercanciaMultiple" name="listadoMercanciaMultiple"> 
+<fieldset class="ui-widget ui-widget-content ui-corner-all" >
+    <legend class="ui-widget ui-widget-header ui-corner-all">
+        
+        Datos de la Declaraci&ograve;n  {cant_declaraciones}  de {num_declaraciones} {id_levanteX} {comodin}
+            
+    </legend>
+   
+    <table width="100%" border="0">
+        <tr  class="ui-widget ui-widget-header ui-corner-all" > 
+           
+            <th ># Levante: </th>
+            <th ># de Formulario:</th>
+            <th >Fecha:</th>
+            
+            <th >FMM</th>
+            <th title="Tipo Declaraci&ograve;n">T Declaraci&ograve;n  </th>
+            <th >Sub. Arancelaria </th>
+            <th >TRM:</th>
+            <th >Modalidad: </th>
+        </tr>
+        
+        <tr> 
+            
+            <td>
+                <input name="num_levante" type="text" class=" required   ui-widget-content" id="levante" value="032012000" size="20"  maxlength="15" minlength="15"> 
+            </td>
+           <td>
+                <input name="num_declaracion" type="text" class=" required   ui-widget-content" id="num_declaracion" value="032012000" size="20"  maxlength="15" minlength="15"> 
+           </td>
+           
+            <td>
+                <input name="fecha" type="text" class=" required   ui-widget-content" id="fecha{id_form}" value="{fecha}" size="15" >
+            </td>
+            
+            
+            
+            <td>
+                <input name="fmm" type="text" class=" required   ui-widget-content" id="fmm" value="{fmm}" size="15">
+            </td>
+            
+            <td>
+                <input name="tipo_declaracion" type="text" id="tipo_declaracion" value="Inicial" size="15">
+            </td>
+            
+            <td>
+                <input name="subpartida" type="text" id="subpartida" value="{subpartida}" size="15">
+            </td>
+            <td>
+                <input name="trm" type="text" id="trm" value="{obs}" size="10" class=" required  number">
+            </td>
+             
+            <td>
+                 <input name="modalidad" type="text" id="modalidad" value="C100" size="15">
+            </td>
+
+        </tr>
+         </table>
+      
+        <table width="100%" border="0">
+        <tr  class="ui-widget ui-widget-header ui-corner-all" > 
+           
+            
+            
+            <th >FOB</th>
+            <th >Fletes</th>
+            <th title="Valor de Aduana">Vlr Aduana</th>
+            <th >Arancel</th>
+            <th >Iva</th>
+            <th >Total</th>
+            <th >Pago Total</th>
+            <th >Observaci&ograve;n</th>
+        </tr>
+        
+        <tr> 
+            
+           
+            
+             <td>
+                 <input name="fob" type="text" id="fob" value="{fob}" size="15" class="   number">
+            </td>
+            
+             
+            
+             <td>
+                 <input name="fletes" type="text" id="flete" value="{flete}" size="15" class="  number">
+            </td>
+            
+             <td>
+                 <input name="aduana" type="text" id="valor_aduana" value="{valor_aduana}" size="15" class="  number">
+            </td>
+            <td>
+                 <input name="arancel" type="text" id="arancel" value="5" size="5" class="  number">
+            </td>
+            <td>
+                 <input name="iva" type="text" id="iva" value="16" size="5" class="  number">
+            </td>
+            
+             <td>
+                 <input name="total" type="text" id="total" value="{obs}" size="15">
+            </td>
+            
+             <td>
+                 <input name="pago_total" type="text" id="pago_total" value="0" size="15" >
+            </td>
+            
+            <td>
+                 <input name="obs" type="text" id="obs3" value="{obs}" size="30">
+            </td>
+        </tr>     
+    </table>
+  </fieldset>
+
+  
+ <fieldset class="ui-widget ui-widget-content ui-corner-all">
+  <legend class="ui-widget ui-widget-header ui-corner-all">  Mercanc&iacute;a para Levante</legend>
+  <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
+  <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
+    <thead>
+      <tr class="ui-widget-header "> 
+        <th >#</th>
+       
+        <th >Orden</th>
+          <th >Arribo-Item</th>
+          <th >Mercanc&iacute;a</th>
+        <th >Peso</th>
+        <th>Cantidad</th>
+          <th >V.Cif</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+        {comodin}
+      <!-- BEGIN ROW -->
+     <tr class="{odd}"> 
+        <td width="1%" >{n}</td>
+        
+        <td>
+            <div id="label_concepto{n}">{orden} 
+                <a href="#" class="signup id_mercancia" title="Nuevo Levante {n}" id="{n}" cursor> </a>
+            <input name="id_codigo[]" type="hidden" id="id_codigo[]" value="{codigo}">
+          </div>
+        </td>
+        
+        <td><input name="item[]" type="hidden" id="id_item{n}" value="{item}">
+          {arribo}- {item_aux}</td>
+        <td> [{cod_referencia}]{nombre_referencia} </td>
+        <td>{peso_nonac_f}
+          <input name="peso_nonac[]" type="text" size="5"  value="{peso_nonac_f}" id="peso_nonac_lev" required ></td>
+        <td>{cant_nonac_f}
+          <input name="textfield2" type="text" size="5"></td>
+        <td>{fob_nonac_f} 
+          <input name="textfield3" type="text" size="5">
+          <div id="lab_valores{n}" class="ui-priority-primary"></div></td>
+      
+        
+      </tr>
+      <!-- END ROW -->
+      <tr> 
+       <td>Totales</td>
+	   <td>{n}</td>
+         
+	   <td>{n}</td>
+	   <td>{n}</td>
+	    <td>{tot_peso_nonac}</td>
+	    <td>{tot_cant_nonac}</td> 
+            <td>{tot_fob_nonac}</td>
+	  
+      </tr>
+      <input name="num_registros" type="hidden" id="num_registros" value="{num_registros}"> 
+       <input name="id_levante1" type="hidden" id="id_levante1" value="{id_levante}"> 
+	   <input name="metodo" type="hidden" id="metodo_lev" value="updateItemLevante">
+	   <input name="clase" type="hidden" id="clase_lev" value="Levante">
+	   <input name="por_cuenta_filtro" type="hidden" id="por_cuenta_lev" value="">
+	    <input name="doc_filtro" type="hidden" id="doc_filtro_lev" value="">
+  </table>
+            <button class="submit" type="submit"  id="btnGuardarMercancia" >Guardar</button>
+	</fieldset>
+    </form>
 </div>

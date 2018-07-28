@@ -9,6 +9,9 @@
 	   		if($("#concep_tarifa"+n ).val()/1==1)
             { //Uno es  CIF	
             	v_unitario=(v_unitario*$("#multiplicador"+n ).val()/1)/100;
+				// redondeo truncamiento
+				
+				v_unitario=Math.trunc(v_unitario)
 				$("#vunitario"+n ).val(v_unitario)
             }else{
 				 

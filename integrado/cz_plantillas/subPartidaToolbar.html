@@ -10,7 +10,7 @@
 
                 <a href="#">
 
-                    <img src="img/acciones/agregar.png" title="Nueva Transacci&ograve;n" width="25" height="25" border="0" />
+                    <img src="img/acciones/ver.png" title="Filtro" width="25" height="25" border="0" />
 
                 </a>
 
@@ -24,7 +24,7 @@
 
                 <a href="#">
 
-                    <img src="img/acciones/ver.png" title="Filtros" width="25" height="25" border="0" />
+                    <img src="img/acciones/agregar.png" title="Filtros" width="25" height="25" border="0" />
 
                 </a>
 
@@ -64,46 +64,21 @@
     {
 
 
-
-        $("#window_filtro").dialog("open");
-
-    });
-
-
-
-    $('.popupsAgregar a').click(function()
-
-    {
-
-
-
-        switch ($("#metodo_mov").val())
-
-        {
-
-            case 'newRetiro':
-
-                $("#oculta_doc").show();
-
-                $("#metodo_mov").val("retiros");
-
-                break;
-
-            case 'newLevante':
-
-                $("#oculta_doc").hide();
-
-                $("#metodo_mov").val("nacionalizar");
-
-                break;
-
-        }
-
-        $("#dialog-form-levante" + $("#metodo_mov").val()).dialog("open");
-
-
+		
+        $("#window_filtro_subpartida").dialog("open");
+		//$("#cuerpo_filtro").html("cambio contenido de la ventana");
+		 $("div#cuerpo_filtro_subpartida").load("./scripts_index.php", {clase:'Subpartida',metodo:'getFormaNueva',mostrar:'1'}, function(datos){
+          });
 
     });
+
+
+// filtro
+    $('.popupsAgregar a').click(function(){
+        $("#window_filtro_subpartida").dialog("open");
+		$("div#cuerpo_filtro_subpartida").load("./scripts_index.php", {clase:'Subpartida',metodo:'filtro',mostrar:'1'}, function(datos){
+          });
+	});
 
 
 
@@ -225,7 +200,7 @@
 
 
 
-    $('#btnBuscar').hide();  // Si el Tab es 1 se Oculta
+    
 
 
 

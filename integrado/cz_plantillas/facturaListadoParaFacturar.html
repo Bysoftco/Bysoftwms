@@ -15,8 +15,26 @@
 			$('#fecha_entrada').val($('#fecha_aux'+$column).val());
 			$('#fecha_salida').val($('#fecha_fin'+$column).val());
 			$('#remesa').val($('#do_remesa'+$column).val());
+			var orden=1
+			
+			
+			var url = 'scripts_index.php?clase=Factura&metodo=saldoInventario&una_orden='
+			 +$('#do_seleccionado'+$column).val();
+			
+			$.ajax({
+       			url: url,
+      			type: "POST",
+      			async: false,
+      			success: function(msm) 
+				{
+        			$('#observaciones').val(msm);
+      			}
+			});
+			
+			
 			$( "#dialog-form-factura" ).dialog( "close" );
 			$( "#dialog-form-factura" ).dialog( "close" );
+			
 	});
 });
 </script>	

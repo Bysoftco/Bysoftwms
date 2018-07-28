@@ -13,6 +13,21 @@
 		$('#centro_costo').val($('#do_centro'+$column).val());
 		$('#remesa').val($('#do_remesa'+$column).val());
 		$( "#dialog-form-factura" ).dialog( "close" );
+		
+		var url = 'scripts_index.php?clase=Factura&metodo=getDatosRemesa&datos_remesa='
+			 +$('#do_remesa'+$column).val();
+			
+			$.ajax({
+       			url: url,
+      			type: "POST",
+      			async: false,
+      			success: function(msm) 
+				{
+        			$('#observaciones').val(msm);
+      			}
+			});
+		
+		
 		$('#fecha_entrada').val($('#fecha_aux'+$column).val());
 		$('#fecha_salida').val($('#fecha_fin'+$column).val());
 	});
