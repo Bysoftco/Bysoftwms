@@ -193,9 +193,11 @@ class Factura extends MYDB {
   function addCabeza(&$arregloDatos) {
     $fecha = FECHA;
     $sede = $_SESSION['sede']; 
-
-    $sql = "INSERT INTO facturas_maestro(cliente,intermediario,fecha_factura,sede) VALUES('$arregloDatos[por_cuenta_filtro]', '$arregloDatos[por_cuenta_filtro]',
-              '$fecha','$sede')";
+	// se averigua la firma vigente
+	$unaConsulta = new Factura();
+	$unaConsulta->getIdFirma(&$arregloDatos);
+    $sql = "INSERT INTO facturas_maestro(cliente,intermediario,fecha_factura,sede,id_firma) VALUES('$arregloDatos[por_cuenta_filtro]', '$arregloDatos[por_cuenta_filtro]',
+              '$fecha','$sede','$arregloDatos[id_firma]')";
 
     $this->query($sql);
     if($this->_lastError) {
@@ -533,6 +535,8 @@ class Factura extends MYDB {
 
   //Función que reporta una Prefactura Como factura con número Oficial
   function setNuevaFactura(&$arregloDatos) {
+  $unaConsulta = new Factura();
+  $unaConsulta->getIdFirma(&$arregloDatos);
     if(empty($arregloDatos[consecutivo])) { $arregloDatos[consecutivo] = 0; }
     $sql = "UPDATE facturas_maestro SET numero_oficial = $arregloDatos[num_factura], cerrada = 1, id_resolucion = $arregloDatos[id_resolucion],
               id_firma = $arregloDatos[id_firma]
@@ -553,7 +557,7 @@ class Factura extends MYDB {
 	
     $this->query($sql);
 	$this->fetch();
-	//echo "XXXXXXXXXXXXXXXXXXXXX". $this->numero_oficial;
+	
 	return $this->numero_oficial;
 	
     if($this->_lastError) {
@@ -605,7 +609,7 @@ class Factura extends MYDB {
   }
 
   //Función que obtiene el ID de la ultima firma
-  function getFirma(&$arregloDatos) {
+  function getIdFirma(&$arregloDatos) {
     $sede = $_SESSION['sede'];
 
     $sql = "SELECT MAX(codigo) AS id_firma FROM firmas WHERE sede = '$sede'";
@@ -651,6 +655,23 @@ class Factura extends MYDB {
     $arregloDatos[banco_cheque] = $this->banco;
 	$arregloDatos[nombre_sede] = $this->nombre;
   }
+  
+   function getFirma( &$arregloDatos) {
+  
+    $sql = "SELECT * FROM firmas WHERE  codigo = $arregloDatos[id_firma]";
+	
+    $this->query($sql);
+    if($this->_lastError) {
+      echo "error al consultar la firma";
+      echo $this->mensaje_error." ".$sql;
+      return TRUE;
+    }
+    $this->fetch();
+	
+    $arregloDatos[ruta_firma] = $this->ruta;
+	
+  }
+  
   
   //Función para Cargar Listas
   function lista($tabla,$condicion=NULL,$campoCondicion=NULL) {
