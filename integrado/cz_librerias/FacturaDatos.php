@@ -649,6 +649,7 @@ class Factura extends MYDB {
     }
     $this->fetch();
     $arregloDatos[banco_cheque] = $this->banco;
+	$arregloDatos[nombre_sede] = $this->nombre;
   }
   
   //Función para Cargar Listas
