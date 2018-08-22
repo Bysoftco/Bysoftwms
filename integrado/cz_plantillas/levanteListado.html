@@ -34,12 +34,12 @@
             url = 'index_blank.php?component=acondicionamientos&method=mostrarAcondicionamiento&id_registro='+registro+
                     '&tipo_mercancia='+tipo_mercancia+'&nombre_tipo_mercancia='+nombre_tipo_mercancia+'&verBoton='+verBoton;
             break;
-          default: //Cualquier otro movimiento que no estÈ definido
+          default: //Cualquier otro movimiento que no est√© definido
             $("#clase").val("Levante");
             $("#metodo").val("verRetiro");
         }
       }
-      $("#id_levante_consulta").val($("#cod_mov"+$column).val()); //Se cambia mÈtodo para ver los retiros
+      $("#id_levante_consulta").val($("#cod_mov"+$column).val()); //Se cambia m√©todo para ver los retiros
       $("#doc").val($("#num_documento_aux"+$column).val())
       $("#por_cuenta").val($("#por_cuenta_aux"+$column).val())
       $("#cliente").val($("#nombre_cliente_ax"+$column).val())
@@ -126,3 +126,20 @@
     </fieldset>
   </form>
 </div>
+<script>
+
+  $(document).ready(function() {
+    $('#users').dataTable({
+      "aaSorting": [],
+      "oLanguage": {
+        "sLengthMenu": "Mostrar _MENU_ registros por p√°gina",
+        "sZeroRecords": "No hay registros para mostrar",
+        "sInfo": "Mostrando _START_ a _END_ registros de _TOTAL_",
+        "sInfoEmpty": "Mostrando 0 a 0 registros de 0",
+        "sInfoFiltered": "",
+        "sSearch": "Buscar:"
+      }
+    });
+  });
+  
+  </script>
