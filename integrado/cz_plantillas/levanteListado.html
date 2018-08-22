@@ -59,22 +59,17 @@
     $(":submit").button();
   });
 </script>
-<style>
-  .ui-button { margin-left: -1px; }
-  .ui-button-icon-only .ui-button-text { padding: 0.35em; } 
-  .ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; width:200px;}
-  #formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
-  tbody tr.odd th,tbody tr.odd td {border-color:#EBE5D9;background:#F7F4EE;}
-  tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
-</style>
-<div id="users-contain" class="ui-widget">
+
+<div id="users-contain" class="ui-widgetx">
   <form id="listadoMercancia" name="listadoMercancia">
-    <fieldset class="ui-widget ui-widget-content ui-corner-all">
-      <legend class="ui-widget ui-widget-header ui-corner-all"> Movimientos</legend>
+    <fieldset class="ui-widgetx ui-widget-content ui-corner-all">
+      <legend class="ui-widget ui-widget-header ui-corner-allx"> Movimientos</legend>
       <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
-      <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
+      <table width="100%" class="ui-widget ui-widget-content" id="tabla_general_z" style="display:{mostrarCuerpo}">
         <thead>
-          <tr class="ui-widget-header "> 
+		<!--
+          <tr class="ui-widget-header ">  -->
+		  <tr > 
             <th>#</th>
             <th>Fecha</th>
             <th>Movimiento</th>
@@ -87,7 +82,7 @@
         <tbody>
           {comodin}
           <!-- BEGIN ROW -->
-          <tr class="{odd}"> 
+          <tr class="{oddx}"> 
             <td width="1%" >{n}</td>
             <td> {fecha}</td>
             <td title="{descripcion}">[{cod_mov}]{nombre_movimiento} {tipo_retiro_nombre} </td>
@@ -129,7 +124,7 @@
 <script>
 
   $(document).ready(function() {
-    $('#users').dataTable({
+    $('#tabla_general_z').dataTable({
       "aaSorting": [],
       "oLanguage": {
         "sLengthMenu": "Mostrar _MENU_ registros por página",
