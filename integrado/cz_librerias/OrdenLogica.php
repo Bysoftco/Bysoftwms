@@ -22,6 +22,10 @@ class OrdenLogica {
   
 	function verFotos($arregloDatos) {
 		$ruta = "integrado/_files/";
+		if(!empty($arregloDatos[carpeta])){
+			$ruta = "integrado/firmas/";
+		}
+		
 		foreach ($_FILES as $key) {
     	if($key['error'] == UPLOAD_ERR_OK ) {//Verificamos si se subio correctamente
 				$nombre = $key['name']; //Definimos el nombre del archivo en el servidor
