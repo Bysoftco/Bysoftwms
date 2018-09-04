@@ -48,7 +48,7 @@ require_once "Image/Barcode.php";
 class Image_Barcode_code128 extends Image_Barcode
 {
     var $_type = 'code128';
-    var $_barcodeheight = 5;
+    var $_barcodeheight = 60;
     var $_font = 2;  
     var $_barwidth = 1;
     var $code;
@@ -124,7 +124,7 @@ class Image_Barcode_code128 extends Image_Barcode
 
     // 10 Pixel "Quiet Zone" in front, and 10 Pixel 
     // "Quiet Zone" at the end.
-    $barcodewidth = 15; 
+    $barcodewidth = 20; 
 
 
     // We will read each of the characters (1,2,3,or 4) in
