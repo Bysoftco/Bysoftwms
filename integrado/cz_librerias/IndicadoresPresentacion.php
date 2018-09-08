@@ -184,7 +184,7 @@ class IndicadoresPresentacion {
 	 	
 		$this->plantilla->loadTemplateFile(PLANTILLAS . 'indicadoresGraficos.html', true, true);
   		$this->plantilla->setVariable('comodin'	,' ');
-		$colores	='orange@blue@green@black@red';
+		$colores	='orange@blue@green@black@red@yellow@orange@brown@pink@violet@purple';
 		$colores	=split('@',$colores);
 		// se construye el grafico
 		$color=0;
@@ -193,12 +193,14 @@ class IndicadoresPresentacion {
 				
 			$this->plantilla->setCurrentBlock('ROW');
 			$this->plantilla->setVariable('color'   , $colores[$color]);
-			$this->plantilla->setVariable('valores' , $this->datos->codigo);
-			$this->plantilla->setVariable('convencion' , $this->datos->tipo_documento);
+			$this->plantilla->setVariable('valores' , $this->datos->valores);
+			$this->plantilla->setVariable('convencion' , $this->datos->datos);
+			
 			$color=$color+1;
-			$valores_todos.=$this->datos->codigo."@";
+			$valores_todos.=$this->datos->valores."@";
 			$this->plantilla->parseCurrentBlock();	
 		}
+		$this->plantilla->setVariable('tipoGrafico' , $arregloDatos[tipoGrafico]);
 		$this->plantilla->setVariable('valores_todos' , $valores_todos);
 		$this->plantilla->show();
 		

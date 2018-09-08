@@ -12,12 +12,17 @@ class Indicadores extends MYDB {
     $sede = $_SESSION['sede'];
  
     
-    $sql = " SELECT * 
-			FROM do_asignados 
-			WHERE codigo > 1088";
+    $sql = " SELECT MAX(razon_social) AS datos,
+			 total AS valores
+			FROM facturas_maestro,clientes
+			WHERE facturas_maestro.cliente=clientes.numero_documento
+			AND fecha_factura >= '$arregloDatos[fecha_inicio]' AND fecha_factura <= '$arregloDatos[fecha_fin]'
+			GROUP BY cliente
+			ORDER BY total DESC
+ 			LIMIT 10";
 			 
    // if($arregloDatos[excel]){ return $sql; }
-   
+   //echo  $sql;
     $this->query($sql);
 	
     if($this->_lastError) {

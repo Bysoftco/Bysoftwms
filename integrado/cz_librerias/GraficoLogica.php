@@ -111,7 +111,7 @@ require_once("GraficoPresentacion.php");
         
 			$valores	='2@10@10@20@5';
 $titulosX	='Enero@Febrero@Marzo@Abril@Mayo';
-$colores	='orange@blue@green@black@red';
+$colores	='orange@blue@green@black@red@yellow@orange@brown@pink@violet@purple';
 $tituloY	='Cantidad';
 $titulo    	=$arregloDatos[tituloGrafico];
 //$valores	=split('@',$valores);
