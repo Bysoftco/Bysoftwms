@@ -190,20 +190,22 @@ class IndicadoresPresentacion {
 		$color=0;
 		$valores_todos="";
 		$n=0;
+		$total=0;
 		while ($this->datos->fetch()) {
 			$n=$n+1;
 			$this->plantilla->setCurrentBlock('ROW');
 			$this->plantilla->setVariable('color'   , $colores[$color]);
-			$this->plantilla->setVariable('valores' , $this->datos->valores);
+			$this->plantilla->setVariable('valores' , number_format($this->datos->valores,0,',','.'));
 			$this->plantilla->setVariable('convencion' , $this->datos->datos);
 			$this->plantilla->setVariable('n'   , $n);
-			
+			$total=$total+$this->datos->valores;
 			$color=$color+1;
 			$valores_todos.=$this->datos->valores."@";
 			$this->plantilla->parseCurrentBlock();	
 		}
 		$this->plantilla->setVariable('tipoGrafico' , $arregloDatos[tipoGrafico]);
 		$this->plantilla->setVariable('valores_todos' , $valores_todos);
+		$this->plantilla->setVariable('total' , number_format($total,0,',','.'));
 		$this->plantilla->show();
 		
   	 }
