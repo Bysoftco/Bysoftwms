@@ -42,19 +42,25 @@
       <td width="17%"><img src="scripts_index.php?clase=Grafico&metodo={tipoGrafico}&valores={valores_todos}&tituloGrafico=Top 10 de clientes&tejey=ejey" alt="toltip"></td>
       <td width="67%">
 	  <table width="99%" border="1" cellspacing="0" cellpadding="0">
-          <!-- BEGIN ROW -->
-          <tr> 
-            <td nowrap bgcolor="{color}">&nbsp;</td>
-            <td class="textoGris">{convencion}</td>
-            <td class="textoGris"> {valores} </td>
-          </tr>
-          <!-- END ROW -->
-          <tr> 
-            <td width="9%" height="19" nowrap>&nbsp;</td>
-            <td width="64%" class="textoNegro">Total</td>
-            <td width="27%" class="textoGris">{total}</td>
-          </tr>
-        </table>
+	 			 <tr> 
+                  <td nowrap bgcolor="{color}">#</td>
+                  <td class="textoGris">Cliente</td>
+                  <td class="textoGris">Valor</td>
+                </tr>
+                <!-- BEGIN ROW -->
+                
+                <tr> 
+                  <td nowrap bgcolor="{color}">{n}</td>
+                  <td class="textoGris">{convencion}</td>
+                  <td class="textoGris"> {valores} </td>
+                </tr>
+                <!-- END ROW -->
+                <tr> 
+                  <td width="9%" height="19" nowrap>&nbsp;</td>
+                  <td width="64%" class="textoNegro">Total</td>
+                  <td width="27%" class="textoGris">{total}</td>
+                </tr>
+              </table>
 	  </td>
     </tr>
 	

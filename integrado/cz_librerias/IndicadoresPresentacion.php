@@ -189,12 +189,14 @@ class IndicadoresPresentacion {
 		// se construye el grafico
 		$color=0;
 		$valores_todos="";
+		$n=0;
 		while ($this->datos->fetch()) {
-				
+			$n=$n+1;
 			$this->plantilla->setCurrentBlock('ROW');
 			$this->plantilla->setVariable('color'   , $colores[$color]);
 			$this->plantilla->setVariable('valores' , $this->datos->valores);
 			$this->plantilla->setVariable('convencion' , $this->datos->datos);
+			$this->plantilla->setVariable('n'   , $n);
 			
 			$color=$color+1;
 			$valores_todos.=$this->datos->valores."@";
