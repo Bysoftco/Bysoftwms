@@ -59,7 +59,9 @@ class Indicadores extends MYDB {
 		WHERE facturas_maestro.cliente=clientes.numero_documento
 		AND YEAR(fecha_factura) >=$arregloDatos[anios] 
 		AND facturas_maestro.cliente='$arregloDatos[cliente]'
+		
 		GROUP BY MONTH(fecha_factura)
+		HAVING  SUM(total) >0
 		ORDER BY MONTH(fecha_factura) ASC
    		LIMIT 12
  			";
