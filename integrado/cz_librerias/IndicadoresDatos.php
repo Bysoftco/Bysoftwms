@@ -37,15 +37,31 @@ class Indicadores extends MYDB {
     $sede = $_SESSION['sede'];
     $arregloDatos[tituloGrafico]="Indicador Facturaci&oacute;n por mes del cliente $arregloDatos[cliente] ";
     
-    $sql = " SELECT MONTH(fecha_factura) AS datos,
+    $sql = " SELECT 
+			 
+		CASE MONTH(fecha_factura) WHEN '1' THEN 'Enero'
+WHEN '2' THEN 'Febrero'
+WHEN '3' THEN 'Marzo'
+WHEN '4' THEN 'Abril'
+WHEN '5' THEN 'Mayo'
+WHEN '6' THEN 'Junio'
+WHEN '7' THEN 'Julio'
+WHEN '8' THEN 'Agosto'
+WHEN '9' THEN 'Septiembre'
+WHEN '10' THEN 'Octubre'
+WHEN '11' THEN 'Noviembre'
+WHEN '12' THEN 'Diciembre'
+END AS datos,
+			 
+			 
 			 SUM(total) AS valores
-			FROM facturas_maestro,clientes
-			WHERE facturas_maestro.cliente=clientes.numero_documento
-			AND fecha_factura >= '$arregloDatos[fecha_inicio]' AND fecha_factura <= '$arregloDatos[fecha_fin]'
-			AND facturas_maestro.cliente='$arregloDatos[cliente]'
-			GROUP BY MONTH(fecha_factura)
-			ORDER BY MONTH(fecha_factura) ASC
- 			LIMIT 12
+			 FROM facturas_maestro,clientes
+			 WHERE facturas_maestro.cliente=clientes.numero_documento
+			 AND fecha_factura >= '$arregloDatos[fecha_inicio]' AND fecha_factura <= '$arregloDatos[fecha_fin]'
+			 AND facturas_maestro.cliente='$arregloDatos[cliente]'
+			 GROUP BY MONTH(fecha_factura)
+			 ORDER BY MONTH(fecha_factura) ASC
+   			 LIMIT 12
  			";
 			 
    // if($arregloDatos[excel]){ return $sql; }
