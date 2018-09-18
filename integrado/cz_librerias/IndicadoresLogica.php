@@ -39,7 +39,14 @@ require_once("IndicadoresPresentacion.php");
 		 
 		  function indicadorCliente($arregloDatos)
 		  {
-		  	$this->datos->indicadorCliente($arregloDatos);
+		  //var_dump($arregloDatos);
+		  	if(!empty($arregloDatos[cliente])) {
+					$this->datos->indicadorUnCliente($arregloDatos);
+			}else{
+					$this->datos->indicadorCliente($arregloDatos);
+			}
+		  
+			
 		  	$this->pantalla->indicadorCliente($arregloDatos);	
          
           }

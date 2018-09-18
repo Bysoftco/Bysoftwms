@@ -169,7 +169,7 @@ class IndicadoresPresentacion {
          	if(is_array($valores)){
          		$valores		 = implode ("@", $valores);   
           	}
-		
+			
 			$unGrafico->setVariable('tituloGrafico'  , $arregloDatos[tituloGrafico]);
 			$unGrafico->setVariable('datos'   , $datos.'@');
 			$unGrafico->setVariable('valores' , $valores.'@');
@@ -191,6 +191,9 @@ class IndicadoresPresentacion {
 		$valores_todos="";
 		$n=0;
 		$total=0;
+		
+		
+		
 		while ($this->datos->fetch()) {
 			$n=$n+1;
 			$this->plantilla->setCurrentBlock('ROW');
@@ -203,6 +206,7 @@ class IndicadoresPresentacion {
 			$valores_todos.=$this->datos->valores."@";
 			$this->plantilla->parseCurrentBlock();	
 		}
+		$this->plantilla->setVariable('tituloGrafico' , $arregloDatos[tituloGrafico]);
 		$this->plantilla->setVariable('tipoGrafico' , $arregloDatos[tipoGrafico]);
 		$this->plantilla->setVariable('valores_todos' , $valores_todos);
 		$this->plantilla->setVariable('total' , number_format($total,0,',','.'));
