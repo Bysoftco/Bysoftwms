@@ -125,10 +125,7 @@ class IndicadoresPresentacion {
 
 
   function filtro($arregloDatos,$unDatos,$plantilla) {
-    $unaLista 	= new Inventario();
-    $lista		= $unaLista->lista("tipos_remesas");
-    $lista		= armaSelect($lista,'[seleccione]',NULL);
-    $plantilla->setVariable("listaTiposRemesa", $lista);
+   
   }
   
   

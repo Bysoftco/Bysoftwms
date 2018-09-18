@@ -14,6 +14,7 @@
   function EnviarFormulario() {
     alert("EnviarFormulario");
   }
+  $("#anios").hide();   
 
   $(function() {
     $("#buscarClienteIndicadores").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
@@ -23,7 +24,10 @@
 
     $("#buscarClienteIndicadores").result(function(event, data, formatted) {
 	
-      $("#cliente").val(data[1]);                         
+      $("#cliente").val(data[1]); 
+	   $("#fecha_d").hide();
+	   $("#fecha_h").hide();  
+	   $("#anios").show();                       
     });
 
 		$("#fecha_inicior").datepicker();
@@ -112,15 +116,23 @@
      
     </p> 
      
-    <p style="display:{mostrarFiltro};">    
+    <p style="display:{mostrarFiltro};" id="fecha_d">    
       <label for="curl">Fecha Factura Desde:</label>
       <input type="text" name="fecha_inicio" id="fecha_inicior" class=" ui-widget-content"/>
       aaaa/mm/dd
     </p>
-    <p style="display:{mostrarFiltro};">
+	
+    <p style="display:{mostrarFiltro};" id="fecha_h">
       <label for="curl">Fecha Factura  Hasta:</label>
       <input type="text" name="fecha_fin" id="fecha_finr" class=" ui-widget-content"/>  aaaa/mm/dd
     </p> 
+	
+	<p style="display:{mostrarFiltro};" id="anios">
+			 <label for="curl">Años:</label>
+			<select name="anios" id="anios" class="ui-widget-content" >
+    			{selectAnios}
+  			</select>
+	 </p>
    
 	<label>Tipo de Grafico: </label>
       

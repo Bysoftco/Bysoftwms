@@ -131,7 +131,7 @@ $Graph =& Image_Graph::factory('graph', array(400, 250));
             			$Plotarea = Image_Graph::factory('plotarea'),$Legend = Image_Graph::factory('legend'),90),7)
 						);
 			$Legend->setPlotarea($Plotarea);
-			$Graph->setBackground(Image_Graph::factory('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'green', 'lightblue')));
+			$Graph->setBackground(Image_Graph::factory('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'gray', 'lightblue')));
 			$Graph->setBorderColor('black');
 
 			$Dataset =& Image_Graph::factory('dataset');

@@ -14,12 +14,12 @@ class Indicadores extends MYDB {
     
     $sql = " SELECT MAX(razon_social) AS datos,
 			 total AS valores
-			FROM facturas_maestro,clientes
-			WHERE facturas_maestro.cliente=clientes.numero_documento
-			AND fecha_factura >= '$arregloDatos[fecha_inicio]' AND fecha_factura <= '$arregloDatos[fecha_fin]'
-			GROUP BY cliente
-			ORDER BY total DESC
- 			LIMIT 10";
+			 FROM facturas_maestro,clientes
+			 WHERE facturas_maestro.cliente=clientes.numero_documento
+			 AND fecha_factura >= '$arregloDatos[fecha_inicio]' AND fecha_factura <= '$arregloDatos[fecha_fin]'
+			 GROUP BY cliente
+			 ORDER BY total DESC
+ 			 LIMIT 10";
 			 
    // if($arregloDatos[excel]){ return $sql; }
    //echo  $sql;
@@ -40,28 +40,28 @@ class Indicadores extends MYDB {
     $sql = " SELECT 
 			 
 		CASE MONTH(fecha_factura) WHEN '1' THEN 'Enero'
-WHEN '2' THEN 'Febrero'
-WHEN '3' THEN 'Marzo'
-WHEN '4' THEN 'Abril'
-WHEN '5' THEN 'Mayo'
-WHEN '6' THEN 'Junio'
-WHEN '7' THEN 'Julio'
-WHEN '8' THEN 'Agosto'
-WHEN '9' THEN 'Septiembre'
-WHEN '10' THEN 'Octubre'
-WHEN '11' THEN 'Noviembre'
-WHEN '12' THEN 'Diciembre'
-END AS datos,
+		WHEN '2' THEN 'Febrero'
+		WHEN '3' THEN 'Marzo'
+		WHEN '4' THEN 'Abril'
+		WHEN '5' THEN 'Mayo'
+		WHEN '6' THEN 'Junio'
+		WHEN '7' THEN 'Julio'
+		WHEN '8' THEN 'Agosto'
+		WHEN '9' THEN 'Septiembre'
+		WHEN '10' THEN 'Octubre'
+		WHEN '11' THEN 'Noviembre'
+		WHEN '12' THEN 'Diciembre'
+		END AS datos,
 			 
 			 
-			 SUM(total) AS valores
-			 FROM facturas_maestro,clientes
-			 WHERE facturas_maestro.cliente=clientes.numero_documento
-			 AND fecha_factura >= '$arregloDatos[fecha_inicio]' AND fecha_factura <= '$arregloDatos[fecha_fin]'
-			 AND facturas_maestro.cliente='$arregloDatos[cliente]'
-			 GROUP BY MONTH(fecha_factura)
-			 ORDER BY MONTH(fecha_factura) ASC
-   			 LIMIT 12
+		SUM(total) AS valores
+		FROM facturas_maestro,clientes
+		WHERE facturas_maestro.cliente=clientes.numero_documento
+		AND YEAR(fecha_factura) >=$arregloDatos[anios] 
+		AND facturas_maestro.cliente='$arregloDatos[cliente]'
+		GROUP BY MONTH(fecha_factura)
+		ORDER BY MONTH(fecha_factura) ASC
+   		LIMIT 12
  			";
 			 
    // if($arregloDatos[excel]){ return $sql; }

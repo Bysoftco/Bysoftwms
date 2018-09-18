@@ -31,6 +31,17 @@ require_once("IndicadoresPresentacion.php");
 		
 		 function filtro($arregloDatos)
 		 {
+		 //	echo "ready";
+    for($i=2015; $i <= 2018; $i++){
+		$anios[$i]=$i;
+	}
+  
+    //$unaLista 	= new Inventario();
+    //$lista		= $unaLista->lista("tipos_remesas");
+   $arregloDatos[selectAnios]		= armaSelect($anios,'[seleccione]',NULL);
+    //$plantilla->setVariable("listaTiposRemesa", $lista);
+	
+			//$arregloDatos[anios]='';
          	$arregloDatos[mostrar]          =1;
             $arregloDatos[plantilla]        ='indicadoresFiltroClientes.html';
             $arregloDatos[thisFunction]     ='filtro';
