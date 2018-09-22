@@ -640,7 +640,7 @@ class Levante extends MYDB {
 			         AND inventario_maestro_movimientos.codigo=$arregloDatos[id_levante]
 			         AND referencias.codigo <> 4
 			       GROUP BY inventario_entradas.orden,referencias.nombre";
-
+//echo $sql;
     $this->query($sql);
     if($this->_lastError) {
       $this->mensaje = "Error al consultar el detalle del retiro " . $sql;
@@ -899,6 +899,7 @@ class Levante extends MYDB {
     $sql = "SELECT  imm.codigo AS num_levante,imm.lev_sia,lev_cant_declaraciones AS lev_cant,lev_bultos,
                     imm.fecha,imm.destinatario,imm.direccion,imm.obs,imm.fmm,imm.lev_cuenta_grupo,prefactura,
                     clientes.razon_social,imm.producto,camiones.conductor_nombre,camiones.codigo AS id_camion,
+					clientes.correo_electronico as email,
                     camiones.placa,referencias.nombre AS nombre_producto,imm.cantidad,imm.cantidad_nac,
                     imm.cantidad_ext,imm.doc_tte,imm.peso,imm.valor,imm.unidad,imm.bodega,imm.orden,
                     imm.cierre,imm.pos_arancelaria,imm.tip_movimiento,imm.tipo_retiro,imm.posicion,
@@ -1300,7 +1301,7 @@ class Levante extends MYDB {
   }
 
   function getLevante($arregloDatos) {
-  //var_dump($arregloDatos);
+  
     $sql = "SELECT codigo FROM inventario_maestro_movimientos
             WHERE orden = '$arregloDatos[orden_filtro]' AND tip_movimiento = 2";
 
@@ -2142,6 +2143,21 @@ class Levante extends MYDB {
 				LIMIT 1
 		";	
 		$this->query($sql);
+   		 if($this->_lastError) {	
+		 }
+   }
+   
+   function getEmail(&$arregloDatos) {
+   
+   		$sql ="SELECT correo_electronico as email
+				FROM clientes
+				WHERE numero_documento=$arregloDatos[por_cuenta_filtro]
+				LIMIT 1
+		";	
+		$this->query($sql);
+		$this->fetch();
+		$arregloDatos[cliente_email]=$this->email;
+		
    		 if($this->_lastError) {	
 		 }
    }

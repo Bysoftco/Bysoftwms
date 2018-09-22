@@ -932,7 +932,10 @@ class LevantePresentacion {
       $arregloDatos[doc_filtro] = $arregloDatos[documento_filtro];
     }
 	$arregloDatos[titulo] = "  $arregloDatos[tipo_retiro_label]: ";
-	  
+	
+	 $unaConsulta = new Levante();
+	  $unaConsulta->getEmail($arregloDatos);
+	 $arregloDatos[cliente_titulo]  =$arregloDatos[por_cuenta_filtro]; 
 	  
 	  /*
     	switch($arregloDatos[tipo_movimiento]) {

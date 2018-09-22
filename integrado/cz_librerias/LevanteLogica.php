@@ -769,9 +769,23 @@ class LevanteLogica {
   }
   
   function updateRetiroCabeza($arregloDatos) {
+  
+ 
+   	if($arregloDatos[cierre]) {
+  		 // Envio del email
+		$arregloDatos[do_asignado]=$arregloDatos[id_levante];
+	 	$arregloDatos[plantilla_mail] = "mailTrackingRetiro.html";
+     	$arregloDatos[asunto_mail] = "Retiro ".$arregloDatos[tipo_retiro_label]." : ".$arregloDatos[id_levante];
+     	$this->envioMail($arregloDatos);
+  	}
+  
     $arregloDatos[plantilla] = 'levanteCabezaRetiro.html';
     if($arregloDatos[tipo_retiro_m] == 13) {
       if($arregloDatos[cierre]) {
+	  
+	 	
+	  
+	  
         $arregloDatos[por_cuenta] = $arregloDatos[destinatario];
         // se procede  a hacer el movimiento y crear el nuevo DO
         $unaOrden = new Orden();
@@ -803,6 +817,7 @@ class LevanteLogica {
     $arregloDatos[thisFunction] = 'getCabezaLevante';
     $this->datos->setCabezaLevante($arregloDatos);
     $this->pantalla->setFuncion($arregloDatos,$this->datos);
+	
   }
   
   function updateProcesoCabeza($arregloDatos) {
