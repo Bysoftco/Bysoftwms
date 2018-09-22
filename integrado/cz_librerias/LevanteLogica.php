@@ -604,9 +604,9 @@ class LevanteLogica {
     $arregloDatos[valor] = number_format($arreglo[valor],2);
     // **********************************************************************************************
     //Una vez registrado el Retiro en la tabla inventario_movimientos se envía el email de Tracking.
-    $arregloDatos[plantilla_mail] = "mailTrackingRetiro.html";
-    $arregloDatos[asunto_mail] = "Retiro ".$arregloDatos[tipo_retiro_label]." para el DO: ".$arregloDatos[do_asignado_full];
-    $this->envioMail($arregloDatos);
+    	//$arregloDatos[plantilla_mail] = "mailTrackingRetiro.html";
+    	//$arregloDatos[asunto_mail] = "Retiro ".$arregloDatos[tipo_retiro_label]." para el DO: ".$arregloDatos[do_asignado_full];
+    	//$this->envioMail($arregloDatos);
     // **********************************************************************************************
     if($arregloDatos[aplicaMatriz]) {
       $this->addItemMatriz($arregloDatos);
@@ -1038,6 +1038,7 @@ class LevanteLogica {
 		$mail->cuerpo($arregloDatos[plantilla_mail],$arregloDatos[plantilla_mail],$arregloDatos);
 		$mail->cargarCabecera($destino, $remite, $arregloDatos[asunto_mail]);
 		//Procedimiento de Envío de mail y validación de envío correcto
+		
 		$arregloDatos[info] = $mail->enviarEmail() ? -1 : 0;
 		$this->pantalla->mostrarMensaje($arregloDatos);
 	}
