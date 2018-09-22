@@ -99,10 +99,19 @@ $("#email").val($("#cliente_email").val())
       text: true,
       icons: { primary: "ui-icon-key" }
     }).click(function() {
+	
+		 $("#cerrarRetiro").val(1);
+	 
+	 	$("#e_cantidad_nacional").val($("#tot_peso_nacsf").val()) 
+	   $("#e_cantidad_extranjera").val($("#tot_peso_nonacsf").val())
+	   $("#e_tot_fob").val($("#tot_fob").val())
+	   $("#e_tot_cif").val($("#tot_cif").val())
+	 
       if(!confirm("\u00bfConfirma que desea guardar y cerrar, al guardar y cerrar ya no podra modificar el movimiento?")) {
         return false;
       }
-      $("#cerrarRetiro").val(1);
+     
+	  
     });
 
     if($('#cerrarRetiro').val()/1 == 0) {
@@ -125,7 +134,12 @@ $("#email").val($("#cliente_email").val())
   <input name="tipo_retiro_m" type="hidden" id="tipo_retiro_m" value="{tipo_retiro}" />
   
   <input name="email" type="hidden" id="email" value="{email} ">
+  <input name="e_cantidad_nacional" type="hidden" id="e_cantidad_nacional">
+  <input name="e_cantidad_extranjera" type="hidden" id="e_cantidad_extranjera">
+   <input name="e_tot_fob" type="hidden" id="e_tot_fob">
+    <input name="e_tot_cif" type="hidden" id="e_tot_cif">
   </legend>
+  
   <table width="100%" border="0">
       <tr class="ui-widget ui-widget-header ui-corner-all">
         <th>Pedido</th>

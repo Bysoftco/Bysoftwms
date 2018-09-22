@@ -149,12 +149,16 @@
         <td>&nbsp;</td>
         <td>&nbsp;</td>
         <td>{n}</td>
-        <td>{tot_cant_nac} {sn_aux} {tot_cant_nonac}</td>
+        <td>{tot_cant_nac} {sn_aux} {tot_cant_nonac}
+          <input name="tot_cant_nonac" type="hidden" id="tot_cant_nonac" value="{tot_cant_nonac}">
+          <input name="tot_cant_nac" type="hidden" id="tot_cant_nac" value="{tot_cant_nac}"></td>
         <td>{tot_peso_nacf} {sn_aux} {tot_peso_nonacf} 
           <input name="tot_peso_nac" type="hidden" id="tot_peso_nacsf" value="{tot_peso_nac}" /> 
           <input name="tot_peso_nonac" type="hidden" id="tot_peso_nonacsf"
                 value="{tot_peso_nonac}" /> </td>
-        <td>{tot_cif} {sn_aux} {tot_fob}</td>
+        <td>{tot_cif} {sn_aux} {tot_fob}
+          <input name="tot_fob" type="hidden" id="tot_fob" value="{tot_fob}">
+          <input name="tot_cif" type="hidden" id="tot_cif" value="{tot_cif}"></td>
         <td>{n}</td>
       </tr>
       <tr> 
