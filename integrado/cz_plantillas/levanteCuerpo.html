@@ -11,8 +11,9 @@
 				var num_levante=$("#num_levante"+$column ).val();
 				if(confirm('Confirma que desea quitar el item '+num_levante))
 				{
+					
 					// Cuerpo del levante
-					$("div#htmlCuerpo").load("./scripts_index.php", {clase:'Levante',metodo:'delMercanciaLevante',mostrar:'1',id_levante:$('#id_levante').val(),num_levante_del:num_levante,tipo_movimiento:$('#tipo_movimiento').val(),grupo_borrado:$("#grupo_cuerpo"+$column ).val()}, function(datos){
+					$("div#htmlCuerpo").load("./scripts_index.php", {clase:'Levante',metodo:'delMercanciaLevante',mostrar:'1',id_levante:$('#id_levante').val(),num_levante_del:num_levante,tipo_movimiento:$('#tipo_movimiento').val(),grupo_borrado:$("#grupo_cuerpo"+$column ).val(),referencia:$('#codigo_referencia'+$column).val()}, function(datos){
 					});
 
 					// OJo Revizar dependiendo Tipo de Operacion se llama metodo
@@ -133,6 +134,7 @@
         <td> [{cod_referencia}]{nombre_referencia} 
 
           <input name="id_item[]" type="hidden" id="id_item{n}" value="{id_item}"> 
+		  <input name="codigo_referencia[]" type="hidden" id="codigo_referencia{n}" value="{codigo_referencia}">
 
         </td>
 

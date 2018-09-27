@@ -1374,7 +1374,14 @@ class Levante extends MYDB {
   }
 
   function delMercanciaLevante($arregloDatos) {
-    $sql = "DELETE FROM inventario_movimientos WHERE num_levante = '$arregloDatos[num_levante_del]'";
+  ;
+    $sql = "DELETE  im
+			FROM inventario_movimientos im,inventario_entradas ie
+			WHERE
+			 im.inventario_entrada = ie.codigo 
+			AND im.num_levante = '$arregloDatos[num_levante_del]'
+			AND ie.referencia=$arregloDatos[referencia]
+			";
 
     $this->query($sql);
     if($this->_lastError) {
@@ -1667,6 +1674,7 @@ class Levante extends MYDB {
                     inventario_declaraciones.obs,
                     inventario_declaraciones.tipo_declaracion,
                     inventario_declaraciones.subpartida,
+					ref.codigo AS codigo_referencia,
                     ref.nombre AS nombre_referencia,
                     ref.ref_prove AS cod_referencia,
                     embalajes.nombre AS nombre_empaque,
