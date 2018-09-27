@@ -280,7 +280,7 @@ class LevantePresentacion {
       $arregloDatos[sum_cant_naci] = 0;
     }
     $arregloDatos[prefijo]="03".date('Y')."000";
-	
+	 $arregloDatos[flete]='1';
 	// Si es un levante Mixto se traen los datos del levante anterior
 	//var_dump($arregloDatos);
 	if($arregloDatos[mixto])
