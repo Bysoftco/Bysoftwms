@@ -302,7 +302,7 @@ class LevanteLogica {
         $arregloDatos[tipo_movimiento] = 3;
         $arregloDatos[tab_seleccionado] = 0;
         break;
-      case 7: // Alist
+      case 7: // Alist sesion de derechos 01/10/2018
         $arregloDatos[tipo_movimiento] = 7;
         $arregloDatos[tipo_retiro_filtro] = 8;// para que muestre extrangero
         break;
