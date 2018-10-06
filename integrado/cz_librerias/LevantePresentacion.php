@@ -338,7 +338,7 @@ class LevantePresentacion {
 
   function getCabezaLevante($arregloDatos, $unDatos, $unaPlantilla) {
     
-	
+	//var_dump($unDatos);
 	// si es procesamiento parcial interno	
     $unaConsulta = new Levante();
     $arregloDatos[cuenta_grupos] = $unDatos->lev_cuenta_grupo;
@@ -383,7 +383,8 @@ class LevantePresentacion {
     if(empty($unDatos->fmm)) {
       $unaPlantilla->setVariable("fmm", "1");
     }
-
+	
+	$unaPlantilla->setVariable("razon_social", $unDatos->razon_social);
     $unaPlantilla->setVariable("cant_declaraciones", $arregloDatos[cant_declaraciones]);
     $unaPlantilla->setVariable("peso_declaraciones", $arregloDatos[peso_declaraciones]);
     $unaPlantilla->setVariable("mostrarOtros", "none");
@@ -936,7 +937,7 @@ class LevantePresentacion {
 	 $unaConsulta = new Levante();
 	  $unaConsulta->getEmail($arregloDatos);
 	 $arregloDatos[cliente_titulo]  =$arregloDatos[por_cuenta_filtro]; 
-	  
+	 
 	  /*
     	switch($arregloDatos[tipo_movimiento]) {
     

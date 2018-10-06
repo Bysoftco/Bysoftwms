@@ -2157,7 +2157,7 @@ class Levante extends MYDB {
    
    function getEmail(&$arregloDatos) {
    
-   		$sql ="SELECT correo_electronico as email
+   		$sql ="SELECT correo_electronico as email,razon_social as nombre_cliente
 				FROM clientes
 				WHERE numero_documento=$arregloDatos[por_cuenta_filtro]
 				LIMIT 1
@@ -2165,6 +2165,7 @@ class Levante extends MYDB {
 		$this->query($sql);
 		$this->fetch();
 		$arregloDatos[cliente_email]=$this->email;
+		$arregloDatos[name_cliente]=$this->nombre_cliente;
 		
    		 if($this->_lastError) {	
 		 }
