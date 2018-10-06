@@ -2,7 +2,7 @@
 //alert($("#cliente_email").val())
 $("#email").val($("#cliente_email").val())
 
-$("#nombre_cliente_correo").val($("#cliente_nombre").val())
+$("#nombre_cliente_correo").val($("#nombre_cliente").val())
 
   $.validator.setDefaults({
     submitHandler: function() {},
@@ -127,6 +127,8 @@ $("#nombre_cliente_correo").val($("#cliente_nombre").val())
   });	
 </script>
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+<p id="msgbox_aviso" class="ui-state-highlight">Recuerde que para enviar mensaje 
+  de notificaci&oacute;n al correo debe guardar y cerrar la operaci&oacute;n.</p>
 <p id="msgbox_levante" class="{estilo}">{mensaje}</p>
 <form class="formUpdateCabeza" name="formGuardaLevante"  id="formUpdateCabeza"  method="post" action="javascript:formUpdateCabeza()">
   <fieldset class="ui-widget ui-widget-content ui-corner-all">
@@ -140,7 +142,7 @@ $("#nombre_cliente_correo").val($("#cliente_nombre").val())
   <input name="do_asignado" type="hidden" id="do_asignado_retiro" />
   <input name="tipo_retiro_m" type="hidden" id="tipo_retiro_m" value="{tipo_retiro}" />
   <input name="email" type="hidden" id="email" value="{email} ">
-  <input name="nombre_cliente" type="hidden" id="nombre_cliente_correo" value="{name_cliente} ">
+  <input name="nombre_cliente_correo" type="hidden" id="nombre_cliente_correo" value="{name_cliente} ">
   <input name="e_cantidad_nacional" type="hidden" id="e_cantidad_nacional">
   <input name="e_cantidad_extranjera" type="hidden" id="e_cantidad_extranjera">
   <input name="e_tot_fob" type="hidden" id="e_tot_fob">
@@ -216,3 +218,4 @@ $("#nombre_cliente_correo").val($("#cliente_nombre").val())
   <input type="hidden" name="fecha" id="fecha" value="{fecha}" />
   {metodoCabezaEnviaX}
 </form>
+
