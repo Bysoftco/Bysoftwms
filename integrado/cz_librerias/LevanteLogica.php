@@ -770,7 +770,6 @@ class LevanteLogica {
   
   function updateRetiroCabeza($arregloDatos) {
   
- 
    	if($arregloDatos[cierre]) {
   		 // Envio del email
 		$arregloDatos[do_asignado]=$arregloDatos[id_levante];
@@ -782,9 +781,7 @@ class LevanteLogica {
     $arregloDatos[plantilla] = 'levanteCabezaRetiro.html';
     if($arregloDatos[tipo_retiro_m] == 13) {
       if($arregloDatos[cierre]) {
-	  
-	 	
-	  
+
 	  
         $arregloDatos[por_cuenta] = $arregloDatos[destinatario];
         // se procede  a hacer el movimiento y crear el nuevo DO
@@ -1043,6 +1040,7 @@ class LevanteLogica {
   }
   
   function envioMail($arregloDatos) {
+ // var_dump($arregloDatos);
     $arregloDatos['remite'] = 'blogistic@grupobysoft.com';
     $remite = array('email' => $arregloDatos['remite'],'nombre' => $arregloDatos['remite']);
 		$destino = array('email'  => $arregloDatos['email'],'nombre' => $arregloDatos['email']);				
