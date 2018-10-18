@@ -66,12 +66,20 @@ class SaldosVista {
       //Acumula Totales
       $tpiezas += $value['cantidad']; $tpiezas_nal += $value['c_nal'];
       $tpiezas_ext += $value['c_ext']; $n++;
-      $this->template->parseCurrentBlock("ROW");
+	  
+      $t_ret_nal=$t_ret_nal+abs($value['c_ret_nal']);
+	  $t_ret_ext=$t_ret_ext+abs($value['c_ret_ext']);
+	  
+	  
+	  $this->template->parseCurrentBlock("ROW");
     }
     $this->template->setVariable('total_piezas', number_format($tpiezas,2));
     $this->template->setVariable('total_piezas_nal', number_format($tpiezas_nal,2));
     $this->template->setVariable('total_piezas_ext', number_format($tpiezas_ext,2));
     $this->template->setVariable('total_saldo_piezas', number_format($tpiezas_nal+$tpiezas_ext,2));
+	
+	$this->template->setVariable('total_ret_nal', number_format($t_ret_nal,2));
+	$this->template->setVariable('total_ret_ext', number_format($t_ret_ext,2));
     
     $this->template->show();
   }
