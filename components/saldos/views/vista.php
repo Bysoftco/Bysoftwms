@@ -55,10 +55,14 @@ class SaldosVista {
       $this->template->setVariable('nombre_referencia', $value['nombre_referencia']);
       $this->template->setVariable('ucomercial', $value['ucomercial']);
       $this->template->setVariable('fecha_expira', $value['fecha_expira']);
-      $this->template->setVariable('piezas', number_format($value['cantidad'],2));
-      $this->template->setVariable('piezas_nal', number_format($value['c_nal'],2));
-      $this->template->setVariable('piezas_ext', number_format($value['c_ext'],2));
-      $this->template->setVariable('saldo_piezas', number_format($value['c_nal']+$value['c_ext'],2));
+      $this->template->setVariable('piezas', number_format(abs($value['cantidad']),2));
+      $this->template->setVariable('piezas_nal', number_format(abs($value['c_nal']),2));
+      $this->template->setVariable('piezas_ext', number_format(abs($value['c_ext']),2));
+	  
+	  $this->template->setVariable('c_ret_nal', number_format(abs($value['c_ret_nal']),2));
+	  $this->template->setVariable('c_ret_ext', number_format(abs($value['c_ret_ext']),2));
+	  
+      $this->template->setVariable('saldo_piezas', number_format(abs($value['c_nal']+$value['c_ext']),2));
       //Acumula Totales
       $tpiezas += $value['cantidad']; $tpiezas_nal += $value['c_nal'];
       $tpiezas_ext += $value['c_ext']; $n++;

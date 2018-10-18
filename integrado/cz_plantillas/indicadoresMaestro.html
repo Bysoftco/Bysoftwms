@@ -60,6 +60,20 @@
         $("#metodoReporte" ).val('indicadorCliente');
       });
     });
+	
+	
+	$( "#ingresos_retiros" ).button().click(function() {
+      $("#nombre_reporte").text('Indicador mejores clientes');
+      $("div#filtro_reporte").load("./scripts_index.php", {
+        clase:'Indicadores',
+        metodo:'filtro',
+        mostrar:'1',
+        id_levante:$('#xx').val()
+      }, function(datos) {
+        $( "#ventana_reporte" ).dialog( "open" );
+        $("#metodoReporte" ).val('indicadorCliente');
+      });
+    });
 		 
     $( "#inventarioValor" ).button().click(function() {
       $("#nombre_reporte").text('Inventario por Valor');
@@ -106,12 +120,17 @@
     </thead>
     <tbody>
       <tr> 
-        <td height="20">1.</td>
-        <td>&middot; Grafica los primeros 10 Clientes de m&aacute;s Facturaci&oacute;n 
-          en un rango determinado de fechas.
-          Si especificamos un Cliente se grafica la Facturaci&oacute;n 
-            de un a&ntilde;o mes a mes.</p></td>
+        <td height="76">1.</td>
+        <td> Grafica los primeros 10 Clientes de m&aacute;s Facturaci&oacute;n 
+          en un rango determinado de fechas. Si especificamos un Cliente se grafica 
+          la Facturaci&oacute;n de un a&ntilde;o mes a mes.
+          </td>
         <td><button id="indicadorCliente">Generar</button></td>
+      </tr>
+      <tr> 
+        <td height="20">2.</td>
+        <td>&middot; Ingresos y retiros de un cliente por a&ntilde;o.</p></td>
+        <td><button id="ingresos_retiros">Generar</button></td>
       </tr>
     </tbody>
   </table>

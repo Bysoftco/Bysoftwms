@@ -33,7 +33,7 @@
 <div style="padding-top: 45px;"></div>
 <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general_z" class="display">
   <thead>
-    <tr>
+    <tr> 
       <th>Cliente</th>
       <th>Orden</th>
       <th>Documento TTE</th>
@@ -44,12 +44,14 @@
       <th>Piezas Ing.</th>
       <th>Piezas Nal.</th>
       <th>Piezas Ext.</th>
+      <th>Ret Ext</th>
+      <th>Ret Nal</th>
       <th>Saldo</th>
     </tr>
   </thead>
   <tbody>
     <!-- BEGIN ROW  -->
-    <tr>
+    <tr> 
       <td>[{doc_cliente}] {nombre_cliente}</td>
       <td style="text-align: center;">{orden}</td>
       <td style="text-align: center;">{doc_transporte}</td>
@@ -60,12 +62,14 @@
       <td style="text-align: right;">{piezas}</td>
       <td style="text-align: right;">{piezas_nal}</td>
       <td style="text-align: right;">{piezas_ext}</td>
+      <td style="text-align: right;">{c_ret_ext}</td>
+      <td style="text-align: right;">{c_ret_nal}</td>
       <td style="text-align: right;">{saldo_piezas}</td>
     </tr>
     <!-- END ROW  -->
   </tbody>
   <tfoot>
-    <tr>
+    <tr> 
       <th colspan="2">Totales</th>
       <th></th>
       <th></th>
@@ -75,6 +79,8 @@
       <th style="text-align: right;">{total_piezas}</th>
       <th style="text-align: right;">{total_piezas_nal}</th>
       <th style="text-align: right;">{total_piezas_ext}</th>
+      <th style="text-align: right;">&nbsp;</th>
+      <th style="text-align: right;">&nbsp;</th>
       <th style="text-align: right;">{total_saldo_piezas}</th>
     </tr>
   </tfoot>

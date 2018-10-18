@@ -162,8 +162,102 @@ $Graph =& Image_Graph::factory('graph', array(400, 250));
 			$Graph->done();
 
 	}	
-				
+	function lineas1 ($arregloDatos) {
+	
+	//https://github.com/pear/Image_Graph/blob/master/docs/examples/line_break.php
+		$Graph =& Image_Graph::factory('graph', array(400, 300)); 
+// add a TrueType font
+$Font =& $Graph->addNew('font', 'Verdana');
+// set the font size to 11 pixels
+$Font->setSize(10);
+$Graph->setFont($Font);
+// setup the plotarea, legend and their layout
+$Graph->add(
+   Image_Graph::vertical(
+      Image_Graph::factory('title', array('Entradas \'Salidas\' Por cliente', 12)),        
+      Image_Graph::vertical(
+          Image_Graph::vertical(
+            $Plotarea1 = Image_Graph::factory('plotarea') ,
+            $Plotarea2 = Image_Graph::factory('plotarea'),
+            50
+        ),
+        $Legend = Image_Graph::factory('legend'),
+         88
+      ),
+      5
+   )
+);   
+// link the legend with the plotares
+$Legend->setPlotarea($Plotarea1);
+$Legend->setPlotarea($Plotarea2);
+// create the dataset
+$Dataset =& Image_Graph::factory('dataset');
+$Dataset->addPoint('Enero', 10); 
+$Dataset->addPoint('Feb', 12); 
+$Dataset->addPoint('Mar', 3); 
+$Dataset->addPoint('Apr', 0); 
+$Dataset->addPoint('May', 4); 
+$Dataset->addPoint('Jun', 10); 
+$Dataset->addPoint('Jul', 0); 
+$Dataset->addPoint('Aug', 0); 
+$Dataset->addPoint('Sep', 9); 
+$Dataset->addPoint('Oct', 10); 
+$Dataset->addPoint('Nov', 4); 
+$Dataset->addPoint('Dec', 14);
+// create the line plot
+$Plot1 =& $Plotarea1->addNew('line', array(&$Dataset));
+// set line color
+$Plot1->setLineColor('red');
+// create the line plot
+$Plot2 =& $Plotarea2->addNew('line', array(&$Dataset));    
+// set line color
+$Plot2->setLineColor('blue'); 
+// output the Graph
+
+
+
+$Graph->done();
+	}
+	
+	function lineas($arregloDatos) {
+	//https://github.com/pear/Image_Graph/blob/master/docs/examples/plot_line.php
+		// create the graph
+$Graph =& Image_Graph::factory('graph', array(400, 300));
+// add a TrueType font
+$Font =& $Graph->addNew('font', 'Verdana');
+// set the font size to 11 pixels
+$Font->setSize(10);
+$Graph->setFont($Font);
+// setup the plotarea, legend and their layout
+$Graph->add(
+   Image_Graph::vertical(
+      Image_Graph::factory('title', array('Simple Line Chart Sample', 12)),        
+      Image_Graph::vertical(
+         $Plotarea = Image_Graph::factory('plotarea'),
+         $Legend = Image_Graph::factory('legend'),
+         88
+      ),
+      5
+   )
+);   
+// link the legend with the plotares
+$Legend->setPlotarea($Plotarea);
+// create a random dataset for sake of simplicity
+$Dataset =& Image_Graph::factory('random', array(10, 2, 15, true));
+// create the plot as line chart using the dataset
+$Plot =& $Plotarea->addNew('line', array(&$Dataset));
+// set a line color
+$Plot->setLineColor('red');                  
+     
+// output the Graph
+$Graph->done();			
+	}
+	
+	function lineas3 ($arregloDatos) {
+//all_negative.php
+	
 		
+}
 }		
   	
 ?>
