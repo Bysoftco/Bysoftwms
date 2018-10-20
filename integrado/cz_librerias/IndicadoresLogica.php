@@ -61,7 +61,14 @@ require_once("IndicadoresPresentacion.php");
 		  	$this->pantalla->indicadorCliente($arregloDatos);	
          
           }
-		
+		  
+		   function indicadorIngresos($arregloDatos)
+		  {
+			$this->datos->indicadorIngresos($arregloDatos);
+			$this->pantalla->indicadorIngresos($arregloDatos);	
+         
+          }
+		  
 			function titulo($arregloDatos){
                 if(!empty($arregloDatos[cliente])) {
                    $arregloDatos[titulo] ="Cliente ".$arregloDatos[cliente];

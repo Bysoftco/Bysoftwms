@@ -210,6 +210,53 @@ class IndicadoresPresentacion {
 		$this->plantilla->show();
 		
   	 }
+	 
+	  function indicadorIngresos($arregloDatos){
+	 	
+		$this->plantilla->loadTemplateFile(PLANTILLAS . 'indicadoresGraficosMes.html', true, true);
+  		$this->plantilla->setVariable('comodin'	,' ');
+		$colores	='orange@blue@green@black@red@yellow@orange@brown@pink@violet@purple';
+		$colores	=split('@',$colores);
+		$arregloDatos[tituloGrafico]=" Ingresos por cliente";
+		// se construye el grafico
+		$color=0;
+		$valores_todos="";
+		$n=0;
+		$total=0;
+		
+		while ($this->datos->fetch()) {
+		
+			$n=$n+1;
+			$this->plantilla->setCurrentBlock('ROW');
+			$this->plantilla->setVariable('color'   , $colores[$color]);
+			$this->plantilla->setVariable('valores' , number_format($this->datos->valores,0,',','.'));
+			$this->plantilla->setVariable('enero_valor' , number_format($this->datos->enero,0,',','.'));
+			$this->plantilla->setVariable('febrero_valor' , number_format($this->datos->febrero,0,',','.'));
+			$this->plantilla->setVariable('marzo_valor' , number_format($this->datos->marzo,0,',','.'));
+			$this->plantilla->setVariable('abril_valor' , number_format($this->datos->abril,0,',','.'));
+			$this->plantilla->setVariable('mayo_valor' , number_format($this->datos->mayo,0,',','.'));
+			$this->plantilla->setVariable('junio_valor' , number_format($this->datos->junio,0,',','.'));
+			$this->plantilla->setVariable('julio_valor' , number_format($this->datos->julio,0,',','.'));
+			$this->plantilla->setVariable('agosto_valor' , number_format($this->datos->agosto,0,',','.'));
+			$this->plantilla->setVariable('septiembre_valor' , number_format($this->datos->septiembre,0,',','.'));
+			$this->plantilla->setVariable('octubre_valor' , number_format($this->datos->octubre,0,',','.'));
+			$this->plantilla->setVariable('noviembre_valor' , number_format($this->datos->noviembre,0,',','.'));
+			$this->plantilla->setVariable('diciembre_valor' , number_format($this->datos->diciembre,0,',','.'));
+			$this->plantilla->setVariable('convencion' , $this->datos->datos);
+			$this->plantilla->setVariable('n'   , $n);
+			$total=$total+$this->datos->valores;
+			$color=$color+1;
+			$valores_todos.=$this->datos->enro."@".$this->datos->febrero1."@".$this->datos->marzo."@".$this->datos->abril."@".$this->datos->mayo."@".$this->datos->junio."@".$this->datos->julio."@".$this->datos->agosto."@".$this->datos->septiembre."@".$this->datos->octubre."@".$this->datos->noviembre."@".$this->datos->diciembre."@";
+			
+			$this->plantilla->parseCurrentBlock();	
+		}
+		$this->plantilla->setVariable('tituloGrafico' , $arregloDatos[tituloGrafico]);
+		$this->plantilla->setVariable('tipoGrafico' , $arregloDatos[tipoGrafico]);
+		$this->plantilla->setVariable('valores_todos' , $valores_todos);
+		$this->plantilla->setVariable('total' , number_format($total,0,',','.'));
+		$this->plantilla->show();
+		
+  	 }
    
   		
 } 

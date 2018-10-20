@@ -8,7 +8,86 @@ class Indicadores extends MYDB {
     $this->estilo_ok = " ui-state-highlight";
   }
   
-  function indicadorCliente($arregloDatos) {
+  function indicadorIngresos($arregloDatos) {
+      $sede = $_SESSION['sede'];
+ 	  $arregloDatos[tituloGrafico]="Indicador FacturaciFacturaci&oacute;n Top 10 de clientes ";
+    
+    $sql = " SELECT 
+	SUM(enero) AS enero,
+	SUM(febrero) AS febrero,
+	SUM(marzo) AS marzo,
+	SUM(abril) AS abril,
+	SUM(mayo) AS mayo,
+	SUM(junio) AS junio,
+	SUM(julio) AS julio,
+	SUM(agosto) AS agosto,
+	SUM(septiembre) AS septiembre,
+	SUM(octubre) AS octubre,
+	SUM(noviembre) AS noviembre,
+	SUM(diciembre) AS diciembre
+FROM
+(
+
+SELECT 
+MONTH(fecha_arribo) AS mes,
+peso_bruto AS peso,
+
+CASE MONTH(fecha_manifiesto)  
+  WHEN 1 THEN peso_bruto  
+ END AS enero,
+ CASE MONTH(fecha_manifiesto)  
+  WHEN 2 THEN peso_bruto  
+ END AS febrero,
+  CASE MONTH(fecha_manifiesto)  
+  WHEN 3 THEN peso_bruto  
+ END AS marzo,
+ CASE MONTH(fecha_manifiesto)  
+  WHEN 4 THEN peso_bruto  
+ END AS abril,
+  CASE MONTH(fecha_manifiesto)  
+  WHEN 5 THEN peso_bruto  
+ END AS mayo,
+ CASE MONTH(fecha_manifiesto)  
+  WHEN 6 THEN peso_bruto  
+ END AS junio,
+ CASE MONTH(fecha_manifiesto)  
+  WHEN 7 THEN peso_bruto  
+ END AS julio,
+ CASE MONTH(fecha_manifiesto)  
+  WHEN 8 THEN peso_bruto  
+ END AS agosto,
+ CASE MONTH(fecha_manifiesto)  
+  WHEN 9 THEN peso_bruto  
+ END AS septiembre,
+  CASE MONTH(fecha_manifiesto)  
+  WHEN 10 THEN peso_bruto  
+ END AS octubre,
+ CASE MONTH(fecha_manifiesto)  
+  WHEN 11 THEN peso_bruto  
+ END AS noviembre,
+  CASE MONTH(fecha_manifiesto)  
+  WHEN 12 THEN peso_bruto  
+ END AS diciembre
+ 
+FROM arribos
+WHERE 
+YEAR(fecha_manifiesto)='2017' 
+
+) AS ingresos";
+			 
+   // if($arregloDatos[excel]){ return $sql; }
+   //echo  $sql;
+    $this->query($sql);
+	
+    if($this->_lastError) {
+      echo "error".$sql;
+      $this->mensaje = "error al consultar Inventario1 ";
+      $this->estilo = $this->estilo_error;
+      return TRUE;
+    }   
+  }
+  
+  	  function indicadorCliente($arregloDatos) {
     $sede = $_SESSION['sede'];
  	  $arregloDatos[tituloGrafico]="Indicador FacturaciFacturaci&oacute;n Top 10 de clientes ";
     

@@ -219,45 +219,51 @@ $Plot2->setLineColor('blue');
 $Graph->done();
 	}
 	
-	function lineas($arregloDatos) {
-	//https://github.com/pear/Image_Graph/blob/master/docs/examples/plot_line.php
-		// create the graph
-$Graph =& Image_Graph::factory('graph', array(400, 300));
-// add a TrueType font
-$Font =& $Graph->addNew('font', 'Verdana');
-// set the font size to 11 pixels
-$Font->setSize(10);
-$Graph->setFont($Font);
-// setup the plotarea, legend and their layout
-$Graph->add(
-   Image_Graph::vertical(
-      Image_Graph::factory('title', array('Simple Line Chart Sample', 12)),        
-      Image_Graph::vertical(
-         $Plotarea = Image_Graph::factory('plotarea'),
-         $Legend = Image_Graph::factory('legend'),
-         88
-      ),
-      5
-   )
-);   
-// link the legend with the plotares
-$Legend->setPlotarea($Plotarea);
-// create a random dataset for sake of simplicity
-$Dataset =& Image_Graph::factory('random', array(10, 2, 15, true));
-// create the plot as line chart using the dataset
-$Plot =& $Plotarea->addNew('line', array(&$Dataset));
-// set a line color
-$Plot->setLineColor('red');                  
-     
-// output the Graph
-$Graph->done();			
+	function lineas($arregloDatos) 
+	{
+	
+		$titulo    	=$arregloDatos[tituloGrafico];
+		$valores	=split('@',$arregloDatos[valores]);
+		//echo $valores;
+		//https://github.com/pear/Image_Graph/blob/master/docs/examples/plot_line.php
+		$Graph =& Image_Graph::factory('graph', array(400, 300));
+		// add a TrueType font
+		$Font =& $Graph->addNew('font', 'Verdana');
+		// set the font size to 11 pixels
+		$Font->setSize(10);
+		$Graph->setFont($Font);
+		// setup the plotarea, legend and their layout
+		$Graph->add(
+   			Image_Graph::vertical(
+      		Image_Graph::factory('title', array($titulo, 12)),        
+      		Image_Graph::vertical(
+         	$Plotarea = Image_Graph::factory('plotarea'),
+         	$Legend = Image_Graph::factory('legend'),
+         	88
+     	 	),
+     	 	5
+  			 )
+		);   
+
+	$Legend->setPlotarea($Plotarea);
+	
+	
+	$Dataset =& Image_Graph::factory('dataset');
+	
+
+	foreach ($valores as $key => $value) 
+	{  
+		
+		$Dataset->addPoint($key+1, $value);	
+			
 	}
 	
-	function lineas3 ($arregloDatos) {
-//all_negative.php
+	$Plot =& $Plotarea->addNew('line', array(&$Dataset));
+	$Plot->setLineColor('red');                  
+    $Graph->done();			
+	}
 	
-		
-}
+	
 }		
   	
 ?>

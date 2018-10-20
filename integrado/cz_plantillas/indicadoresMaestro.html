@@ -63,7 +63,7 @@
 	
 	
 	$( "#ingresos_retiros" ).button().click(function() {
-      $("#nombre_reporte").text('Indicador mejores clientes');
+      $("#nombre_reporte").text('Indicador Ingresos por cliente');
       $("div#filtro_reporte").load("./scripts_index.php", {
         clase:'Indicadores',
         metodo:'filtro',
@@ -71,7 +71,7 @@
         id_levante:$('#xx').val()
       }, function(datos) {
         $( "#ventana_reporte" ).dialog( "open" );
-        $("#metodoReporte" ).val('indicadorCliente');
+        $("#metodoReporte" ).val('indicadorIngresos');
       });
     });
 		 
