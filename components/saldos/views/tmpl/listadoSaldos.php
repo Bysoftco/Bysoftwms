@@ -79,8 +79,8 @@
       <th style="text-align: right;">{total_piezas}</th>
       <th style="text-align: right;">{total_piezas_nal}</th>
       <th style="text-align: right;">{total_piezas_ext}</th>
-      <th style="text-align: right;">{total_ret_nal}</th>
       <th style="text-align: right;">{total_ret_ext}</th>
+      <th style="text-align: right;">{total_ret_nal}</th>
       <th style="text-align: right;">{total_saldo_piezas}</th>
     </tr>
   </tfoot>
