@@ -188,6 +188,9 @@ class IndicadoresPresentacion {
 		$colores	='orange@blue@green@black@red@yellow@orange@brown@pink@violet@purple';
 		$colores	=split('@',$colores);
 		// se construye el grafico
+		$arregloDatos[tituloGrafico]=" Comportamiento Facturación";
+		$arregloDatos[titulo]=$arregloDatos[tituloGrafico].' '.$arregloDatos[titulo];
+		
 		$color=0;
 		$valores_todos="";
 		$n=0;

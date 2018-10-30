@@ -12,7 +12,11 @@ class Indicadores extends MYDB {
   //var_dump($arregloDatos);
       $sede = $_SESSION['sede'];
  	  $arregloDatos[tituloGrafico]="Indicador FacturaciFacturaci&oacute;n Top 10 de clientes ";
-    
+	  
+    if(empty($arregloDatos[anios])){
+		$arregloDatos[anios]=date("Y");
+	}	
+	
     $sql = " SELECT 
 	SUM(enero) AS enero,
 	SUM(febrero) AS febrero,

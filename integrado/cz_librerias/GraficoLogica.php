@@ -228,10 +228,10 @@ $Graph->done();
 		//https://github.com/pear/Image_Graph/blob/master/docs/examples/plot_line.php
 		$Graph =& Image_Graph::factory('graph', array(400, 300));
 		// add a TrueType font
-		$Font =& $Graph->addNew('font', 'Verdana');
+		//$Font =& $Graph->addNew('font', 'Verdana');
 		// set the font size to 11 pixels
-		$Font->setSize(10);
-		$Graph->setFont($Font);
+		//$Font->setSize(10);
+		//$Graph->setFont($Font);
 		// setup the plotarea, legend and their layout
 		$Graph->add(
    			Image_Graph::vertical(

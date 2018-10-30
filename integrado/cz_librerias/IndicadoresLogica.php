@@ -58,7 +58,8 @@ require_once("IndicadoresPresentacion.php");
 					$this->datos->indicadorCliente($arregloDatos);
 			}
 		  
-			
+			$arregloDatos[titulo]=$this->titulo($arregloDatos);
+			echo "xxxxxxx".$arregloDatos[titulo];
 		  	$this->pantalla->indicadorCliente($arregloDatos);	
          
           }
@@ -70,7 +71,7 @@ require_once("IndicadoresPresentacion.php");
          
           }
 		  
-			function titulo($arregloDatos){
+			function titulo(&$arregloDatos){
                 if(!empty($arregloDatos[cliente])) {
                    $arregloDatos[titulo] ="Cliente ".$arregloDatos[cliente];
                 }
@@ -78,6 +79,7 @@ require_once("IndicadoresPresentacion.php");
                 if(!empty($arregloDatos[fecha_inicio])) {
                    $arregloDatos[titulo] =" Desde ".$arregloDatos[fecha_inicio]." Hasta.$arregloDatos[fecha_fin]";
                 }
+				
              }
             
          
