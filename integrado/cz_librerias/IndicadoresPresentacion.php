@@ -106,6 +106,9 @@ class IndicadoresPresentacion {
       $unaPlantilla->setVariable('odd',$odd);
       $unaPlantilla->parseCurrentBlock();
     }
+	if(!empty($arregloDatos[thisFunctionAux])){
+		//$this->$arregloDatos[thisFunctionAux]($arregloDatos,$unDatos,$unaPlantilla);
+	}
 
     if($unDatos->N == 0 and empty($unDatos->mensaje)) {
       $unaPlantilla->setVariable('mensaje','No hay registros para listar'.$arregloDatos[mensaje]);
@@ -125,6 +128,7 @@ class IndicadoresPresentacion {
 
 
   function filtro($arregloDatos,$unDatos,$plantilla) {
+  	var_dump($arregloDatos);
    
   }
   

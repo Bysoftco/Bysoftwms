@@ -9,6 +9,7 @@ class Indicadores extends MYDB {
   }
   
   function indicadorIngresos($arregloDatos) {
+  //var_dump($arregloDatos);
       $sede = $_SESSION['sede'];
  	  $arregloDatos[tituloGrafico]="Indicador FacturaciFacturaci&oacute;n Top 10 de clientes ";
     
@@ -71,7 +72,7 @@ CASE MONTH(fecha_manifiesto)
  
 FROM arribos
 WHERE 
-YEAR(fecha_manifiesto)='2017' 
+YEAR(fecha_manifiesto)='$arregloDatos[anios]' 
 
 ) AS ingresos";
 			 

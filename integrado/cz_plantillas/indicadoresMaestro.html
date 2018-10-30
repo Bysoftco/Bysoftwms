@@ -35,21 +35,10 @@
       });
     });
 
-    $( "#endosos" ).button().click(function() {
-      $("#nombre_reporte").text('Endosos');
-      $("div#filtro_reporte").load("./scripts_index.php", {
-        clase:'Reporte',
-        metodo:'filtro',
-        mostrar:'1',
-        id_levante:$('#xx').val()
-      }, function(datos) {
-        $( "#ventana_reporte" ).dialog( "open" );
-        $( "#metodoReporte" ).val('getReporteEndosos');
-      });
-    });
+    
 		 
     $( "#indicadorCliente" ).button().click(function() {
-      $("#nombre_reporte").text('Indicador mejores clientes');
+   
       $("div#filtro_reporte").load("./scripts_index.php", {
         clase:'Indicadores',
         metodo:'filtro',
@@ -57,36 +46,32 @@
         id_levante:$('#xx').val()
       }, function(datos) {
         $( "#ventana_reporte" ).dialog( "open" );
+		$("#nombre_reporte").text('Indicador mejores clientes');
         $("#metodoReporte" ).val('indicadorCliente');
       });
     });
 	
 	
 	$( "#ingresos_retiros" ).button().click(function() {
-      $("#nombre_reporte").text('Indicador Ingresos por cliente');
+      
       $("div#filtro_reporte").load("./scripts_index.php", {
         clase:'Indicadores',
         metodo:'filtro',
         mostrar:'1',
+		anios:'1',
         id_levante:$('#xx').val()
       }, function(datos) {
         $( "#ventana_reporte" ).dialog( "open" );
+		$("#nombre_reporte").text('Indicador Ingresos por cliente');
+		//alert('xx');
+		$("#anios").show(); 
+		$("#fecha_d").hide(); 
+		$("#fecha_h").hide(); 
         $("#metodoReporte" ).val('indicadorIngresos');
       });
     });
 		 
-    $( "#inventarioValor" ).button().click(function() {
-      $("#nombre_reporte").text('Inventario por Valor');
-      $("div#filtro_reporte").load("./scripts_index.php", {
-        clase:'Reporte',
-        metodo:'filtro',
-        mostrar:'1',
-        id_levante:$('#xx').val()
-      }, function(datos) {
-        $( "#ventana_reporte" ).dialog( "open" );
-        $("#metodoReporte" ).val('getReporteValor');
-      });
-    });
+    
   });
 </script>
 {comodin}
@@ -113,8 +98,8 @@
   <table width="90%" align="center" class="ui-widget ui-widget-content" id="users">
     <thead>
       <tr class="ui-widget-header"> 
-        <th width="10%">#</th>
-        <th width="64%">Nombre</th>
+        <th width="4%">#</th>
+        <th width="70%">Nombre</th>
         <th width="26%">Consultar</th>
       </tr>
     </thead>
@@ -129,13 +114,13 @@
       </tr>
       <tr> 
         <td height="20">2.</td>
-        <td>&middot; Ingresos y retiros de un cliente por a&ntilde;o.</p></td>
+        <td>Ingresos y retiros de un cliente por a&ntilde;o.</p></td>
         <td><button id="ingresos_retiros">Generar</button></td>
       </tr>
     </tbody>
   </table>
   </fieldset>
 </div>
-<div id="ventana_reporte" title="Inventario">
+<div id="ventana_reporte" title="Indicadores">
   <div id="filtro_reporte"> {filtro}</div>
 </div>
