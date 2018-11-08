@@ -23,7 +23,8 @@ class reporteExcel {
     $this->objPHPExcel->getActiveSheet()->setCellValue("J1", "Piezas Nal.");
     $this->objPHPExcel->getActiveSheet()->setCellValue("K1", "Piezas Ext.");
     $this->objPHPExcel->getActiveSheet()->setCellValue("L1", "Saldo");
-    $this->objPHPExcel->getActiveSheet()->setCellValue("M1", "Tetiro Ext");
+    $this->objPHPExcel->getActiveSheet()->setCellValue("M1", "Retiro Ext");
+	$this->objPHPExcel->getActiveSheet()->setCellValue("N1", "Retiro Nal");
     // Inicializamos variables de totales y fila
     $i = $n = 1; $tpiezas = $tpiezas_nal = $tpiezas_ext = 0;
     foreach($arreglo['datos'] as $value) {
@@ -43,10 +44,13 @@ class reporteExcel {
         ->setCellValue('K'.$i, number_format($value['c_ext'],2))
         ->setCellValue('L'.$i, number_format($value['c_nal']+$value['c_ext'],2))
 		->setCellValue('M'.$i, number_format($value['c_ret_ext'],2))
+		->setCellValue('N'.$i, number_format($value['c_ret_nal'],2))
 		;
       // Acumula Totales
       $tpiezas += $value['cantidad']; $tpiezas_nal += $value['c_nal'];
       $tpiezas_ext += $value['c_ext']; $n++;
+	  $tret_ext+=$value['c_ret_ext'];
+	  $tret_nal+=$value['c_ret_nal'];
     }
     $i++;
     $this->objPHPExcel->setActiveSheetIndex(0)
@@ -55,7 +59,8 @@ class reporteExcel {
           ->setCellValue('J'.$i, number_format($tpiezas_nal,2))
           ->setCellValue('K'.$i, number_format($tpiezas_ext,2))
           ->setCellValue('L'.$i, number_format($tpiezas_nal+$tpiezas_ext,2))
-		  ->setCellValue('M'.$i, number_format($tpiezas_nal+$tpiezas_ext,2))
+		  ->setCellValue('M'.$i, number_format($tret_ext,2))
+		  ->setCellValue('N'.$i, number_format($tret_nal,2))
 		  ;
     
     $this->objPHPExcel->getActiveSheet()->setTitle('Reporte');
