@@ -22,9 +22,10 @@ class reporteExcel {
     $this->objPHPExcel->getActiveSheet()->setCellValue("I1", "Piezas Ing.");
     $this->objPHPExcel->getActiveSheet()->setCellValue("J1", "Piezas Nal.");
     $this->objPHPExcel->getActiveSheet()->setCellValue("K1", "Piezas Ext.");
-    $this->objPHPExcel->getActiveSheet()->setCellValue("L1", "Saldo");
-    $this->objPHPExcel->getActiveSheet()->setCellValue("M1", "Retiro Ext");
-	$this->objPHPExcel->getActiveSheet()->setCellValue("N1", "Retiro Nal");
+    
+    $this->objPHPExcel->getActiveSheet()->setCellValue("L1", "Retiro Ext");
+	$this->objPHPExcel->getActiveSheet()->setCellValue("M1", "Retiro Nal");
+	$this->objPHPExcel->getActiveSheet()->setCellValue("N1", "Saldo");
     // Inicializamos variables de totales y fila
     $i = $n = 1; $tpiezas = $tpiezas_nal = $tpiezas_ext = 0;
     foreach($arreglo['datos'] as $value) {
@@ -42,9 +43,10 @@ class reporteExcel {
         ->setCellValue('I'.$i, number_format($value['cantidad'],2))
         ->setCellValue('J'.$i, number_format($value['c_nal'],2))
         ->setCellValue('K'.$i, number_format($value['c_ext'],2))
-        ->setCellValue('L'.$i, number_format($value['c_nal']+$value['c_ext'],2))
-		->setCellValue('M'.$i, number_format($value['c_ret_ext'],2))
-		->setCellValue('N'.$i, number_format($value['c_ret_nal'],2))
+       
+		->setCellValue('L'.$i, number_format($value['c_ret_ext'],2))
+		->setCellValue('M'.$i, number_format($value['c_ret_nal'],2))
+		 ->setCellValue('N'.$i, number_format($value['c_nal']+$value['c_ext'],2))
 		;
       // Acumula Totales
       $tpiezas += $value['cantidad']; $tpiezas_nal += $value['c_nal'];
@@ -58,9 +60,10 @@ class reporteExcel {
           ->setCellValue('I'.$i, number_format($tpiezas,2))
           ->setCellValue('J'.$i, number_format($tpiezas_nal,2))
           ->setCellValue('K'.$i, number_format($tpiezas_ext,2))
-          ->setCellValue('L'.$i, number_format($tpiezas_nal+$tpiezas_ext,2))
-		  ->setCellValue('M'.$i, number_format($tret_ext,2))
-		  ->setCellValue('N'.$i, number_format($tret_nal,2))
+          
+		  ->setCellValue('L'.$i, number_format($tret_ext,2))
+		  ->setCellValue('M'.$i, number_format($tret_nal,2))
+		  ->setCellValue('N'.$i, number_format($tpiezas_nal+$tpiezas_ext,2))
 		  ;
     
     $this->objPHPExcel->getActiveSheet()->setTitle('Reporte');
