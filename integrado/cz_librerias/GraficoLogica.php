@@ -259,7 +259,7 @@ $Graph->done();
 	}
 	
 	$Plot =& $Plotarea->addNew('line', array(&$Dataset));
-	$Plot->setLineColor('red');                  
+	$Plot->setLineColor('blue');                  
     $Graph->done();			
 	}
 	
