@@ -162,7 +162,7 @@ $Graph =& Image_Graph::factory('graph', array(400, 250));
 			$Graph->done();
 
 	}	
-	function lineas ($arregloDatos) {
+	function lineas1 ($arregloDatos) {
 	
 	//https://github.com/pear/Image_Graph/blob/master/docs/examples/line_break.php
 		$Graph =& Image_Graph::factory('graph', array(400, 300)); 
@@ -219,7 +219,7 @@ $Plot2->setLineColor('blue');
 $Graph->done();
 	}
 	
-	function lineas1($arregloDatos) 
+	function lineas($arregloDatos) 
 	{
 	
 		$titulo    	=$arregloDatos[tituloGrafico];

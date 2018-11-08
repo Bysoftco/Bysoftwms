@@ -251,7 +251,8 @@ class IndicadoresPresentacion {
 			$this->plantilla->setVariable('diciembre_valor' , number_format($this->datos->diciembre,0,',','.'));
 			$this->plantilla->setVariable('convencion' , $this->datos->datos);
 			$this->plantilla->setVariable('n'   , $n);
-			$total=$total+$this->datos->valores;
+			$this->total=$this->datos->enero+$this->datos->febrero+$this->datos->marzo+$this->datos->abril+$this->datos->mayo+$this->datos->junio;
+			+$this->datos->julio+$this->datos->agosto+$this->datos->septiembre+$this->datos->septiembre+$this->datos->octubre+$this->datos->noviembre+$this->datos->diciembre;
 			$color=$color+1;
 			$valores_todos.=$this->datos->enro."@".$this->datos->febrero1."@".$this->datos->marzo."@".$this->datos->abril."@".$this->datos->mayo."@".$this->datos->junio."@".$this->datos->julio."@".$this->datos->agosto."@".$this->datos->septiembre."@".$this->datos->octubre."@".$this->datos->noviembre."@".$this->datos->diciembre."@";
 			
@@ -260,7 +261,7 @@ class IndicadoresPresentacion {
 		$this->plantilla->setVariable('tituloGrafico' , $arregloDatos[tituloGrafico]);
 		$this->plantilla->setVariable('tipoGrafico' , $arregloDatos[tipoGrafico]);
 		$this->plantilla->setVariable('valores_todos' , $valores_todos);
-		$this->plantilla->setVariable('total' , number_format($total,0,',','.'));
+		$this->plantilla->setVariable('total' , number_format($this->total,0,',','.'));
 		$this->plantilla->show();
 		
   	 }
