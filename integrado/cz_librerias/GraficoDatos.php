@@ -8,18 +8,9 @@
 		
     	} 
 		
-		function cantidadCarpetasGrado($arregloDatos) {
+		function cantidad($arregloDatos) {
 			$sql  = "
-					select tareas.descripcion as datos,
-					count(distinct num_radicacion) as valores,
-					dc.tarea
-					from 		detalle_documento dc,tareas
-					where    	estado not  in(0)
-					and  dc.tarea=tareas.codigo_tarea
-					and tareas.Codigo_tarea not in(4)
-					group by tarea,tareas.descripcion
-					
-					order by dc.tarea " ;
+					 " ;
  
 			$this->query($sql); 
 			if ($this->_lastError) {

@@ -162,19 +162,23 @@ $Graph =& Image_Graph::factory('graph', array(400, 250));
 			$Graph->done();
 
 	}	
-	function lineas1 ($arregloDatos) {
+	
+	function lineas ($arregloDatos) {
+	
+	$valores		=split('@',$arregloDatos[valores]);
+	$valores_retiro	=split('@',$arregloDatos[valores_retiro]);
 	
 	//https://github.com/pear/Image_Graph/blob/master/docs/examples/line_break.php
-		$Graph =& Image_Graph::factory('graph', array(400, 300)); 
-// add a TrueType font
-$Font =& $Graph->addNew('font', 'Verdana');
-// set the font size to 11 pixels
-$Font->setSize(10);
-$Graph->setFont($Font);
-// setup the plotarea, legend and their layout
-$Graph->add(
+	$Graph =& Image_Graph::factory('graph', array(400, 300)); 
+	// add a TrueType font
+	$Font =& $Graph->addNew('font', 'Verdana');
+	// set the font size to 11 pixels
+	$Font->setSize(10);
+	$Graph->setFont($Font);
+	// setup the plotarea, legend and their layout
+	$Graph->add(
    Image_Graph::vertical(
-      Image_Graph::factory('title', array('Entradas \'Salidas\' Por cliente', 12)),        
+      Image_Graph::factory('title', array('Ingresos -Salidas Por cliente', 12)),        
       Image_Graph::vertical(
           Image_Graph::vertical(
             $Plotarea1 = Image_Graph::factory('plotarea') ,
@@ -184,42 +188,37 @@ $Graph->add(
         $Legend = Image_Graph::factory('legend'),
          88
       ),
-      5
+      5 
    )
 );   
-// link the legend with the plotares
-$Legend->setPlotarea($Plotarea1);
-$Legend->setPlotarea($Plotarea2);
-// create the dataset
-$Dataset =& Image_Graph::factory('dataset');
-$Dataset->addPoint('Enero', 10); 
-$Dataset->addPoint('Feb', 12); 
-$Dataset->addPoint('Mar', 3); 
-$Dataset->addPoint('Apr', 0); 
-$Dataset->addPoint('May', 4); 
-$Dataset->addPoint('Jun', 10); 
-$Dataset->addPoint('Jul', 0); 
-$Dataset->addPoint('Aug', 0); 
-$Dataset->addPoint('Sep', 9); 
-$Dataset->addPoint('Oct', 10); 
-$Dataset->addPoint('Nov', 4); 
-$Dataset->addPoint('Dec', 14);
-// create the line plot
-$Plot1 =& $Plotarea1->addNew('line', array(&$Dataset));
-// set line color
-$Plot1->setLineColor('red');
-// create the line plot
-$Plot2 =& $Plotarea2->addNew('line', array(&$Dataset));    
-// set line color
-$Plot2->setLineColor('blue'); 
-// output the Graph
+	// link the legend with the plotares  
+	$Legend->setPlotarea($Plotarea1);
+	$Legend->setPlotarea($Plotarea2);
+	// ingresos
+	$Dataset =& Image_Graph::factory('dataset');
+	foreach ($valores as $key => $value) 
+	{  
+		$Dataset->addPoint($key+1, $value);	
+			
+	}
+	// salidas
 
+	$Dataset1 =& Image_Graph::factory('dataset');
+	foreach ($valores_retiro as $key1 => $value1) 
+	{  
+		//echo " key1".$key1." value1".$value1."<BR>";
+		$Dataset1->addPoint($key1+1, $value1);	
+			
+	}
 
-
-$Graph->done();
+	$Plot1 =& $Plotarea1->addNew('line', array(&$Dataset));
+	$Plot1->setLineColor('red');
+	$Plot2 =& $Plotarea2->addNew('line', array(&$Dataset1));    
+	$Plot2->setLineColor('blue'); 
+	$Graph->done();
 	}
 	
-	function lineas($arregloDatos) 
+	function lineas1($arregloDatos) 
 	{
 	
 		$titulo    	=$arregloDatos[tituloGrafico];

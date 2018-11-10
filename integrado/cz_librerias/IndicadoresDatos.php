@@ -161,6 +161,96 @@ YEAR(fecha_manifiesto)='$arregloDatos[anios]'
       return TRUE;
     }   
   }
+  
+    
+  	 function indicadorSalidas($arregloDatos) {
+    	$sede = $_SESSION['sede'];
+ 	  		$arregloDatos[tituloGrafico]="Indicador FacturaciFacturaci&oacute;n Top 10 de clientes ";
+    
+    	$sql = " SELECT 
+	ABS(SUM(enero)) AS enero,
+	ABS(SUM(febrero)) AS febrero,
+	ABS(SUM(marzo)) AS marzo,
+	ABS(SUM(abril)) AS abril,
+	ABS(SUM(mayo)) AS mayo,
+	ABS(SUM(junio)) AS junio,
+	ABS(SUM(agosto)) AS agosto,
+	ABS(SUM(septiembre)) AS septiembre,
+	ABS(SUM(octubre)) AS octubre,
+	ABS(SUM(noviembre)) AS noviembre,
+	ABS(SUM(diciembre)) AS diciembre
+FROM
+(
+
+	SELECT 
+	MONTH(fecha) AS fecha,
+
+	CASE MONTH(fecha)  
+	WHEN 1 THEN peso_naci+peso_nonac  
+	END AS enero,
+ 
+	CASE MONTH(fecha)  
+	WHEN 2 THEN peso_naci+peso_nonac  
+	END AS febrero,
+	
+	CASE MONTH(fecha)  
+	WHEN 3 THEN peso_naci+peso_nonac  
+	END AS marzo,
+	
+	CASE MONTH(fecha)  
+	WHEN 4 THEN peso_naci+peso_nonac  
+	END AS abril,
+	
+	CASE MONTH(fecha)  
+	WHEN 5 THEN peso_naci+peso_nonac  
+	END AS mayo,
+	
+	CASE MONTH(fecha)  
+	WHEN 6 THEN peso_naci+peso_nonac  
+	END AS junio,
+	
+	CASE MONTH(fecha)  
+	WHEN 7 THEN peso_naci+peso_nonac  
+	END AS julio,
+	
+	CASE MONTH(fecha)  
+	WHEN 8 THEN peso_naci+peso_nonac  
+	END AS agosto,
+	
+	CASE MONTH(fecha)  
+	WHEN 9 THEN peso_naci+peso_nonac  
+	END AS septiembre,
+	
+	CASE MONTH(fecha)  
+	WHEN 10 THEN peso_naci+peso_nonac  
+	END AS octubre,
+	
+	CASE MONTH(fecha)  
+	WHEN 11 THEN peso_naci+peso_nonac  
+	END AS noviembre,
+	
+	CASE MONTH(fecha)  
+	WHEN 12 THEN peso_naci+peso_nonac  
+	END AS diciembre
+	
+ 
+	FROM inventario_movimientos
+	WHERE tipo_movimiento= 3
+	AND YEAR(fecha)='2017' 
+	 
+)AS retiros";
+			 
+   // if($arregloDatos[excel]){ return $sql; }
+   //echo  $sql;
+    $this->query($sql);
+	
+    if($this->_lastError) {
+      echo "error".$sql;
+      $this->mensaje = "error al consultar Inventario1 ";
+      $this->estilo = $this->estilo_error;
+      return TRUE;
+    }   
+  }
     
 
 }

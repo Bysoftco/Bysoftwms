@@ -231,6 +231,11 @@ class IndicadoresPresentacion {
 		$n=0;
 		$total=0;
 		
+		// Datos de la salida
+		$retiros = new Indicadores();
+		$retiros->indicadorSalidas($arregloDatos);
+		
+		
 		while ($this->datos->fetch()) {
 		
 			$n=$n+1;
@@ -256,11 +261,31 @@ class IndicadoresPresentacion {
 			$color=$color+1;
 			$valores_todos.=$this->datos->enro."@".$this->datos->febrero1."@".$this->datos->marzo."@".$this->datos->abril."@".$this->datos->mayo."@".$this->datos->junio."@".$this->datos->julio."@".$this->datos->agosto."@".$this->datos->septiembre."@".$this->datos->octubre."@".$this->datos->noviembre."@".$this->datos->diciembre."@";
 			
+			$retiros->fetch();
+			$valores_retiro.=$retiros->enero."@".$retiros->febrero."@".$retiros->marzo."@".$retiros->abril."@".$retiros->mayo."@".$retiros->junio."@".$retiros->julio."@".$retiros->agosto."@".$retiros->septiembre."@".$retiros->octubre."@".$retiros->noviembre."@".$retiros->diciembre."@";
+			
+			$this->plantilla->setVariable('enero_retiro' , number_format($retiros->enero,0,',','.'));
+			$this->plantilla->setVariable('febrero_retiro' , number_format($retiros->febrero,0,',','.'));
+			$this->plantilla->setVariable('marzo_retiro' , number_format($retiros->marzo,0,',','.'));
+			$this->plantilla->setVariable('abril_retiro' , number_format($retiros->abril,0,',','.'));
+			$this->plantilla->setVariable('mayo_retiro' , number_format($retiros->mayo,0,',','.'));
+			$this->plantilla->setVariable('junio_retiro' , number_format($retiros->junio,0,',','.'));
+			$this->plantilla->setVariable('julio_retiro' , number_format($retiros->julio,0,',','.'));
+			$this->plantilla->setVariable('agosto_retiro' , number_format($retiros->agosto,0,',','.'));
+			$this->plantilla->setVariable('septiembre_retiro' , number_format($retiros->septiembre,0,',','.'));
+			$this->plantilla->setVariable('octubre_retiro' , number_format($retiros->octubre,0,',','.'));
+			$this->plantilla->setVariable('noviembre_retiro' , number_format($retiros->noviembre,0,',','.'));
+			$this->plantilla->setVariable('diciembre_retiro' , number_format($retiros->diciembre,0,',','.'));
+			
 			$this->plantilla->parseCurrentBlock();	
 		}
+		
+		
+		
 		$this->plantilla->setVariable('tituloGrafico' , $arregloDatos[tituloGrafico]);
 		$this->plantilla->setVariable('tipoGrafico' , $arregloDatos[tipoGrafico]);
 		$this->plantilla->setVariable('valores_todos' , $valores_todos);
+		$this->plantilla->setVariable('valores_retiro' , $valores_retiro);
 		$this->plantilla->setVariable('total' , number_format($this->total,0,',','.'));
 		$this->plantilla->show();
 		
