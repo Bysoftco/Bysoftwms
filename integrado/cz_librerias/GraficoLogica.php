@@ -211,9 +211,9 @@ $Graph =& Image_Graph::factory('graph', array(400, 250));
 			
 	}
 
-	$Plot1 =& $Plotarea1->addNew('line', array(&$Dataset));
+	$Plot1 =& $Plotarea1->addNew('line', array(&$Dataset1));
 	$Plot1->setLineColor('red');
-	$Plot2 =& $Plotarea2->addNew('line', array(&$Dataset1));    
+	$Plot2 =& $Plotarea2->addNew('line', array(&$Dataset));    
 	$Plot2->setLineColor('blue'); 
 	$Graph->done();
 	}

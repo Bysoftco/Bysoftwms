@@ -195,7 +195,7 @@ class Factura extends MYDB {
     $sede = $_SESSION['sede']; 
 	// se averigua la firma vigente
 	$unaConsulta = new Factura();
-	$unaConsulta->getIdFirma(&$arregloDatos);
+	$unaConsulta->getIdFirma($arregloDatos);
     $sql = "INSERT INTO facturas_maestro(cliente,intermediario,fecha_factura,sede,id_firma) VALUES('$arregloDatos[por_cuenta_filtro]', '$arregloDatos[por_cuenta_filtro]',
               '$fecha','$sede','$arregloDatos[id_firma]')";
 
@@ -536,7 +536,7 @@ class Factura extends MYDB {
   //Función que reporta una Prefactura Como factura con número Oficial
   function setNuevaFactura(&$arregloDatos) {
   $unaConsulta = new Factura();
-  $unaConsulta->getIdFirma(&$arregloDatos);
+  $unaConsulta->getIdFirma($arregloDatos);
     if(empty($arregloDatos[consecutivo])) { $arregloDatos[consecutivo] = 0; }
     $sql = "UPDATE facturas_maestro SET numero_oficial = $arregloDatos[num_factura], cerrada = 1, id_resolucion = $arregloDatos[id_resolucion],
               id_firma = $arregloDatos[id_firma]
