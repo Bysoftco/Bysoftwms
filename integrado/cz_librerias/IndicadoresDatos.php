@@ -164,6 +164,7 @@ YEAR(fecha_manifiesto)='$arregloDatos[anios]'
   
     
   	 function indicadorSalidas($arregloDatos) {
+	 
     	$sede = $_SESSION['sede'];
  	  		$arregloDatos[tituloGrafico]="Indicador FacturaciFacturaci&oacute;n Top 10 de clientes ";
     
@@ -236,7 +237,7 @@ FROM
  
 	FROM inventario_movimientos
 	WHERE tipo_movimiento= 3
-	AND YEAR(fecha)='2017' 
+	AND YEAR(fecha)='$arregloDatos[anios]' 
 	 
 )AS retiros";
 			 
