@@ -20,8 +20,14 @@
 <script>
 	 $(function() 
     {	
-		$("#titulo_fac").html('Factura {num_factura} :: Prefactura {num_prefactura} ::  Proxima {proxima_factura}')
-		//$("#titulo_aux").html('Factura {num_factura}')
+		var metodo='{metodo}';
+		
+		if (metodo=='consultaFactura') {
+			$("#titulo_fac").html('Factura {num_factura} :: Prefactura {num_prefactura} ::  Proxima {proxima_factura}')
+		}else{
+			$("#titulo_aux").html('Factura {num_factura}')
+		}
+		
 			
 		$("#popupsServicio").hide();
 		// si  la factura ya fue impresa no se activa la opcion de imprimir
@@ -44,6 +50,7 @@
 </script>
 	<div class="div_barra" id="div_barra" >
             <div id="titulo_ruta">
+			<td><div id="titulo_aux"></div></td>
             <table align="right" cellpadding="0" cellspacing="0" border="0">
                 <tr>
 
@@ -110,21 +117,21 @@
 <table width="100%" border="0" cellpadding="0" class="ui-widget ui-widget-content" id="users" >
   <tr> 
     <td >Subtotal 
-      <input name="subtotalf" type="text" class="label_totales" id="subtotalf" value="{subtotalf}" size="5" ></td>
+      <input name="subtotalf" type="text" class="label_totales" id="subtotalf" value="{subtotalf}" size="5" disabled></td>
     <td > Iva 
-      <input name="ivaf" type="text" class="label_totales" id="iva" value="{ivaf}" size="8" ></td>
+      <input name="ivaf" type="text" class="label_totales" id="iva" value="{ivaf}" size="8"  disabled></td>
     <td >Rte.Fuente 
-      <input name="rte_fuentef" type="text" class="label_totales" id="rte_fuente"  value="{rte_fuentef}" size="8" ></td>
+      <input name="rte_fuentef" type="text" class="label_totales" id="rte_fuente"  value="{rte_fuentef}" size="8" disabled></td>
     <td >Rte.Iva 
-      <input name="rte_ivaf" type="text" class="label_totales" id="rte_ivaf"  value="{rte_ivaf}" size="8" ></td>
+      <input name="rte_ivaf" type="text" class="label_totales" id="rte_ivaf"  value="{rte_ivaf}" size="8"  disabled></td>
     <td >Rte.Ica
-    <input name="rte_icaf2" type="text" class="label_totales" id="rte_icaf" value="{rte_icaf}" size="8" /></td>
+    <input name="rte_icaf2" type="text" class="label_totales" id="rte_icaf" value="{rte_icaf}" size="8" disabled/></td>
     <td >Neto
-      <input name="rte_icaf" type="text" class="label_totales" id="rte_icaf3" value="{netof}" size="8" ></td>
+      <input name="rte_icaf" type="text" class="label_totales" id="rte_icaf3" value="{netof}" size="8" disabled ></td>
     <td >Cree
-<input name="rte_creef" type="text" class="label_totales" id="rte_icaf22" value="{rte_creef}" size="8" ></td>
+<input name="rte_creef" type="text" class="label_totales" id="rte_icaf22" value="{rte_creef}" size="8" disabled ></td>
     <td >Total 
-      <input name="totalf" type="text" class=" required number label_totales" id="totalf"  value="{totalf}" size="10" > 
+      <input name="totalf" type="text" class=" required number label_totales" id="totalf"  value="{totalf}" size="10" disabled > 
       <input name="neto" type="hidden" id="neto" value="{neto}"></td>
   </tr>
 </table>
@@ -146,12 +153,12 @@
     <td width="41%">Observaciones</td>
   </tr>
   <tr> 
-    <td><input name="efectivo" type="checkbox" id="efectivo" value="1"  {checkedEfectivo}></td>
-    <td><input name="cheque" type="checkbox" id="cheque" value="2"  {checkedCheque}></td>
+    <td><input name="efectivo" type="checkbox" id="efectivo" value="1"  {checkedEfectivo} disabled></td>
+    <td><input name="cheque" type="checkbox" id="cheque" value="2"  {checkedCheque} disabled></td>
     <td>{banco}</td>
     <td>{cuenta}</td>
-    <td><input name="credito" type="checkbox" id="credito" value="4"  {checkedCredito}></td>
-    <td><input name="anticipo" type="checkbox" id="anticipo" value="3"  {checkedAnticipo}></td>
+    <td><input name="credito" type="checkbox" id="credito" value="4"  {checkedCredito} disabled> </td>
+    <td><input name="anticipo" type="checkbox" id="anticipo" value="3"  {checkedAnticipo} disabled></td>
     <td>{recibo}</td>
     <td>{valor_anticipo}</td>
     <td> {observaciones} 

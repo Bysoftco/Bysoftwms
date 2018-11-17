@@ -35,7 +35,7 @@ class FacturaLogica {
   function setNuevaFactura($arregloDatos) {
     $arregloDatos[funcion] = 'Oficial';
     $unConsecutivo = new Factura();
-    
+    $arregloDatos[titulo] = 'Oficial';//fredy
     if(empty($arregloDatos[num_factura])) {
       $arregloDatos[num_factura] = $unConsecutivo->numeroFactura($arregloDatos);
     }
@@ -72,6 +72,7 @@ class FacturaLogica {
         
   // Función que consulta una Factura
   function consultaFactura($arregloDatos) {
+
     $arregloDatos[mostar] = "0";
     $arregloDatos[plantilla] = 'facturaToolbar.html';
     $arregloDatos[thisFunction] = 'getToolbar';  
@@ -186,6 +187,7 @@ class FacturaLogica {
     
   //Método Para Consultar Facturas
   function maestroConsulta($arregloDatos) {
+ 
     $arregloDatos['mostrarConsultaAnular'] = "block";
     $arregloDatos['titulo'] = $this->titulo($arregloDatos);
     $arregloDatos['metodoAux'] = 'maestroConsulta';
