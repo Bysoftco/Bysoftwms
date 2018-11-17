@@ -26,7 +26,7 @@ class Factura extends MYDB {
   //Función que retorna los conceptos de una factura
   function getConceptos($arregloDatos) {
     $sede = $_SESSION['sede'];  
-    $sql = "SELECT fd.*, servicios.nombre AS nombre_servicio, fd.iva, fd.rte_fuente, fd.rte_ica, fd.tipo, conceptos_tarifas.nombre as concep_tarifa
+    $sql = "SELECT fd.*,servicios.cuenta, servicios.nombre AS nombre_servicio, fd.iva, fd.rte_fuente, fd.rte_ica, fd.tipo, conceptos_tarifas.nombre as concep_tarifa
             FROM facturas_detalle fd
               LEFT JOIN servicios ON fd.concepto = servicios.codigo AND servicios.sede = '$sede'
               LEFT JOIN conceptos_tarifas ON fd.tipo=conceptos_tarifas.codigo
