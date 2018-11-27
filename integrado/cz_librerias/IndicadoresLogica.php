@@ -59,7 +59,7 @@ require_once("IndicadoresPresentacion.php");
 			}
 		  
 			$arregloDatos[titulo]=$this->titulo($arregloDatos);
-			echo "xxxxxxx".$arregloDatos[titulo];
+			//echo "xxxxxxx".$arregloDatos[titulo];
 		  	$this->pantalla->indicadorCliente($arregloDatos);	
          
           }

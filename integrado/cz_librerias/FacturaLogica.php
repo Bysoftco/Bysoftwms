@@ -3,6 +3,7 @@ require_once("FacturaDatos.php");
 require_once("FacturaPresentacion.php");
 require_once("ReporteExcel.php");
 require_once("InventarioDatos.php");
+require_once("LevanteDatos.php");
 
 class FacturaLogica {
   var $datos;
@@ -114,6 +115,8 @@ class FacturaLogica {
 
   // Método que Actualiza el valor de la Factura
   function updateFactura($arregloDatos) {
+  
+  
     //Se guardan los anticipos
     $this->updateAnticipos($arregloDatos);
     // Si la remesa es diferente de 0 esto indica que se facturo por remesa y se debe ligar remesa y factura
@@ -133,10 +136,24 @@ class FacturaLogica {
       $valores = $arregloDatos[valores];
       $vunitarios = $arregloDatos[vunitario];
       $bases = $arregloDatos[bases];
+	  $nombre_servicio = $arregloDatos[nombre_servicio];
       $multiplicadores = $arregloDatos[multiplicador];
       foreach($arregloDatos[id_conceptos] as $key => $value) {
         $arregloDatos[id_concepto] = $value;
-        $arregloDatos[cod_concepto] = $conceptos[$key];
+        
+		
+		$arregloDatos[cod_concepto] = $conceptos[$key];
+		// codigo para gestionar las referencias que vienen del inventario como servicios
+		if($arregloDatos[tipo_factura]==2){
+			$unServicioNuevo= new Factura();
+			$arregloDatos[un_nombre_servicio]=$nombre_servicio[$key];
+			//echo "XX".$arregloDatos[un_nombre_servicio];
+			$arregloDatos[cod_concepto]=$unServicioNuevo->getConsecutivoServicio($arregloDatos);
+			// echo "XXXXXX $arregloDatos[cod_concepto]";
+			$unServicioNuevo->crearServicio($arregloDatos);
+		}
+		
+	
         $arregloDatos[iva] = $ivas[$key];
         $arregloDatos[rte_fuente] = $rte_fuentes[$key];
         $arregloDatos[rete_ica] = $rete_icas[$key];
@@ -183,8 +200,37 @@ class FacturaLogica {
     if($unaConsulta->N == 0) {
       echo "No hay Resultados|0\n";
     }
+	
+	// Si se esta facturando un producto del inventario
   }
-    
+  
+  function findMercancia($arregloDatos) {
+  	$inventario = new Levante();
+	$arregloDatos[devolverSQL]=1;
+	$arregloDatos[GroupBy]='cod_referencia';
+	$arregloDatos[movimiento]="1,2,3,7,10,15,16,19,30";
+	$arregloDatos[cliente]='830036507';
+	$arregloDatos[sql]=$inventario->getInvParaProceso($arregloDatos);
+	
+	 $unaConsulta = new Factura();
+	 $unaConsulta->findMercancia($arregloDatos);
+	 $arregloDatos[q] = strtolower($_GET["q"]);
+    header( 'Content-type: text/html; charset=iso-8859-1' );
+    while($unaConsulta->fetch()) {
+      $nombre = trim($unaConsulta->nombre_referencia);
+	  $iva			=0;
+	  $rte_fuente	=0;
+	  $rte_ica		=0;
+	  $rte_cree		=0;
+	  $cantidad		=10;
+	  
+      echo "$nombre|$unaConsulta->codigo_referencia|$iva|$rte_fuente|$rte_ica|$rte_cree|$cantidad\n";
+    }
+    if($unaConsulta->N == 0) {
+      echo "No hay Resultados|0\n";
+    }
+	echo "ready $sql";
+  }  
   //Método Para Consultar Facturas
   function maestroConsulta($arregloDatos) {
  

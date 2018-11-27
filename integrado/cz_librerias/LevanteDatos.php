@@ -185,6 +185,10 @@ class Levante extends MYDB {
 										$sql_alistamiento) AS inv 
 									GROUP BY $arregloDatos[GroupBy] $arregloDatos[having] $arregloDatos[orderBy]";
 		
+		
+		if(!empty($arregloDatos[devolverSQL])){
+			return $sql;
+		}
 		//echo $sql."<br>";
 		$this->_lastError = NULL;
 		$this->query($sql);

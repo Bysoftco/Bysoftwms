@@ -248,6 +248,11 @@ class FacturaPresentacion {
 
   function getConceptos($arregloDatos,$unDatos,$unaPlantilla) {
     //Cargar lista de  conceptos_tarifas
+	$arregloDatos[buscar] = 'findConcepto'; 
+	if($arregloDatos[tipo_factura] ==2){
+		$arregloDatos[buscar] = 'findMercancia';
+	}
+	
     $arregloDatos[tabla] = 'conceptos_tarifas';
     $arregloDatos[labelLista]	= 'selectTipos';
     $this->getLista($arregloDatos,$unDatos->tipo,$unaPlantilla);
