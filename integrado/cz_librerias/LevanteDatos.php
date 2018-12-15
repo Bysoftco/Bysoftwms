@@ -900,6 +900,7 @@ class Levante extends MYDB {
 
   // Devuelve los datos de la cabeza del retiro y del levente
   function getCabezaLevante($arregloDatos) {
+  	$sede = $_SESSION['sede'];
     $sql = "SELECT  imm.codigo AS num_levante,imm.lev_sia,lev_cant_declaraciones AS lev_cant,lev_bultos,
                     imm.fecha,imm.destinatario,imm.direccion,imm.obs,imm.fmm,imm.lev_cuenta_grupo,prefactura,
                     clientes.razon_social,imm.producto,camiones.conductor_nombre,camiones.codigo AS id_camion,
@@ -910,18 +911,20 @@ class Levante extends MYDB {
                     imm.pedido,imm.destinatario,imm.ciudad AS codigo_ciudad,ubicaciones.nombre AS nombre_ubicacion,
 					imm.peso_ext,imm.peso_nac,
 					
-                    posiciones.nombre AS nombre_posicion,ciudades.nombre AS nombre_ciudad,bodegas.nombre AS nombre_bodega, 
+                    posiciones.nombre AS nombre_posicion,ciudades.nombre AS nombre_ciudad,posiciones.nombre AS nombre_bodega, 
                     destinatarios.razon_social AS nombre_destinatario
             FROM inventario_maestro_movimientos imm
               LEFT JOIN clientes ON imm.lev_sia = clientes.numero_documento
               LEFT JOIN camiones ON imm.id_camion = camiones.codigo
               LEFT JOIN referencias ON imm.producto = referencias.codigo
-              LEFT JOIN ubicaciones ON imm.posicion = ubicaciones.codigo
-              LEFT JOIN posiciones ON imm.posicion = posiciones.codigo
+              LEFT JOIN ubicaciones ON imm.posicion = ubicaciones.codigo AND sede='$sede'
+              LEFT JOIN posiciones ON imm.posicion = posiciones.codigo   AND sede='$sede'
               LEFT JOIN ciudades ON imm.ciudad = ciudades.codigo
-              LEFT JOIN posiciones as bodegas ON imm.bodega = bodegas.codigo
-              LEFT JOIN clientes AS destinatarios ON imm.destinatario = destinatarios.numero_documento
-            WHERE imm.codigo = $arregloDatos[id_levante]";
+			  
+             LEFT JOIN clientes AS destinatarios ON imm.destinatario = destinatarios.numero_documento
+            WHERE imm.codigo = $arregloDatos[id_levante]
+			
+			";
 //echo $sql;
     $this->query($sql);
     if($this->_lastError) {

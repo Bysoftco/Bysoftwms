@@ -106,10 +106,7 @@
       <td> <script>
             $(function() 
             {
-                var buscar='{buscar}';
-			//alert('{buscar}');
-				
-				$("#concepto{n}").autocomplete("./scripts_index.php?clase=Factura&metodo="+buscar, 
+                $("#concepto{n}").autocomplete("./scripts_index.php?clase=Factura&metodo=findConcepto", 
                 {
                     width: 260,
                     selectFirst: false
@@ -119,14 +116,11 @@
                 {
                     if (data)
                     {
-                          // alert(data[0]);
-						    $("#nombre_servicio{n}").val(data[0]);
-						    $("#cod_conceptos{n}").val(data[1]);
+                            $("#cod_conceptos{n}").val(data[1]);
                             $("#ivas{n}").val(data[2]);
                             $("#rte_fuentes{n}").val(data[3]);
                             $("#rte_icas{n}").val(data[4]);
 							$("#crees{n}").val(data[5]);
-							$("#cantidades{n}").val(data[6]);
 							
                             
                     }
@@ -147,14 +141,12 @@
             }
             $("#label_total").html('$ '+total);
         }*/
-	</script> <input name="concepto{n}" id="concepto{n}" type="text" class="required  ui-widget-content" value="{codigo}" size="30">
-		 <input name="nombre_servicio[]" type="hidden" id="nombre_servicio{n}" value="{codigo}" class="required  ui-widget-content">  
+	</script> <input name="concepto{n}" id="concepto{n}" type="text" class="required  ui-widget-content" value="{nombre_servicio}" size="30"> 
         <input name="id_conceptos[]" type="hidden" id="id_conceptos{n}" value="{codigo}" class="required  ui-widget-content"> 
         <input name="v_iva[]" type="hidden" id="v_iva{n}">
 		<input name="vrte_fuentes[]" type="hidden" id="vrte_fuentes{n}" value="0"> 
 		<input name="vrte_crees[]" type="hidden" id="vrte_crees{n}" value="0">
-        <input name="vrte_icas[]" type="hidden" id="vrte_icas{n}">
-        <input name="tipo_factura" type="hidden" id="tipo_factura{n}" value="{tipo_factura}"></td>
+        <input name="vrte_icas[]" type="hidden" id="vrte_icas{n}"> </td>
       <td> <select name="concep_tarifa[]" id="concep_tarifa{n}" class=" required ui-widget-content" onChange="javascript: setValue('concep_tarifa',{n})">
                 {selectTipos}
                  
