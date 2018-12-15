@@ -672,7 +672,6 @@ class Factura extends MYDB {
 	
   }
   
- 
   
   //Función para Cargar Listas
   function lista($tabla,$condicion=NULL,$campoCondicion=NULL) {
@@ -898,41 +897,6 @@ class Factura extends MYDB {
 	
     if($this->_lastError) {
       echo "<div class=error align=center> :( Error al Consultar Datos de la remesa <br>$sql</div>.";
-      return FALSE;
-    }
-  }
-    function findMercancia($arregloDatos) {
-    $sql = $arregloDatos[sql];
-    
-    $this->query($sql);
-    if($this->_lastError) {
-      echo "<div class=error align=center> :( Error al Consultar la Orden <br>$sql</div>.";
-      return FALSE;
-    }
-  }
-  
-   function crearServicio($arregloDatos) {
-    $sede = $_SESSION['sede'];
-    $sql = "INSERT INTO servicios(codigo,nombre,estado,naturaleza,sede)
-			VALUES($arregloDatos[cod_concepto],'$arregloDatos[un_nombre_servicio]',1,'C','11')";
-    //echo $sql;
-    $this->query($sql);
-    if($this->_lastError) {
-      echo "<div class=error align=center> :( Error al crear referencia como Servicio <br>$sql</div>.";
-      return FALSE;
-    }
-  }
-  
-   function getConsecutivoServicio($arregloDatos) {
-    $sede = $_SESSION['sede'];
-    $sql = " SELECT MAX(codigo)+1 AS codigo
- 			 FROM servicios ";
-    
-    $this->query($sql);
-	$this->fetch();
-	return  $this->codigo;
-    if($this->_lastError) {
-      echo "<div class=error align=center> :( Error al crear referencia como Servicio <br>$sql</div>.";
       return FALSE;
     }
   }

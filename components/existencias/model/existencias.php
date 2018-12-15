@@ -104,7 +104,7 @@ class ExistenciasModelo extends BDControlador {
                 AND arribos.orden = do_asignados.do_asignado
                 AND clientes.numero_documento = do_asignados.por_cuenta
                 AND ie.referencia = ref.codigo
-                AND p.codigo = ie.posicion
+                AND p.codigo = ie.posicion AND p.sede='$sede'
                 AND do_asignados.sede = '$sede' $arreglo[where]) AS inv
               GROUP BY $arreglo[GroupBy] $arreglo[having]"; //cod_referencia se cambio por codigo_ref
     

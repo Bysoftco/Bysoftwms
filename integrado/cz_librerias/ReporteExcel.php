@@ -50,7 +50,7 @@ class ReporteExcel {
 		$this->workbook = new Spreadsheet_Excel_Writer();	
 		
 		//$cadenaDeConexion ="mysql://root:bysoft@localhost/nbysoft_db";
-		$cadenaDeConexion ="mysql://isamis_uwbysoft:pwbysoft@grupobysoft.com/isamis_wmsbysoft";
+		$cadenaDeConexion ="mysql://isamis_ubroker:pwbroker@grupobysoft.com/isamis_brokerdb";
 		//$cadenaDeConexion ="mysql://comapan_bysoft:byorden@localhost/comapan_receta";
 		//$cadenaDeConexion ="mysql://bysoft_alconta:alcomexby@supremecenter12.co.uk/bysoft_alconta";
 		if (DB::isError($this->rs =  DB::connect($cadenaDeConexion, FALSE))) {
