@@ -40,10 +40,9 @@ class FacturaLogica {
       $arregloDatos[num_factura] = $unConsecutivo->numeroFactura($arregloDatos);
     }
     $this->datos->getResolucion($arregloDatos);
-    
+    $this->datos->getFirma($arregloDatos);
     $this->datos->setNuevaFactura($arregloDatos);
     $this->getFacturaCabezaInfo($arregloDatos);
-	$this->datos->getFirma($arregloDatos);
   }
         
   // Muestra la factura en Forma Edición para modificarla
