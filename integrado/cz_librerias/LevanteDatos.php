@@ -908,7 +908,7 @@ class Levante extends MYDB {
                     camiones.placa,referencias.nombre AS nombre_producto,imm.cantidad,imm.cantidad_nac,
                     imm.cantidad_ext,imm.doc_tte,imm.peso,imm.valor,imm.unidad,imm.bodega,imm.orden,
                     imm.cierre,imm.pos_arancelaria,imm.tip_movimiento,imm.tipo_retiro,imm.posicion,
-                    imm.pedido,imm.destinatario,imm.ciudad AS codigo_ciudad,ubicaciones.nombre AS nombre_ubicacion,
+                    imm.pedido,imm.destinatario,imm.ciudad AS codigo_ciudad,posiciones.nombre AS nombre_ubicacion,
 					imm.peso_ext,imm.peso_nac,
 					
                     posiciones.nombre AS nombre_posicion,ciudades.nombre AS nombre_ciudad,posiciones.nombre AS nombre_bodega, 
@@ -917,8 +917,8 @@ class Levante extends MYDB {
               LEFT JOIN clientes ON imm.lev_sia = clientes.numero_documento
               LEFT JOIN camiones ON imm.id_camion = camiones.codigo
               LEFT JOIN referencias ON imm.producto = referencias.codigo
-              LEFT JOIN ubicaciones ON imm.posicion = ubicaciones.codigo AND sede='$sede'
-              LEFT JOIN posiciones ON imm.posicion = posiciones.codigo   AND sede='$sede'
+              
+              LEFT JOIN posiciones ON imm.posicion = posiciones.codigo   AND posiciones.sede='$sede'
               LEFT JOIN ciudades ON imm.ciudad = ciudades.codigo
 			  
              LEFT JOIN clientes AS destinatarios ON imm.destinatario = destinatarios.numero_documento

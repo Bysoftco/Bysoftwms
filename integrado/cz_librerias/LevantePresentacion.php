@@ -388,6 +388,7 @@ class LevantePresentacion {
     $unaPlantilla->setVariable("cant_declaraciones", $arregloDatos[cant_declaraciones]);
     $unaPlantilla->setVariable("peso_declaraciones", $arregloDatos[peso_declaraciones]);
     $unaPlantilla->setVariable("mostrarOtros", "none");
+	//echo  " tipo movimiento $arregloDatos[tipo_movimiento]";
     if($arregloDatos[tipo_movimiento] == 8) { // deja ver el campo de bodega
       if($unDatos->bodega == 0) {
         $unaPlantilla->setVariable("bodega", "");
