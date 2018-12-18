@@ -38,9 +38,9 @@ class SaldosModelo extends BDControlador {
                 END AS peso,
                 CASE WHEN im.tipo_movimiento IN(1) AND (im.flg_control = 1) AND ((cantidad_naci!=0) OR (cantidad_nonac!=0)) THEN ie.valor ELSE 0
                 END AS valor,
-                CASE WHEN im.tipo_movimiento IN(1,2,3,7,10,15,30) THEN peso_nonac ELSE 0
+                CASE WHEN im.tipo_movimiento IN($arreglo[movimiento]) THEN peso_nonac ELSE 0
                 END AS p_ext,
-                CASE WHEN im.tipo_movimiento IN(1,2,3,7,10,15,30) THEN peso_naci ELSE 0
+                CASE WHEN im.tipo_movimiento IN($arreglo[movimiento]) THEN peso_naci ELSE 0
                 END AS p_nal,
                 CASE WHEN im.tipo_movimiento IN(3,7,10,15) THEN peso_nonac ELSE 0
                 END AS p_ret_ext,
@@ -60,9 +60,9 @@ class SaldosModelo extends BDControlador {
                 END AS p_kit_ext,
                 CASE WHEN im.tipo_movimiento IN(10) THEN peso_naci ELSE 0
                 END AS p_kit_nal,
-                CASE WHEN im.tipo_movimiento IN(1,2,3,7,10,15,30) THEN cantidad_naci ELSE 0
+                CASE WHEN im.tipo_movimiento IN($arreglo[movimiento]) THEN cantidad_naci ELSE 0
                 END AS c_nal,
-                CASE WHEN im.tipo_movimiento IN(1,2,3,7,10,15,30) THEN cantidad_nonac ELSE 0
+                CASE WHEN im.tipo_movimiento IN($arreglo[movimiento]) THEN cantidad_nonac ELSE 0
                 END AS c_ext,
                 CASE WHEN im.tipo_movimiento IN(3,7,10,15) THEN cantidad_nonac ELSE 0
                 END AS c_ret_ext,
@@ -105,7 +105,7 @@ class SaldosModelo extends BDControlador {
                 AND arribos.orden = do_asignados.do_asignado
                 AND clientes.numero_documento = do_asignados.por_cuenta
                 AND ie.referencia = ref.codigo
-                AND ie.posicion = p.codigo
+                AND ie.posicion = p.codigo AND p.sede='$sede'
                 AND do_asignados.sede = '$sede' $arreglo[where]) AS inv
               GROUP BY $arreglo[GroupBy] $arreglo[having]"; //cod_referencia se cambio por codigo_ref
     
