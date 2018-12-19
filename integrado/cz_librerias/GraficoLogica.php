@@ -50,7 +50,7 @@ require_once("GraficoPresentacion.php");
 			$valores=split('@',$arregloDatos[valores]);
 		
 			$Graph =& Image_Graph::factory('graph', array(400, 300));
-			//$Font =& $Graph->addNew('font', 'Verdana');
+			//$Font =& $Graph->addNew('font', 'Arial'); //Definir la      FUENTE
 			//$Font->setSize(9);
 			//$Graph->setFont($Font);
 		
@@ -122,8 +122,8 @@ $colores	=split('@',$colores);
 
 
 $Graph =& Image_Graph::factory('graph', array(400, 250));
-		    //$Arial =& $Graph->addNew('font', 'Verdana');
-			//$Arial->setSize(8);
+		   //$Arial =& $Graph->addNew('font', 'Arial'); //Activamos FUENTE a Arial
+		   //$Arial->setSize(8);
 			//$Arial->setColor('white');
 			//$Graph->setFont($Arial);
    			$Graph->add(
@@ -170,11 +170,11 @@ $Graph =& Image_Graph::factory('graph', array(400, 250));
 	
 	//https://github.com/pear/Image_Graph/blob/master/docs/examples/line_break.php
 	$Graph =& Image_Graph::factory('graph', array(400, 300)); 
-	// add a TrueType font
-	//$Font =& $Graph->addNew('font', 'Verdana');
-	// set the font size to 11 pixels
-	//$Font->setSize(10);
-	//$Graph->setFont($Font);
+	  //add a TrueType font
+	//$Font =& $Graph->addNew('font', 'Arial');
+	// set the font size to 11 pixels  ::            FUENTES
+	 //$Font->setSize(10);
+	 //$Graph->setFont($Font);
 	// setup the plotarea, legend and their layout
 	$Graph->add(
    Image_Graph::vertical(
@@ -227,7 +227,7 @@ $Graph =& Image_Graph::factory('graph', array(400, 250));
 		//https://github.com/pear/Image_Graph/blob/master/docs/examples/plot_line.php
 		$Graph =& Image_Graph::factory('graph', array(400, 300));
 		// add a TrueType font
-		//$Font =& $Graph->addNew('font', 'Verdana');
+		//$Font =& $Graph->addNew('font', 'Arial');
 		// set the font size to 11 pixels
 		//$Font->setSize(10);
 		//$Graph->setFont($Font);
