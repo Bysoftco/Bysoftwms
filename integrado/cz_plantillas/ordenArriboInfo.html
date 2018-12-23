@@ -31,7 +31,6 @@
 		
 		$("#formArribo"+formulario).validate();
 		
-		//("#buscarCliente").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
 		$("#find{id_form}").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
 			width: 260,
 			selectFirst: false
@@ -113,7 +112,56 @@
 		.click(function() {
 			$('.editarArribo a').click();	
 		});
-	});	
+    
+      
+    $("#btnActavm{id_form}").button({
+      text: true,
+      icons: {
+        primary: "ui-icon-document"
+      }
+    })
+    .click(function() {
+      $('.Actaverificarmcia a').click();
+      $('.Actaverificarmcia a').wowwindow({
+        draggable: true,
+        width: 1000,
+        height: 450,
+        overlay: {
+          clickToClose: false,
+          background: '#000000'
+        },
+        onclose: function() {
+          $('.formError').remove();
+        },
+        before: function() {
+          $.ajax({
+            url: 'index_blank.php?component=actaverificamcia&method=verActa',
+            async: true,
+            type: "POST",
+            data: {
+              fecham: $("#fecham").val(),
+              doctte: $("#doc_ttex").val(),
+              arribo: $("#arribo").val(),
+              orden: $("#do_asignado").val(),
+              cliente: $("#por_cuenta_de").val(),
+              conductor: $("#conductor").val(),
+              idcc: $("#identificacion").val(),
+              placa: $("#placa").val(),
+              ind_cons: $("#ind_cons").val(),
+              ind_fragil: $("#ind_fragil").val(),
+              ind_hielo: $("#ind_hielo").val(),
+              ind_asig: $("#ind_asig").val(),
+              ind_venci: $("#ind_venci").val(),
+              ind_ubica: $("#ind_ubica").val()
+            },
+            success: function(msm) {
+              $('#wowwindow-inner').html(msm);
+            }
+          });
+        }
+      });
+    });
+	});
 </script>
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
 <style>
@@ -263,15 +311,31 @@
 					<button class="submit" type="submit" id="btnEditar{id_form}" style="display:{mostrarEditar};">Editar</button>
 					<button class="submit" type="button" id="btnInventario{id_form}" style="display:{mostrarInventario};">Inventario</button>
 					<button class="submit" type="button"  id="btnBorrar{id_form}"style="display:{mostrarEditar};">Borrar</button>
+          <button class="submit" type="button" id="btnActavm{id_form}" >Acta Verificar Mcia</button>
         </td>
 			</tr>
 			<tr><td width="16%" class="{estiloEditar}">&nbsp;{mensajeEditar}</td></tr>
 			<tr><td width="16%"></td></tr>
 		</table>
+    <div class="Actaverificarmcia">
+      <a id="realizarActavm" href="" title="Acta Verificación Mercancía"></a>
+    </div>
 	</fieldset>
   <input type="hidden" name="do_asignado" id="do_asignado" value="{do_asignado}" />
   <input type="hidden" name="do_asignado_full" id="do_asignado_full" value="{do_asignado_full}" />
+  <input type="hidden" name="por_cuenta_de" id="por_cuenta_de" value="{razon_social}" />
   <input type="hidden" name="doc_ttex" id="doc_ttex" value="{doc_tte}" />
+  <input type="hidden" name="fecham" id="fecham" value="{fecha_do}" />
+  <input type="hidden" name="arribo" id="arribo" value="{id_form}" />
   <input type="hidden" name="email" id="email" value="{email}" />
+  <input type="hidden" name="placa" id="placa" value="{placa}" />
+  <input type="hidden" name="identificacion" id="identificacion" value="{identificacion}" />
+  <input type="hidden" name="conductor" id="conductor" value="{conductor}" />
+  <input type="hidden" name="ind_cons" id="ind_cons" value="{ind_cons}" />
+  <input type="hidden" name="ind_fragil" id="ind_fragil" value="{ind_fragil}" />
+  <input type="hidden" name="ind_hielo" id="ind_hielo" value="{ind_hielo}" />
+  <input type="hidden" name="ind_asig" id="ind_asig" value="{ind_asig}" />
+  <input type="hidden" name="ind_venci" id="ind_venci" value="{ind_venci}" />
+  <input type="hidden" name="ind_ubica" id="ind_ubica" value="{ind_ubica}" />
 	<br/><br/><br/> 
 </form>

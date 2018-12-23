@@ -119,10 +119,11 @@
 							do_asignado: $("#do_asignado").val(),
 							do_asignado_full: $("#do_asignado_full").val(),
               doc_tte: $("#doc_ttex").val(),
+              fecha_do: $("#fecham").val(),
               email: $("#email").val(),
               verToolbar: $("#verToolbar").val()},
               function(datos) {
-            });						
+            });
 						break;
           case 1:
 						$("div#titulo_arribos").html("Cliente: "+$("#cliente_title").val()+" Documento: "+$("#documento_title").val()+
@@ -134,6 +135,7 @@
 							do_asignado: $("#do_asignado").val(),
 							do_asignado_full: $("#do_asignado_full").val(),
               doc_tte: $("#doc_ttex").val(),
+              fecha_do: $("#fecham").val(),
               email: $("#email").val(),
               verToolbar: $("#verToolbar").val()},
               function(datos) {
@@ -205,6 +207,7 @@
 <input type="hidden" name="do_asignado_full" id="do_asignado_full" value="{do_asignado_full}" />
 <input type="hidden" name="doc_ttex" id="doc_ttex" value="{doc_tte}" />
 <input type="hidden" name="email" id="email" value="{email}" />
+<input type="hidden" name="fecham" id="fecham" value="{fecha_do}" />
 <input type="hidden" name="origen" id="origen" value="{origen}" />
 <input type="hidden" name="destino" id="destino" value="{destino}" />
 <input type="hidden" name="verToolbar" id="verToolbar" value="{verToolbar}" />

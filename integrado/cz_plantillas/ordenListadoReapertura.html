@@ -4,7 +4,14 @@
       var $column = $(this).attr('id'); // assign the ID of the column
 
       var razon_social = $("#razon_social"+$column).val();
+      var fecha_do = $("#fecha_do"+$column).val();
       var email = $("#email"+$column).val();
+      var ind_cons = $("#ind_cons"+$column).val();
+      var ind_fragil = $("#ind_fragil"+$column).val();
+      var ind_hielo = $("#ind_hielo"+$column).val();
+      var ind_asig = $("#ind_asig"+$column).val();
+      var ind_venci = $("#ind_venci"+$column).val();
+      var ind_ubica = $("#ind_ubica"+$column).val();
       with(document.listaRegistros) {
         if($column == 1 && n.value == 1) {
           var orden = $('#do_asignado').val();
@@ -23,8 +30,15 @@
 				do_asignado:orden,
 				do_asignado_full:orden_full,
         razon_social: razon_social,
+        fecha_do: fecha_do,
         doc_tte: documento_tte,
-        email: email },
+        email: email,
+        ind_cons: ind_cons,
+        ind_fragil: ind_fragil,
+        ind_hielo: ind_hielo,
+        ind_asig: ind_asig,
+        ind_venci: ind_venci,
+        ind_ubica: ind_ubica },
 				function(data) {
 			}); // Cierra método load
     }); // Cierra evento click
@@ -79,8 +93,15 @@
               <img src="integrado/imagenes/{img_editar}" border="0" /> 
               <input type="hidden" name="do_asignado[]" id="do_asignado" value="{do_asignado}" />
               <input type="hidden" name="do_asignado_full[]" id="do_asignado_full" value="{sigla}-{do_asignado}" />
+              <input type="hidden" name="fecha_do[]" id="fecha_do{n}" value="{fecha}" />
               <input type="hidden" name="doc_tte[]" id="doc_tte" value="{doc_tte}" />
               <input type="hidden" name="email[]" id="email{n}" value="{correo_electronico}" />
+              <input type="hidden" name="ind_cons[]" id="ind_cons{n}" value="{ind_cons}" />
+              <input type="hidden" name="ind_fragil[]" id="ind_fragil{n}" value="{ind_fragil}" />
+              <input type="hidden" name="ind_hielo[]" id="ind_hielo{n}" value="{ind_hielo}" />
+              <input type="hidden" name="ind_asig[]" id="ind_asig{n}" value="{ind_asig}" />
+              <input type="hidden" name="ind_venci[]" id="ind_venci{n}" value="{ind_venci}" />
+              <input type="hidden" name="ind_ubica[]" id="ind_ubica{n}" value="{ind_ubica}" />
             </a> 
           </td>
         </tr>
@@ -89,21 +110,3 @@
     </table>
   </form>
 </div>
-
-<script>
-/*
-  $(document).ready(function() {
-    $('#users').dataTable({
-      "aaSorting": [],
-      "oLanguage": {
-        "sLengthMenu": "Mostrar _MENU_ registros por página",
-        "sZeroRecords": "No hay registros para mostrar",
-        "sInfo": "Mostrando _START_ a _END_ registros de _TOTAL_",
-        "sInfoEmpty": "Mostrando 0 a 0 registros de 0",
-        "sInfoFiltered": "",
-        "sSearch": "Buscar:"
-      }
-    });
-  });
-  */
-  </script>
