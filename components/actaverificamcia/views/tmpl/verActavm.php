@@ -69,14 +69,14 @@
         <img src="integrado/imagenes/cliente.png" width="79" height="37" />
       </td>
       <td rowspan="3" style="text-align:center;border-bottom:none;font-size:12px;">
-        <b>ACTA DE VERIFICACIÓN DE MERCANCÍAS E INSPECCIÓN UNIDADES DE CARGA</b>
+        <b>ACTA DE VERIFICACION DE MERCANCIAS E INSPECCION UNIDADES DE CARGA</b>
       </td>
-      <td style="width:13%;">Fecha Actualización</td>
+      <td style="width:13%;">Fecha Actualizacion</td>
       <td><input type="text" name="fecha_do" id="fecha_do" value="{fecha_do}" /></td>
       <td rowspan="3" style="width:10%;text-align:center;border-bottom:none;">
         <img src="integrado/imagenes/bysoft.png" width="79" height="37" />
       </td>
-    <tr><td>Versión</td><td><input type="text" name="version" id="version" value="3" /></td></tr>
+    <tr><td>Version</td><td><input type="text" name="version" id="version" value="3" /></td></tr>
     <tr><td colspan="2" style="border-bottom:none;text-align:center;">HOJA 1 DE 2</td></tr>
   </table>
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_vacta">
@@ -89,7 +89,7 @@
       <td style="width:39%;"><input type="text" name="fsalida" id="fsalida" value="{salida}" /></td>
     </tr>
     <tr>
-      <td style="width:15%;"><b>FECHA VERIFICACIÓN:</b></td>
+      <td style="width:15%;"><b>FECHA VERIFICACION:</b></td>
       <td style="width:17%;"><input type="text" name="fverifica" id="fverifica" value="{salida}" /></td>
       <td style="width:7%;"><b>ORDEN:</b></td>
       <td style="width:15%;">{orden}</td>
@@ -212,7 +212,7 @@
     </tr>
   </table>
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_vacta">
-    <th><b>INSPECCIÓN DE UNIDAD DE CARGA</b></th>
+    <th><b>INSPECCION DE UNIDAD DE CARGA</b></th>
   </table>
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_vacta">
     <tr>
@@ -257,7 +257,7 @@
   <div style="float:left;width:50%;">
     <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_vacta">
       <tr>
-        <th><b>INSPECCIÓN DE FURGÓN O REMOLQUE</b></th>
+        <th><b>INSPECCION DE FURGÓN O REMOLQUE</b></th>
         <th><b>1</b></th>
         <th><b>2</b></th>
         <th><b>3</b></th>
@@ -313,14 +313,14 @@
         <td></td>
       </tr>
       <tr>
-        <td><b>8.</b> ÁREA DE LA QUINTA RUEDA - INSPECCIONAR EL COMPARTIMIENTO NATURAL / PLACA DEL PATÍN</td>
+        <td><b>8.</b> AREA DE LA QUINTA RUEDA - INSPECCIONAR EL COMPARTIMIENTO NATURAL / PLACA DEL PATIN</td>
         <td></td>
         <td></td>
         <td></td>
         <td></td>
       </tr>
       <tr>
-        <td><b>9.</b> PATA MECÁNICA</td>
+        <td><b>9.</b> PATA MECANICA</td>
         <td></td>
         <td></td>
         <td></td>
@@ -338,14 +338,14 @@
   <div style="float:right;width:50%;">
     <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_vacta">
       <tr>
-        <th><b>INSPECCIÓN DEL CAMIÓN O TRACTOR</b></th>
+        <th><b>INSPECCION DEL CAMION O TRACTOR</b></th>
         <th><b>1</b></th>
         <th><b>2</b></th>
         <th><b>3</b></th>
         <th><b>4</b></th>
       </tr>
       <tr>
-        <td><b>1.</b> PARACHOQUES, NEUMÁTICOS Y LLANTAS</td>
+        <td><b>1.</b> PARACHOQUES, NEUMATICOS Y LLANTAS</td>
         <td></td>
         <td></td>
         <td></td>
@@ -387,7 +387,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><b>7.</b> SECCIÓN DE PASAJEROS Y TECHO</td>
+        <td><b>7.</b> SECCION DE PASAJEROS Y TECHO</td>
         <td></td>
         <td></td>
         <td></td>
@@ -427,7 +427,7 @@
   </table>
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_vacta">
     <tr>
-      <td style="width:23%;"><b>INSPECCIÓN DE CONTENEDOR No.:</b></td>
+      <td style="width:23%;"><b>INSPECCION DE CONTENEDOR No.:</b></td>
       <td style="width:27%;"></td>
       <td style="width:10%;"><b>CAPACIDAD:</b></td>
       <td style="width:15%;"></td>
@@ -450,7 +450,7 @@
   <div style="float:left;width:50%;">
     <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_vacta">
       <tr>
-        <th><b>INSPECCIÓN DE CONTENEDOR EXTERNO</b></th>
+        <th><b>INSPECCION DE CONTENEDOR EXTERNO</b></th>
         <th><b>1</b></th>
         <th><b>2</b></th>
         <th><b>3</b></th>
@@ -510,7 +510,7 @@
   <div style="float:right;width:50%;">
     <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_vacta">
       <tr>
-        <th><b>INSPECCIÓN DE CONTENEDOR INTERNO</b></th>
+        <th><b>INSPECCION DE CONTENEDOR INTERNO</b></th>
         <th><b>1</b></th>
         <th><b>2</b></th>
         <th><b>3</b></th>
@@ -600,7 +600,7 @@
   <div style="float:left;width:50%;">
     <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_vacta">
       <tr>
-        <td colspan="5"style="border-bottom:none;"><b>FUNCIONARIO RESPONSABLE DE LA VERIFICACIÓN:</b></td>
+        <td colspan="5"style="border-bottom:none;"><b>FUNCIONARIO RESPONSABLE DE LA VERIFICACION:</b></td>
       </tr>
       <tr>
         <td colspan="5" style="height:14px;border-bottom:none;"></td>
@@ -617,7 +617,7 @@
       </tr>
       <tr style="height:14px;">
         <td style="width:5%;height:14px;"></td>
-        <td style="width:20%;height:14px;border-top: 1px solid #000;border-left:none;text-align:center;">NOMBRE Y CÉDULA</td>
+        <td style="width:20%;height:14px;border-top: 1px solid #000;border-left:none;text-align:center;">NOMBRE Y CEDULA</td>
         <td style="width:5%;height:14px;border-left:none;"></td>
         <td style="width:15%;height:14px;border-top: 1px solid #000;border-left:none;text-align:center;">FIRMA</td>
         <td style="width:5%;height:14px;border-left:none;"></td>
@@ -644,7 +644,7 @@
       </tr>
       <tr style="height:14px;">
         <td style="width:5%;height:14px;"></td>
-        <td style="width:20%;height:14px;border-top: 1px solid #000;border-left:none;text-align:center;">NOMBRE Y CÉDULA</td>
+        <td style="width:20%;height:14px;border-top: 1px solid #000;border-left:none;text-align:center;">NOMBRE Y CEDULA</td>
         <td style="width:5%;height:14px;border-left:none;"></td>
         <td style="width:15%;height:14px;border-top: 1px solid #000;border-left:none;text-align:center;">FIRMA</td>
         <td style="width:5%;height:14px;border-left:none;"></td>
