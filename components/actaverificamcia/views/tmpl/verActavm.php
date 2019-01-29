@@ -155,8 +155,10 @@
       <th style="width:45%"><b>OBSERVACIONES</b></th>
     </tr>
     <tr>
-      <td style="text-align:center;"><b>1</b></td>
-      <td>¿CARGA DEBIDAMENTE EMBALADA?</td>
+      
+    <td style="text-align:center;"><b>1</b></td>
+      
+    <td>CARGA DEBIDAMENTE EMBALADA?</td>
       <td></td>
       <td style="text-align:center;"><b>{ccarga1_si}</b></td>
       <td style="text-align:center;"><b>{ccarga1_no}</b></td>
@@ -164,7 +166,7 @@
     </tr>
     <tr>
       <td style="text-align:center;"><b>2</b></td>
-      <td>¿SE EVIDENCIA HUMEDAD O DERRAMES?</td>
+      <td>SE EVIDENCIA HUMEDAD O DERRAMES?</td>
       <td></td>
       <td style="text-align:center;"><b>{ccarga2_si}</b></td>
       <td style="text-align:center;"><b>{ccarga2_no}</b></td>
@@ -172,7 +174,7 @@
     </tr>
     <tr>
       <td style="text-align:center;"><b>3</b></td>
-      <td>¿PRESENTA RASGADURAS, ENMENDADURAS O AVERIAS?</td>
+      <td>PRESENTA RASGADURAS, ENMENDADURAS O AVERIAS?</td>
       <td></td>
       <td style="text-align:center;"><b>{ccarga3_si}</b></td>
       <td style="text-align:center;"><b>{ccarga3_no}</b></td>
@@ -180,7 +182,7 @@
     </tr>
     <tr>
       <td style="text-align:center;"><b>4</b></td>
-      <td>¿CARGA DEBIDAMENTE MARCADA Y/O ETIQUETADA?</td>
+      <td>CARGA DEBIDAMENTE MARCADA Y/O ETIQUETADA?</td>
       <td></td>
       <td style="text-align:center;"><b>{ccarga4_si}</b></td>
       <td style="text-align:center;"><b>{ccarga4_no}</b></td>
@@ -188,7 +190,7 @@
     </tr>
     <tr>
       <td style="text-align:center;"><b>5</b></td>
-      <td>¿PRESENTA DEFORMACIONES?</td>
+      <td>PRESENTA DEFORMACIONES?</td>
       <td></td>
       <td style="text-align:center;"><b>{ccarga5_si}</b></td>
       <td style="text-align:center;"><b>{ccarga5_no}</b></td>
@@ -196,7 +198,7 @@
     </tr>
     <tr>
       <td style="text-align:center;"><b>6</b></td>
-      <td>¿CANTIDADES ACORDES A DOCUMENTOS?</td>
+      <td>CANTIDADES ACORDES A DOCUMENTOS?</td>
       <td></td>
       <td style="text-align:center;"><b>{ccarga6_si}</b></td>
       <td style="text-align:center;"><b>{ccarga6_no}</b></td>
@@ -204,11 +206,11 @@
     </tr>
     <tr>
       <td style="text-align:center;"><b>7</b></td>
-      <td>¿OTRA INCONSISTENCIA O CUIDADO ESPECIAL?¿CUÁL?</td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td>OTRA INCONSISTENCIA O CUIDADO ESPECIAL?¿CUÁL?</td>
+      
+      
+      
+      
     </tr>
   </table>
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_vacta">
