@@ -1,0 +1,21 @@
+320002018FE1018
+
+Cliente
+-------
+Tipo de Persona: Jurídica
+Tipo de Identificación: NIT
+Razón Social: INSUSOL SAS
+Nro. de Documento: 900761246
+Dirección: CRA 15 91 30 PISO 4
+Correo Electrónico: contacto@grupobysoft.com
+Teléfono: 3197218214
+Régimen: Común
+Departamento: Bogotá
+Ciudad: Bogotá
+
+Factura
+-------
+Código: 4145300502
+Descripción:SERVICIOS LOGISTICOS ZF
+Precio Venta Unitario: 448000
+Cantidades: 1

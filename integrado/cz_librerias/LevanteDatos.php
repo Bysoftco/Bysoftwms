@@ -737,7 +737,7 @@ class Levante extends MYDB {
               LEFT JOIN clientes ON do_asignados.por_cuenta = clientes.numero_documento
               LEFT JOIN ciudades ON imm.ciudad = ciudades.codigo
             WHERE imm.codigo = $arregloDatos[id_levante]";
-
+//echo $sql . "<br>";
     $this->query($sql);
     if($this->_lastError) {
       $this->mensaje = "error al consultar Inventario " . $sql;
@@ -830,7 +830,7 @@ class Levante extends MYDB {
               AND im.tipo_movimiento IN($arregloDatos[este_movimiento])";
     
     $sql .= " GROUP BY ie.orden,ref.codigo"; //inventario_entrada 
-
+//echo $sql;
     $this->query($sql);
     if($this->_lastError) {
       $this->mensaje = "error al consultar Inventario " . $sql;
@@ -1068,7 +1068,7 @@ class Levante extends MYDB {
     $fecha = $fecha->format('Y-m-d H:i');
     $sql = "INSERT INTO inventario_maestro_movimientos(lev_documento,fecha,tip_movimiento,tipo_retiro,orden,prefactura)
             VALUES('$arregloDatos[doc_filtro]','$fecha','$arregloDatos[tipo_movimiento]','$arregloDatos[tipo_retiro]','$arregloDatos[orden_filtro]','$arregloDatos[modalidad]')";
-
+//echo $sql;
     $this->query($sql);
     if($this->_lastError) {
       $arregloDatos[mensaje] = "error al crear cabdoc del levante " . $sql;

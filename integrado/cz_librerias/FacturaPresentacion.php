@@ -104,6 +104,7 @@ class FacturaPresentacion {
   }
 
   function maestro($arregloDatos) {
+ // echo "test";
     $this->plantilla->loadTemplateFile(PLANTILLAS .'facturaMaestro.html',true,true);
     $this->plantilla->setVariable('comodin'	,' ');
     $this->plantilla->setVariable('abre_ventana',1);
@@ -241,7 +242,21 @@ class FacturaPresentacion {
 
   function filtroConsulta($arregloDatos,&$datos,&$plantilla) { }
 
-  function filtro($arregloDatos) { }
+  function filtro($arregloDatos,&$datos,$plantilla) { 
+  
+  	$unDatos= new Factura();
+	$unDatos->getTipoSede($arregloDatos);
+	$unDatos->fetch();
+	$arregloDatos[opciones]="
+        <option value='3' selected>Servicios</option>";
+	
+	if($unDatos->tipo_sede==4){ 
+		$arregloDatos[opciones]="<option value='2'>Venta </option>
+        <option value='3' selected>Servicios</option>";
+	}
+	// si la sede es 4 se habilita factura venta
+	 $plantilla->setVariable('opciones',$arregloDatos[opciones]); 	 	
+  }
   
   // Método que retorna la Barra de Herramientas
   function getToolbar($arregloDatos) { }
@@ -253,6 +268,9 @@ class FacturaPresentacion {
     $this->getLista($arregloDatos,$unDatos->tipo,$unaPlantilla);
     if($unDatos->tipo == 0) { $arregloDatos[tipo] = ""; }//Para que se dispare la validación
     $this->valoresFormateados($arregloDatos,$unDatos);
+	
+	
+	
 	
     $arregloDatos[nombre_usuario] = $_SESSION['nombre_usuario'];
     $this->mantenerDatos($arregloDatos,$unaPlantilla);
@@ -274,6 +292,11 @@ class FacturaPresentacion {
 
   function getCabeza($arregloDatos,$unDatos,$unaPlantilla) 
   {
+  	$unaConsultaRetiro = new Factura();
+	
+  //var_dump($arregloDatos);
+  	$arregloDatos[id_levante]=$unaConsultaRetiro->getNumeroRetiro($arregloDatos);
+	//echo "numero de levante".$arregloDatos[id_levante];
   	$unaConsulta = new Factura();
  	$arregloDatos[proxima_factura]=$unaConsulta->proximaFactura($arregloDatos);
   

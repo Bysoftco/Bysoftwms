@@ -118,31 +118,26 @@ class Inventario extends MYDB {
     return $arreglo;
   }
   
-
-  function saveItem($arregloDatos) {
-    $sql = "UPDATE inventario_entradas
-              SET cantidad = $arregloDatos[cantidad],
-              peso = $arregloDatos[peso],
-              referencia = '$arregloDatos[referencia]',
-              valor = '$arregloDatos[valor]',
-              fmm = '$arregloDatos[fmm]',
-              modelo = '$arregloDatos[modelo]',
-              posicion = '$arregloDatos[posicion]',
-              observacion	= '$arregloDatos[observacion]',
-              un_empaque = '$arregloDatos[un_empaque]',
-              embalaje = '$arregloDatos[embalaje]',
-              fecha_expira = '$arregloDatos[fechaexpira]'
-            WHERE codigo = '$arregloDatos[id_item]'";
-    //echo $sql;
-    $this->query($sql);
+ function tipo_sede($arregloDatos) {
+  $sql ="SELECT sedes.tipo_sede 
+	FROM arribos,do_asignados,sedes,tipos_sedes,inventario_entradas
+	WHERE arribos.orden=do_asignados.do_asignado
+	AND sedes.codigo=do_asignados.sede
+	AND sedes.tipo_sede=tipos_sedes.codigo
+	AND inventario_entradas.arribo=arribos.arribo
+	AND inventario_entradas.codigo='$arregloDatos[id_item]'";
+   $this->query($sql);
     if($this->_lastError) {
-      $this->mensaje = "error al consultar Inventario ";
+      $this->mensaje = "error al consultar el tipo de sede ";
       $this->estilo = $this->estilo_error;
       return TRUE;
-    }
-  }
-
-  function addMovimiento($arregloDatos) {
+   }
+    $this->fetch();
+	
+	return $this->tipo_sede;
+ 
+ }
+    function addMovimiento($arregloDatos) {
   }
 
   function addInventario($arregloDatos) {
@@ -322,5 +317,67 @@ class Inventario extends MYDB {
 	if($this->_lastError) {
 	}
   }
+  
+  function saveItem($arregloDatos) {
+	//var_dump($arregloDatos);
+	if($this->tipo_sede($arregloDatos)==4){
+	//var_dump($arregloDatos);
+		if($this->existe_como_servicio($arregloDatos)==0){
+		
+			$this->crear_servicio($arregloDatos);
+		}
+	}
+    $sql = "UPDATE inventario_entradas
+              SET cantidad = $arregloDatos[cantidad],
+              peso = $arregloDatos[peso],
+              referencia = '$arregloDatos[referencia]',
+              valor = '$arregloDatos[valor]',
+              fmm = '$arregloDatos[fmm]',
+              modelo = '$arregloDatos[modelo]',
+              posicion = '$arregloDatos[posicion]',
+              observacion	= '$arregloDatos[observacion]',
+              un_empaque = '$arregloDatos[un_empaque]',
+              embalaje = '$arregloDatos[embalaje]',
+              fecha_expira = '$arregloDatos[fechaexpira]'
+            WHERE codigo = '$arregloDatos[id_item]'";
+    //echo $sql;
+    $this->query($sql);
+    if($this->_lastError) {
+      $this->mensaje = "error al consultar Inventario ";
+      $this->estilo = $this->estilo_error;
+      return TRUE;
+    }
+  }
+
+
+  function existe_como_servicio($arregloDatos) {
+ 	 $sql ="SELECT referencia 
+	 		FROM servicios
+			WHERE referencia='$arregloDatos[referencia]' ";
+	 $this->query($sql);
+    if($this->_lastError) {
+      $this->mensaje = "error al consultar si la referencia existe como servicio ";
+      $this->estilo = $this->estilo_error;
+    }  
+	$this->fetch();
+	return $this->N;
+	//echo "NNNNNNNNNNNNNNNNNNNNNNNNNNN" .$this->N;
+ }
+ 
+ function crear_servicio($arregloDatos) {
+
+ $sede = $_SESSION['sede'];
+ 	 $sql ="INSERT INTO servicios(codigo,nombre,referencia,sede)VALUES('$arregloDatos[referencia]', '$arregloDatos[referencia_nombre]','$arregloDatos[referencia]','$sede')";
+	 
+ 	 $this->query($sql);
+    if($this->_lastError) {
+      $this->mensaje = "error al insertar el servicio ";
+      $this->estilo = $this->estilo_error;
+      return TRUE;
+    }
+	//echo $sql;
+ }
+ 
+ 
 }  
 ?>

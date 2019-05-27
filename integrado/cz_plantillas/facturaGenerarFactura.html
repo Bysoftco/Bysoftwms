@@ -37,7 +37,7 @@
 				  			{
                  						
 							//contenedor_opciones
-							$("div#cabeza_form").load("./scripts_index.php", {clase:'Factura',metodo:'setNuevaFactura',mostrar:'1',num_prefactura:$('#num_prefactura').val(),posy:1,num_factura:'{num_factura}'}, function(datos){			
+							$("div#cabeza_form").load("./scripts_index.php", {clase:'Factura',metodo:'setNuevaFactura',mostrar:'1',num_prefactura:$('#num_prefactura').val(),posy:1,num_factura:'{num_factura}',tipo_factura:$('#tipo_factura').val()}, function(datos){			
 				  			//$("div#contenedor_opciones").load("./scripts_index.php", {clase:'Factura',metodo:'setNuevaFactura',mostrar:'1',num_prefactura:$('#num_prefactura').val()}, function(datos){
 				  				//alert(datos)
 								 //display('div_barra','none');
@@ -81,6 +81,7 @@
 	$(function() 
 	{
             $("#formularioFactura").validate();
+			
             $("#msgbox_arribo{id_form}").removeClass().addClass('{estilo_aux}').text('{mensaje_aux}').fadeIn(1000);
             if('{estilo_aux}'=='ui-state-error')
             {
@@ -99,12 +100,12 @@
 		.click(function() 
         {
                   $('#para_cerrar').val(0);  
+				  
 				  calcular();
                   return false; 
 		});
-                
-                
-                
+           	
+				
                 $( "#btnFinalizar" ).button(
                 {
                     text: true,
@@ -114,6 +115,24 @@
 		})
 		.click(function() 
                 {
+				 //alert($('#cantidades_aux'+i).val())
+				
+				if($("#tipo_factura").val()==1 || $("#tipo_factura").val()==2)
+				{
+					for(i=1;i<=$('#n').val();i++)
+                   {
+                       //alert($('#cantidades_aux'+i).val())
+					   if($('#cantidades_aux'+i).val()/1 > 0){ // para no validar los servicios que no estan en el inventario
+					   	if($('#cantidades'+i).val()/1 > $('#cantidades_aux'+i).val()/1 ){
+					   		alert('La cantidad que intenta retirar de: '+$('#concepto'+i).val()+' es mayor a la cantidad disponible en el inventario, disponible:'+$('#cantidades_aux'+i).val());
+							$('#cantidades'+i).focus();
+							i=$('#n').val();
+							return false;
+					    }
+					   }
+					 } 	
+				  }
+				
                   calcular();
 				  $('#para_cerrar').val(1);
 				 /*

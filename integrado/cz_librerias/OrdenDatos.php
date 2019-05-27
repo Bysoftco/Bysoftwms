@@ -293,7 +293,7 @@ class Orden extends MYDB {
 						FROM  tipos_operacion
 						WHERE tipo_sede	= $tipo_sede
 							AND codigo <> 0
-							AND tipo IN(1,3)
+							AND tipo IN(1,3,4)
 						ORDER BY nombre";
 
 		$this->query($sql);

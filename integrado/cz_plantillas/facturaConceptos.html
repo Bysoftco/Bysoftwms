@@ -80,7 +80,7 @@
     <th >RIca</th>
     <th >Cree</th>
     <th >Codigo</th>
-    <th >Concepto{comodin}</th>
+    <th >Concepto{comodin} </th>
     <th ><strong>Medida</strong></th>
     <th >base</th>
     <th ><strong>*</strong></th>
@@ -116,13 +116,31 @@
                 {
                     if (data)
                     {
-                            $("#cod_conceptos{n}").val(data[1]);
-                            $("#ivas{n}").val(data[2]);
-                            $("#rte_fuentes{n}").val(data[3]);
-                            $("#rte_icas{n}").val(data[4]);
-							$("#crees{n}").val(data[5]);
-							
-                            
+                     	$("#cod_conceptos{n}").val(data[1]);
+                        $("#ivas{n}").val(data[2]);
+                        $("#rte_fuentes{n}").val(data[3]);
+                       	$("#rte_icas{n}").val(data[4]);
+						$("#crees{n}").val(data[5]);
+						  if($("#tipo_factura").val()==1 || $("#tipo_factura").val()==2)
+						  {
+						  var tarifa=$("#tarifa").val();
+						 
+						  
+						  	$.ajax({
+       							url: './scripts_index.php?clase=Factura&metodo=getInventario&referencia='+data[1] +'&tipo_factura='+$("#tipo_factura").val()+',&tarifa='+tarifa,
+      							type: "POST",
+      							async: false,
+      							success: function(res) {
+        							datos = res.split('|');
+									$("#cantidades{n}").val(datos[0]);
+									$("#cantidades_aux{n}").val(datos[0]);
+									$("#bases{n}").val(datos[1]);
+									$("#multiplicador{n}").val(1);
+									
+      							}
+								});				
+						  			
+                          } 
                     }
                 });
 
@@ -155,7 +173,8 @@
       <td><input name="bases[]" type="text" class="lista" id="bases{n}" value="{base}" size="8" {disabled}></td>
       <td><input name="multiplicador[]" type="text" class="lista" id="multiplicador{n}" onBlur="javascript : valorUnitario({n})" value="{porcentaje}" size="6"></td>
       <td> <input name="vunitario[]" type="text" class="lista" id="vunitario{n}" value="{valor_unitario}" size="8" {disabled}="{disabled}" {readonly}="{readonly}"></td>
-      <td><input name="cantidades[]" type="text" class="required number ui-widget-content" id="cantidades{n}" value="{cantidad}"size="5" onBlur="javascript: totales({n})"></td>
+      <td><input name="cantidades[]" type="text" class="required number ui-widget-content" id="cantidades{n}" value="{cantidad}"size="5" onBlur="javascript: totales({n})">
+        <input name="cantidades_aux[]" type="hidden" id="cantidades_aux{n}" value="{cantidad}"></td>
       <td> <input name="valores[]" type="text" class="boton" id="valores{n}" onBlur="desmarcar_pago()" value="{valor}" size="10" > </div> 
       </td>
       <td> <a href="#" class="signup documento_id" title="Quitar Concepto {n}" id="{n}" cursor><img src="integrado/imagenes/borrar.gif" border="0"  > 

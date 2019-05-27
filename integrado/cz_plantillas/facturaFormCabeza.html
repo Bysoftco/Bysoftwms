@@ -157,11 +157,14 @@
  	<input name="num_prefactura" type="hidden" id="num_prefactura" value="{num_prefactura}">
  <fieldset class="ui-widget ui-widget-content ui-corner-all">
   <legend class="ui-widget ui-widget-header ui-corner-all"> 
+  
+  <div id="tipo_factura_id"> </div>
+  <input name="tipo_factura" type="hidden" id="tipo_factura" value="{tipo_factura}" />
   	
   <div id="label_title"> Informaci&oacute;n de la PreFactura {num_prefactura} 
     :: {num_factura} 
     <input name="num_factura" type="hidden" id="num_factura" value="{num_factura}" />
-    Pr&oacute;ximo consecutivo disponible :{proxima_factura}</div>
+    Pr&oacute;ximo consecutivo disponible :{proxima_factura} </div>
   </legend>
    
   	
@@ -199,6 +202,7 @@
     <th>Ubicacion:</th>
   
     <th>Comercial</th>
+      <th>Tarifa</th>
     <th>SubCentro</th>
     <th>Centro</th>
   </tr>
@@ -213,6 +217,11 @@
     <td><select name="comercial" id="select2" class=" required  ui-widget-content">
 			{selectVendedor}
       	 </select></td>
+      <td><select name="tarifa" id="tarifa">
+          <option value="1">Plena</option>
+          <option value="2">Agente</option>
+          <option value="3">Minima</option>
+        </select></td>
     <td><input name="subcentro" type="text" value="{subcentro_costo}" size="20" class="boton" id="subcentro"></td>
     <td><input name="centro_costo" type="text" value="{centro_costo}" size="10" class="boton" id="centro_costo"></td>
     

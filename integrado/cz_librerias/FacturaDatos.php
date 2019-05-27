@@ -493,7 +493,9 @@ class Factura extends MYDB {
   function findConcepto($arregloDatos) {
     $sede = $_SESSION['sede'];		
 
-    $sql = "SELECT codigo, nombre, iva, rte_fuente, rte_ica, rte_cree FROM servicios WHERE  nombre LIKE '%$arregloDatos[q]%' AND sede ='$sede' AND tipo = 0";
+    $sql = "SELECT codigo, nombre, iva, rte_fuente, rte_ica, rte_cree 
+	FROM servicios 
+	WHERE  nombre LIKE '%$arregloDatos[q]%' AND sede ='$sede' AND tipo = 0";
 
     $this->query($sql);
     if($this->_lastError) {
@@ -660,7 +662,7 @@ class Factura extends MYDB {
   
     $sql = "SELECT * FROM firmas WHERE  codigo = $arregloDatos[id_firma]";
 	
-    $this->query($sql);
+   // $this->query($sql);
     if($this->_lastError) {
       echo "error al consultar la firma";
       echo $this->mensaje_error." ".$sql;
@@ -900,6 +902,49 @@ class Factura extends MYDB {
       return FALSE;
     }
   }
+  
+   function  getTarifas($arregloDatos){
+   		$sql = "SELECT plena,minima,agente FROM servicios
+				WHERE referencia= $arregloDatos[referencia]
+		";
+		$this->query($sql);
+    	if($this->_lastError) {
+      		echo "<div class=error align=center> :( Error al consultar las tarifas <br>$sql</div>.";
+      		return FALSE;
+    	}
+		//$this->fetch();
+		//return $this->plena;
+   }
+   
+    function  getNumeroRetiro($arregloDatos){
+	//var_dump($arregloDatos);
+   		$sql = "SELECT codigo,prefactura,doc_tte FROM inventario_maestro_movimientos
+				WHERE doc_tte= $arregloDatos[num_prefactura]
+		";
+		//echo $sql;
+		$this->query($sql);
+    	if($this->_lastError) {
+      		echo "<div class=error align=center> :( Error al consultar las tarifas <br>$sql</div>.";
+      		return FALSE;
+    	}
+		$this->fetch();
+		return $this->codigo;
+   }
+   
+   function  getTipoSede($arregloDatos){
+   		$sede = $_SESSION['sede'];
+   		$sql = "SELECT tipo_sede FROM sedes
+				WHERE codigo='$sede'
+		";
+		//echo $sql;
+		$this->query($sql);
+    	if($this->_lastError) {
+      		echo "<div class=error align=center> :( Error al consultar las tarifas <br>$sql</div>.";
+      		return FALSE;
+    	}
+		//$this->fetch();
+		//return $this->plena;
+   }
   
 }  
 ?>

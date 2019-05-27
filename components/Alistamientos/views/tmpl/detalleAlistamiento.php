@@ -9,7 +9,7 @@
       <th colspan="4">
         Descripción del Alistamiento No. {codigo_operacion}
         <input type="hidden" name="codigo_operacion" id="codigo_operacion" value="{codigo_operacion}" />
-      {id_registro} </th>
+      </th>
     </tr>
     <tr>
       <td class="tituloForm" style="width: 25%">Documento Cliente</td>

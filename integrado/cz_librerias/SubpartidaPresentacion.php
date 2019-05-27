@@ -13,7 +13,6 @@
 	 */
 
 require_once ("HTML/Template/IT.php");
-
 require_once ("Funciones.php");
 
 
@@ -54,7 +53,7 @@ class SubpartidaPresentacion {
 
 
 
-    function mantenerDatos($arregloCampos,&$plantilla)
+    function mantenerDatos($arregloCampos,$plantilla)
 
     {
 
@@ -130,7 +129,7 @@ class SubpartidaPresentacion {
 
         $formularioPlantilla->setVariable('comodin'	,' ');
 
-        $this->mantenerDatos($arregloDatos,&$formularioPlantilla);
+        $this->mantenerDatos($arregloDatos,$formularioPlantilla);
 
 
 
@@ -172,7 +171,7 @@ class SubpartidaPresentacion {
 
 		}	
 
-		$r=$unDatos->$arregloDatos[thisFunction](&$arregloDatos);
+		$r=$unDatos->$arregloDatos[thisFunction]($arregloDatos);
 
 		
 
@@ -277,12 +276,12 @@ class SubpartidaPresentacion {
 
     $arregloDatos[tab_index] = 2;
     //$this->getTitulo(&$arregloDatos);
-    $this->mantenerDatos($arregloDatos, &$this->plantilla);
+    $this->mantenerDatos($arregloDatos, $this->plantilla);
 
     $arregloDatos[mostar] = "0";
     $arregloDatos[plantilla] = 'subPartidaToolbar.html';
     $arregloDatos[thisFunction] = 'getToolbar';
-    $this->plantilla->setVariable('toolbarLevante', $this->setFuncion($arregloDatos, &$this->datos));
+    $this->plantilla->setVariable('toolbarLevante', $this->setFuncion($arregloDatos, $this->datos));
 
     if(empty($arregloDatos[por_cuenta_filtro])) {
        $this->plantilla->setVariable('abre_ventana', 1);
@@ -299,7 +298,7 @@ class SubpartidaPresentacion {
       $arregloDatos[mostrar] = 0;
       $arregloDatos[plantilla] = $arregloDatos[plantillaMercanciaCuerpo];
       $arregloDatos[thisFunction] = $arregloDatos[metodoMercanciaCuerpo];
-      $htmlMercancia = $this->setFuncion($arregloDatos, &$this->datos);
+      $htmlMercancia = $this->setFuncion($arregloDatos, $this->datos);
       $this->plantilla->setVariable('htmlMercancia', $htmlMercancia);
 
     
@@ -335,12 +334,5 @@ class SubpartidaPresentacion {
 	}
 	 
 
-  } 
-
-
-
-
-
-
-
+  }
 ?>

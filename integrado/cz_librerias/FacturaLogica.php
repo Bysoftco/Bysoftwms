@@ -1,19 +1,22 @@
 <?php
+ //echo "test";die();
 require_once("FacturaDatos.php");
 require_once("FacturaPresentacion.php");
 require_once("ReporteExcel.php");
 require_once("InventarioDatos.php");
 
 class FacturaLogica {
-  var $datos;
+  var $datos;      	
   var $pantalla;
 		
   function FacturaLogica() {
     $this->datos =& new Factura();
     $this->pantalla =& new FacturaPresentacion($this->datos);
+	$this->id_levante=0;
   } 
 
   function maestro($arregloDatos) {
+ 
     $arregloDatos[tab_seleccionado] = 0;  
     $arregloDatos[plantillaFiltro] = "levanteFiltroNacionalizar.html";
     $this->pantalla->maestro($arregloDatos);
@@ -112,7 +115,9 @@ class FacturaLogica {
 
   // Método que Actualiza el valor de la Factura
   function updateFactura($arregloDatos) {
+  	
     //Se guardan los anticipos
+	
     $this->updateAnticipos($arregloDatos);
     // Si la remesa es diferente de 0 esto indica que se facturo por remesa y se debe ligar remesa y factura
     if($arregloDatos[remesa] > 0 ) {
@@ -122,6 +127,7 @@ class FacturaLogica {
     if($this->datos->updateCabeza($arregloDatos)) {
       $this->datos->updateInfoOrden($arregloDatos);
       $conceptos = $arregloDatos[cod_conceptos];
+	  //var_dump($conceptos);
       $ivas = $arregloDatos[ivas];
       $rte_fuentes = $arregloDatos[rte_fuentes];
       $rete_icas = $arregloDatos[rete_icas];
@@ -133,6 +139,8 @@ class FacturaLogica {
       $bases = $arregloDatos[bases];
       $multiplicadores = $arregloDatos[multiplicador];
       foreach($arregloDatos[id_conceptos] as $key => $value) {
+	  
+	  
         $arregloDatos[id_concepto] = $value;
         $arregloDatos[cod_concepto] = $conceptos[$key];
         $arregloDatos[iva] = $ivas[$key];
@@ -145,6 +153,10 @@ class FacturaLogica {
         $arregloDatos[valor_unitario] = $vunitarios[$key];
         $arregloDatos[base] = $bases[$key];
         $arregloDatos[multiplicador] = $multiplicadores[$key];
+		 
+		// por cada referencia se hace el retiros
+	  	$this->setRetiroInventario($arregloDatos);
+		
         $this->datos->updateConcepto($arregloDatos);
       }
     }
@@ -356,5 +368,260 @@ class FacturaLogica {
    function  getDatosRemesa($arregloDatos){
    		$this->datos->getDatosRemesa($arregloDatos);
    }
+   
+   
+    
+	function  getInventario($arregloDatos)
+	{
+	//var_dump($arregloDatos);
+		$arregloDatos[having] = " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
+		$arregloDatos[where] .=" AND  ref.codigo=$arregloDatos[referencia] "; // filtro por referencia
+		$arregloDatos[GroupBy] = "codigo_referencia ";  // 
+		//$arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
+		$arregloDatos[movimiento] = "1,2,3,7,10,15,16,19,30";
+		$unLevante = new Levante();
+		$unLevante->getInvParaProceso($arregloDatos);
+		$unLevante->fetch();
+		header( 'Content-type: text/html; charset=iso-8859-1' );
+		switch($arregloDatos[tipo_factura])
+		{
+			case 1:
+				$cantidad=$unLevante->cantidad_nonac+$unLevante->cantidad_naci;
+			break;
+			case 2: //
+				
+				$cantidad=$unLevante->cantidad_nonac+$unLevante->cantidad_naci;
+			break;
+		}
+		
+		
+		$tarifa=0;
+		if($cantidad > 0){
+			$this->datos->getTarifas($arregloDatos);
+			$this->datos->fetch();
+			switch($arregloDatos[tarifa])
+			{
+				case 1:  //plena
+				$tarifa=$this->datos->plena;
+				break;   
+				case 2: //general
+				$tarifa=$this->datos->agente;
+				break;
+				case 3: //minima
+					$tarifa=$this->datos->minima;
+				break;
+			}
+		}
+		echo "$cantidad|$tarifa";
+		//echo "$cantidad|$arregloDatos[tarifa]";
+		//echo "|";
+		//$this->datos->saldoInventario($arregloDatos);
+   		//$this->datos->getInventario($arregloDatos);
+   }
+   
+   function  setRetiroInventario($arregloDatos)
+  {
+//var_dump($arregloDatos);
+		$arregloDatos[referencia]	=$arregloDatos[cod_concepto];
+  		$arregloDatos[having] 		= " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
+		$arregloDatos[where] 		.=" AND  ref.codigo=$arregloDatos[cod_concepto] "; // referencia filtro por referencia
+		$arregloDatos[GroupBy] 		= "  inventario_entrada,codigo_referencia "; 
+		$arregloDatos[movimiento] 	= "1,2,3,7,10,15,16,19,30";
+		$paraRetiro 				= new Levante();
+		$paraRetiro->getInvParaProceso($arregloDatos);
+		
+		$cantidad_retirada=0;
+		
+		// Se crea la caebeza del retiro
+		$paraCabezaRetiro 				= new Levante();
+		$arregloDatos[tipo_movimiento] 	= 3;// tipo de movimiento rretiro
+		if($this->id_levante==0){
+			$arregloDatos[id_levante] 		= $paraCabezaRetiro->newLevante($arregloDatos);
+			$this->id_levante=$arregloDatos[id_levante];
+		}else{
+			$arregloDatos[id_levante]=$this->id_levante;
+		}
+		
+		
+		$arregloDatos[doc_tte]			=$arregloDatos[num_prefactura];
+		$arregloDatos[obs]				=" Retiro desde Modulo de Prefactura $arregloDatos[num_prefactura] "; 
+		$paraCabezaRetiro ->setCabezaLevante($arregloDatos);
+	//echo "X$arregloDatos[id_levante]";
+		
+		while($paraRetiro->fetch()) 
+		{
+			//echo " XXXXXX $paraRetiro->N  YYYYYYYYYYYYYY $arregloDatos[cod_concepto]" ;
+			if($arregloDatos[acumula] < $arregloDatos[cantidad])
+			{
+				//echo $arregloDatos[cantidad]."<BR>";
+			$cantidad_retirada					=$paraRetiro->cantidad_naci+$paraRetiro->cantidad_nonac;
+			
+			/*if($cantidad_retirada <= $arregloDatos[cantidad])
+			{
+				$cantidad_control=$arregloDatos[cantidad]-$cantidad_retirada;
+				if($cantidad_retirada > $cantidad_control) // se va a retirar mas que lo indicado en la factura 
+				{
+					if($paraRetiro->cantidad_naci > $cantidad_control){
+						$paraRetiro->cantidad_naci=$cantidad_control; // se retira el saldo necesario solo de la nacional
+						$paraRetiro->cantidad_nonac=0;
+					}
+				}*/
+				
+				//var_dump($paraRetiro);
+				$arregloDatos[peso_naci_para]		=$paraRetiro->peso_naci;
+				$arregloDatos[peso_nonaci_para]		=$paraRetiro->peso_nonac;
+				$arregloDatos[cantidad_naci_para]	=$paraRetiro->cantidad_naci;
+				$arregloDatos[cantidad_nonaci_para]	=$paraRetiro->cantidad_nonac;
+				$arregloDatos[cif_ret]				=$paraRetiro->cif;
+				$arregloDatos[fob_ret]				=$paraRetiro->fob_nonac;
+				$arregloDatos[id_item]				=$paraRetiro->inventario_entrada;
+				$arregloDatos[num_levante]			=$arregloDatos[num_prefactura];
+				
+				//var_dump($arregloDatos);
+				if($arregloDatos[para_cerrar]==1)
+				{
+					$this->getDecideRetiro($arregloDatos,$paraRetiro);
+				}
+				
+				//$unRetiro = new Levante();
+				//$unRetiro->addItemRetiro($arregloDatos);
+			}	
+			
+		}
+		
+		
+  }
+  
+   function  getDecideRetiro(&$arregloDatos,$paraRetiro)
+  {
+  	$unRetiro = new Levante();
+	
+  	if($paraRetiro->cantidad_naci > $paraRetiro->cantidad_nonac &&  $paraRetiro->cantidad_naci >0) // se retira de donde mas se encuentra
+	{
+		
+		$retiro=$arregloDatos[cantidad]-$arregloDatos[acumula];
+		if($paraRetiro->cantidad_naci>=$retiro ) // se puede retirar del inventario nacional hay existencias superiores
+		{
+			$arregloDatos[acumula]=$arregloDatos[acumula]+$retiro;
+			
+			$arregloDatos[cantidad_nonaci_para]=0;
+			$arregloDatos[peso_nonaci_para]	   =0;
+			$arregloDatos[peso_naci_para]		=$arregloDatos[peso_naci_para]/$paraRetiro->cantidad_naci*$retiro;
+			
+			
+			$arregloDatos[cantidad_naci_para]	=$retiro;
+			$unRetiro->addItemRetiro($arregloDatos);
+			
+		}else
+		{
+			
+			$arregloDatos[acumula]=$arregloDatos[acumula]+$paraRetiro->cantidad_naci;
+			
+			$arregloDatos[cantidad_nonaci_para]	=0;
+			$arregloDatos[peso_nonaci_para]		=0;
+			
+			$arregloDatos[cantidad_naci_para]	=$paraRetiro->cantidad_naci;
+			$unRetiro->addItemRetiro($arregloDatos);
+		}
+		
+		
+		$retiro=$arregloDatos[cantidad]-$arregloDatos[acumula];
+		if($paraRetiro->cantidad_nonac>=$retiro ) // se puede retirar del inventario extranjero
+		{
+			$arregloDatos[acumula]=$arregloDatos[acumula]+$retiro;
+			
+			
+			$arregloDatos[cantidad_naci_para]=0;
+			$arregloDatos[peso_naci_para]	 =0;
+			$arregloDatos[peso_nonaci_para]	=$paraRetiro->peso_nonac/$paraRetiro->cantidad_nonac *$retiro;
+			
+			
+			$arregloDatos[cantidad_nonaci_para]	=$retiro;
+			$unRetiro->addItemRetiro($arregloDatos);
+			
+		}else
+		{
+			$arregloDatos[acumula]=$arregloDatos[acumula]+$paraRetiro->cantidad_nonac;
+			
+			$arregloDatos[cantidad_naci_para]=0;
+			$arregloDatos[peso_naci_para]	 =0;
+			
+			
+			$arregloDatos[cantidad_nonaci_para]	=$paraRetiro->cantidad_nonac;
+			$unRetiro->addItemRetiro($arregloDatos);
+		}
+		
+	}else   // hay mas mercancia en extrangero
+	{
+		
+		
+		$retiro=$arregloDatos[cantidad]-$arregloDatos[acumula];
+		
+		
+		if($paraRetiro->cantidad_nonac>=$retiro ) // se puede retirar del inventario nacional hay existencias superiores
+		{
+			
+			$arregloDatos[acumula]=$arregloDatos[acumula]+$retiro;
+			
+			$arregloDatos[cantidad_naci_para]	=0;
+			$arregloDatos[peso_naci_para]	 =0;
+			if($retiro > 0)
+			{
+				$arregloDatos[peso_nonaci_para]	=$paraRetiro->peso_nonac/$paraRetiro->cantidad_nonac*$retiro;
+				$arregloDatos[cantidad_nonaci_para]	=$retiro;
+				$unRetiro->addItemRetiro($arregloDatos);
+			}
+		}else
+		{
+			
+			$arregloDatos[acumula]=$arregloDatos[acumula]+$paraRetiro->cantidad_nonac;
+			
+					
+			$arregloDatos[cantidad_naci_para]	=0;	 // valores opuestos quedan en 0
+			$arregloDatos[peso_naci_para]	 =0;
+			if($paraRetiro->cantidad_nonac > 0)
+			{
+				
+				$arregloDatos[cantidad_nonaci_para]	=$paraRetiro->cantidad_nonac;
+				$unRetiro->addItemRetiro($arregloDatos);
+			}	
+		}
+		
+		
+		$retiro=$arregloDatos[cantidad]-$arregloDatos[acumula];
+		if($paraRetiro->cantidad_naci>=$retiro && $paraRetiro->cantidad_naci > 0 ) // se puede retirar del inventario nacional
+		{
+			$arregloDatos[acumula]=$arregloDatos[acumula]+$retiro;
+			
+			$arregloDatos[cantidad_nonaci_para]=0;  // valores opuestos quedan en 0
+			$arregloDatos[peso_nonaci_para]		=0;
+			$arregloDatos[peso_naci_para]		=$paraRetiro->peso_naci/$paraRetiro->cantidad_naci*$retiro;
+			
+			$arregloDatos[cantidad_naci_para]	=$retiro;
+			$unRetiro->addItemRetiro($arregloDatos);
+			
+		}else
+		{
+			$arregloDatos[acumula]=$arregloDatos[acumula]+$paraRetiro->cantidad_naci;
+			
+			$arregloDatos[cantidad_nonaci_para]	=0;
+			$arregloDatos[peso_nonaci_para]		=0;
+			
+			if($paraRetiro->cantidad_naci > 0)
+			{	
+				
+				$arregloDatos[cantidad_naci_para]	=$paraRetiro->cantidad_naci;
+				$unRetiro->addItemRetiro($arregloDatos);
+			}
+				
+		}
+		
+		//
+	
+	}
+	
+  	//var_dump($paraRetiro);
+  }
+   
 }
 ?>

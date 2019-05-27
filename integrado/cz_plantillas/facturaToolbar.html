@@ -20,11 +20,18 @@
           <img src="img/acciones/printer.gif" title="Imprimir" width="25" height="25" border="0" />
         </a>
       </div> 
+	   <td width="25" align="center" id="btnImprimirRetiro">
+      <div class="tblank borde_circular noSeleccion">
+        <a href="" target="_blank" class="tblank1">
+          <img src="img/acciones/camion.gif" title="Imprimir Retiro" width="25" height="25" border="0" />
+        </a>
+      </div>
+	  
     </td>
     <td width="25" align="center" id="popupsServicio">
 			<div class="popupsServicio borde_circular noSeleccion" >
         <a href="javascript:void(0)">
-          <img src="img/acciones/servicio.gif" title="Agregar Servicio1" width="25" height="25" border="0" />
+          <img src="img/acciones/servicio.gif" title="Agregar Servicio" width="25" height="25" border="0" />
 				</a>
 			</div>
     </td>		
@@ -49,11 +56,23 @@
       return false;
     });
   });
+  
+  $(function() {
+    $('a[class="tblank1"]').click( function() {
+     //alert($("#id_levante" ).val())
+	
+	 
+	    window.open('./scripts_index.php?clase=Levante&metodo=impresion&id_levante='+$("#id_levante" ).val()+'&tipo_retiro=2&tipo_movimiento=2');
+      return false;
+    });
+  });
 
 	$('.popupsServicio a').click(function() {
     $("div#conceptos").load("./scripts_index.php", {clase:'Factura',metodo:'addConcepto',num_prefactura:$("#num_prefactura" ).val()}, function(data) {
     });
 	});
+	
+	//$("div#conceptos").load("./scripts_index.php", {clase:'Levante',metodo:'impresion',id_levante:5036,tipo_retiro:2,tipo_movimiento:2}, function(data) {
 
   $('#btnBuscar').hide();  // Si el Tab es 1 se Oculta
 </script>

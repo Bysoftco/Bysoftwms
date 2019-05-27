@@ -5,6 +5,7 @@ require_once("InterfaseDatos.php");
 require_once("montoEscrito.php");
 require_once("Archivo.php");
 
+// Caracter & Eliminado - 06/03/2019
 class InterfasePresentacion {
   var $datos;
   var $plantilla;
@@ -98,7 +99,7 @@ class InterfasePresentacion {
     $formularioPlantilla = new HTML_Template_IT();
     $formularioPlantilla->loadTemplateFile(PLANTILLAS . $arregloDatos[plantilla], true, true);
     $formularioPlantilla->setVariable('comodin', ' ');
-    $this->mantenerDatos($arregloDatos, &$formularioPlantilla);
+    $this->mantenerDatos($arregloDatos, $formularioPlantilla);
 
     $this->$arregloDatos[thisFunction]($arregloDatos, $this->datos, $formularioPlantilla);
     if($arregloDatos[mostrar]) {
@@ -111,7 +112,7 @@ class InterfasePresentacion {
   // Función Principal para las consultas
   function paraGenerarInterfase($arregloDatos) {
     $this->plantilla->loadTemplateFile(PLANTILLAS . 'interfaseMaestroConsulta.html', true, true);
-    $this->mantenerDatos($arregloDatos, &$this->plantilla);
+    $this->mantenerDatos($arregloDatos, $this->plantilla);
     $this->plantilla->setVariable('comodin', '');
 
     if(!empty($arregloDatos[filtro])) {
@@ -325,7 +326,7 @@ class InterfasePresentacion {
       }
 
       if($factura_actual <> $this->datos->factura and $factura_actual <> 0) {
-        $this->registrosAdicionales($arregloDatos, &$unArchivo);
+        $this->registrosAdicionales($arregloDatos, $unArchivo);
       }
 
       $arregloDatos[tipo_cliente] = $this->datos->tipo;
