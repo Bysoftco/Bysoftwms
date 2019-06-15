@@ -1,1 +1,0 @@
-INSERT INTO `menu` VALUES (45, 40, 'normal', 'Habilita Impresion', 'scripts_index.php?clase=Factura&metodo=getReimpresion&accion=habilitar', 3, 'A');
