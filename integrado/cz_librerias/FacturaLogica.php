@@ -156,6 +156,13 @@ class FacturaLogica {
 		 
 		// por cada referencia se hace el retiros
 	  	$this->setRetiroInventario($arregloDatos);
+		// var_dump($arregloDatos);
+			$unaOrden = new Factura();// para la placa default
+			if($arregloDatos[una_orden] <>''){
+				if($arregloDatos[una_orden]/1 <> 0){
+					$unaOrden->setOrden($arregloDatos);
+				}	
+			}
 		
         $this->datos->updateConcepto($arregloDatos);
       }
@@ -374,6 +381,12 @@ class FacturaLogica {
 	function  getInventario($arregloDatos)
 	{
 	//var_dump($arregloDatos);
+		$unCliente = new Factura();
+		$unCliente->getNitSede($arregloDatos);
+		$unCliente->fetch();
+		//return $this->numero_documento;
+		
+	    $arregloDatos[cliente]= $unCliente->numero_documento;  //para saber de donde saco la mercancia
 		$arregloDatos[having] = " HAVING peso_nonac  > 0 OR peso_naci > 0 ";
 		$arregloDatos[where] .=" AND  ref.codigo=$arregloDatos[referencia] "; // filtro por referencia
 		$arregloDatos[GroupBy] = "codigo_referencia ";  // 
@@ -419,7 +432,7 @@ class FacturaLogica {
    		//$this->datos->getInventario($arregloDatos);
    }
    
-   function  setRetiroInventario($arregloDatos)
+   function  setRetiroInventario(&$arregloDatos)
   {
 //var_dump($arregloDatos);
 		$arregloDatos[referencia]	=$arregloDatos[cod_concepto];
@@ -444,9 +457,34 @@ class FacturaLogica {
 		
 		
 		$arregloDatos[doc_tte]			=$arregloDatos[num_prefactura];
-		$arregloDatos[obs]				=" Retiro desde Modulo de Prefactura $arregloDatos[num_prefactura] "; 
-		$paraCabezaRetiro ->setCabezaLevante($arregloDatos);
+		$arregloDatos[obs]				=" Retiro desde Modulo de Prefactura $arregloDatos[num_prefactura] ";
+		
+		if($arregloDatos[para_cerrar]==1)
+		{
+			// se obtienen los demas datos del encabezado
+			//facturado_a_nit,por_cuenta_nit
+			//var_dump($arregloDatos);
+			$unCliente = new Factura();// para traer datos adicionales
+			$unCliente->getDatosCliente($arregloDatos);
+			$unCliente->fetch();
+			
+			$arregloDatos[direccion]	=$unCliente->direccion;
+			$arregloDatos[codigo_ciudad]=$unCliente->ciudad;
+			
+			$unaPlaca = new Factura();// para la placa default
+			$unaPlaca->getPlaca($arregloDatos);
+			$unaPlaca->fetch();
+			
+			$arregloDatos[id_camion]	= $unaPlaca->codigo;//238;
+			//$arregloDatos[do_asignado]=0;  // determina el cliente  crear metodo que haga Update al finAL
+			
+			$arregloDatos[destinatario]=$arregloDatos[por_cuenta_nombre];
+			$paraCabezaRetiro->setCabezaLevante($arregloDatos);
+			
+			
+		}	
 	//echo "X$arregloDatos[id_levante]";
+		
 		
 		while($paraRetiro->fetch()) 
 		{
@@ -476,7 +514,7 @@ class FacturaLogica {
 				$arregloDatos[fob_ret]				=$paraRetiro->fob_nonac;
 				$arregloDatos[id_item]				=$paraRetiro->inventario_entrada;
 				$arregloDatos[num_levante]			=$arregloDatos[num_prefactura];
-				
+				$arregloDatos[una_orden]= $paraRetiro->orden;
 				//var_dump($arregloDatos);
 				if($arregloDatos[para_cerrar]==1)
 				{
@@ -488,7 +526,7 @@ class FacturaLogica {
 			}	
 			
 		}
-		
+			
 		
   }
   

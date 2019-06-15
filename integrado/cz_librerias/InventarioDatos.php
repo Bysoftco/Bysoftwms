@@ -367,7 +367,7 @@ class Inventario extends MYDB {
  function crear_servicio($arregloDatos) {
 
  $sede = $_SESSION['sede'];
- 	 $sql ="INSERT INTO servicios(codigo,nombre,referencia,sede)VALUES('$arregloDatos[referencia]', '$arregloDatos[referencia_nombre]','$arregloDatos[referencia]','$sede')";
+ 	 $sql ="INSERT INTO servicios(codigo,nombre,referencia,sede,cuenta)VALUES('$arregloDatos[referencia]', '$arregloDatos[referencia_nombre]','$arregloDatos[referencia]','$sede','4145300502')";
 	 
  	 $this->query($sql);
     if($this->_lastError) {

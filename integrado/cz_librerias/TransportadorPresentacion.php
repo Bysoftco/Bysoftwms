@@ -44,7 +44,7 @@ class TransportadorPresentacion {
 
     function TransportadorPresentacion (&$datos) {
 
-        $this->datos = &$datos;
+        $this->datos =& $datos;
 
         $this->plantilla = new HTML_Template_IT();
 
@@ -60,7 +60,7 @@ class TransportadorPresentacion {
 
 	 
 
-        $plantilla = &$plantilla;
+        $plantilla = $plantilla;
 
         if (is_array($arregloCampos)) 
 
@@ -130,7 +130,7 @@ class TransportadorPresentacion {
 
         $formularioPlantilla->setVariable('comodin'	,' ');
 
-        $this->mantenerDatos($arregloDatos,&$formularioPlantilla);
+        $this->mantenerDatos($arregloDatos,$formularioPlantilla);
 
 
 
@@ -172,7 +172,7 @@ class TransportadorPresentacion {
 
 		}	
 
-		$r=$unDatos->$arregloDatos[thisFunction](&$arregloDatos);
+		$r=$unDatos->$arregloDatos[thisFunction]($arregloDatos);
 
 		
 
@@ -277,12 +277,12 @@ class TransportadorPresentacion {
 
     $arregloDatos[tab_index] = 2;
     //$this->getTitulo(&$arregloDatos);
-    $this->mantenerDatos($arregloDatos, &$this->plantilla);
+    $this->mantenerDatos($arregloDatos,$this->plantilla);
 
     $arregloDatos[mostar] = "0";
     $arregloDatos[plantilla] = 'transportadorToolbar.html';
     $arregloDatos[thisFunction] = 'getToolbar';
-    $this->plantilla->setVariable('toolbarLevante', $this->setFuncion($arregloDatos, &$this->datos));
+    $this->plantilla->setVariable('toolbarLevante', $this->setFuncion($arregloDatos,$this->datos));
 
     if(empty($arregloDatos[por_cuenta_filtro])) {
        $this->plantilla->setVariable('abre_ventana', 1);
@@ -299,7 +299,7 @@ class TransportadorPresentacion {
       $arregloDatos[mostrar] = 0;
       $arregloDatos[plantilla] = $arregloDatos[plantillaMercanciaCuerpo];
       $arregloDatos[thisFunction] = $arregloDatos[metodoMercanciaCuerpo];
-      $htmlMercancia = $this->setFuncion($arregloDatos, &$this->datos);
+      $htmlMercancia = $this->setFuncion($arregloDatos,$this->datos);
       $this->plantilla->setVariable('htmlMercancia', $htmlMercancia);
 
     

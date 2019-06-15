@@ -945,6 +945,57 @@ class Factura extends MYDB {
 		//$this->fetch();
 		//return $this->plena;
    }
+   
+    function  getNitSede($arregloDatos){ // se busca el NIT de la sede en la tabla cliente, elcampo telefonos_fases debe tener la sede
+   		$sede = $_SESSION['sede'];
+   		$sql = "SELECT numero_documento FROM clientes
+				WHERE telefonos_faxes='$sede'
+		";
+		//echo $sql;
+		$this->query($sql);
+    	if($this->_lastError) {
+      		echo "<div class=error align=center> :( Error al consultar el nit de la sede <br>$sql</div>.";
+      		return FALSE;
+    	}
+		
+   }
+   
+    function  getDatosCliente($arregloDatos){ // 
+   		$sede = $_SESSION['sede'];
+   		$sql = "SELECT * FROM clientes WHERE numero_documento='$arregloDatos[facturado_a_nit]'";
+		//echo $sql;
+		$this->query($sql);
+    	if($this->_lastError) {
+      		echo "<div class=error align=center> :( Error al consultar los datos del cliente <br>$sql</div>.";
+      		return FALSE;
+    	}
+		
+   }
+   function  getPlaca($arregloDatos){ // 
+   		
+   		$sql = "SELECT * FROM camiones WHERE placa='AAA111'";
+		//echo $sql;
+		$this->query($sql);
+    	if($this->_lastError) {
+      		echo "<div class=error align=center> :( Error al consultar la placa default <br>$sql</div>.";
+      		return FALSE;
+    	}
+		
+   }
+   
+   function  setOrden($arregloDatos){ // 
+   		
+   		$sql = "UPDATE inventario_maestro_movimientos
+				SET orden='$arregloDatos[una_orden]'
+				WHERE codigo=$arregloDatos[id_levante]";
+		//echo $sql;
+		$this->query($sql);
+    	if($this->_lastError) {
+      		echo "<div class=error align=center> :( Error al actualizar el numero de orden <br>$sql</div>.";
+      		return FALSE;
+    	}
+		
+   }
   
 }  
 ?>

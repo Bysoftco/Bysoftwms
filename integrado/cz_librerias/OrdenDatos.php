@@ -288,13 +288,23 @@ class Orden extends MYDB {
   }
  
   function getTipoOperacion($arregloDatos) {
-		$tipo_sede = $_SESSION['sede_tipo'];		
+  	$tipo_sede = $_SESSION['sede_tipo'];
+  		$restriccion=" AND tipo_sede	= $tipo_sede ";
+	
+		if ($tipo_sede=='4'){
+			$restriccion="";
+			
+		}
+				
 		$sql = "SELECT DISTINCT codigo,nombre  
 						FROM  tipos_operacion
-						WHERE tipo_sede	= $tipo_sede
-							AND codigo <> 0
+						WHERE 
+							 codigo <> 0
 							AND tipo IN(1,3,4)
+							$restriccion
 						ORDER BY nombre";
+						
+				
 
 		$this->query($sql);
 		if($this->_lastError) {
