@@ -1,0 +1,251 @@
+		
+<script>
+	function EnviarFormulario(id_form){
+		
+	}
+
+
+$.validator.setDefaults({
+	submitHandler: function() { 
+	
+		id_form={id_form}
+		$.ajax({
+				url:'./scripts_index.php',
+				type: "POST",
+				async:false,
+				data:$('#formArribo'+id_form).serialize(),
+				success: function (msm){
+						$('#htmlArribo'+id_form).html(msm);
+							
+				}
+		});			
+	},
+	highlight: function(input) {
+		$(input).addClass("ui-state-highlight");
+	},
+	unhighlight: function(input) {
+		$(input).removeClass("ui-state-highlight");
+	}
+});
+
+
+	$(function() {
+		
+		$("#arribo_seleccionado").val({arribo});
+		var formulario={id_form}
+		formulario=formulario/1;
+		$("#formArribo"+formulario).validate();
+		$( "#btnGuardar{id_form}" ).button();
+		
+		//("#buscarCliente").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
+		$("#find{id_form}").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
+	
+			width: 260,
+			selectFirst: false
+			
+		});
+
+	
+	$("#find{id_form}").result(function(event, data, formatted) {
+		
+		if (data)
+			$(this).parent().next().find("input").val(data[1]);
+	});
+		
+		
+		
+		$("#fecha_manifiesto{id_form}").datepicker();
+		$("#fecha_manifiesto{id_form}").datepicker('option', 
+				{dateFormat: 'yy/mm/dd',
+				  changeYear: true,
+				  changeMonth: true,
+				  showOn: 'both',
+				  buttonImage: 'integrado/imagenes/calendar.png',
+				  buttonImageOnly: true
+				 
+         });
+		 $("#fecha_manifiesto{id_form}").val('{fecha_manifiesto}');
+		 
+		$("#fecha_doc_tt{id_form}").datepicker();
+		$("#fecha_doc_tt{id_form}").datepicker('option', 
+				{dateFormat: 'yy/mm/dd',
+				  changeYear: true,
+				  changeMonth: true,
+				  showOn: 'both',
+				  buttonImage: 'integrado/imagenes/calendar.png',
+				  buttonImageOnly: true
+				 
+         });
+		 $("#fecha_doc_tt{id_form}").val('{fecha_doc_tt}');
+		
+		 $("#fecha_exp{id_form}").datepicker();
+		$("#fecha_exp{id_form}").datepicker('option', 
+				{dateFormat: 'yy/mm/dd',
+				  changeYear: true,
+				  changeMonth: true,
+				  showOn: 'both',
+				  buttonImage: 'integrado/imagenes/calendar.png',
+				  buttonImageOnly: true
+				 
+         });
+		 $("#fecha_exp{id_form}").val('{fecha_exp}');
+		
+		
+		$("#msgbox_arribo{id_form}").removeClass().addClass('{estilo_aux}').text('{mensaje_aux}').fadeIn(1000);
+		if('{estilo_aux}'=='ui-state-error'){
+			$("#msgbox_arribo{id_form}").removeClass().addClass('{estilo_aux}').text('{mensaje_aux}').fadeIn(1000);	
+		}else{
+			setTimeout ("$('#msgbox_arribo{id_form}').removeClass().addClass('').text('').delay();", 5000); 
+		}
+	
+	});
+	
+	$(function() {
+		
+		$( "#btnInventario{id_form}" ).button({
+			text: true,
+			icons: {
+				primary: "ui-icon-cart"
+			}
+		})
+		.click(function() {
+			$('.verInventario a').click();	
+			
+		});
+		
+		$( "#btnBorrar{id_form}" ).button({
+			text: true,
+			icons: {
+				primary: "ui-icon-trash"
+			}
+		})
+		.click(function() {
+			
+			$('.eliminarArribo a').click();
+					
+			
+		});
+	});	
+	
+	
+</script>
+
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+<span id="msgbox_arribo{id_form}" style="display:block" class="{estilo_aux}"  >
+		{mensaje_aux}{id_tab}
+	</span>
+		
+<form class="formArribo{id_form}" name="formArribo{id_form}"  id="formArribo{id_form}"  method="post" action="javascript:EnviarFormulario({id_form})">
+	<fieldset class="ui-widget ui-widget-content ui-corner-all">
+  <legend class="ui-widget ui-widget-header ui-corner-all"> Arribo {arribo} 
+  <input name="clase" type="hidden" id="clase" value="Orden">
+  <input name="metodo" type="hidden" id="metodo" value="updateArribo">
+  <input name="id_form" type="hidden" id="id_form" value="{id_form} ">
+  <input name="arribo" type="hidden" id="arribo_aux" value="{arribo} ">
+  {do_asignado} </legend>
+  <table width="100%" border="0">
+   
+    <tr > 
+      <td width="16%"><div align="center"> 
+          <table width="100%" border="0">
+            <tr class="titulosTabla"> 
+              <td width="16%"><div align="center">Referencia</div></td>
+              <td width="16%"><div align="center">Modelo/Lote/Cosecha</div></td>
+              <td width="16%"><div align="center">Cantidad</div></td>
+              <td width="10%"><div align="center">Peso</div></td>
+              <td width="17%"><div align="center">Valor . </div></td>
+            </tr>
+            <tr> 
+              <td><div align="left"> </div></td>
+              <td><div align="center"> </div></td>
+              <td><div align="center"> </div></td>
+              <td>&nbsp; </td>
+              <td><div align="center"> </div></td>
+            </tr>
+          </table>
+        </div></td>
+    </tr>
+    <tr > 
+      <td width="16%"><div align="center">
+	 
+          <table width="100%" border="0">
+            <tr class="titulosTabla"> 
+              <td width="15%"><div align="center">N&ordm;. Levante</div></td>
+              <td width="19%"><div align="center">CifFMMN/ParteNo</div></td>
+              <td width="10%"><div align="center">Embalajes</div></td>
+              <td width="17%"><div align="center">U. Empaque</div></td>
+              <td width="15%"><div align="center">Alto</div></td>
+              <td width="10%">Largo</td>
+              <td width="14%"><div align="center">Ancho</div></td>
+            </tr>
+            <tr> 
+              <td><div align="left"> </div></td>
+              <td><div align="center"> </div></td>
+              <td><div align="center"> </div></td>
+              <td>&nbsp; </td>
+              <td><div align="center"> </div></td>
+              <td>&nbsp;</td>
+              <td><div align="center"> </div></td>
+            </tr>
+          </table>
+        </div></td>
+    </tr>
+	 
+	<tr > 
+      <td width="16%"><div align="center">
+          <table width="100%" border="0">
+            <tr > 
+              <td width="40%"> <div align="center">Ubicacion</div>
+               
+                </td>
+              <td width="40%">
+                <div align="center">Observaciones</div>
+                </td>
+              <td width="20%"> <div align="center"></div>
+                </td>
+            </tr>
+            <tr> 
+              <td>&nbsp;</td>
+              <td>
+                <input name="observacion" type="text"  class="  ui-widget-content" id="observacion" value="{observacion}" size="50">
+               </td>
+              <td> </span></td>
+            </tr>
+            <tr> 
+              <td colspan="3"> <div align="left"> 
+                  <table width="100%" border="0">
+                    <tr class="titulosTabla"> 
+                      <td width="26%"><div align="center"> 
+                          	
+                          <button class="submit" type="submit"  id="btnGuardar{id_form}" >Guardar</button>
+                          
+                        </div></td>
+                      <td width="41%"><div align="center"> </div></td>
+                      <td width="31%"><div align="center"> 
+                          	
+                         
+                          <button class="submit" type="button"  id="btnBorrar{id_form}" >Borrar</button>
+                      </div></td>
+                      <td width="2%"><div align="center"> </div></td>
+                    </tr>
+                  </table>
+               </td>
+            </tr>
+          </table>
+        </div></td>
+    </tr>
+	<tr > 
+      <td width="16%"><div align="center"> </div></td>
+    </tr>
+  </table>
+  
+
+	
+     
+	</fieldset>
+
+  
+</form>
+	
+
+	

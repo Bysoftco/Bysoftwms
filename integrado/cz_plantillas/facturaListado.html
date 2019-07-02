@@ -1,0 +1,133 @@
+<script>
+  $(function() {
+    $("a.documento_id").click(function() { //check for the first selection
+      var $column = $(this).attr('id'); // assign the ID of the column
+
+      with(document.listaRegistros) {
+        if($column == 1 && n.value == 1) {
+          var num_prefactura = $('#numero_prefactura').val();
+          var factura	= $('#num_factura').val();
+          var cerrada	= $('#fac_cerrada').val();
+        } else {
+          var num_prefactura = numero_prefactura[$column-1].value;
+          var factura = num_factura[$column-1].value;
+          var cerrada = fac_cerrada[$column-1].value;
+        }	
+      }
+	  
+      var metodo; 
+        
+      switch('{accion}') {
+        case "habilitar":
+          if(cerrada > 0) { // La factura ya esta cerrada
+            metodo = 'getPreFactura'; 
+            if('{accion}' == "habilitar") {
+              if(!confirm("¿ Seguro que desea habilitar la factura "+factura+" para impresion ?")) return false;
+            }		
+            metodo = 'habilitaImpresion';
+          } else {
+            alert('La factura esta abierta, para que pueda imprimirla debe finalizarla') 
+            return false;
+          }   
+          break;
+        case "anular":
+          if(!confirm("¿ Seguro que desea anular la factura "+factura+" ?")) return false;
+          metodo = 'anularFactura';
+          break;
+        case "abrir":
+          if(!confirm("¿ Seguro que desea abrir la factura "+factura+" ?")) return false;
+          metodo = 'abrirFactura';
+          break;
+        case "Preliquidacion":
+          metodo = 'getPreFactura';
+          break;
+        default:
+          metodo = 'consultaFactura';
+      }
+    
+      $("div#componente_central").load("./scripts_index.php", {
+	     clase:'Factura',metodo:	metodo,num_prefactura:num_prefactura,verToolbar:$("#toolbar").val(),num_factura:factura,accion:'{accion}'
+      },
+        function(data) { }
+      );
+    });
+  });
+</script>	
+<span id="msgbox" style="display:block;text-align:left;" class="{estilo}"> {mensaje} </span>
+<div id="users-contain" class="ui-widget">
+  <form name="listaRegistros" method="post" id="listaRegistros" action="scripts_index.php">
+    <table width="100%" class="ui-widget ui-widget-content" id="users">
+      <thead>
+        <tr class="ui-widget-header"> 
+          <th>Consecutivo</th>
+          <th>Fecha</th>
+          <th>Factura</th>
+          <th>
+            <input type="hidden" name="do_filtro" id="do_filtro_aux" value="{do_filtro}"/> 
+            <input type="hidden" name="clase" id="clase" value="Orden"/>
+            <input type="hidden" name="metodo" id="metodo" value="excel"/>
+            DOs 
+            <input type="hidden" name="por_cuenta_filtro" id="por_cuenta_filtro_aux" value="{por_cuenta_filtro}"/> 
+            <input type="hidden" name="fecha_inicio" id="fecha_inicio" value="{fecha_inicio}" />
+          </th>
+          <th>
+            <input type="hidden" name="fecha_fin" id="fecha_fin" value="{fecha_fin}" />
+            Cliente
+          </th>
+          <th>
+            Documento 
+            <input type="hidden" name="doc_filtro" id="doc_filtro_aux" value="{doc_filtro}"/>
+          </th>
+          <th>Subtotal</th>
+          <th>Iva</th>
+          <th>Total</th>
+          <!-- <th style="display: {ocultaColumna}"> -->
+          <th>
+            Acci&oacute;n 
+            <input type="hidden" name="n" id="n" value="{num_registros}"/>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- BEGIN ROW -->
+        <tr class="{odd}"> 
+          <td>
+            {codigo}
+            <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor>
+              <input type="hidden" name="numero_prefactura[]" id="numero_prefactura" value="{codigo}"/>
+            </a>
+          </td>
+          <td>
+            {fecha_factura}
+            <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor> 
+            </a>
+          </td>
+          <td>
+            {numero_oficial}
+            <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor>
+              <input type="hidden" name="num_factura[]" id="num_factura" value="{numero_oficial}"/>
+            </a>
+            <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor>
+              <input type="hidden" name="fac_cerrada[]" id="fac_cerrada" value="{cerrada}"/>
+            </a>
+          </td>
+          <td>{orden} </td>
+          <td>{razon_social} </td>
+          <td>{documento_transporte} </td>
+          <td>{subtotal_f}</td>
+          <td>{iva_f}</td>
+          <td>{total_f}</td>
+          <td>
+            <a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor>
+              <img src="integrado/imagenes/{img_editar}" border="0" /> 
+            </a>
+            <a href="#" class="signup documento_id" title="Consultar Do {do_asignado}" id="{n}" cursor> 
+            </a>
+          </td>
+        </tr>
+        <!-- END ROW -->
+      </tbody>
+      <input type="hidden" name="toolbar" id="toolbar" value="{verToolbar}"/>
+    </table>
+  </form>
+</div>

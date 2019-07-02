@@ -1,0 +1,115 @@
+<script>
+  function seleccion(n) {
+    $('#orden_seleccion').val($('#orden'+n).val())
+    $('#arribo').val($('#arribo'+n).val());
+    document.getElementById("ns").value = n;
+  }
+  
+  $(function() {
+    $("a.id_mercancia").click(function() {
+      //Valida cambio en la Cantidad
+      if($('#cant'+$('#ns').val()).val() == $('#cant_inicial'+$('#ns').val()).val()) {
+        alert('La cantidad a reempacar debe ser diferente a '+$('#cant_inicial'+$('#ns').val()).val());
+      } else {
+        var cmdOK = false;
+        //Verifica Referencia diferente a Bultos y Bultos Reempacados
+        if($('#codref'+$('#ns').val()).val()!=1 && $('#codref'+$('#ns').val()).val()!=2) {
+          cmdOK = confirm('Referencia '+$('#nomref'+$('#ns').val()).val()+
+                  ' es diferente a BULTOS y BULTOS REEMPACADOS - \u00bfConfirma Unificar?') ? true : false;
+        } else cmdOK = true;         
+        if(cmdOK) {
+          //Enviar datos a addItemReempacar
+          $.ajax({
+            url:'./scripts_index.php',
+            type: "POST",
+            async: false,
+            data: $("#listadoUnificar").serialize(),
+            success: function(msm) {
+              //alert(msm);
+              $('#tabs').tabs("select", 0);
+            }
+          });
+        }
+      }
+      return false; 
+    });
+  });
+</script>
+<style>
+  .ui-button { margin-left: -1px; }
+  .ui-button-icon-only .ui-button-text { padding: 0.35em; } 
+  .ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; width:200px;}
+  #formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
+</style>
+<div id="users-contain" class="ui-widget" > 
+  <link rel="stylesheet" type="text/css" href="./_estilos/jquery.autocomplete.css" />
+  <form id="listadoUnificar" name="listadoUnificar"> 
+	 <input name="orden_seleccion" type="hidden" id="orden_seleccion" value="" />  
+	
+    <fieldset class="ui-widget ui-widget-content ui-corner-all">
+      <legend class="ui-widget ui-widget-header ui-corner-all"> Disponible para Unificar</legend>
+      <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
+      <table width="100%" class="ui-widget ui-widget-content" id="users" style="display:{mostrarCuerpo}">
+        <thead>
+          <tr class="ui-widget-header"> 
+            <th>No.</th>
+            <th>Orden</th>
+            <th>Documento TTE</th>
+            <th>Referencia</th>
+            <th style="text-align: center;">Cantidad</th>
+            <th style="text-align: center;">Peso</th>
+            <th style="text-align: center;">Valor</th>
+            <th style="text-align: center;">Unificar</th>
+          </tr>
+        </thead>
+        <tbody>
+        {comodin} 
+          <!-- BEGIN ROW -->
+          <tr class="{odd}"> 
+            <td width="1%">{n}</td>
+            <td>{orden} <input name="orden[]" type="hidden" id="orden{n}" value="{orden}" /></td>
+            <td width="13%">{doc_tte}</td>
+            <td>[{cod_referencia}] {nombre_referencia}
+              <input type="hidden" name="codref[]" id="codref{n}" value="{cod_referencia}"/>
+              <input type="hidden" name="nomref[]" id="nomref{n}" value="{nombre_referencia}"/>
+            </td>
+            <td width="10%" style="text-align: right;">
+              <input type="text" style="text-align:right;" name="cant[]" id="cant{n}" value="{cantidad_nonac}" size="15"/>
+              <input name="cant_inicial[]" type="hidden" id="cant_inicial{n}" value="{cantidad_nonac}"/>
+            </td>
+            <td style="text-align: right;">{peso_nonac_f}</td>
+            <td style="text-align: right;">{fob_nonac_f}</td>
+            <td style="text-align: center;"><a href="#" class="signup id_mercancia" title="Unificar Orden {orden}"
+              id="{n}" onclick="javascript: seleccion({n})">
+              <img src="./img/acciones/camion.jpg" border="0" /></a>
+            </td>
+            <input name="arribo[]" type="hidden" id="arribo{n}" value="{arribo}" />
+            <input name="item[]" type="hidden" id="item{n}" value="{item}" />          
+            <input name="peso[]" type="hidden" id="peso{n}" value="{peso_nonac}" />
+            <input name="fob[]" type="hidden" id="fob{n}" value="{fob_nonac}" />
+            <input name="n[]" type="hidden" id="n[]" value="{n}" />
+          </tr>          
+          <!-- END ROW -->
+          <tr> 
+            <td>Totales</td>
+            <td>{n}</td>
+            <td>{n}</td>
+            <td>{n}</td>
+            <td style="text-align: right;">{tot_cant_nonac_f}</td>
+            <td style="text-align: right;">{tot_peso_nonac_f}</td>
+            <td style="text-align: right;">{tot_fob_nonac_f}</td>
+            <td>{n}</td>
+          </tr>
+        </tbody>
+        <input type="hidden" name="num_registros" id="num_registros" value="{num_registros}"/>
+        <input type="hidden" name="arribo" id="arribo" value=""/> 
+        <input type="hidden" name="ns" id="ns" value=""/>
+      </table>
+    </fieldset>
+    <input type="hidden" name="clase" value="Reempaque" />
+    <input type="hidden" name="metodo" value="addItemReempacar" />
+    <input type="hidden" name="id_reempaque" value="{id_reempaque}" />
+    <input type="hidden" name="mostrar" value="1" />
+    <input type="hidden" name="tipo_movimiento" value="4" />
+  </form>
+</div>

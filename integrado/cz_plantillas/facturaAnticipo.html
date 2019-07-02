@@ -1,0 +1,32 @@
+{comodin}
+<script>
+	function eliminarAnticipo(codigo){
+		//alert(codigo)
+		//$("div#mas_anticipos").load("./scripts_index.php", {clase:'Factura',metodo:'deleteAnticipos',num_factura:$('#num_prefactura').val():id_factura=codigo}, function(data){
+		//});
+		
+		$("div#mas_anticipos").load("./scripts_index.php", {clase:'Factura',metodo:'deleteAnticipos',num_factura:$('#num_prefactura').val(),id_factura:codigo}, function(data){
+			//alert(data)
+		});
+	}
+</script>
+<table width="100%" border="0"  cellpadding="0"class="ui-widget ui-widget-content">
+  <tr class="ui-widget-header "> 
+    <td width="8%">#</td>
+    <td width="8%">Recibo</td>
+    <td width="66%">Vr.Anticipo 
+      <input name="cantidad_anticipos" type="hidden" value="{num_registros}" id="cantidad_anticipos"></td>
+    <td width="18%" style="text-align: center;">Acci&oacute;n</td>
+  </tr>
+  <!-- BEGIN ROW -->
+  <tr> 
+    <td>{n} </td>
+    <td height="21"><input name="recibos_anticipos[]" type="text"   class=" required ui-widget-content" id="recibos_anticipos{n}" value="{num_recibo}" size="10" {disabled}></td>
+    <td><input name="anticipos_adicionales[]" type="text" id="otro_anticipo{n}" value="{valor_anticipo}"> 
+      <input name="id_anticipo[]" type="hidden" id="codigo_anticipo" value="{codigo}">
+    </td>
+    <td style="text-align: center;"><a href="javascript:eliminarAnticipo({codigo})"  title="Eliminar Anticipo " id="{n}" cursor><img src="integrado/imagenes/borrar.gif" border="1"  ></a> 
+    </td>
+  </tr>
+  <!-- END ROW -->
+</table>

@@ -1,0 +1,200 @@
+    <link rel="StyleSheet" href="./integrado/cz_estilos/reporteGerencial.css" type="text/css">
+
+
+
+    <style>
+
+
+
+        /*
+
+
+
+    table {
+
+
+
+       FONT-SIZE: 12px; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; COLOR:red;
+
+
+
+    }*/
+
+
+
+        
+
+
+
+		
+
+
+
+  </style>
+
+
+
+    <script language="javascript" type="text/javascript">
+
+
+
+    function excel() {
+
+
+
+	//alert("x")
+
+
+
+        document.reporteForm.metodo.value='generaExcel' ;
+
+
+
+        document.reporteForm.submit();
+
+
+
+    }
+
+
+
+	</script>
+
+
+
+</head><body id="home">
+
+
+
+<div id="boundary"> 
+
+
+
+  <div id="content">
+
+
+
+  	<div id="intro"> 
+
+
+
+      <h2><strong></strong></h2>
+
+
+
+    </div>
+
+
+
+	<form action="./scripts_index.php" name="reporteForm" id="reporteForm" method="post" onSubmit="javascript : return formEnvio()">	
+
+
+
+      <div id="itsthetable"> 
+
+
+
+        <table summary="Submitted table designs" style=" font-size:12px;">
+          <caption>
+          Endosos {titulo} <a href="javascript: excel()" ><img src="./integrado/imagenes/report-excel.png" border="0" style="display:{mostrarExcel};" ></a> 
+          <a href="javascript: window.print();" ><img src="./integrado/imagenes/printer.png" border="0" style="display:{mostrarExcel};" ></a> 
+          </caption>
+          <thead>
+            <tr> 
+              <th height="23">Cliente</th>
+              <th>Orden</th>
+              <th>Nueva Orden</th>
+              <th>Documento</th>
+              <th>Referencia</th>
+              <th>Cantidad</th>
+              <th>Peso</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr> 
+              <th colspan="25" scope="row"> [{num_registros}]Registros 
+                <input name="nombreSede" type="hidden" id="nombreSede" value="{nombreSede}"> 
+                <input name="nombreEstado" type="hidden" id="nombreEstado2" value="{nombreEstado}">
+                {fechaActual} </th>
+            </tr>
+          </tfoot>
+          <tbody>
+            <!-- BEGIN ROW -->
+            <tr> 
+              <th scope="row" id="r101">{nombre_cliente}</th>
+              <td>{orden}</td>
+              <td>{new_orden}</td>
+              <td>{doc_tte}</td>
+              <td>[{codigo_ref}]{nombre_referencia}</td>
+              <td title="Cantidad">{cantidad}</td>
+              <td title="Cantidad Nacional">{peso}</td>
+              <td title="Cantidad Extranjero">{valor}</td>
+            </tr>
+            <!-- END ROW -->
+          </tbody>
+          <tr> 
+            <th>Totales</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>{tc_f}</th>
+            <th>{c_nal_t}</th>
+            <th>{c_ext_t}</th>
+          </tr>
+        </table>
+
+
+
+      </div>
+
+
+
+      <div> 
+
+
+
+        <p><a href="javascript: excel()" ><img src="./integrado/imagenes/report-excel.png" border="0" style="display:{mostrarExcel};" ></a> 
+
+
+
+          <a href="javascript: window.print();" ><img src="./integrado/imagenes/printer.png" border="0" style="display:{mostrarExcel};" ></a> 
+
+
+
+          <input name="clase" type="hidden" id="clase" value="Reporte">
+		  <input name="metodo" type="hidden" id="metodo" value="">
+		  <input name="por_cuenta_filtro" type="hidden" id="por_cuenta_filtro" value="{por_cuenta_filtro}">
+
+
+
+          <input name="fecha_fin" type="hidden" id="fecha_fin" value="{fecha_fin}">
+
+
+
+          <input name="fecha_inicio" type="hidden" id="fecha_inicio" value="{fecha_inicio}">
+
+
+
+          <input name="titulo" type="hidden" id="titulo" value="{titulo}">
+
+
+
+        </p>
+
+
+
+    </div>
+
+
+
+	</form>
+
+
+
+</div>
+
+
+
+</div></body>

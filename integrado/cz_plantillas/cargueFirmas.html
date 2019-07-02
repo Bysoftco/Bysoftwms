@@ -1,0 +1,88 @@
+<style>
+  label { display: inline-block; width: 100px; }
+  legend { padding: 0.5em; }
+  fieldset fieldset label { display: block; }
+  #formulario2 label { width: 100px; margin-left: 5px; }/*ancho de las etiquetas de los campos*/
+  h1 { font-size: 1.2em; margin: .6em 0; }
+  .ui-dialog .ui-state-error { padding: .3em; }
+</style>
+{comodin}
+<div id="archiFoto"><p>
+  <form class="formulario2" id="formulario2" method="post" action="javascript:EnviarFormulario()" name="formulario2">
+	  <fieldset class="ui-widget ui-widget-content ui-corner-all">
+      <table align="center" width="95%" cellpadding="0" cellspacing="0" id="tabla_general" style="margin: 15px;">
+        <tr>
+          <th colspan="3">Carga de Fotos</th>
+        </tr>
+        <tr>         
+          <td class="tituloForm" width="30%">Seleccionar Foto:</td>
+          <td><input id="archivo" type="file" name="archivo" onchange="seleccionado();" /></td>
+          <td colspan="2" id="imgfoto" width="30%" style="text-align: center;"></td>
+        </tr>
+      </table>
+	  </fieldset>
+  </form></p>
+</div>
+<script>
+  var numOrden = $("#do_asignado").val();
+
+  function seleccionado() {
+		var archivo = document.getElementById("archivo");//Damos el valor del input tipo file
+		var narchivo = archivo.files; //Obtenemos el valor del input (los arcchivos) en modo de arreglo
+    
+		/* Creamos el objeto que hara la petición AJAX al servidor, debemos de validar 
+			 si existe el objeto “ XMLHttpRequest” ya que en internet explorer viejito no esta,
+			 y si no esta usamos “ActiveXObject” */ 
+		if(window.XMLHttpRequest) {
+			var Req = new XMLHttpRequest(); 
+		} else if(window.ActiveXObject) { 
+			var Req = new ActiveXObject("Microsoft.XMLHTTP"); 
+		}
+
+		//El objeto FormData nos permite crear un formulario pasandole clave/valor para poder enviarlo, 
+		//este tipo de objeto ya tiene la propiedad multipart/form-data para poder subir archivos
+		var data = new FormData();
+
+		//Como no sabemos cuantos archivos subira el usuario, iteramos la variable y al
+		//objeto de FormData con el metodo "append" le pasamos clave/valor, usamos el indice "i" para
+		//que no se repita, si no lo usamos solo tendra el valor de la ultima iteración
+    data.append('narchivo1',narchivo[0]);
+
+		//Pasándole la url a la que haremos la petición
+		Req.open("POST", "scripts_index.php?clase=Orden&metodo=verFotos", true);
+
+		/* Le damos un evento al request, esto quiere decir que cuando termine de hacer la petición,
+			 se ejecutara este fragmento de código */ 
+
+		Req.onload = function(Event) {
+			//Validamos que el status http sea Ok 
+			if(Req.status == 200) {
+				//Recibimos la respuesta de php
+				var msg = Req.responseText;
+
+        $("#imgfoto").html("<img src='integrado/_files/"+msg+"' width='130px' height='120px'>");
+			} else {
+				alert("No se recibe una respuesta");
+				console.log(Req.status); //Vemos que paso. 
+			} 
+		};
+
+		//Enviamos la petición 
+		Req.send(data);
+    
+    //Proceso de validación y de inserción a la base de datos
+		ProcesaDB();
+	}
+  
+	function ProcesaDB() {
+    var nFoto = $("#archivo").val().replace(/C:\\fakepath\\/i, '');
+    
+		$.ajax({
+			url: 'scripts_index.php?clase=Orden&metodo=regFotos&numOrden='+numOrden+'&nFoto='+nFoto,
+      type: "POST",
+			async: true,
+			success: function(msm) {
+			}
+		});
+  }
+</script>

@@ -1,0 +1,138 @@
+<script>
+  function EnviarFormulario() {
+    alert("EnviarFormulario");
+  }
+
+  $(function() {
+    $("#doc_filtro_levante").val("");
+    $("#orden_filtro_nal").val("");
+    $("#tipo_movimiento_aux").change(function () {
+      if($("#tipo_movimiento_aux").val()=="3") {
+        $("#oculta_num_levante").hide();
+        $("#oculta_documento").hide();
+        $('#num_levante_filtro').val(" ");
+        $('#num_levante_filtro').removeClass('required');
+        $('#doc_filtro').removeClass('required');
+      } else {
+        $("#oculta_num_levante").show();
+        $("#oculta_documento").show();
+        $('#num_levante_filtro').addClass('required');
+        $('#doc_filtro').addClass('required');
+        $( "#num_levante_filtro" ).val('032012000');
+      }   
+    });
+
+    $("#buscarClienteLevanteMovimiento").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
+      width: 260,
+      selectFirst: false
+    });
+
+    $("#buscarClienteLevanteMovimiento").result(function(event, data, formatted) {
+      $("#por_cuenta_filtro_levante").val(data[1]);                         
+      $("#doc_filtro_levante").autocomplete("./scripts_index.php?clase=Levante&metodo=findDocumento&cliente="+$("#por_cuenta_filtro_levante").val()+"&tipo_movimiento="+$("#tipo_movimiento_aux").val(), {
+        width: 260,
+        selectFirst: false
+      });
+
+      $("#doc_filtro_levante").result(function(event, data, formatted) {
+        $("#doc_filtro_levante").val(data[1]);
+        $("#doc_filtro_aux").val(data[1]);
+        $("#orden_filtro_nal").val(data[2]);
+      });
+    });
+  });
+
+  $(function() {
+    $.validator.addMethod("seleccion_doc", function(value) {
+      if($("#doc_filtro_aux").val()=="0") return false;
+      else return true;
+    }, '* Indique un documento valido,seleccione cliente y luego seleccione un documento!');
+  });
+
+  $(document).ready(function() {
+    $("#nacionalizar").validate({
+      rules: { doc_filtro: "seleccion_doc" },
+      submitHandler: function(form) {
+        $.post("./scripts_index.php",{
+          clase:'Levante',
+          metodo:'existeCliente',
+          por_cuenta:$('#por_cuenta_filtro_levante').val(),
+          num_levante:$('#num_levante_filtro').val()
+        }, function(data) {
+          var bValid = true;
+
+          if(data==0) {
+            bValid=false;
+            $("#msgbox_filtro").html('El Cliente con Identificaci&oacute;n '+$('#por_cuenta_filtro_levante').val()+' No se encuentra en la BD').addClass('ui-state-error');
+          } else $("#msgbox_filtro").html('').removeClass().addClass('ui-state-highlight');
+
+          if(bValid) {
+            $.ajax({
+              url: 'scripts_index.php',
+              type: "POST",
+              async: false,
+              data: $('#nacionalizar').serialize(),
+              success: function(msm) {
+                $( "#dialog-form-levante{metodo}" ).dialog( "close" );
+                $('#componente_central').html(msm);
+              }
+            });
+          }
+        });
+      }
+    });	
+  });
+</script>
+<style>
+  body { font-size: 62.5%; }
+  label { display: inline-block; width: 100px; }
+  legend { padding: 0.5em; }
+  fieldset fieldset label { display: block; }
+  #nacionalizar label { width: 160px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
+  h1 { font-size: 1.2em; margin: .6em 0; }
+  div#users-contain { width: 100%; margin: 5px 0; margin-left: 0%; }
+  div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+  div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+  .ui-dialog .ui-state-error { padding: .3em; }
+  tbody tr.odd th,tbody tr.odd td {border-color:#EBE5D9;background:#F7F4EE;}
+  tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
+</style>	
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+<div align="center"></div>
+<p class="validateTips" id="msgbox_filtro">
+  Seleccione uno o varios filtros para delimitar resultados
+</p>
+<form class="nacionalizar" id="nacionalizar" method="post" action="javascript:EnviarFormulario()" name="nacionalizar">
+  <fieldset class="ui-widget ui-widget-content ui-corner-all">
+    <legend class="ui-widget ui-widget-header ui-corner-all">
+      <div id="nombre_reporte">Formulario de Transacciones 
+        <input name="filtro_levante" type="hidden" id="filtro_levante" value="1" />
+        <input name="comodin" type="hidden" id="comodin" value="{comodin}" />
+      </div> 
+    </legend>  
+    <p>
+      <label>Por Cuenta de:</label>
+      <input type="text" id="buscarClienteLevanteMovimiento" size="50" value="{cliente}" {soloLectura} />
+    </p>
+    <p> 
+      <label>Nit: </label>
+      <input name="por_cuenta_filtro" type="text" class=" required ui-widget-content"
+        id="por_cuenta_filtro_levante" value="{usuario}" {soloLectura} />
+      <input name="tipo_movimiento_filtro" type="hidden" id="tipo_movimiento_filtro" value="1" />
+    </p> 
+    <p id="oculta_documento"> 
+      <label for="ap">Documento:</label>
+      <input name="doc_filtro" type="text" class=" ui-widget-content"  id="doc_filtro_levante" />
+      <input name="doc_filtro_aux" type="hidden" id="doc_filtro_aux" value="0" />
+    </p>
+    <p id="oculta_documento"> 
+      <label for="ap">Orden:</label>
+      <input name="orden_filtro" type="text" id="orden_filtro_nal" value="" readonly="" class=" ui-widget-content" />
+      <input name="doc_filtro_aux" type="hidden" id="doc_filtro_aux" value="0" />
+    </p>
+  </fieldset>
+  {restrinje1} 
+  <input name="clase" type="hidden" id="clase" value="Levante" />
+  <input name="metodo" type="hidden" id="metodo_naci" value="newLevante" />
+  <input name="arribo_filtro" type="hidden" id="arribo_filtro" value="" />
+</form>

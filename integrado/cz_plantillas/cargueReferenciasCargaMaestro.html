@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Extracto</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="./_estilos/screen/screen.css" />
+
+        <link rel="stylesheet" href="./_estilos/themes/base/jquery.ui.all.css">
+        <script src="./_javascript/validar.js"></script>
+        <script src="./_javascript/jquery-1.4.4.js"></script>
+        <script src="./_javascript/external/jquery.bgiframe-2.1.2.js"></script>
+        <script src="./_javascript/ui/jquery.ui.core.js"></script>
+        <script type="text/javascript" src="./_javascript/jquery-ui-1.8.10.custom.min.js"></script>
+        <script type="text/javascript" src="./_javascript/jquery.ui.datepicker-es.js"></script>
+        <script src="./_javascript/jquery.validate.js" type="text/javascript"></script>
+        <script src="./_javascript/ui/jquery.ui.widget.js"></script>
+        <script src="./_javascript/ui/jquery.ui.mouse.js"></script>
+        <script src="./_javascript/ui/jquery.ui.slider.js"></script>
+        <script src="./_javascript/ui/jquery.ui.button.js"></script>
+        <script src="./_javascript/ui/jquery.ui.draggable.js"></script>
+        <script src="./_javascript/ui/jquery.ui.position.js"></script>
+        <script src="./_javascript/ui/jquery.ui.resizable.js"></script>
+        <script src="./_javascript/ui/jquery.ui.dialog.js"></script>
+        <script src="./_javascript/ui/jquery.effects.core.js"></script>
+        <script src="./_javascript/ui/jquery.ui.autocomplete.js"></script>
+
+        <script type='text/javascript' src='./_javascript/lib/jquery.bgiframe.min.js'></script>
+        <script type='text/javascript' src='./_javascript/lib/jquery.ajaxQueue.js'></script>
+        <script type='text/javascript' src='./_javascript/lib/thickbox-compressed.js'></script>
+        <script type='text/javascript' src='./_javascript/lib/jquery.autocomplete.js'></script>
+        <script type='text/javascript' src='./_javascript/jquery.printElement.js'></script>
+        <script type='text/javascript' src='./_javascript/jquery.MultiFile.pack.js'></script>
+
+
+        <style>
+            body { font-size: 50.5%; }
+            label { display: inline-block; width: 100px;	color:  #0066CC; }
+            legend { padding: 0.5em; }
+            fieldset fieldset label { display: block; }
+
+            #formularioTicket label { width: 160px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
+            #formularioTicket button.submit { margin-left: 80%; }
+            #formularioTicket label { width: 130px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
+
+            h1 { font-size: 1.2em; margin: .6em 0; }
+
+            div#users-contain { width: 100%; margin: 0px 0; margin-left: 0%; }
+            div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+            div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .5em 4px; text-align: left; }
+            td{
+                height:5px;
+            }
+            .ui-dialog .ui-state-error { padding: .3em; }
+            tbody tr.odd th,tbody tr.odd td {border-color:#EBE5D9;background:#F7F4EE;}
+            tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
+
+            div#tabs { width: 95%; margin: 0px 0; margin-left: 2%;  }
+            #toolbar {
+                padding: 10px 4px;
+                margin-left: 70%;
+                margin-top: 0em;
+            }
+
+        </style>
+         <script>
+	
+            $(function() {
+                //$( "#dialog-form2" ).dialog( "open" );
+                // Tabs
+                $('#tabs').tabs();
+                //$('#guardar').hide(); // OJO desocultar
+		
+                $( "#filtro_enviados" ).button({
+			
+                    text: true,
+                    icons: {
+                        primary: "ui-icon-search"
+                    }
+                })
+                .click(function() {
+                    //$('#guardar').hide();
+					$( "#dialog-form" ).dialog( "open" );
+					
+					
+                    	$("div#filtro").load("./index_scripts.php", {clase:'Extracto',metodo:'filtrocarnArchivo',mostrar:'1'}, function(datos){	
+			
+                    	});
+					
+		
+                });
+		
+		
+                $( "#guardar" ).button({
+			
+					text: true,
+					icons: {
+						primary: "ui-icon-search"
+					}
+				})
+				.click(function() 
+				{
+				
+				
+				
+					
+	    			if($('#errores').val()/1 > 1){
+					
+						alert("El archivo no puede tener errores, por favor corrija antes de guardar!!")
+					}else{
+					//alert($("#registros").val())
+					var i = 0;
+					for(i=1;i< $("#registros").val()/1;i++){
+						//alert($("#codigo_ref"+i).val());
+						//alert($("#ref_prove"+i).val());
+						//alert($("#nombre"+i).val());
+						//alert($("#observacion"+i).val());
+						//alert($("#cliente"+i).val());
+						
+						//alert(i)
+						
+						$("div#referenciax").load("./scripts_index.php", 
+					   {clase:'CargueReferencias',metodo:'setReferencia',mostrar:'1',
+					   		registro		:i,
+							codigo_ref			:$("#codigo_ref"+i).val(),
+							ref_prove			:$("#ref_prove"+i).val(),
+							nombre				:$("#nombre"+i).val(),
+							observaciones		:$("#observaciones"+i).val(),
+							cliente				:$("#cliente"+i).val(),
+							parte_numero		:$("#parte_numero"+i).val(),
+							unidad				:$("#unidad"+i).val(),
+							unidad_venta		:$("#unidad_venta"+i).val(),
+							unidad_comercial		:$("#unidad_comercial"+i).val(),
+							unidad_inventario		:$("#unidad_inventario"+i).val(),
+							presentacion_venta	:$("#presentacion_venta"+i).val(),
+							fecha_expira		:$("#fecha_expira"+i).val(),
+							vigencia			:$("#vigencia"+i).val(),
+							min_stock 			:$("#min_stock"+i).val(),
+							lote_cosecha 		:$("#lote_cosecha"+i).val(),
+							alto 				:$("#alto"+i).val(),
+							largo 				:$("#largo"+i).val(),
+							ancho 				:$("#ancho"+i).val(),
+							serial 				:$("#serial"+i).val(),
+							tipo 				:$("#tipo"+i).val(),
+							grupo_item 			:$("#grupo_item"+i).val(),
+							factor_conversion 	:$("#factor_conversion"+i).val()
+							
+						}, function(datos)
+						{
+							//alert(datos)
+							
+							$("#ok"+datos/1).show();
+				  		}
+					 );
+						
+					}// fin for
+					
+					}
+					
+				 });
+		
+                $( "#dialog-form" ).dialog({
+                    autoOpen: false,
+                    height: 250,
+                    width: 650,
+                    modal: true,
+                    //Botones que se utilizan en la ventana
+                    buttons: {
+                        Aceptar: function() {
+							
+							
+							$("div#listado").load("./scripts_index.php", {clase: 'CargueReferencias', metodo: 'uploadArchivoBancos', mostrar: '1',
+                			id_levante: $('#id_levante').val(), tipo_movimiento: $('#tipo_movimiento').val(), nombre_archivo: $('#nombre_archivo').val()}, function(datos) {
+							//alert(datos);
+             		 });
+							
+								//document.subirfile.submit();
+                           		$( this ).dialog( "close" );
+							
+                        }
+                    },
+		
+                    close: function() {
+                    }
+                }); 
+	
+                if('1'=='1')
+                {
+                    $( "#dialog-form" ).dialog( "open" );
+                    //$( "#cuerpo" ). hide();
+                }
+
+			
+                $("#mensaje").removeClass().addClass('').text('').fadeIn(1000);
+				  
+                if(''=='ui-state-error')
+                {
+                    $("#mensaje").removeClass().addClass('').text('').fadeIn(1000);	
+                }
+                else
+                {
+                    setTimeout ("$('#mensaje').removeClass().addClass('').text('').delay();", 5000); 
+                }
+		
+            });
+	
+
+		
+        </script>
+    </head>
+    <body>
+        
+        <!-- Tabs -->
+        
+<h2 class="demoHeaders" id="titulo">Carga de Referencias</h2>
+
+
+        <div id="tabs"> 
+            <ul>
+
+                <li><a href="#tabs-2">Cargar Referencias</a>
+				
+				
+				
+				</li>
+				
+
+            </ul>
+
+
+
+
+            <div id="tabs-2">
+
+                
+					
+				<span id="toolbar" class="ui-widget-header ui-corner-all">
+					<button id="filtro_enviados" > Cargar Nuevo Archivo</button>
+					 <button id="guardar" > Guardar los datos</button>
+					<div id="listado">
+				</div>
+					
+                   
+                </span>
+                <div id="ausente"></div>
+            </div> 
+
+            <div id="dialog-form">
+                <div id="filtro">
+                    
+<script>
+    $(function(){
+	
+	 
+	
+	
+    });
+</script>
+
+
+<fieldset class="ui-widget ui-widget-content ui-corner-all">
+    <legend class="ui-widget ui-widget-header ui-corner-all"> Formulario de carga
+         
+    </legend>
+    <div class="ui-widget" id="mensaje">
+        <div class="" style="margin-top: 5px; padding: 0 .7em;"> 
+            <p>
+                
+
+            </p>
+        </div>
+    </div>
+
+
+
+
+
+   <form class="formulario2" id="formulario2" method="post" action="javascript:EnviarFormulario()" name="formulario2">
+	  <fieldset class="ui-widget ui-widget-content ui-corner-all">
+      <table align="center" width="95%" cellpadding="0" cellspacing="0" id="tabla_general" style="margin: 15px;">
+        <tr>
+            <th colspan="3">Carga de Referencias</th>
+        </tr>
+        <tr>         
+            <td class="tituloForm" width="30%">Seleccionar Archivo:</td>
+          <td><input id="archivo" type="file" name="archivo" onchange="seleccionado();" />
+              <input type="hidden" name="nombre_archivo" id="nombre_archivo"></td>
+            <td colspan="2" id="imgfoto" width="30%" style="text-align: center;">&nbsp;</td>
+        </tr>
+      </table>
+	  </fieldset>
+  </form>
+       </fieldset>	
+
+
+
+
+                </div><!-- End contenedor -->
+
+            </div><!-- End ventana -->
+
+
+        </div>
+
+    </body>
+	<script>
+	 var numOrden = $("#do_asignado").val();
+
+  function seleccionado() {
+		var archivo = document.getElementById("archivo");//Damos el valor del input tipo file
+		var narchivo = archivo.files; //Obtenemos el valor del input (los arcchivos) en modo de arreglo
+    
+		/* Creamos el objeto que hara la petición AJAX al servidor, debemos de validar 
+			 si existe el objeto “ XMLHttpRequest” ya que en internet explorer viejito no esta,
+			 y si no esta usamos “ActiveXObject” */ 
+		if(window.XMLHttpRequest) {
+			var Req = new XMLHttpRequest(); 
+		} else if(window.ActiveXObject) { 
+			var Req = new ActiveXObject("Microsoft.XMLHTTP"); 
+		}
+
+		//El objeto FormData nos permite crear un formulario pasandole clave/valor para poder enviarlo, 
+		//este tipo de objeto ya tiene la propiedad multipart/form-data para poder subir archivos
+		var data = new FormData();
+
+		//Como no sabemos cuantos archivos subira el usuario, iteramos la variable y al
+		//objeto de FormData con el metodo "append" le pasamos clave/valor, usamos el indice "i" para
+		//que no se repita, si no lo usamos solo tendra el valor de la ultima iteración
+    data.append('narchivo1',narchivo[0]);
+
+		//Pasándole la url a la que haremos la petición
+		Req.open("POST", "scripts_index.php?clase=Orden&metodo=verFotos", true);
+
+		/* Le damos un evento al request, esto quiere decir que cuando termine de hacer la petición,
+			 se ejecutara este fragmento de código */ 
+
+		Req.onload = function(Event) {
+			//Validamos que el status http sea Ok 
+			if(Req.status == 200) {
+				//Recibimos la respuesta de php
+				var msg = Req.responseText;
+				//alert(msg)
+				 $('#nombre_archivo').val(msg);
+        $("#imgfoto").html("<img src='integrado/_files/"+msg+"' width='130px' height='120px'>");
+			} else {
+				alert("No se recibe una respuesta");
+				console.log(Req.status); //Vemos que paso. 
+			} 
+		};
+
+		//Enviamos la petición 
+		Req.send(data);
+    
+    //Proceso de validación y de inserción a la base de datos
+		ProcesaDB();
+	}
+  
+	function ProcesaDB() {
+    var nFoto = $("#archivo").val().replace(/C:\\fakepath\\/i, '');
+    
+		$.ajax({
+			url: 'scripts_index.php?clase=Orden&metodo=regFotos&numOrden='+numOrden+'&nFoto='+nFoto,
+      type: "POST",
+			async: true,
+			success: function(msm) {
+			}
+		});
+  }
+	</script>
+</html>
+

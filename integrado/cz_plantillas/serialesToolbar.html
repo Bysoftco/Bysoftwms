@@ -1,0 +1,83 @@
+<table border="0">
+  <tr>
+    <td width="25" align="center">
+      <div class="popupsAgregar borde_circular">
+        <a href="#"><img src="img/acciones/agregar.png" title="Agregar Seriales" width="25" height="25" border="0" /></a>
+      </div>
+    </td>
+    <td width="25" align="center">
+      <div class="popupsVer borde_circular noSeleccion">
+	     	<a href="javascript: verFiltro()">
+        	<img src="img/acciones/ver.png" title="Ver" width="25" height="25" border="0" />
+        </a>
+      </div>
+    </td>
+   	<td width="25" align="center">
+     	<div class="popupsEditar borde_circular noSeleccion">
+       	<a href="javascript:void(0)">
+         	<img src="img/acciones/edit.png" title="Editar" width="25" height="25" border="0" />
+       	</a>
+     	</div>
+   	</td>
+   	<td width="25" align="center">
+     	<div class="eliminarItem borde_circular noSeleccion" >
+       	<a href="#"><img src="img/acciones/eliminar.png" title="Eliminar" width="25" height="25" border="0" /></a>
+     	</div>
+   	</td>
+ 	</tr>
+</table>
+<script>
+  Nifty("div.borde_circular","transparent");
+  Nifty("div.div_barra","top transparent");
+
+  $('.popupsAgregar a').click(function() {
+    alert("Agregando Seriales...");
+    //Aqui se valida que si ya se llego al peso o valor del inventario no se puedan agregar mas arribos
+    /*if($('#dif_p').val() == 0) {
+ 	   alert('La sumatoria del  Peso del inventario ya es igual al peso del arribo. Por lo tanto no esta permitido crear mas item, verifique el peso registrado en cada item.');
+	   return false;
+    }		
+    $.ajax({
+      url: 'scripts_index.php',
+      type: "POST",
+      async: false,
+      url: 'scripts_index.php?clase=Inventario&metodo=addInventario&do_asignado={do_asignado}&id_arribo='+$("#arribo_seleccionado").val(),
+      success: function(msm) {
+        $('#componente_central').html(msm);
+      }
+    }); */
+  });
+
+  $('.eliminarItem a').click(function() {
+		alert("Presiono el boton de eliminar");
+    /* if(confirm('Seguro que desea borrar el item '+$("#item_seleccionado").val()+'?')) {
+      $.ajax({
+        url: 'scripts_index.php',
+        type: "POST",
+        async: false,
+        url: 'scripts_index.php?clase=Inventario&metodo=delInventario&id_item='+$("#item_seleccionado").val()+'&do_asignado={do_asignado}&id_arribo='+$("#arribo_seleccionado").val(),
+        success: function(msm) {
+          $('#componente_central').html(msm);
+        }
+      });
+    } */
+  });
+
+  $('.popupsEditar a').click(function() {
+    $.ajax({
+      url: 'scripts_index.php',
+      type: "POST",
+      async: false,
+      url: 'scripts_index.php?clase=Inventario&metodo=editarInventario&do_asignado={do_asignado}&id_item='+$("#item_seleccionado").val()+'&id_form='+$('#n_item').val(),
+      success: function(msm) {
+        $("div#htmlunItem"+$('#n_item').val()).html(msm);
+      }
+    });
+  });
+
+  $('.verArribos a').click(function() {
+    //$("div#componente_central").load("./scripts_index.php", { clase: 'Orden', metodo: 'getOrden', do_asignado: {do_asignado} }, function(data) {});
+  });
+  // se ocultan los botones del modulo arribos
+  //$('#btn_accion').hide();
+</script>

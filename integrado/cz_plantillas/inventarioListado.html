@@ -1,0 +1,41 @@
+<script>
+	$(function() {
+		//$("#accordion").accordion({ header: "h3",active: false ,autoHeight:false});
+		$( "#accordion" ).accordion({
+      change: function(event, ui) { 
+				var n=ui.options.active+1;
+				//alert($("#arribo_seleccionado").val())	
+				$("#item_seleccionado").val($("#id_item"+n).val());
+				$("#n_item").val(n)
+
+				$("div#htmlunItem"+n).html('Espere un momento...');
+				$("div#htmlunItem"+n).load("scripts_index.php", {clase:'Inventario',metodo:'getItem',id_item:$("#id_item"+n).val(),id_form:n}, function(datos){
+					$("div#htmlunItem"+n).html(datos);
+				});	
+			}
+		});			
+	});	
+</script>
+
+<!-- Accordion --> 
+
+	<div id="accordion">
+			<!-- BEGIN ROW  -->
+		
+  <div> 
+    <h3><a href="#">Arribo {arribo} Item {item}: {una_referencia}</a> 
+      <input name="id_item{n}" type="hidden" id="id_item{n}" value="{item} ">
+      <input name="n_item" type="hidden" id="n_item" value="{n} ">
+    </h3>
+				<div id="htmlunItem{n}">
+					{htmlUnInventario}
+				<br>
+				<br><br><br><br>
+				</div>
+	
+		</div>
+			 <!-- END ROW -->
+			
+	</div>
+
+
