@@ -17,7 +17,7 @@
     <td width="25" align="center" id="btnImprimir">
       <div class="tblank borde_circular noSeleccion">
         <a href=""  target="_blank" class="tblank">
-          <img src="img/acciones/printer.gif" title="Imprimir" width="25" height="25" border="0" />
+          <img src="img/acciones/printer.gif" title="Imprimir Remesa" width="25" height="25" border="0" />
         </a>
       </div> 
     </td>	
@@ -59,10 +59,12 @@
     </td>			
   </tr>
 </table>
-<input name="comodin" type="hidden" id="comodin" value="{clase}" />
-<input type="hidden" name="nombre_cliente" id="nombre_cliente" value="{cliente}" />
-<input type="hidden" name="nombre_movimiento" id="nombre_movimiento" value="{tipo_retiro_label}" />
-<input type="hidden" name="email" id="email_aux" value="{email}" />
+<form>
+  <input name="comodin" type="hidden" id="comodin" value="{clase}" />
+  <input type="hidden" name="nombre_cliente" id="clientew" value="{cliente}" />
+  <input type="hidden" name="nombre_movimiento" id="nombre_movimiento" value="{tipo_retiro_label}" />
+  <input type="hidden" name="email" id="email_aux" value="{email}" />
+</form>
 <script>
   Nifty("div.borde_circular", "transparent");
   Nifty("div.div_barra", "top transparent");
@@ -100,7 +102,7 @@
       }
 			//alert("prueba");
       window.open("./scripts_index.php?clase=Levante&metodo=impresion&id_levante=" + $('#id_levante').val() + "&tipo_retiro=" + $('#tipo_retiro_filtro').val() +
-         "&tipo_movimiento=" + $('#tipo_movimiento').val() + "&nombre_cliente=" + $("#nombre_cliente").val() + "&tipo_salida=" + $("#nombre_movimiento").val());
+         "&tipo_movimiento=" + $('#tipo_movimiento').val() + "&nombre_cliente=" + $("#clientew").val() + "&tipo_salida=" + $("#nombre_movimiento").val());
       return false;
     });
   });

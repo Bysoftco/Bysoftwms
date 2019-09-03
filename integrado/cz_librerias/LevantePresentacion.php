@@ -388,6 +388,7 @@ class LevantePresentacion {
     $unaPlantilla->setVariable("cant_declaraciones", $arregloDatos[cant_declaraciones]);
     $unaPlantilla->setVariable("peso_declaraciones", $arregloDatos[peso_declaraciones]);
     $unaPlantilla->setVariable("mostrarOtros", "none");
+	//echo  " tipo movimiento $arregloDatos[tipo_movimiento]";
     if($arregloDatos[tipo_movimiento] == 8) { // deja ver el campo de bodega
       if($unDatos->bodega == 0) {
         $unaPlantilla->setVariable("bodega", "");
@@ -911,12 +912,20 @@ class LevantePresentacion {
     $unAjuste = new Levante();
     $unAjuste->getAjustes($arregloDatos);
     $unAjuste->fetch();
-    $arregloDatos[ajustes_peso] = number_format((float)$unAjuste->peso_naci, DECIMALES, ".", ","); 
-    $arregloDatos[ajustes_cantidad] = number_format((float)$unAjuste->cantidad_naci, DECIMALES, ".", ",");
+	if(empty($unAjuste->peso_naci)){
+		$unAjuste->peso_naci=0;
+	 }
+	 //echo "XX$unAjuste->cantidad_naci <BR>";
+	if(empty($unAjuste->cantidad_naci)){
+		$unAjuste->cantidad_naci=0;
+	 }
+
+    $arregloDatos[ajustes_peso] = number_format($unAjuste->peso_naci, DECIMALES, ".", ","); 
+    $arregloDatos[ajustes_cantidad] = number_format($unAjuste->cantidad_naci, DECIMALES, ".", ",");
     if($unAjuste->peso_nonac <> 0) {
       $arregloDatos[l_ext] = " [EXT] ";
-      $arregloDatos[ajustes_cantidad_ext] = number_format(floatval($unAjuste->cantidad_nonac), DECIMALES, ".", ",");
-      $arregloDatos[ajustes_peso_ext] = number_format(floatval($unAjuste->peso_nonac), DECIMALES, ".", ",");
+      $arregloDatos[ajustes_cantidad_ext] = number_format($unAjuste->cantidad_nonac, DECIMALES, ".", ",");
+      $arregloDatos[ajustes_peso_ext] = number_format($unAjuste->peso_nonac, DECIMALES, ".", ",");
     }	
 
     // Desperdicios

@@ -509,7 +509,7 @@ class FacturaPresentacion {
   function factura($arregloDatos) {
     $arregloDatos[mostrar] = 0;
     $arregloDatos[plantilla] = 'facturaMembrete.html';
-    $arregloDatos[thisFunction]	= 'impresion'; 
+    $arregloDatos[thisFunction]	= 'impresion';
     return $this->setFuncion($arregloDatos,$this->datos);
   }
 

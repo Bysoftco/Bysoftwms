@@ -10,14 +10,18 @@
 require_once("HTML/Template/IT.php");
 require_once("Funciones.php");
 
+
+
+
 class IndicadoresPresentacion {
   var $datos;
   var $plantilla;
   
+
   function IndicadoresPresentacion(&$datos) {
     $this->datos = $datos;
     $this->plantilla = new HTML_Template_IT();
-		$this->colores = array("#9966FF", "#66CCFF","#ffff88", "#FF3300", "#FFCC33","#92A9D3","#FF99FF","#333333","#CCCC66","#FFFF66","#006600","#00FF00","#FFFF33","#7400E8","#99FFFF","#FF3366","#663366"."#FF00FF","#99FF00","#CCFFCC","#CCFF00","#6600CC","#6677CC","#0077CC","#807FCC","#807F00","#8FFFCC","#811FCC","#811F93","#441F93","#441F55");
+	$this->colores = array("#9966FF", "#66CCFF","#ffff88", "#FF3300", "#FFCC33","#92A9D3","#FF99FF","#333333","#CCCC66","#FFFF66","#006600","#00FF00","#FFFF33","#7400E8","#99FFFF","#FF3366","#663366"."#FF00FF","#99FF00","#CCFFCC","#CCFF00","#6600CC","#6677CC","#0077CC","#807FCC","#807F00","#8FFFCC","#811FCC","#811F93","#441F93","#441F55");
   } 
 
   function mantenerDatos($arregloCampos,&$plantilla) {
@@ -102,10 +106,9 @@ class IndicadoresPresentacion {
       $unaPlantilla->setVariable('odd',$odd);
       $unaPlantilla->parseCurrentBlock();
     }
-	
-		if(!empty($arregloDatos[thisFunctionAux])){
-			//$this->$arregloDatos[thisFunctionAux]($arregloDatos,$unDatos,$unaPlantilla);
-		}
+	if(!empty($arregloDatos[thisFunctionAux])){
+		//$this->$arregloDatos[thisFunctionAux]($arregloDatos,$unDatos,$unaPlantilla);
+	}
 
     if($unDatos->N == 0 and empty($unDatos->mensaje)) {
       $unaPlantilla->setVariable('mensaje','No hay registros para listar'.$arregloDatos[mensaje]);
@@ -122,127 +125,141 @@ class IndicadoresPresentacion {
     }
   }
 
+
+
   function filtro($arregloDatos,$unDatos,$plantilla) {
   	var_dump($arregloDatos);
+   
   }
   
   
   function maestroIndicadores($arregloDatos) {
 		$this->plantilla->loadTemplateFile(PLANTILLAS . 'indicadoresMaestro.html', true, true);
-  	$this->plantilla->setVariable('comodin'	,' ');
+  		$this->plantilla->setVariable('comodin'	,' ');
 		
 		// se construye el grafico
+		
 		$this->plantilla->show();
   }	
   
   //Funcion encargada de Construir los Parametros para Un Grafico , pinta y pasa los for
-	function grafico($arregloDatos) {
-	 	$unGrafico	=	new HTML_Template_IT();	
-		$unGrafico->loadTemplateFile(PLANTILLAS . 'indicadoresGraficos.html',true,true);
-	 	$total = 0;
-		$color = 0;
-		$i = 0;
-		$colores = 'orange@blue@yellow@black@red';
-		$colores = split('@',$colores);
-		while($this->datos->fetch()) {
+	 function grafico($arregloDatos){
+	 	$unGrafico  =   new HTML_Template_IT();	
+		$unGrafico->loadTemplateFile(PLANTILLAS . 'indicadoresGraficos.htm',true,true);
+	 	$total=0;
+		$color=0;
+		$i=0;
+		$colores	='orange@blue@yeyow@black@red';
+		$colores	=split('@',$colores);
+		while ($this->datos->fetch()) {
+			
 			$unGrafico->setCurrentBlock('ROW');
 			$valores[$i] = $this->datos->valores;
 			$i=$i+1;
 			$total=$total+$this->datos->valores;
-			$unGrafico->setVariable('convencion', ucwords(strtolower($this->datos->datos)));
+			$unGrafico->setVariable('convencion'   , ucwords(strtolower($this->datos->datos)));
 			if(empty($this->colores[$color])){
 				$this->colores[$color]='black';
 			}
-			$unGrafico->setVariable('color', $this->colores[$color]);
+			$unGrafico->setVariable('color'   , $this->colores[$color]);
 			$color=$color+1;
-			$unGrafico->setVariable('valores',  number_format($this->datos->valores,DECIMALES,",","."));
+			$unGrafico->setVariable('valores'   ,  number_format($this->datos->valores,DECIMALES,",","."));
+			
 			$unGrafico->parseCurrentBlock();		
 		}
-    if(is_array($valores)) {
-			$valores = implode ("@", $valores);   
-		}
+         	if(is_array($valores)){
+         		$valores		 = implode ("@", $valores);   
+          	}
 			
-		$unGrafico->setVariable('tituloGrafico'  , $arregloDatos[tituloGrafico]);
-		$unGrafico->setVariable('datos'   , $datos.'@');
-		$unGrafico->setVariable('valores' , $valores.'@');
-		$unGrafico->setVariable('total'   ,  number_format($total,DECIMALES,",","."));
-		$unGrafico->setVariable('descripcion'   ,$arregloDatos[descripcion] );
-		$unGrafico->setVariable('tipoGrafico'   ,$arregloDatos[tipoGrafico] );
-		return $unGrafico->get();
-	}
+			$unGrafico->setVariable('tituloGrafico'  , $arregloDatos[tituloGrafico]);
+			$unGrafico->setVariable('datos'   , $datos.'@');
+			$unGrafico->setVariable('valores' , $valores.'@');
+			$unGrafico->setVariable('total'   ,  number_format($total,DECIMALES,",","."));
+			$unGrafico->setVariable('descripcion'   ,$arregloDatos[descripcion] );
+			$unGrafico->setVariable('tipoGrafico'   ,$arregloDatos[tipoGrafico] );
+	    	return $unGrafico->get();
+	 }
 	 
-	function indicadorCliente($arregloDatos) {	 	
+	 
+	 function indicadorCliente($arregloDatos){
+	 	
 		$this->plantilla->loadTemplateFile(PLANTILLAS . 'indicadoresGraficos.html', true, true);
-		$this->plantilla->setVariable('comodin'	,' ');
-		$colores = 'orange@blue@green@black@red@yellow@orange@brown@pink@violet@purple';
-		$colores = split('@',$colores);
+  		$this->plantilla->setVariable('comodin'	,' ');
+		$colores	='orange@blue@green@black@red@yellow@orange@brown@pink@violet@purple';
+		$colores	=split('@',$colores);
 		// se construye el grafico
 		$arregloDatos[tituloGrafico]=" Comportamiento Facturación";
 		$arregloDatos[titulo]=$arregloDatos[tituloGrafico].' '.$arregloDatos[titulo];
-		$color = 0;
-		$valores_todos = "";
-		$n = 0;
-		$total = 0;
-
-		while($this->datos->fetch()) {
-			$n = $n + 1;
+		
+		$color=0;
+		$valores_todos="";
+		$n=0;
+		$total=0;
+		
+		
+		
+		while ($this->datos->fetch()) {
+			$n=$n+1;
 			$this->plantilla->setCurrentBlock('ROW');
-			$this->plantilla->setVariable('color', $colores[$color]);
-			$this->plantilla->setVariable('valores', number_format($this->datos->valores,0,',','.'));
-			$this->plantilla->setVariable('convencion', $this->datos->datos);
-			$this->plantilla->setVariable('n', $n);
-			$total = $total + $this->datos->valores;
-			$color = $color + 1;
+			$this->plantilla->setVariable('color'   , $colores[$color]);
+			$this->plantilla->setVariable('valores' , number_format($this->datos->valores,0,',','.'));
+			$this->plantilla->setVariable('convencion' , $this->datos->datos);
+			$this->plantilla->setVariable('n'   , $n);
+			$total=$total+$this->datos->valores;
+			$color=$color+1;
 			$valores_todos.=$this->datos->valores."@";
 			$this->plantilla->parseCurrentBlock();	
 		}
-		$this->plantilla->setVariable('tituloGrafico', $arregloDatos[tituloGrafico]);
-		$this->plantilla->setVariable('tipoGrafico', $arregloDatos[tipoGrafico]);
-		$this->plantilla->setVariable('valores_todos', $valores_todos);
-		$this->plantilla->setVariable('total', number_format($total,0,',','.'));
+		$this->plantilla->setVariable('tituloGrafico' , $arregloDatos[tituloGrafico]);
+		$this->plantilla->setVariable('tipoGrafico' , $arregloDatos[tipoGrafico]);
+		$this->plantilla->setVariable('valores_todos' , $valores_todos);
+		$this->plantilla->setVariable('total' , number_format($total,0,',','.'));
 		$this->plantilla->show();
-	}
+		
+  	 }
 	 
-	function indicadorIngresos($arregloDatos) {
-		$this->plantilla->loadTemplateFile(PLANTILLAS.'indicadoresGraficosMes.html', true, true);
-		$this->plantilla->setVariable('comodin'	,' ');
-		$colores = 'orange@blue@green@black@red@yellow@orange@brown@pink@violet@purple';
-		$colores = split('@',$colores);
+	  function indicadorIngresos($arregloDatos){
+	 	
+		$this->plantilla->loadTemplateFile(PLANTILLAS . 'indicadoresGraficosMes.html', true, true);
+  		$this->plantilla->setVariable('comodin'	,' ');
+		$colores	='orange@blue@green@black@red@yellow@orange@brown@pink@violet@purple';
+		$colores	=split('@',$colores);
 		$arregloDatos[tituloGrafico]=" Ingresos por cliente";
 		// se construye el grafico
-		$color = 0;
-		$valores_todos = "";
-		$n = 0;
-		$total = 0;
+		$color=0;
+		$valores_todos="";
+		$n=0;
+		$total=0;
 		
 		// Datos de la salida
 		$retiros = new Indicadores();
 		$retiros->indicadorSalidas($arregloDatos);
 		
-		while($this->datos->fetch()) {
-			$n = $n + 1;
+		
+		while ($this->datos->fetch()) {
+		
+			$n=$n+1;
 			$this->plantilla->setCurrentBlock('ROW');
-			$this->plantilla->setVariable('color', $colores[$color]);
-			$this->plantilla->setVariable('valores', number_format($this->datos->valores,0,',','.'));
-			$this->plantilla->setVariable('enero_valor', number_format($this->datos->enero,0,',','.'));
-			$this->plantilla->setVariable('febrero_valor', number_format($this->datos->febrero,0,',','.'));
-			$this->plantilla->setVariable('marzo_valor', number_format($this->datos->marzo,0,',','.'));
-			$this->plantilla->setVariable('abril_valor', number_format($this->datos->abril,0,',','.'));
-			$this->plantilla->setVariable('mayo_valor', number_format($this->datos->mayo,0,',','.'));
-			$this->plantilla->setVariable('junio_valor', number_format($this->datos->junio,0,',','.'));
-			$this->plantilla->setVariable('julio_valor', number_format($this->datos->julio,0,',','.'));
-			$this->plantilla->setVariable('agosto_valor', number_format($this->datos->agosto,0,',','.'));
-			$this->plantilla->setVariable('septiembre_valor', number_format($this->datos->septiembre,0,',','.'));
-			$this->plantilla->setVariable('octubre_valor', number_format($this->datos->octubre,0,',','.'));
-			$this->plantilla->setVariable('noviembre_valor', number_format($this->datos->noviembre,0,',','.'));
-			$this->plantilla->setVariable('diciembre_valor', number_format($this->datos->diciembre,0,',','.'));
+			$this->plantilla->setVariable('color'   , $colores[$color]);
+			$this->plantilla->setVariable('valores' , number_format($this->datos->valores,0,',','.'));
+			$this->plantilla->setVariable('enero_valor' , number_format($this->datos->enero,0,',','.'));
+			$this->plantilla->setVariable('febrero_valor' , number_format($this->datos->febrero,0,',','.'));
+			$this->plantilla->setVariable('marzo_valor' , number_format($this->datos->marzo,0,',','.'));
+			$this->plantilla->setVariable('abril_valor' , number_format($this->datos->abril,0,',','.'));
+			$this->plantilla->setVariable('mayo_valor' , number_format($this->datos->mayo,0,',','.'));
+			$this->plantilla->setVariable('junio_valor' , number_format($this->datos->junio,0,',','.'));
+			$this->plantilla->setVariable('julio_valor' , number_format($this->datos->julio,0,',','.'));
+			$this->plantilla->setVariable('agosto_valor' , number_format($this->datos->agosto,0,',','.'));
+			$this->plantilla->setVariable('septiembre_valor' , number_format($this->datos->septiembre,0,',','.'));
+			$this->plantilla->setVariable('octubre_valor' , number_format($this->datos->octubre,0,',','.'));
+			$this->plantilla->setVariable('noviembre_valor' , number_format($this->datos->noviembre,0,',','.'));
+			$this->plantilla->setVariable('diciembre_valor' , number_format($this->datos->diciembre,0,',','.'));
 			$this->plantilla->setVariable('convencion' , $this->datos->datos);
-			$this->plantilla->setVariable('n', $n);
-			$this->total = $this->datos->enero+$this->datos->febrero+$this->datos->marzo+$this->datos->abril+$this->datos->mayo+$this->datos->junio
+			$this->plantilla->setVariable('n'   , $n);
+			$this->total=$this->datos->enero+$this->datos->febrero+$this->datos->marzo+$this->datos->abril+$this->datos->mayo+$this->datos->junio;
 			+$this->datos->julio+$this->datos->agosto+$this->datos->septiembre+$this->datos->septiembre+$this->datos->octubre+$this->datos->noviembre+$this->datos->diciembre;
-			$color = $color + 1;
-			//$valores_todos.=$this->datos->enro."@".$this->datos->febrero1."@".$this->datos->marzo."@".$this->datos->abril."@".$this->datos->mayo."@".$this->datos->junio."@".$this->datos->julio."@".$this->datos->agosto."@".$this->datos->septiembre."@".$this->datos->octubre."@".$this->datos->noviembre."@".$this->datos->diciembre."@";
-			$valores_todos.=$this->datos->enero."@".$this->datos->febrero."@".$this->datos->marzo."@".$this->datos->abril."@".$this->datos->mayo."@".$this->datos->junio."@".$this->datos->julio."@".$this->datos->agosto."@".$this->datos->septiembre."@".$this->datos->octubre."@".$this->datos->noviembre."@".$this->datos->diciembre."@";
+			$color=$color+1;
+			$valores_todos.=$this->datos->enro."@".$this->datos->febrero1."@".$this->datos->marzo."@".$this->datos->abril."@".$this->datos->mayo."@".$this->datos->junio."@".$this->datos->julio."@".$this->datos->agosto."@".$this->datos->septiembre."@".$this->datos->octubre."@".$this->datos->noviembre."@".$this->datos->diciembre."@";
 			
 			$retiros->fetch();
 			$valores_retiro.=$retiros->enero."@".$retiros->febrero."@".$retiros->marzo."@".$retiros->abril."@".$retiros->mayo."@".$retiros->junio."@".$retiros->julio."@".$retiros->agosto."@".$retiros->septiembre."@".$retiros->octubre."@".$retiros->noviembre."@".$retiros->diciembre."@";
@@ -263,12 +280,17 @@ class IndicadoresPresentacion {
 			$this->plantilla->parseCurrentBlock();	
 		}
 		
+		
+		
 		$this->plantilla->setVariable('tituloGrafico' , $arregloDatos[tituloGrafico]);
 		$this->plantilla->setVariable('tipoGrafico' , $arregloDatos[tipoGrafico]);
 		$this->plantilla->setVariable('valores_todos' , $valores_todos);
 		$this->plantilla->setVariable('valores_retiro' , $valores_retiro);
 		$this->plantilla->setVariable('total' , number_format($this->total,0,',','.'));
 		$this->plantilla->show();
-	} 		
+		
+  	 }
+   
+  		
 } 
 ?>

@@ -4,6 +4,33 @@
 	}
 
     $(document).ready(function() {
+	
+	// por defecto se carga la subpartida campo referencia del cliente
+	// alert({cod_referencia})
+	
+	
+	$.post( "./scripts_index.php" ,{ clase:'Levante',metodo:'getFOB',unitem:'{item}' } ,function( data ) {
+		//alert($('#cantidad_naci_para{id_form}').val())
+		$('#fob').val(data*$('#cantidad_naci_para{id_form}').val()/1);
+		$("#valor_unitario").val(data)
+		
+		
+	});
+	
+	 
+	 if($("#cod_supartida").val()==""){
+	 	$.post( "./scripts_index.php" ,{ clase:'Levante',metodo:'getDatosSubpartida',subpartida:'{ref_prove}' } ,function( data ) {
+  		 var info_subpartida = data.split('|');
+			
+		$("#subpartida").val(info_subpartida[0]);// 0 nombre, 1 codigo ,2 arancel,3
+		$("#cod_supartida").val(info_subpartida[1]);
+		$("#arancel").val(info_subpartida[2]);
+		$("#iva").val(info_subpartida[3]);
+		
+	 });
+	 }
+	 
+	 
   	$("#subpartida").autocomplete("./scripts_index.php?clase=Levante&metodo=findPosicion", 
 	{
 		width: 260,
@@ -184,10 +211,23 @@
 
        		$('#fecha{id_form}').val('{fecha}');
 
-			//$('#aplica_pago').blur(function() {
-				//$("#aplica_pago").is(":checked");
+			$('#cantidad_naci_para{id_form}').blur(function() {
+				
+				$('#fob').val($("#valor_unitario").val()*$('#cantidad_naci_para{id_form}').val()/1);
+				
 
-			//});	
+			});
+			
+			$('#trm').blur(function() {
+				//alert('test')
+				//$('#trm').val(1200);
+				var valor_aduana =$('#fob').val()/1+$('#flete').val()/1;
+				$('#valor_aduana').val(valor_aduana);
+				valor_cif =valor_aduana/1*$('#trm').val()/1;
+				$('#fob_naci_para{id_form}').val(valor_cif);
+				
+
+			});	
 		})
 
    
@@ -341,11 +381,7 @@
   <input name="id_form" type="hidden" id="id_form" value="{id_form} ">
 
   <input name="id_item" type="hidden" id="arribo_aux" value="{id_item} ">
-
-  - {id_item}</legend>
-
-  
-
+  </legend>
   <input name="tipo_movimiento" type="hidden" id="tipo_movimiento_lev" value="{tipo_movimiento} ">
 
   {tipo_movimientox} 
@@ -358,7 +394,8 @@
 
             <input name="referencia" type="hidden" id="referencia{id_form}" value="{referencia}" {disabled}> 
 
-            <input name="id_levante" type="hidden" id="id_levante" value="{id_levante}" {disabled}></th>
+            <input name="id_levante" type="hidden" id="id_levante" value="{id_levante}" {disabled}>
+      </th>
 
         <th >Documento</th>
 
@@ -418,9 +455,8 @@
 
         {v_aux_nonac} de : {cantidad_nonac} 
 
-        <input name="cantidad_naci_aux" type="hidden" id="cantidad_naci_aux" value="{cantidad_nonac}"> 
-
-      </td>
+        <input name="cantidad_naci_aux" type="hidden" id="cantidad_naci_aux" value="{cantidad_nonac}">
+        <input name="valor_unitario" type="hidden" id="valor_unitario" value="0"> </td>
 
       <td> {cant_naci_f} 
 

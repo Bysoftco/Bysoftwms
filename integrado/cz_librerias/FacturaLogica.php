@@ -391,7 +391,7 @@ class FacturaLogica {
 		$arregloDatos[where] .=" AND  ref.codigo=$arregloDatos[referencia] "; // filtro por referencia
 		$arregloDatos[GroupBy] = "codigo_referencia ";  // 
 		//$arregloDatos[movimiento] = "1,2,3,7,10,15,30"; 
-		$arregloDatos[movimiento] = "1,2,3,7,10,15,16,19,30";
+		$arregloDatos[movimiento] = "1,2,3,7,9,10,15,16,19,30";
 		$unLevante = new Levante();
 		$unLevante->getInvParaProceso($arregloDatos);
 		$unLevante->fetch();

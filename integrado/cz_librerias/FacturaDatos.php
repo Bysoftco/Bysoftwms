@@ -658,11 +658,11 @@ class Factura extends MYDB {
 	$arregloDatos[nombre_sede] = $this->nombre;
   }
   
-   function getFirma( &$arregloDatos) {
+   function getFirma($arregloDatos) {
   
     $sql = "SELECT * FROM firmas WHERE  codigo = $arregloDatos[id_firma]";
 	
-   // $this->query($sql);
+    $this->query($sql);
     if($this->_lastError) {
       echo "error al consultar la firma";
       echo $this->mensaje_error." ".$sql;
@@ -670,7 +670,8 @@ class Factura extends MYDB {
     }
     $this->fetch();
 	
-    $arregloDatos[ruta_firma] = $this->ruta;
+    //$arregloDatos[ruta_firma] = $this->ruta;
+		$arregloDatos[rutaFirma] = $this->ruta;
 	
   }
   

@@ -3,6 +3,8 @@ ini_set('include_path', PATH .'./integrado/cz_librerias/pear/');
 require_once("PEAR.php");
 require_once("DB/DataObject/Cast.php");
 require_once("HTML/Template/IT.php");
+require_once("Image/Graph.php");
+require_once("Image/Canvas.php");
 
 function init() {
   global $params; 
@@ -10,9 +12,7 @@ function init() {
   global $cadenaBusqueda; 
   global $baseBusqueda; 
   global $servidorLDAP; 
-   // setlocale (LC_NUMERIC, ""); //Línea para permitir el uso de decimales en el sitio. permite comas,  LOCAL 
-  //setlocale(LC_ALL, 'es_ES'); 
- // setlocale (LC_NUMERIC, ""); //Línea para permitir el uso de decimales en el sitio. permite comas, 
+
   $config = parse_ini_file(CONFIG_FILE, true);
   $options = null;
   foreach ($config as $class => $values) {
@@ -31,27 +31,27 @@ function init() {
 }
 
 function tiposCliente() {
-  $tipos= array('1' => 'Consignatario',
-                '2' => 'Intermediario'
-          );
+  $tipos = array('1' => 'Consignatario',
+                 '2' => 'Intermediario'
+           );
   return  $tipos;	  
 }
 	
 function tiposBodega() {
-  $tipos= array('1' => 'Bodega Zona',
+  $tipos = array('1' => 'Bodega Zona',
                 '2' => 'Bodega proceso'
-          );
+           );
   return  $tipos;	  
 }
 	
 function etiquetas() {
-  $tipos= array('0' => 'No Etiquetar',
-                '1' => 'Etiqueta 1',
-                '2' => 'Etiqueta 2',
-                '3' => 'Etiqueta 3',
-                '4' => 'Etiqueta 4',
-                '5' => 'Etiqueta 5'
-          );
+  $tipos = array('0' => 'No Etiquetar',
+                 '1' => 'Etiqueta 1',
+                 '2' => 'Etiqueta 2',
+                 '3' => 'Etiqueta 3',
+                 '4' => 'Etiqueta 4',
+                 '5' => 'Etiqueta 5'
+           );
   return  $tipos;	  
 }
 	
@@ -64,9 +64,9 @@ function unidades() {
 
 function multple() {
   $multiple = array('0' => 'No Aplica',
-                  '1' => 'Multiple',
-				  '2' => 'General'
-            );
+                    '1' => 'Multiple',
+				            '2' => 'General'
+              );
   return  $multiple;	  
 }
 	
@@ -76,7 +76,7 @@ function armaLista($arreglo,  $titulo = '-',$seleccion='NA' ,$maxCaracteres = 50
 	$returnValue = "<OPTION VALUE=\"\" SELECTED>$titulo</OPTION> \n";
 	foreach($arreglo as $key => $value) {
     $selected  = ($seleccion == $key)? '$seleccionado ' : '';
-		$returnValue.= "<OPTION VALUE=\""
+		$returnValue .= "<OPTION VALUE=\""
 			. $key
 			. "\"$selected>"
 			. htmlentities(
@@ -97,7 +97,7 @@ function armaSelect($arreglo,  $titulo = '-',$seleccion='NA' ,$maxCaracteres = 5
   $returnValue = "<OPTION VALUE=\"\" SELECTED>$titulo</OPTION> \n";
 	foreach($arreglo as $key => $value) {           
     $selected  = ($seleccion == $key)? ' SELECTED' : '';   
-		$returnValue.= "<OPTION VALUE=\""
+		$returnValue .= "<OPTION VALUE=\""
 			. $key
 			. "\"$selected>"
 			. htmlentities(
@@ -114,7 +114,7 @@ function armaSelect($arreglo,  $titulo = '-',$seleccion='NA' ,$maxCaracteres = 5
 function armaSelectSinTitulo($arreglo,  $titulo = '-',$seleccion='NA' ,$maxCaracteres = 50) {
   foreach($arreglo as $key => $value) {
     $selected  = ($seleccion == $key)? ' SELECTED' : '';    
-		$returnValue.= "<OPTION VALUE=\""
+		$returnValue .= "<OPTION VALUE=\""
 			. $key
 			. "\"$selected>"
 			. htmlentities(
@@ -130,19 +130,18 @@ function armaSelectSinTitulo($arreglo,  $titulo = '-',$seleccion='NA' ,$maxCarac
 
 function formatoFecha($fecha) {
 	$fecha 	= split('-',$fecha);
-	$fecha 	=$fecha[0].$fecha[1].$fecha[2];
+	$fecha 	= $fecha[0].$fecha[1].$fecha[2];
 	return $fecha;
 }
 
 function fechaddmmaaaa($fecha) {
-	$fecha 	= split('-',$fecha);
-	//$fecha 	=$fecha[0].$fecha[1].$fecha[2];
-	$fecha=$fecha[2].'/'.$fecha[1].'/'.$fecha[0];
+	$fecha = split('-',$fecha);
+	$fecha = $fecha[2].'/'.$fecha[1].'/'.$fecha[0];
 	return $fecha;
 }
 
 function lista($tabla,$codigo,$nombre) {	
-  $unaLista= new Remesa();
+  $unaLista = new Remesa();
   $sql = "SELECT $codigo,$nombre FROM $tabla";	
 
   $unaLista->query($sql);

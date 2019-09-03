@@ -1068,6 +1068,31 @@ class LevanteLogica {
     $arregloDatos[thisFunction] = 'getCuerpoLevante';
     $this->pantalla->setFuncion($arregloDatos,$this->datos);
   }
+  function getDatosSubpartida($arregloDatos) {
+  	$this->datos->getDatosSubpartida($arregloDatos);
+	$unIva = new Levante();
+    $unIva->getIva( $arregloDatos);
+    $unIva->fetch();
+    $iva = $unIva->iva;
+	
+	while($this->datos->fetch()) {
+      $nombre = '['.trim($this->datos->codigo).']'.trim($this->datos->nombre);
+	     // echo "$nombre|$this->datos->codigo|$this->datos->arancel|$this->datos->codigo|$iva\n";
+		 echo $nombre."|".$this->datos->codigo."|".$this->datos->arancel."|".$iva;
+    }
+ 	
+  }
+  
+  function getFOB($arregloDatos) {
+  	$this->datos->getFOB($arregloDatos);
+	$this->datos->fetch();
+	echo $this->datos->valor;
+  	
+  }
+  
+  function setSubpartida($arregloDatos) {
+  	$this->datos->setSubpartida($arregloDatos);
+  }
 	
 }
 ?>

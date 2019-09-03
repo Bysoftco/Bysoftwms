@@ -8,7 +8,13 @@
     {
         submitHandler: function() 
         {
-            
+            // se guarda la nueva subpartida
+			
+			//alert($("#id_levante").val());
+			$.post( "./scripts_index.php" ,{ clase:'Levante',metodo:'setSubpartida',levante:$("#levante").val(),id_declaracion:$("#id_declaracion").val(),cod_maestro:$("#cod_maestro").val() } ,function( data ) {
+				//alert(data)
+			});
+			
             $( "#dialog-form-hacer-levante" ).dialog( "close" );
             
            
@@ -26,7 +32,7 @@
     $(function() 
     {
     
-        $("#formParaLevante").validate(
+        $("#formConsultaLevante").validate(
         {
             rules: {peso_naci_para: "peso_maximo"}
         });
@@ -36,16 +42,16 @@
 </script>
 
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
-<span id="msgbox_mov{id_form}" style="display:block" class="{estilo}"  > {mensaje} </span> 
-
-<form class="formParaLevante" name="formParaLevante"  id="formParaLevante"  method="post" action="javascript:EnviarFormulario()">
+<span id="msgbox_mov{id_form}" style="display:block" class="{estilo}"  >{mensaje} 
+</span> 
+<form class="formConsultaLevante" name="formConsultaLevante"  id="formConsultaLevante"  method="post" action="javascript:EnviarFormulario()">
   
     <script>
     $(function() 
     {
 	
 		
-	$( "#btnGuardar" ).button(
+	$( "#btnGuardar1" ).button(
     	{
         	text: true,
 			icons: {primary: "ui-icon-disk"}
@@ -68,13 +74,14 @@
 <p id="msgbox_levante"></p>
 
   <fieldset class="ui-widget ui-widget-content ui-corner-all" >
-    <legend class="ui-widget ui-widget-header ui-corner-all">
-        
-        Datos de la Declaraci&ograve;n  {cant_declaraciones}   {num_declaraciones} {id_levanteX} {comodin}
-            
-    </legend>
-   
-    <table width="100%" border="0">
+  <legend class="ui-widget ui-widget-header ui-corner-all"> Datos de la Declaraci&ograve;n 
+  {cant_declaraciones} {num_declaraciones} {id_levante} 
+  <input name="id_levante" type="hidden" id="id_item" value="{id_levante}">
+  {comodin} 
+  <input name="id_declaracion" type="hidden" id="id_declaracion" value="{id_declaracion}">
+  <input name="cod_maestro" type="hidden" id="cod_maestro" value="{cod_maestro}">
+  </legend>
+  <table width="100%" border="0">
         <tr  class="ui-widget ui-widget-header ui-corner-all" > 
            
             <th ># Levante: </th>
@@ -90,9 +97,9 @@
         
         <tr> 
             
-            <td>
-               {num_levante}
-            </td>
+            
+      <td> 
+        <input name="num_levante" type="text" class=" required   ui-widget-content" id="levante" value="032019000" size="20"  maxlength="15" minlength="15"> </td>
             
            <td>
                {num_declaracion}
@@ -252,7 +259,7 @@
   
    
  </fieldset>
-
+<button class="submit" type="submit"  id="btnGuardar1" >Guardar</button>
 </form>
 {cuenta}	
 	

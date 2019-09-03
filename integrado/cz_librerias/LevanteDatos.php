@@ -28,7 +28,8 @@ class Levante extends MYDB {
                    embalajes.nombre AS nombre_empaque,
                    posiciones.nombre AS nombre_posicion,
                    ref.nombre AS nombre_referencia,
-                   ref.ref_prove AS cod_referencia
+                   ref.ref_prove AS cod_referencia,
+				   ref.ref_prove AS subpartida
 						FROM inventario_entradas inv,referencias ref,embalajes,posiciones,do_asignados
 						WHERE inv.referencia = ref.codigo
 							AND embalajes.codigo = inv.un_empaque
@@ -122,6 +123,7 @@ class Levante extends MYDB {
 									 nombre_referencia,
 									 cod_referencia,
 									 codigo_referencia,
+									 ref_prove,
 									 cant_declaraciones,
 									 cantidad,
 									 peso,
@@ -148,6 +150,7 @@ class Levante extends MYDB {
 										ref.nombre AS nombre_referencia,
 										ref.codigo_ref AS cod_referencia,
 										ref.codigo AS codigo_referencia,
+										ref.ref_prove,
 										ie.cant_declaraciones,     
 										ie.cantidad AS cantidad,
 										ie.peso AS peso,
@@ -1661,12 +1664,15 @@ class Levante extends MYDB {
 
   // Trae la información de un Levante   
   function traeLevante($arregloDatos) {
-    $sql = "SELECT  inventario_movimientos.peso_naci,
+    $sql = "SELECT  inventario_declaraciones.codigo as id_levante,
+					inventario_movimientos.peso_naci,
                     inventario_movimientos.cif,
+					 inventario_movimientos.cod_maestro,
                     inventario_movimientos.cantidad_naci,
                     IF(inventario_movimientos.fob_nonac < 0 ,0,inventario_movimientos.fob_nonac) AS fob_nonac,
                     inventario_movimientos.peso_nonac,
                     inventario_movimientos.cantidad_nonac,
+					inventario_declaraciones.codigo as id_declaracion,
                     inventario_declaraciones.num_levante,
                     inventario_declaraciones.num_declaracion,
                     inventario_declaraciones.fecha,
@@ -2177,6 +2183,60 @@ class Levante extends MYDB {
    		 if($this->_lastError) {	
 		 }
    }
+   
+   function getDatosSubpartida($arregloDatos) 
+   {
+  		//$arregloDatos[subpartida]='01011090';
+		$sql = "SELECT subpartida as codigo,descripcion as nombre,arancel
+            FROM subpartidas
+            WHERE subpartida = '$arregloDatos[subpartida]'";
+ 		$this->query($sql);
+   		if($this->_lastError) {	
+		}
+  }
+  
+  function getFOB($arregloDatos) 
+   {
+  		//$arregloDatos[subpartida]='01011090';
+		$sql = "   
+    			SELECT ROUND(valor/cantidad) as valor FROM inventario_entradas
+    			WHERE codigo='$arregloDatos[unitem]'
+           ";
+ 		$this->query($sql);
+   		if($this->_lastError) {	
+		}
+  }
+  
+  function setSubpartida($arregloDatos) 
+   {
+  		//$arregloDatos[subpartida]='01011090';
+		$sql = "   
+    			UPDATE inventario_declaraciones
+				SET num_levante='$arregloDatos[levante]'
+    			WHERE codigo='$arregloDatos[id_declaracion]';
+				
+				
+           ";
+		   //echo $sql;
+ 		$this->query($sql);
+   		if($this->_lastError) {	
+		}
+		$this->setSubpartidaMovimiento($arregloDatos);
+  }
+  
+  function setSubpartidaMovimiento($arregloDatos) 
+   {
+  		//$arregloDatos[subpartida]='01011090';
+		$sql = "   
+    			UPDATE inventario_movimientos
+				SET num_levante='$arregloDatos[levante]'
+    			WHERE cod_maestro='$arregloDatos[cod_maestro]'
+           ";
+		   //echo $sql;
+ 		$this->query($sql);
+   		if($this->_lastError) {	
+		}
+  }
 }
 //
 ?>

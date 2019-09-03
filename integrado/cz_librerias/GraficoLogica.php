@@ -3,9 +3,7 @@
 	Versión: 1.0
 	Autor:   Fredy Arevalo
 	Fecha:   Mayo 19 de 2006
-	Descripción:
-	
-	
+	Descripción:	
 */
 
 require_once("GraficoDatos.php");
@@ -18,7 +16,7 @@ class GraficoLogica {
 	
 	function GraficoLogica() {
 		$this->datos =& new Grafico();
-		$this->colores = array("#9966FF", "#66CCFF","#ffff88", "#FF3300", "#FFCC33","#92A9D3","#FF99FF","#333333","#CCCC66","#FFFF66","#006600","#00FF00","#FFFF33","#7400E8","#99FFFF","#FF3366","#663366"."#FF00FF","#99FF00","#CCFFCC","#CCFF00","#6600CC","#6677CC","#0077CC","#807FCC","#807F00","#8FFFCC","#811FCC","#811F93","#441F93","#441F55");
+		$this->colores = array("#9966FF", "#66CCFF","#FFFF88", "#FF3300", "#FFCC33","#92A9D3","#FF99FF","#333333","#CCCC66","#FFFF66","#006600","#00FF00","#FFFF33","#7400E8","#99FFFF","#FF3366","#663366","#FF00FF","#99FF00","#CCFFCC","#CCFF00","#6600CC","#6677CC","#0077CC","#807FCC","#807F00","#8FFFCC","#811FCC","#811F93","#441F93","#441F55");
     $this->pantalla =& new GraficoPresentacion($this->datos,$this->colores);
 	} 
 
@@ -99,14 +97,17 @@ class GraficoLogica {
 	function barras($arregloDatos) {
 		$valores = '2@10@10@20@5';
 		$titulosX = 'Enero@Febrero@Marzo@Abril@Mayo';
-		$colores = 'orange@blue@green@black@red@yellow@orange@brown@pink@violet@purple';
+		$colores = 'orange@blue@green@black@red@yellow@brown@pink@violet@purple';
 		$tituloY = 'Cantidad';
 		$titulo = $arregloDatos[tituloGrafico];
 		//$valores=split('@',$valores);
-		$valores = split('@',$arregloDatos[valores]);
-		$titulosX = split('@',$arregloDatos[valores]);
-		$colores = split('@',$colores);
-
+		//===============================================================================
+		// Modificado por Fredy Salom - 04/Ago/2019 - Documentando al Frente
+		//===============================================================================
+		$valores = explode('@', $arregloDatos[valores]); //Para versión PHP >5.0.3
+		$titulosX = explode('@',$arregloDatos[valores]); //Reemplazamos split por explode
+		$colores = explode('@',$colores);
+		//===============================================================================
 		$Graph =& Image_Graph::factory('graph', array(400, 250));
 		//$Arial =& $Graph->addNew('font', 'Arial'); //Activamos FUENTE a Arial
 		//$Arial->setSize(8);
@@ -126,25 +127,32 @@ class GraficoLogica {
 
 		$Dataset =& Image_Graph::factory('dataset');
 		foreach ($valores as $key => $value) {  //Titulos X
-			if(!empty($value)){	
-				$Dataset->addPoint($key+1, $value);	
+			if(!empty($value)) {	
+				$Dataset->addPoint($key+1, $value);
 			}
 		}
-			
+
 		$GridY =& $Plotarea->addNew('line_grid', null, IMAGE_GRAPH_AXIS_Y);
-		$GridY->setLineColor('white@0.8');
-		//Tipo de Grafico
+   	$GridY->setLineColor('black');
+
+		//Tipo de Gráfico
 		$Plot =& $Plotarea->addNew('bar', array(&$Dataset));
-   					
-		// Colores de Cada Conceptoº
+		$Plot->setBackgroundColor('cyan@0.2');
+
+		// Colores de Cada Concepto
 		$FillArray =& Image_Graph::factory('Image_Graph_Fill_Array');
 		$color = 0;
 		foreach ($valores as $key => $value) {
-			$FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'white',$colores[$color] ));
+			//$FillArray->addNew('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL, 'white',$colores[$color] ));
+			//=========================================================
+			//Modificado por Fredy Salom - 04/Ago/2019
+			//=========================================================
+			$FillArray->addColor($colores[$color], $key+1); //Se debe agregar el color a visualizar
+			//=========================================================
 			$color = $color + 1;
 		}
 			
-		// Se Arma el Grafico   
+		// Se Arma el Gráfico   
 		$Plot->setFillStyle($FillArray);
 		$AxisY =& $Plotarea->getAxis(IMAGE_GRAPH_AXIS_Y);
 		$AxisY->setTitle($tituloY, 'vertical');
