@@ -466,8 +466,12 @@ class LevanteLogica {
   function addItemLevante($arregloDatos) {
     $arregloDatos[tipo_movimiento] = 2;
     $this->controlarTransaccion($arregloDatos);
-    
-    $this->datos->newDeclaracion($arregloDatos);
+
+    //******************************************************************
+    // Instrucción colocada por Fredy Salom - 09/Sep/2019 - 08:38 p.m.
+    // Para capturar el Código de la Declaración Insertada
+    //******************************************************************   
+    $arregloDatos[cod_declaracion] = $this->datos->newDeclaracion($arregloDatos);
     $this->datos->addItemLevante($arregloDatos);
     $this->datos->getAcomulaCif($arregloDatos);
    

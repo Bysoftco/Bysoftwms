@@ -46,6 +46,10 @@
           <input type="text" name="referencias" id="referencias" size="50" />
           <input type="hidden" name="referenciarl" id="referenciarl" />
         </p>
+        <p>
+          <label># Movimiento:</label>
+          <input type="text" name="movimiento" id="movimiento" />
+        </p>
       </fieldset>
     </form>
   </div>
@@ -58,7 +62,7 @@
     $( "#winfiltrorl" ).dialog({
       autoOpen: false,
       resizable: false,
-      height: 420,
+      height: 428,
       width: 600,
 			modal: true,
 			buttons: {

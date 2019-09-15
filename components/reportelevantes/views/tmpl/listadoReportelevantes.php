@@ -54,8 +54,8 @@
       <td style="text-align: center;">{doc_transporte}</td>
       <td style="text-align: center;">{codigo_referencia}</td>
       <td style="padding-left: 5px;">{nombre_referencia}</td>
-      <td style="padding-left: 5px;">{ancho}</td>
-      <td style="padding-left: 5px;">{fecha_naci}</td>
+      <td style="text-align: center;">{ancho}</td>
+      <td style="text-align: center;">{fecha_naci}</td>
       <td style="text-align: right;">{piezas}</td>
       <td style="text-align: right;">{peso}</td>
       <td style="text-align: right;">{valor}</td>

@@ -19,6 +19,7 @@ class ReportelevantesModelo extends BDControlador {
     if(!empty($arreglo[doctterl])) $arreglo[where] .= " AND da.doc_tte = '$arreglo[doctterl]'";
     if(!empty($arreglo[doasignadorl])) $arreglo[where] .= " AND da.do_asignado = '$arreglo[doasignadorl]'";
     if(!empty($arreglo[referenciarl])) $arreglo[where] .= " AND rf.codigo = '$arreglo[referenciarl]'";
+    if(!empty($arreglo[movimiento])) $arreglo[where] .= " AND im.cod_maestro = '$arreglo[movimiento]'";
 
     $query = "SELECT cl.numero_documento AS documento,cl.razon_social AS nombre_cliente,
                 da.do_asignado AS orden,da.doc_tte,rf.codigo_ref,rf.nombre AS nombre_referencia,
@@ -28,10 +29,9 @@ class ReportelevantesModelo extends BDControlador {
                 INNER JOIN inventario_entradas ie ON ie.codigo = im.inventario_entrada
                 INNER JOIN do_asignados da ON ie.orden = da.do_asignado
                 INNER JOIN referencias rf ON ie.referencia = rf.codigo
-                INNER JOIN inventario_declaraciones id ON (id.num_levante = im.num_levante)
-                  AND(id.cod_maestro = im.cod_maestro)
+                INNER JOIN inventario_declaraciones id ON id.codigo = im.cod_declaracion
                 INNER JOIN clientes cl ON da.por_cuenta = cl.numero_documento
-                INNER JOIN sedes sd ON sd.codigo = '$sede'  
+                INNER JOIN sedes sd ON sd.codigo = '$sede'
               WHERE tipo_movimiento = 2$arreglo[where]";
 
     $db->query($query);

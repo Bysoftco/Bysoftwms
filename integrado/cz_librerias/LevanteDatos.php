@@ -1098,9 +1098,10 @@ class Levante extends MYDB {
       return TRUE;
     }
 
-    $this->getLevante($arregloDatos);
+    /*$this->getLevante($arregloDatos);
     $this->fetch();
-    return $this->codigo;
+    return $this->codigo;*/ // Instrucciones deshabilitadas por Fredy Salom - 09/Sep/2019
+    return mysql_insert_id(); // Enviamos el ID de la Declaración insertada
   }
 
   //Función que toma el ultimo Do y lo guarda en la tabla maestro para luego cruzar el cliente  
@@ -1285,8 +1286,8 @@ class Levante extends MYDB {
     $fecha = new DateTime();
     $fecha = $fecha->format('Y-m-d H:i');
     $sql = "INSERT INTO inventario_movimientos
-              (fecha,inventario_entrada,tipo_movimiento,peso_naci,peso_nonac,cantidad_naci,cantidad_nonac,cif,fob_nonac,cod_maestro,num_levante)
-            VALUES('$fecha',$arregloDatos[id_item],2,$arregloDatos[peso_naci_para],0,$arregloDatos[cantidad_naci_para],0,$arregloDatos[fob_naci_para],-$arregloDatos[fob],$arregloDatos[id_levante],'$arregloDatos[num_levante]')";
+              (fecha,inventario_entrada,tipo_movimiento,cod_declaracion,peso_naci,peso_nonac,cantidad_naci,cantidad_nonac,cif,fob_nonac,cod_maestro,num_levante)
+            VALUES('$fecha',$arregloDatos[id_item],2,$arregloDatos[cod_declaracion],$arregloDatos[peso_naci_para],0,$arregloDatos[cantidad_naci_para],0,$arregloDatos[fob_naci_para],-$arregloDatos[fob],$arregloDatos[id_levante],'$arregloDatos[num_levante]')";
 
     $this->query($sql);
     if($this->_lastError) {
@@ -1310,8 +1311,7 @@ class Levante extends MYDB {
     $arregloDatos[estilo] = $this->estilo_ok;
   }
 
-  function getLevante($arregloDatos) {
-  
+  function getLevante($arregloDatos) { 
     $sql = "SELECT codigo FROM inventario_maestro_movimientos
             WHERE orden = '$arregloDatos[orden_filtro]' AND tip_movimiento = 2";
 

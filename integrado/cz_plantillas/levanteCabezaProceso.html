@@ -80,7 +80,8 @@
 
 	$.validator.addMethod("maximo_cantidad", function(value) {
 		if($("#cantidad_ext_cab").val()/1 + $("#cantidad_nac_cab").val()/1 != $("#cantidad_cab").val()/1){
-		 	return false;	
+		 //	return false;
+		 return true;	
 		}else{
 			return true;
 		}
