@@ -456,9 +456,11 @@ class LevantePresentacion {
 
     $arregloDatos[label] = "";
     if($unaConsulta->tipo_movimiento / 1 > 0) {
-      $arregloDatos[label] = "X";
+      $arregloDatos[label] = "X"; //  siempre muestra la opcion de quitar
+	  $arregloDatos[label] = "<a href='#' class='signup borrar_id' title='Quitar Levante {n}' id='$arregloDatos[n]' cursor><img src='integrado/imagenes/borrar.gif' width='15' height='15' border='1'  ></a>";
+
       $arregloDatos[estilo] = "ui-state-highlight";
-      $arregloDatos[mensaje] = "ya hay mercancia en tipo de movimiento: $unaConsulta->movimiento ,no se permite eliminar registros para no alterar el inventario. reverse este movimiento para poder modificar el movimiento ";
+      //$arregloDatos[mensaje] = "ya hay mercancia en tipo de movimiento: $unaConsulta->movimiento ,no se permite eliminar registros para no alterar el inventario. reverse este movimiento para poder modificar el movimiento ";
     } else {
       $arregloDatos[label] = "<a href='#' class='signup borrar_id' title='Quitar Levante {n}' id='$arregloDatos[n]' cursor><img src='integrado/imagenes/borrar.gif' width='15' height='15' border='1'  ></a>";
     }

@@ -79,12 +79,12 @@
 
 
 	$.validator.addMethod("maximo_cantidad", function(value) {
-		if($("#cantidad_ext_cab").val()/1 + $("#cantidad_nac_cab").val()/1 != $("#cantidad_cab").val()/1){
-		 //	return false;
-		 return true;	
-		}else{
-			return true;
-		}
+		//if($("#cantidad_ext_cab").val()/1 + $("#cantidad_nac_cab").val()/1 != $("#cantidad_cab").val()/1){
+		 	return true;
+		 //return true;	
+		//}else{
+			//return true;
+		//}
 	}, '* La Cantidad Nacional + Extrangera debe Sumar la cantidad Total '+$("#cantidad_cab").val());
 
 	$(function() {
@@ -352,8 +352,9 @@
   <table width="100%" border="0">
   	<tr  class="ui-widget ui-widget-header ui-corner-all" > 
 		
-      <th> <div class="BytitulosTabla" ><span> Debe cerrar 
-        para generar el DO de integraci&oacute;n </span> <div>
+      <th> <div class="BytitulosTabla" ><span> Debe cerrar para generar el DO 
+          de integraci&oacute;n ***</span> 
+          <div>
 		</div></div></th>
 	</tr>
 	<tr  class="ui-widget ui-widget-header ui-corner-all" > 

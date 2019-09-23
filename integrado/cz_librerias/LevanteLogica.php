@@ -251,6 +251,7 @@ class LevanteLogica {
   function matriz($arregloDatos) {
     switch($arregloDatos[tipo_movimiento]) {
       case 3: // here matriz de integración
+	  case 11: // here matriz de integración
         $arregloDatos[mostrar] = 1;
         $arregloDatos[plantilla] = 'levanteMatrizCabezaRetiro.html';
         $arregloDatos[thisFunction] = 'matrizRetiroCabeza'; 

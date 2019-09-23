@@ -551,7 +551,7 @@ class Levante extends MYDB {
 		                imm.doc_tte, imm.orden, imm.fecha, imm.ciudad, imm.unidad,
                     imm.cantidad, imm.peso, imm.valor, imm.pedido, imm. posicion,
                     imm.producto, imm.fmm, imm.codigo AS cod_producto,
-                    referencias.codigo_ref AS codigo_pro, referencias.nombre AS nombre_producto
+                    referencias.codigo_ref AS codigo_pro,  referencias.ref_prove,referencias.nombre AS nombre_producto
                   FROM inventario_maestro_movimientos imm 
                     LEFT JOIN referencias ON imm.producto = referencias.codigo
                   WHERE imm.codigo IN(SELECT DISTINCT codigo 
@@ -561,7 +561,7 @@ class Levante extends MYDB {
                       WHERE cod_maestro = $arregloDatos[id_levante]
             		 				AND inventario_movimientos.inventario_entrada = inventario_entradas.codigo)
                         AND tip_movimiento = 9)";
-		
+		//echo $sql;
     $this->query($sql);
     if($this->_lastError) {
       echo "error" . $sql;
@@ -692,6 +692,7 @@ class Levante extends MYDB {
                     clientes.numero_documento AS nit,
                     imm.producto,
                     referencias.codigo,
+					referencias.ref_prove,
                     referencias.nombre AS nombre_producto,
                     imm.cantidad,
                     imm.cantidad_nac,
@@ -711,7 +712,7 @@ class Levante extends MYDB {
               LEFT JOIN clientes ON imm.lev_sia = clientes.numero_documento
               LEFT JOIN referencias ON imm.producto = referencias.codigo
             WHERE imm.codigo = $arregloDatos[id_levante]";
-
+//echo $sql;
     $this->query($sql);
     if($this->_lastError) {
       $this->mensaje = "error al consultar Maestro de Movimientos " . $sql;
