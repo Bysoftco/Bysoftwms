@@ -140,13 +140,15 @@ class Levante extends MYDB {
 									 un_grupo,
 									 declaracion,
 									 numero_documento,
-									 razon_social
+									 razon_social,cod_declaracion
 						FROM (SELECT im.codigo,
+										im.cod_declaracion,
 										CASE WHEN im.tipo_movimiento IN($arregloDatos[movimiento]) THEN 1 ELSE 0
 										END AS movimiento,
 										do_asignados.do_asignado AS orden,
 										do_asignados.doc_tte AS doc_tte,
 										ie.arribo,
+										
 										ref.nombre AS nombre_referencia,
 										ref.codigo_ref AS cod_referencia,
 										ref.codigo AS codigo_referencia,
@@ -178,7 +180,7 @@ class Levante extends MYDB {
 										razon_social
 									FROM  do_asignados, inventario_entradas ie,arribos,clientes,referencias ref,inventario_movimientos im
 									LEFT JOIN inventario_maestro_movimientos imm ON im.cod_maestro = imm.codigo
-									LEFT JOIN (SELECT MAX(num_levante ) AS num_levante,MIN(grupo) AS grupo,MAX(codigo) AS declaracion  FROM inventario_declaraciones GROUP BY num_levante) id ON im.num_levante = id.num_levante
+									LEFT JOIN (SELECT MAX(num_levante ) AS num_levante,MIN(grupo) AS grupo,MAX(codigo) AS declaracion  FROM inventario_declaraciones GROUP BY codigo) id ON im.cod_declaracion = id.declaracion 
 									WHERE im.inventario_entrada = ie.codigo
 										AND arribos.arribo = ie.arribo
 										AND arribos.orden = do_asignados.do_asignado
@@ -972,7 +974,7 @@ class Levante extends MYDB {
                 direccion               = '$arregloDatos[direccion]',
 				prefactura               = '$arregloDatos[multiple_lista]'
             WHERE codigo = $arregloDatos[id_levante]";
-
+//echo $sql;
     $this->_lastError = NULL;
     $this->query($sql);
     if($this->_lastError) {
@@ -1282,13 +1284,15 @@ class Levante extends MYDB {
     if(empty($arregloDatos[peso_naci_para])) {
       $arregloDatos[peso_naci_para] = $arregloDatos[peso_naci_aux];
     } // cuando es el ultimo se inactiva y no pasa
-
+	if(empty($arregloDatos[fmm])){
+		$arregloDatos[fmm]='0';
+	}
     //Captura automática de fecha y hora 
     $fecha = new DateTime();
     $fecha = $fecha->format('Y-m-d H:i');
     $sql = "INSERT INTO inventario_movimientos
-              (fecha,inventario_entrada,tipo_movimiento,cod_declaracion,peso_naci,peso_nonac,cantidad_naci,cantidad_nonac,cif,fob_nonac,cod_maestro,num_levante)
-            VALUES('$fecha',$arregloDatos[id_item],2,$arregloDatos[cod_declaracion],$arregloDatos[peso_naci_para],0,$arregloDatos[cantidad_naci_para],0,$arregloDatos[fob_naci_para],-$arregloDatos[fob],$arregloDatos[id_levante],'$arregloDatos[num_levante]')";
+              (fecha,inventario_entrada,tipo_movimiento,cod_declaracion,peso_naci,peso_nonac,cantidad_naci,cantidad_nonac,cif,fob_nonac,cod_maestro,num_levante,fmm)
+            VALUES('$fecha',$arregloDatos[id_item],2,$arregloDatos[cod_declaracion],$arregloDatos[peso_naci_para],0,$arregloDatos[cantidad_naci_para],0,$arregloDatos[fob_naci_para],-$arregloDatos[fob],$arregloDatos[id_levante],'$arregloDatos[num_levante]','$arregloDatos[fmm]')";
 
     $this->query($sql);
     if($this->_lastError) {
@@ -1691,17 +1695,18 @@ class Levante extends MYDB {
 					ref.codigo AS codigo_referencia,
                     ref.nombre AS nombre_referencia,
                     ref.ref_prove AS cod_referencia,
+					ref.codigo_ref AS codigo_ref,
                     embalajes.nombre AS nombre_empaque,
                     ie.embalaje AS q_embalaje,
                     ie.modelo AS modelo,
                     do_asignados.doc_tte,imm.fmm
             FROM inventario_declaraciones,inventario_movimientos,inventario_entradas ie,arribos,do_asignados,referencias ref,embalajes,
                  inventario_maestro_movimientos imm
-            WHERE inventario_declaraciones.num_levante = '$arregloDatos[num_levante]'
-              AND inventario_declaraciones.cod_maestro = imm.codigo
+            WHERE 
+              inventario_declaraciones.cod_maestro = imm.codigo
               AND inventario_movimientos.inventario_entrada = ie.codigo
               AND arribos.arribo = ie.arribo
-              AND inventario_declaraciones.num_levante = inventario_movimientos.num_levante
+              AND inventario_declaraciones.codigo = inventario_movimientos.cod_declaracion
               AND arribos.orden = do_asignados.do_asignado
               AND ie.referencia = ref.codigo
               AND embalajes.codigo = ie.un_empaque
@@ -2231,7 +2236,7 @@ class Levante extends MYDB {
 		$sql = "   
     			UPDATE inventario_movimientos
 				SET num_levante='$arregloDatos[levante]'
-    			WHERE cod_maestro='$arregloDatos[cod_maestro]'
+    			WHERE cod_declaracion='$arregloDatos[id_declaracion]'
            ";
 		   //echo $sql;
  		$this->query($sql);

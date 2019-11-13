@@ -16,9 +16,9 @@
 			   var cod_ref = $("#cod_ref" + $column).val();
 			   var fob = $("#fob" + $column).val();
 			   var orden = $("#orden_detalle" + $column).val();
-			   
+			   var fmm = $("#fmm").val();
 			  
-
+			
               if (fob == 0) 
 			  {
 				if (confirm("La mercancia esta sin nacionalizar se aconseja costearla antes de nacionalizar,use el menu de Costeo")) 
@@ -54,7 +54,7 @@
 				{
 					$("#dialog-form-hacer-levante").dialog("open");
 					$("#ventana_levante").html("Espere un momento....");
-					$("div#ventana_levante").load("./scripts_index.php", {clase: 'Levante', metodo: 'getItem', mostrar: '1', id_item: id_item, doc_filtro: $("#doc_filtro_aux").val(), id_levante: $("#id_levante").val(), num_declaraciones: $("#num_declaraciones_aux").val(), cant_declaraciones: $("#cant_declaraciones").val(), cant_bultos: $("#bultos_aux").val(), id_grupo: $("#id_grupo").val(), lev_bultos: $("#lev_bultos").val(), peso_declaraciones: $("#peso_declaraciones").val(), cod_ref: cod_ref, tipo_movimiento: $("#tipo_movimiento").val(), por_cuenta_filtro: $("#por_cuenta_aux").val(), orden_filtro: $("#orden_maestro").val(),mixto:mixto,una_orden:orden}, function(datos) {
+					$("div#ventana_levante").load("./scripts_index.php", {clase: 'Levante', metodo: 'getItem', mostrar: '1', id_item: id_item, doc_filtro: $("#doc_filtro_aux").val(), id_levante: $("#id_levante").val(), num_declaraciones: $("#num_declaraciones_aux").val(), cant_declaraciones: $("#cant_declaraciones").val(), cant_bultos: $("#bultos_aux").val(), id_grupo: $("#id_grupo").val(), lev_bultos: $("#lev_bultos").val(), peso_declaraciones: $("#peso_declaraciones").val(), cod_ref: cod_ref, tipo_movimiento: $("#tipo_movimiento").val(), por_cuenta_filtro: $("#por_cuenta_aux").val(), orden_filtro: $("#orden_maestro").val(),mixto:mixto,una_orden:orden,fmm:fmm}, function(datos) {
 					});
 
                   }
@@ -101,7 +101,7 @@
       <thead>
         <tr class="ui-widget-header "> 
           <th >#</th>
-          <th >Orden</th>
+          <th >Orden+</th>
           <th >Documento</th>
           <th >Mercanc&iacute;a</th>
           <th >Cantidad</th>
@@ -118,6 +118,7 @@
       <tr class="{odd}"> 
         <td width="1%" >{n}</td>
         <td> <div id="label_concepto{n}"> 
+			
             <input name="orden_detalle{n}" type="hidden" id="orden_detalle{n}" value="{orden}" />
             {orden} 
             <input name="item[]" type="hidden" id="id_unitem{n}" value="{item}">

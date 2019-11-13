@@ -4,31 +4,32 @@
 	{
 		$("a.borrar_id").click(function() 
 		{ //check for the first selection
-			var $column = $(this).attr('id'); // assign the ID of the column
-			with (document.forMercancia)
+		  	//alert($("#cierre").val())
+		  	if($("#cierre").val()/1==0)
 			{
-				// Si la mercancia ya  paso al siguiente  proceso no se puede borrar
-				var num_levante=$("#num_levante"+$column ).val();
-				if(confirm('Confirma que desea quitar el item '+num_levante))
+				var $column = $(this).attr('id'); // assign the ID of the column
+				with (document.forMercancia)
 				{
-					
-					// Cuerpo del levante
-					$("div#htmlCuerpo").load("./scripts_index.php", {clase:'Levante',metodo:'delMercanciaLevante',mostrar:'1',id_levante:$('#id_levante').val(),num_levante_del:num_levante,tipo_movimiento:$('#tipo_movimiento').val(),grupo_borrado:$("#grupo_cuerpo"+$column ).val(),referencia:$('#codigo_referencia'+$column).val()}, function(datos){
-					});
-
-					// OJo Revizar dependiendo Tipo de Operacion se llama metodo
-					//Cuerpo de la mercancia
-					$("div#htmlMercancia").load("./scripts_index.php", {clase:'Levante',metodo:'getMercancia',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val(),por_cuenta_filtro:$("#por_cuenta_aux").val(),tipo_retiro:$("#tipo_retiro_filtro").val(),doc_filtro:$("#doc_filtro_aux").val(),orden_filtro:$("#orden_filtro").val()}, function(datos){
-
- 					});
-
-                    // cabeza del levante
-
-                     $("div#htmlLevante").load("./scripts_index.php", {clase:'Levante',metodo:'getCabezaLevante',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val()}, function(datos){
-					 })
+					// Si la mercancia ya  paso al siguiente  proceso no se puede borrar
+					var num_levante=$("#num_levante"+$column ).val();
+					if(confirm('Confirma que desea quitar el item '+num_levante))
+					{
+						// Cuerpo del levante
+						$("div#htmlCuerpo").load("./scripts_index.php", {clase:'Levante',metodo:'delMercanciaLevante',mostrar:'1',id_levante:$('#id_levante').val(),num_levante_del:num_levante,tipo_movimiento:$('#tipo_movimiento').val(),grupo_borrado:$("#grupo_cuerpo"+$column ).val(),referencia:$('#codigo_referencia'+$column).val()}, function(datos){
+						});
+						// OJo Revizar dependiendo Tipo de Operacion se llama metodo
+						//Cuerpo de la mercancia
+						$("div#htmlMercancia").load("./scripts_index.php", {clase:'Levante',metodo:'getMercancia',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val(),por_cuenta_filtro:$("#por_cuenta_aux").val(),tipo_retiro:$("#tipo_retiro_filtro").val(),doc_filtro:$("#doc_filtro_aux").val(),orden_filtro:$("#orden_filtro").val()}, function(datos){
+						});
+						// cabeza del levante
+						$("div#htmlLevante").load("./scripts_index.php", {clase:'Levante',metodo:'getCabezaLevante',mostrar:'1',id_levante:$('#id_levante').val(),tipo_movimiento:$('#tipo_movimiento').val()}, function(datos){
+					 	})
 
                     }
-				}
+				  }
+				}else{
+						alert(" El movimiento ya esta cerrado no se puede modificar")
+					}
 
 			});
 
@@ -39,6 +40,9 @@
 			var $column = $(this).attr('id'); // assign the ID of the column
 			with (document.forMercancia)
 			{
+				if($("#cierre").val()/1==0)
+				{
+				
 				var num_levante=$("#num_levante"+$column ).val();
 				var declaracion=$("#declaracion"+$column ).val();
 				var codigo_referencia=$("#codigo_referencia"+$column ).val();
@@ -46,6 +50,9 @@
 				$( "#ventana_levante" ).html( "Espere un momento...." );
 				$("div#ventana_levante").load("./scripts_index.php", {clase:'Levante',metodo:'getLevante',mostrar:'1',num_levante:num_levante,declaracion:declaracion,codigo_referencia:codigo_referencia}, function(datos){
 				});
+					}else{
+						alert(" El movimiento ya esta cerrado no se puede modificar")
+					}
 			}
 		  });
 

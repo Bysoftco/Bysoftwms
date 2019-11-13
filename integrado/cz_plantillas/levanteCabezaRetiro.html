@@ -165,7 +165,8 @@ $("#nombre_cliente_correo").val($("#nombre_cliente").val())
           <input name="placa" type="text" class="required ui-widget-content" id="placa" value="{placa}" size="15" /> 
           <input name="id_camion" type="hidden" class="required1 ui-widget-content" id="id_camion" value="{id_camion}" /> 
         </td>
-        <td><input name="conductor" type="text" id="conductor" value="{conductor_nombre}" size="60" /></td>
+        <td><input name="conductor" type="text" id="conductor" value="{conductor_nombre}" size="60" />
+        <input name="ref_prove" type="hidden" id="ref_prove"></td>
       </tr>
     </table>
     <table width="100%" border="0">
@@ -196,14 +197,16 @@ $("#nombre_cliente_correo").val($("#nombre_cliente").val())
     </table>
     <table width="100%" border="0">
       <tr class="ui-widget ui-widget-header ui-corner-all"> 
-        <th colspan="3">Observaci&oacute;n:</th>
+        
+      <th colspan="3">Observaci&oacute;n:</th>
       </tr>
       <tr>
         <td style="width: 60%"><textarea name="obs" cols="125" id="textarea">{obs}</textarea></td>
         <td style="width: 10%;">
           <button class="submit" type="submit"  id="btnGuardarLevante" style="display:{mostrarBotonGuardar};margin:0 10%;">Guardar</button>
         </td>
-        <td style="width: 30%;margin: auto;"><button class="submit" type="submit"  id="btnCerrar" style="display:{mostrarBotonCerrar}">Guardar y Cerrar</button></td>
+        <td style="width: 30%;margin: auto;"><button class="submit" type="submit"  id="btnCerrar" style="display:{mostrarBotonCerrar}">Guardar 
+        y Cerrar</button></td>
       </tr>
       <tr>
         <td><button class="submit" type="submit"  id="btnRetiro" style="display:{mostrarBoton}">Retirar</button></td>

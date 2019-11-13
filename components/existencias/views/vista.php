@@ -42,7 +42,7 @@ class ExistenciasVista {
     $this->template->setVariable('fechadesdefe', $arreglo['fechadesdefe']);
     $this->template->setVariable('fechahastafe', $arreglo['fechahastafe']);
     $this->template->setVariable('doasignadofe', $arreglo['doasignadofe']);
-    $this->template->setVariable('tipoingresofe', $arreglo['tipoingresofe']);
+    //$this->template->setVariable('tipoingresofe', $arreglo['tipoingresofe']);
 
     $n = 1; $tpiezas = $tpeso = $tvalor = $tpiezas_nal = $tpiezas_ext = 0;
     foreach($arreglo['datos'] as $value) {
@@ -52,16 +52,18 @@ class ExistenciasVista {
       $this->template->setVariable('nombre_cliente', $value['nombre_cliente']);
       $this->template->setVariable('orden', $value['orden']);
       $this->template->setVariable('doc_transporte', $value['doc_tte']);
-      $this->template->setVariable('manifiesto', $value['manifiesto']);
+      $this->template->setVariable('fmmi', $value['fmm']);
+      $this->template->setVariable('arribo', $value['arribo']);
+      $this->template->setVariable('consecutivo', $value['codigo']);
       $this->template->setVariable('codigo_referencia', $value['codigo_ref']);
       $this->template->setVariable('nombre_referencia', $value['nombre_referencia']);
       $this->template->setVariable('modelo', $value['modelo']);
       $this->template->setVariable('fecha_ingreso', $value['fecha']);
       $this->template->setVariable('nombre_ubicacion', isset($value['nombre_ubicacion'])?$value['nombre_ubicacion']:'POR ASIGNAR');
-      $this->template->setVariable('tipo_ingreso', $value['ingreso']);
       $this->template->setVariable('piezas', number_format($value['cantidad'],2));
       $this->template->setVariable('peso', number_format($value['peso'],2));
       $this->template->setVariable('valor', number_format($value['valor'],2));
+      $this->template->setVariable('fmmn', $value['fmmn']);
       $this->template->setVariable('piezas_nal', number_format($value['c_nal'],2));
       $this->template->setVariable('piezas_ext', number_format($value['c_ext'],2));
       //Acumula Totales
@@ -90,16 +92,20 @@ class ExistenciasVista {
       $this->template->setVariable('nombre_cliente', $value['nombre_cliente']);
       $this->template->setVariable('orden', $value['orden']);
       $this->template->setVariable('doc_transporte', $value['doc_tte']);
-      $this->template->setVariable('manifiesto', $value['manifiesto']);
+      //$this->template->setVariable('manifiesto', $value['manifiesto']);
+      $this->template->setVariable('fmmi', $value['fmm']);
+      $this->template->setVariable('arribo', $value['arribo']);
+      $this->template->setVariable('consecutivo', $value['codigo']);      
       $this->template->setVariable('codigo_referencia', $value['codigo_ref']);
       $this->template->setVariable('nombre_referencia', $value['nombre_referencia']);
       $this->template->setVariable('modelo', $value['modelo']);
       $this->template->setVariable('fecha_ingreso', $value['fecha']);
       $this->template->setVariable('nombre_ubicacion', isset($value['nombre_ubicacion'])?$value['nombre_ubicacion']:'POR ASIGNAR');
-      $this->template->setVariable('tipo_ingreso', $value['ingreso']);
+      //$this->template->setVariable('tipo_ingreso', $value['ingreso']);
       $this->template->setVariable('piezas', number_format($value['cantidad'],2));
       $this->template->setVariable('peso', number_format($value['peso'],2));
       $this->template->setVariable('valor', number_format($value['valor'],2));
+      $this->template->setVariable('fmmn', $value['fmmn']);
       $this->template->setVariable('piezas_nal', number_format($value['c_nal'],2));
       $this->template->setVariable('piezas_ext', number_format($value['c_ext'],2));
       //Acumula Totales

@@ -43,14 +43,14 @@
           <label>Orden:</label>
           <input type="text" name="doasignadofe" id="doasignadofe" />
         </p>
-        <p> 
+        <!-- <p> 
           <label>Tipo de Ingreso:</label>
           <select name="tipoingresofe" id="tipoingresofe" class="ui-widget-content">
             <option value="">[Seleccionar]</option>
             <option value="consignada">Consignada</option>
             <option value="asignada">Asignada</option>
           </select>
-        </p>
+        </p> -->
       </fieldset>
     </form>
   </div>
@@ -63,7 +63,8 @@
     $( "#winfiltroex" ).dialog({
       autoOpen: false,
       resizable: false,
-      height: 420,
+      //height: 420,
+      height: 400,
       width: 550,
 			modal: true,
 			buttons: {

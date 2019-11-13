@@ -53,9 +53,13 @@ print()
 <table width="90%" height="94" border="0" align="center" class="tabla_general" >
   <tr class="titulos"  bgcolor="ffffff" > 
     <td height="21" colspan="5" align="center" class="tabla_general1"> <div align="center">MATRIZ 
-        DE INTEGRACI&Oacute;N [{nit}] - {razon_social}</div></td>
+        DE INTEGRACI&Oacute;N- [{nit}] - {razon_social}</div></td>
   </tr>
   <tr > 
+  <script>
+	alert('{ref_prove}')
+	$("subpartida").val({ref_prove});
+ </script> 
     <td height="21" colspan="4" > <div align="left">Referencia [{codigo}][{ref_prove}]{nombre_producto}</div></td>
     <td width="15%" height="21" bgcolor="ffffff"><div align="right">Movimiento 
         {id_levante}</div></td>
@@ -89,7 +93,7 @@ print()
     <td width="92" class="filasTabla"><div align="center">{fmm}</div></td>
     <td width="99" class="filasTabla"><div align="center">{orden}</div></td>
     <td width="122" class="filasTabla"><div align="center">{doc_tte}</div></td>
-    <td width="114" class="filasTabla"><div align="center">{pos_arancelaria}</div></td>
+    <td width="114" class="filasTabla"><div align="center">{ref_prove}{pos_arancelaria}</div></td>
   </tr>
   <tr > 
     <td height="21" colspan="10" class="filasTabla">{obs}</td>

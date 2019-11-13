@@ -36,17 +36,20 @@
     <tr>
       <th>Cliente</th>
       <th>Orden</th>
+      <th>Arribo</th>
       <th>Documento TTE</th>
-      <th>Manifiesto</th>
+      <th>FMMI</th>
+      <th>Consecutivo</th>
       <th>Código Referencia</th>
       <th>Referencia</th>
       <th>M/L/C</th>
       <th>Fecha Ing.</th>
       <th>Ubicación</th>
-      <th>Tipo Ingreso</th>
+      <!-- <th>Tipo Ingreso</th> -->
       <th>Piezas</th>
       <th>Peso</th>
       <th>Valor</th>
+      <th>FMMN</th>
       <th>Piezas Nal.</th>
       <th>Piezas Ext.</th>
     </tr>
@@ -56,17 +59,21 @@
     <tr>
       <td>[{doc_cliente}] {nombre_cliente}</td>
       <td style="text-align: center;">{orden}</td>
+      <td style="text-align: center;">{arribo}</td>
       <td style="text-align: center;">{doc_transporte}</td>
-      <td style="text-align: center;">{manifiesto}</td>
+      <!-- <td style="text-align: center;">{manifiesto}</td> -->
+      <td style="text-align: center;">{fmmi}</td>
+      <td style="text-align: center;">{consecutivo}</td>
       <td style="text-align: center;">{codigo_referencia}</td>
       <td>{nombre_referencia}</td>
       <td>{modelo}</td>
       <td style="text-align: center;">{fecha_ingreso}</td>
       <td style="text-align: center;">{nombre_ubicacion}</td>
-      <td style="text-align: center;">{tipo_ingreso}</td>
+      <!-- <td style="text-align: center;">{tipo_ingreso}</td> -->
       <td style="text-align: right;">{piezas}</td>
       <td style="text-align: right;">{peso}</td>
       <td style="text-align: right;">{valor}</td>
+      <td style="text-align: center;">{fmmn}</td>
       <td style="text-align: right;">{piezas_nal}</td>
       <td style="text-align: right;">{piezas_ext}</td>
     </tr>
@@ -83,9 +90,11 @@
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
       <th style="text-align: right;">{total_piezas}</th>
       <th style="text-align: right;">{total_peso}</th>
       <th style="text-align: right;">{total_valor}</th>
+      <th></th>
       <th style="text-align: right;">{total_piezas_nal}</th>
       <th style="text-align: right;">{total_piezas_ext}</th>
     </tr>

@@ -90,7 +90,8 @@
             
             <th >FMM</th>
             <th title="Tipo Declaraci&ograve;n">T Declaraci&ograve;n  </th>
-            <th >Sub. Arancelaria </th>
+            
+      <th >Sub. ArancelariaXX </th>
             <th >TRM:</th>
             <th >Modalidad: </th>
         </tr>
@@ -118,9 +119,8 @@
                  {tipo_declaracion}
             </td>
             
-            <td>
-                {subpartida}
-            </td>
+            
+      <td> {subpartidaX} {cod_referencia}</td>
             <td>
                 {trm}
             </td>
@@ -208,7 +208,7 @@
     </tr>
     
     <tr> 
-      <td>[{cod_referencia}]{nombre_referencia} </td>
+      <td>[{cod_referenciaX}{codigo_ref}]{nombre_referencia} </td>
       <td>{doc_tte}</td> 
       <td>{modelo}</td>
       <td>{fmm}</td>

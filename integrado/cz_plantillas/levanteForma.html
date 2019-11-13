@@ -17,8 +17,9 @@
 		
 	});
 	
-	 
+
 	 if($("#cod_supartida").val()==""){
+	 
 	 	$.post( "./scripts_index.php" ,{ clase:'Levante',metodo:'getDatosSubpartida',subpartida:'{ref_prove}' } ,function( data ) {
   		 var info_subpartida = data.split('|');
 			
@@ -284,8 +285,8 @@
       </td>
       <td> <input name="tipo_declaracion" type="text" id="tipo_declaracion" value="{tipo_declaracion}" size="15"> 
       </td>
-      <td> <input name="subpartida" type="text" id="subpartida" value="{subpartida}" size="15"> 
-        <input name="cod_supartida" type="hidden" class=" required" id="cod_supartida" value="{cod_subpartida}"   > 
+      <td> <input name="subpartida" type="text" id="subpartida" value="" size="15"> 
+        <input name="cod_supartida" type="hidden" class=" required" id="cod_supartida"   > 
       </td>
       <td> <input name="trm" type="text" id="trm" value="{trm}" size="10" class=" required  number"> 
       </td>
@@ -371,16 +372,12 @@
     
 
   <fieldset class="ui-widget ui-widget-content ui-corner-all">
-
   <legend class="ui-widget ui-widget-header ui-corner-all"> Mercancia {item} 
-
   <input name="clase" type="hidden" id="clase" value="Levante">
-
   <input name="metodo" type="hidden" id="metodo" value="addItemLevante">
-
   <input name="id_form" type="hidden" id="id_form" value="{id_form} ">
-
   <input name="id_item" type="hidden" id="arribo_aux" value="{id_item} ">
+  <input name="fmm" type="hidden" id="fmm" value="{fmm}">
   </legend>
   <input name="tipo_movimiento" type="hidden" id="tipo_movimiento_lev" value="{tipo_movimiento} ">
 

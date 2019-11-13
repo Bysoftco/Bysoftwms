@@ -222,7 +222,7 @@ $(function() {
         <tr class="ui-widget-header "> 
           <th>#</th>
           <th>Orden</th>
-          <th>DocTTE</th>
+          <th>DocTTE,</th>
           <th>Ref</th>
           <th>Mercanc&iacute;a 
             <input name="es_matriz" type="hidden" id="es_matriz" value="{es_matriz}" />
@@ -242,7 +242,11 @@ $(function() {
       <!-- BEGIN ROW -->
       <tr class="{odd}"> 
         <td width="1%" >{n}{itemX}{tipo_movimientoX}</td>
-        <td> <div id="label_concepto{n}">{orden} 
+        <td> <div id="label_concepto{n}">{orden}
+		<script>
+			//alert('{ref_prove}')
+				//$("subpartida").val({ref_prove});
+			</script> 
             <input name="orden_retiro[]" type="hidden" id="orden_retiro{n}" value="{orden}" />
             <input name="orden_detalle{n}" type="hidden" id="orden_detalle{n}" value="{orden}" />
             <a href="#" class="signup id_mercancia" title="Nuevo Levante {n}" id="{n}" cursor> 
