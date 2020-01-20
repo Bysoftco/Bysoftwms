@@ -291,7 +291,6 @@
 			var embalaje=$("#embalaje"+$("#item_seleccionado").val()).val();
 			var referencia=$("#referencia"+$("#item_seleccionado").val()).val();
 			var codigo_ref=$("#codigo_ref"+$("#item_seleccionado").val()).val();
-			alert(codigo_ref)
 			
 			 var url = 'scripts_index.php?clase=Inventario&metodo=addInventario&do_asignado='
 			 +$("#do_asignado").val()
@@ -393,16 +392,16 @@
   action="javascript:EnviarFormulario()">
   <fieldset class="ui-widget ui-widget-content ui-corner-all">
   <legend class="ui-widget ui-widget-header ui-corner-all"> Mercanc&iacute;a {item} 
-  <input type="hidden" name="clase" id="clase" value="Inventario" />
-  <input type="hidden" name="metodo" id="metodo" value="saveItem" />
-  <input type="hidden" name="item" id="item" value="{item} " />
-  <input type="hidden" name="arribo" id="arribo_aux" value="{arribo} " />
-  <input type="hidden" name="id_item" id="id_item{item}" value="{id_item} " />
-  <input type="hidden" name="codReferencia" id="codReferencia" value="" />
-  <input name="cliente_filtro" type="hidden" id="cliente_filtro" value="{cliente} " />
-  <input type="hidden" name="nuevo_peso" id="nuevo_peso">
-      <input name="fexpira" type="hidden" id="fexpira" value="{chkfecha_expira}" />
-      <input name="serial" type="hidden" id="serial" value="{chkserial}" />
+    <input type="hidden" name="clase" id="clase" value="Inventario" />
+    <input type="hidden" name="metodo" id="metodo" value="saveItem" />
+    <input type="hidden" name="item" id="item" value="{item} " />
+    <input type="hidden" name="arribo" id="arribo_aux" value="{arribo} " />
+    <input type="hidden" name="id_item" id="id_item{item}" value="{id_item} " />
+    <input type="hidden" name="codReferencia" id="codReferencia" value="{codigo_ref}" />
+    <input name="cliente_filtro" type="hidden" id="cliente_filtro" value="{cliente} " />
+    <input type="hidden" name="nuevo_peso" id="nuevo_peso" />
+    <input name="fexpira" type="hidden" id="fexpira" value="{chkfecha_expira}" />
+    <input name="serial" type="hidden" id="serial" value="{chkserial}" />
   </legend>
   <table width="100%" border="0">
     <tr class="ui-widget ui-widget-header ui-corner-all">

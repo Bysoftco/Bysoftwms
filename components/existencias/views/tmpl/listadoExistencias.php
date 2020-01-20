@@ -45,7 +45,6 @@
       <th>M/L/C</th>
       <th>Fecha Ing.</th>
       <th>Ubicación</th>
-      <!-- <th>Tipo Ingreso</th> -->
       <th>Piezas</th>
       <th>Peso</th>
       <th>Valor</th>
@@ -61,7 +60,6 @@
       <td style="text-align: center;">{orden}</td>
       <td style="text-align: center;">{arribo}</td>
       <td style="text-align: center;">{doc_transporte}</td>
-      <!-- <td style="text-align: center;">{manifiesto}</td> -->
       <td style="text-align: center;">{fmmi}</td>
       <td style="text-align: center;">{consecutivo}</td>
       <td style="text-align: center;">{codigo_referencia}</td>
@@ -69,7 +67,6 @@
       <td>{modelo}</td>
       <td style="text-align: center;">{fecha_ingreso}</td>
       <td style="text-align: center;">{nombre_ubicacion}</td>
-      <!-- <td style="text-align: center;">{tipo_ingreso}</td> -->
       <td style="text-align: right;">{piezas}</td>
       <td style="text-align: right;">{peso}</td>
       <td style="text-align: right;">{valor}</td>
