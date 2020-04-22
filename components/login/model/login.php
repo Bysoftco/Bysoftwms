@@ -9,8 +9,9 @@ class LoginModelo {
 	function validar_usuario($arreglo) {
 		$db = $_SESSION['conexion'];
 		               
-    $query = "SELECT us.*, se.nombre AS nombre_sede, se.tipo_sede
-		          FROM usuarios us, perfiles pe, sedes se
+    $query = "SELECT us.*, se.nombre AS nombre_sede, se.tipo_sede,clientes.numero_documento,razon_social as nombre_empresa
+		          FROM sedes se,perfiles pe,usuarios us
+		          LEFT JOIN clientes ON numero_documento=us.empresa_id
 		          WHERE us.usuario = '$arreglo[usuario]'
 		            AND us.clave = md5('$arreglo[clave]')
 		            AND us.estado = 'A'
@@ -25,6 +26,7 @@ class LoginModelo {
 		
 		if($total > 0) {
 			// Captura de datos del usuario encontrado
+			$_SESSION['datos_logueo']['nombre_empresa'] = $rows->nombre_empresa;
 			$_SESSION['datos_logueo']['usuario'] = $rows->usuario;
 			$_SESSION['datos_logueo']['usuario_id'] = $rows->id;
 			$_SESSION['datos_logueo']['perfil_id'] = $rows->perfil_id;

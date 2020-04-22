@@ -1,53 +1,50 @@
 <style>
-
-    tbody th, tbody td {
+  tbody th, tbody td {
     border-bottom: 1px solid #ccc;
     padding: 2px 10px;
     text-align: left;
     vertical-align: top;
-		HEIGHT: 0px;
-}
-
+    HEIGHT: 0px;
+  }
 </style>
 <script>
   $(function() {
   	$("#generar_interfase").hide();
     $("a.documento_id").click(function() { //check for the first selection
-	  var $column = $(this).attr('id'); // assign the ID of the column
+      var $column = $(this).attr('id'); // assign the ID of the column
 
       with(document.listaRegistros) {
         if($column == 1 && n.value==1) {
           var num_prefactura = $('#num_factura').val();
-		 
         } else {
           var num_prefactura = num_factura[$column-1].value;
-         
-		}	
-	  }
+		    }	
+      }
 	
 	  	var metodo;
-		metodo='getPreFactura';
+      metodo = 'getPreFactura';
       $("div#htmlListado").load("./scripts_index.php", {
-	    clase:'Interfase',metodo:'getInterfase',num_interfase:num_prefactura,nombre_interfase:num_prefactura,tipo_interfase:'{tipo_interfase}' },
-		function(data) {
-			//alert(data)	
-			
-      });
+        clase:'Interfase',metodo:'getInterfase',num_interfase:num_prefactura,nombre_interfase:num_prefactura,tipo_interfase:'{tipo_interfase}'
+        },
+		    function(data) {
+          //alert(data)	
+        }
+      );
     });
   });
 </script>
 <span id="msgbox" style="display:block;text-align:left" class="{estilo}"> {mensaje} 
 </span> 
 <div id="users-contain" class="ui-widget">
-<form  name="listaRegistros" method="post" id="listaRegistros" action="scripts_index.php">
+  <form name="listaRegistros" method="post" id="listaRegistros" action="scripts_index.php">
     <table width="100%" class="ui-widget ui-widget-content" id="users" >
       <thead>
         <tr class="ui-widget-header "> 
           <th width="6%">#</th>
           <th width="23%">Fecha</th>
-          <th width="36%">Interfase</th>
+          <th width="36%">Interface</th>
           <th width="16%">Valor</th>
-          <th width="19%">Acci&oacute;n 
+          <th width="19%">Acci&oacute;n
             <input name="n" type="hidden" id="n" value="{num_registros}"></th>
         </tr>
       </thead>
@@ -70,5 +67,5 @@
         <!-- END ROW -->
       </tbody>
     </table>
-</form>
+  </form>
 </div>

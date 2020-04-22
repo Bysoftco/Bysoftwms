@@ -93,10 +93,10 @@ Class Archivo
     /**
      * Archivo::cargarInformacion()
      * Carga la información del archivo es decir inicializa las variables que almacenan 
-     * los parametros del archivo, debe ser el primer metodo ha invocar despues de 
+     * los parámetros del archivo, debe ser el primer metodo ha invocar después de 
      * instanciada la clase.
-     * El metodo toma del nombre del archivo los datos necesarios para inicializar
-     * variables que dan información sobre el archivo como la extención, el tamaño etc.
+     * El método toma del nombre del archivo los datos necesarios para inicializar
+     * variables que dan información sobre el archivo como la extensión, el tamaño etc.
      * METODO REQUERIDO 
      * @param  $nombreArchivo debe incluir la ruta(path) 
      * @return 
@@ -242,7 +242,7 @@ Class Archivo
      * Archivo::crear()
      * Metodo Que presta la utilidad de crear archivos recibe como parametro el 
      * nombre del archivo ha crear y guarda lo que exista en ese momento en la 
-     * variable contenido, por esto debe llenarce  esta variable antes de invocar 
+     * variable contenido, por esto debe llenarse  esta variable antes de invocar 
      * este metodo, ademas actualiza las variables que almacenan los datos del archivo 
      * utilizando el metodo cargarInformacion  para que la clase mantenga la información 
      * del archivo actual.
@@ -452,7 +452,7 @@ Class Archivo
             $this->tamano = fwrite($this->fp, $contenido);
             if ($this->tamano)
             {
-                $this->_success = "Se escibio el contenido exitosamente en $this->nombreCompleto.\n";
+                $this->_success = "Se escribió el contenido exitosamente en $this->nombreCompleto.\n";
                 $this->_debug();
             } 
             fclose($this->fp);

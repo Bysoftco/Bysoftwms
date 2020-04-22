@@ -6,7 +6,8 @@
     </div>
     <div class="infoUser">{NOMBRE_USUARIO}<br />
       <div class="popupscambiarSede">
-        <a href="" title="Cambiar Sede"><b>Sede: </b></a>
+        <a href="" title="Cambiar Sede"><b>{LABEL_EMPRESA} </b></a> <font color="red"><b>{NOMBRE_EMPRESA}</b></font>
+        <a href="" title="Cambiar Sede"><b>{LABEL_SEDE} </b></a>
         <font color="red"><b>{NOMBRE_SEDE}</b></font>
       </div>
       <a href="javascript:salir()"><strong>Salir del Sistema</strong></a>

@@ -195,6 +195,9 @@ class InterfasePresentacion {
       case 2:
         $this->getInterfaseSigo($arregloDatos,$unArchivo);
         break;
+      case 3:
+        $this->getInterfaseFoxconPro($arregloDatos,$unArchivo);
+        break;
     }
   }
 
@@ -438,6 +441,339 @@ class InterfasePresentacion {
     $this->plantilla->setVariable('estilo', $estilo);
     $this->plantilla->setVariable('nombre_interfase', "Interfase " . $arregloDatos[nombre_interfase]);
     $this->plantilla->show();
+  }
+
+  // Genera Interface FoxconPro - Fredy Salom - Sábado 01/01/2020
+  function getInterfaseFoxconPro($arregloDatos,$unArchivo) {
+    $n = 0;
+    $facturas = 1;
+
+    while($this->datos->fetch()) {
+      $nuevo = 0;
+
+      if($this->datos->factura <> $anterior) {
+        if($n > 0) {
+          $nuevo = 1;
+          $facturas++;
+        }
+      }
+
+      if($nuevo) { // Se calculan los conceptos Anteriores con variables anteriores 
+        $debitos = 0;
+        $arregloDatos[rte_fuentem] = $arregloDatos[rte_fuentem_ant];
+        $arregloDatos[rte_icam] = $arregloDatos[rte_icam_ant];
+        $arregloDatos[rte_ivam] = $arregloDatos[rte_ivam_ant];
+        $arregloDatos[fecha_factura] = $arregloDatos[fecha_factura_ant];
+        $arregloDatos[numero_oficial] = $arregloDatos[numero_oficial_ant];
+        $arregloDatos[nit_ant] = $arregloDatos[nit];
+        $this->debitos = 0;
+        $this->calculosAdicionales($arregloDatos, $unArchivo);
+      }
+      $arregloDatos[factura] = $this->datos->factura;
+      $this->plantilla->setCurrentBlock('ROW');
+      $this->plantilla->setVariable('n',$n + 1);
+      $this->plantilla->setVariable('cuenta', $this->datos->cuenta);
+      $this->plantilla->setVariable('valor', number_format(round($this->datos->valor),0,',','.'));
+      $this->plantilla->setVariable('factura', $this->datos->factura);
+      $this->plantilla->setVariable('fecha_factura', $this->datos->fecha_factura);
+      $this->plantilla->setVariable('nombreservicio', $this->datos->nombreservicio);
+      $this->plantilla->setVariable('numero_oficial', $this->datos->numero_oficial);
+      $total_valor = $total_valor + $this->datos->valor;
+
+      $arregloDatos[total] = round($this->datos->subtotal) + round($this->datos->ivam) - ($this->datos->valor_anticipo + $arregloDatos[total_anticipos]);
+
+      $n++; // variables de getInterfase
+
+      $arregloDatos[rte_fuentem] = $this->datos->rte_fuentem;
+      $arregloDatos[rte_icam] = $this->datos->rte_icam;
+      $arregloDatos[rte_ivam] = $this->datos->rte_ivam;
+      $arregloDatos[fecha_factura] = $this->datos->fecha_factura;
+			$arregloDatos[fecha_entrada] = $this->datos->fecha_entrada;
+			$arregloDatos[fecha_salida] = $this->datos->fecha_salida;
+      $arregloDatos[numero_oficial] = $this->datos->numero_oficial;
+      $arregloDatos[nit] = $this->datos->nit;
+
+      $arregloDatos[concepto] = $this->datos->concepto;
+      $arregloDatos[nombreservicio] = $this->datos->nombreservicio;
+			$arregloDatos[digito_verificacion] = $this->datos->digito_verificacion;
+      $arregloDatos[nombre_cliente] = $this->datos->nombre_cliente;
+			$arregloDatos[direccion] = $this->datos->direccion;
+			$arregloDatos[telefonos_fijos] = $this->datos->telefonos_fijos;
+			$arregloDatos[departamento] = substr(trim($this->datos->ciudad),0,2);
+			$arregloDatos[ciudad] = substr(trim($this->datos->ciudad),-3);
+      $arregloDatos[centro_costo] = $this->datos->centro_costo;
+      $arregloDatos[cuenta] = $this->datos->cuenta;
+      $arregloDatos[cuenta_aux1] = $this->datos->cuenta;
+			$arregloDatos[observaciones] = $this->datos->observaciones;
+      $arregloDatos[naturaleza] = $this->datos->naturaleza;
+			$arregloDatos[base] = $this->datos->base;
+			$arregloDatos[porcentaje] = $this->datos->porcentaje;
+			$arregloDatos[anulada] = $this->datos->anulada;
+      $arregloDatos[valor] = round($this->datos->valor);
+
+      if(trim($this->datos->naturaleza) == "D") {
+        $this->debitos = $this->debitos + $arregloDatos[valor];
+				$arregloDatos[debito] = round($this->datos->valor);
+        $arregloDatos[credito] = 0;
+      } else {
+        $this->creditos = $this->creditos + $arregloDatos[valor];
+        $arregloDatos[debito] = 0;
+				$arregloDatos[credito] = round($this->datos->valor);
+      }
+
+      $this->archivoLineaFoxconPro($arregloDatos, $unArchivo);
+      $anterior = $arregloDatos[factura];
+
+      if($factura_aux <> $arregloDatos[factura]) {
+      }
+      if($this->datos->N == $n) {// Se llama  conceptos calculados para la ultima factura
+      }
+
+      $factura_ant = $this->datos->factura;
+      $anterior = $this->datos->factura;
+      $factura_aux = $this->datos->factura;
+
+      $arregloDatos[rte_fuentem_ant] = $this->datos->rte_fuentem;
+      $arregloDatos[rte_icam_ant] = $this->datos->rte_icam;
+      $arregloDatos[rte_ivam_ant] = $this->datos->rte_ivam;
+      $arregloDatos[fecha_factura_ant] = $this->datos->fecha_factura;
+      $arregloDatos[numero_oficial_ant] = $this->datos->numero_oficial;
+      $arregloDatos[nit_ant] = $this->datos->nit;
+
+      $this->plantilla->parseCurrentBlock();
+    }
+
+    $this->calculosAdicionales($arregloDatos,$unArchivo); // Aplica para la última Factura o cuando hay solo una
+    if($this->datos->interfase == 'SinInterfase') {
+      $this->plantilla->setVariable('mostrarTabla', 'none');
+    }
+
+    $this->plantilla->setVariable('total_valor',$total_valor);
+    $this->plantilla->setVariable('total_interfase_f',number_format($total_valor,0,',','.'));
+    $this->plantilla->setVariable('mensaje', $mensaje);
+    $this->plantilla->setVariable('estilo', $estilo);
+
+    $this->plantilla->show();
+  }
+
+  // Cálculos Adicionales FoxconPro
+  function calculosAdicionales($arregloDatos, $unArchivo) {
+    // SE TOMAN LOS VALORES DE TODAS LAS VARIABLES DE LA ULTIMA FACTURA
+    $unTotal = new Interfase();  // Hace la sumatoria de cada Concepto
+
+    $unTipo = new Interfase();
+    $unTipo->conceptosAdicionales($arregloDatos);
+    $unConcepto = new Interfase();  // Recorre los conceptos de cada tipo
+
+    while($unTipo->fetch()) {
+      $arregloDatos[tipo_servicio] = $unTipo->tipo;
+      $unConcepto->otrosConceptos($arregloDatos);
+
+      while ($unConcepto->fetch()) {
+        $arregloDatos[prorcentaje_iva] = 0;
+        $arregloDatos[prorcentaje_rte] = 0;
+        $arregloDatos[prorcentaje_ica] = 0;
+        $arregloDatos[base_retencion] = 0;
+
+        switch ($unConcepto->tipo) {
+          case '7':// Cuentas Por Cobrar
+            $total_factura = $arregloDatos[valor_anticipo] + $arregloDatos[total_anticipos] + $arregloDatos[total];
+            $arregloDatos[nombreservicio] = $unConcepto->nombre;
+            $arregloDatos[naturaleza] = $unConcepto->naturaleza;
+            $arregloDatos[cuenta] = $unConcepto->cuenta;
+            $longitud_nit = strlen($arregloDatos[intermediario]); // antes estaba el [nit] 28/11/2008 
+            $nitCliente = substr($arregloDatos[intermediario], 0, $longitud_nit - 1);
+            if($arregloDatos[tipo_cliente] == 2) { //ES UNA FILIAL
+              $arregloDatos[cuenta] = $arregloDatos[cuenta_filial];     // cuando crean una nueva filial se crea una cuenta con el consecutivo
+              $arregloDatos[nombreservicio] = $arregloDatos[razon_social];
+            } else {
+              $arregloDatos[cuenta] = '13050501';
+            }
+            if($arregloDatos[tipo_cliente] == 9) { // Exterior
+              $arregloDatos[cuenta] = '13051001';
+            }
+
+            if($arregloDatos[valor_anticipo] + $arregloDatos[total_anticipos] <= $total_factura) {
+              $arregloDatos[valor] = $arregloDatos[total];
+              //quitando deducciones
+              //$deducciones=$arregloDatos[rte_ivam]+$arregloDatos[rte_fuentem]+$arregloDatos[rte_icam];
+              $deducciones = round($arregloDatos[rte_ivam]) + round($arregloDatos[rte_fuentem]) + round($arregloDatos[rte_icam]); //26/01/2013
+              $arregloDatos[valor] = $arregloDatos[valor] - $deducciones;
+              if($arregloDatos[valor] > 0) {
+                $arregloDatos[valor] = round($arregloDatos[valor]);
+                if(trim($unConcepto->naturaleza) == "D") {
+                  $this->debitos = $this->debitos + $arregloDatos[valor];
+                  $arregloDatos[debito] = $arregloDatos[valor];
+                  $arregloDatos[credito] = 0; 
+                } else {
+                  $this->creditos = $this->creditos + $arregloDatos[valor];
+                  $arregloDatos[debito] = 0;
+                  $arregloDatos[credito] = $arregloDatos[valor];
+                }
+                // Aqui se Ajusta  la diferencia en el peso
+                $diferencia = $this->creditos - $this->debitos;
+
+                if($diferencia == -1) {
+                  echo "$arregloDatos[numero_oficial] Creditos $this->creditos  debitos $this->debitos Ajustando Diferencia $diferencia <br>";
+                  $arregloDatos[valor] = $arregloDatos[valor] - 1;
+                }
+                if($diferencia == 1) {
+                  $arregloDatos[valor] = $arregloDatos[valor] + 1;
+                }
+                $arregloDatos[secuencia] = $arregloDatos[secuencia] + 1;
+                $this->archivoLineaFoxconPro($arregloDatos,$unArchivo);
+              }
+            }
+            break;
+          case '2'; //IVA
+            $arregloDatos[nombreservicio] = $unConcepto->nombre;
+            $arregloDatos[naturaleza] = $unConcepto->naturaleza;
+            $arregloDatos[cuenta] = $unConcepto->cuenta;
+            $arregloDatos[prorcentaje_iva] = $unConcepto->iva;
+
+            $arregloDatos[base_retencion] = $unTotal->traerDetalle($arregloDatos);   // Se guarda la Base de Calculo de Iva.
+            $arregloDatos[valor] = round($arregloDatos[base_retencion] * $unConcepto->iva / 100);
+
+            if(trim($unConcepto->naturaleza) == "D") {
+              $this->debitos = $this->debitos + $arregloDatos[valor];
+              $arregloDatos[debito] = $arregloDatos[valor];
+              $arregloDatos[credito] = 0;
+            } else {
+              $this->creditos = $this->creditos + $arregloDatos[valor];
+              $arregloDatos[debito] = 0;
+              $arregloDatos[credito] = $arregloDatos[valor];
+            }
+
+            if($arregloDatos[valor] > 0) {
+              $arregloDatos[secuencia] = $arregloDatos[secuencia] + 1;
+              $this->archivoLineaFoxconPro($arregloDatos, $unArchivo);
+            }
+            break;
+          case '801'; //Cuentas Por Cobrar
+            $total_factura = $arregloDatos[valor_anticipo] + $arregloDatos[total_anticipos] + $arregloDatos[total];
+            $arregloDatos[nombreservicio] = $unConcepto->nombre;
+            $arregloDatos[naturaleza] = $unConcepto->naturaleza;
+            $arregloDatos[cuenta] = $unConcepto->cuenta;
+            if($arregloDatos[valor_anticipo] + $arregloDatos[total_anticipos] <= $total_factura) {
+              $arregloDatos[valor] = $arregloDatos[total];
+              // Agregado el 22-Feb-2020 - Sábado
+              if(trim($unConcepto->naturaleza) == "D") {
+                $arregloDatos[debito] = $arregloDatos[valor];
+                $arregloDatos[credito] = 0;
+              } else {
+                $arregloDatos[debito] = 0;
+                $arregloDatos[credito] = $arregloDatos[valor];
+              } // Final 22-Feb-2020 - Sábado
+              if($arregloDatos[valor] > 0) {
+                $this->archivoLineaFoxconPro($arregloDatos, $unArchivo);
+              }
+            }
+            break;
+          case 3:// Conceptos que son rete Fuente
+            $arregloDatos[nombreservicio] = $unConcepto->nombre;
+            $arregloDatos[naturaleza] = $unConcepto->naturaleza;
+            $arregloDatos[cuenta] = $unConcepto->cuenta;
+            $arregloDatos[prorcentaje_rte] = $unConcepto->rte_fuente;
+            $arregloDatos[base_retencion] = $unTotal->traerDetalle($arregloDatos);   // Se guarda la Base de Calculo de Iva.
+            $arregloDatos[valor] = round($arregloDatos[base_retencion] * $unConcepto->rte_fuente / 100);
+            if($arregloDatos[valor] > 0 and $arregloDatos[rte_fuentem] > 0) {
+              if(trim($unConcepto->naturaleza) == "D") {
+                $this->debitos = $this->debitos + $arregloDatos[valor];
+                $arregloDatos[debito] = $arregloDatos[valor];
+                $arregloDatos[credito] = 0;
+              } else {
+                $this->creditos = $this->creditos + $arregloDatos[valor];
+                $arregloDatos[debito] = 0;
+                $arregloDatos[credito] = $arregloDatos[valor];
+              }
+              $arregloDatos[secuencia] = $arregloDatos[secuencia] + 1;
+              $this->archivoLineaFoxconPro($arregloDatos, $unArchivo);
+            }
+            break;
+          case 4: // Conceptos que son RETE ICA
+            $arregloDatos[nombreservicio] = $unConcepto->nombre;
+            $arregloDatos[naturaleza] = $unConcepto->naturaleza;
+            $arregloDatos[cuenta] = $unConcepto->cuenta;
+            $arregloDatos[porcentaje_rete_ica] = $unConcepto->rte_ica;
+            $arregloDatos[prorcentaje_ica] = $unConcepto->rte_ica;
+
+            $arregloDatos[base_retencion] = $unTotal->traerDetalle($arregloDatos);   // Se guarda la Base de Calculo de Iva.
+            $arregloDatos[valor] = round($arregloDatos[base_retencion] * $unConcepto->rte_ica / 100);
+            if($arregloDatos[valor] > 0 and $arregloDatos[rte_icam] > 0) { // es necesario condicionar el rte_ica del maestro para saber si aplicaba o no ICA
+              if(trim($unConcepto->naturaleza) == "D") {
+                $this->debitos = $this->debitos + $arregloDatos[valor];
+                $arregloDatos[debito] = $arregloDatos[valor];
+                $arregloDatos[credito] = 0;
+              } else {
+                $this->creditos = $this->creditos + $arregloDatos[valor];
+                $arregloDatos[debito] = 0;
+                $arregloDatos[credito] = $arregloDatos[valor];
+              }
+              $arregloDatos[secuencia] = $arregloDatos[secuencia] + 1;
+              $this->archivoLineaFoxconPro($arregloDatos, $unArchivo);
+            }
+            break;
+          case 5: //Conceptos que son Rete Ivas
+            $unReteIva = new Interfase();
+            $arregloDatos[nombreservicio] = $unConcepto->nombre;
+            $arregloDatos[naturaleza] = $unConcepto->naturaleza;
+            $arregloDatos[cuenta] = $unConcepto->cuenta;
+            $arregloDatos[valor] = round($arregloDatos[rte_iva]);
+            $base_rete_iva = 0; $arregloDatos[valor] = 0;
+            $unReteIva->getBase($arregloDatos);
+            $unReteIva->fetch();
+            $base_rete_iva = $unReteIva->iva;
+            $arregloDatos[valor] = round($unReteIva->rte_iva);
+            if($base_rete_iva > 0) {
+              $arregloDatos[base_retencion] = round($base_rete_iva);
+              if(trim($unConcepto->naturaleza) == "D") {
+                $this->debitos = $this->debitos + $arregloDatos[valor];
+                $arregloDatos[debito] = $arregloDatos[valor];
+                $arregloDatos[credito] = 0;
+              } else {
+                $this->creditos = $this->creditos + $arregloDatos[valor];
+                $arregloDatos[debito] = 0;
+                $arregloDatos[credito] = $arregloDatos[valor];
+              }
+              $this->archivoLineaFoxconPro($arregloDatos, $unArchivo);
+            }
+            break;
+        } //Fin Switch
+      }
+    }
+    $this->creditos = 0;
+  }
+
+  function archivoLineaFoxconPro($arregloDatos, $unArchivo) {
+    $fecha = fechaddmmaaaa($arregloDatos[fecha_factura]);
+
+    $linea .= $fecha . "\t";
+		$linea .= $arregloDatos[cuenta] . "\t";
+		$linea .= $arregloDatos[observaciones] . "\t";
+    $linea .= "FVE" . "\t";
+    $linea .= $arregloDatos[numero_oficial] . "\t";
+		$linea .= $arregloDatos[debito] . "\t";
+		$linea .= $arregloDatos[credito] . "\t";
+		$linea .= $arregloDatos[nit] . "\t";
+		$linea .= $arregloDatos[digito_verificacion] . "\t";
+		$linea .= " " . "\t"; // NOMBRE1
+		$linea .= " " . "\t"; // NOMBRE2
+		$linea .= " " . "\t"; // APELLIDO1
+		$linea .= " " . "\t"; // APELLIDO2
+		$linea .= $arregloDatos[nombre_cliente] . "\t";
+		$linea .= $arregloDatos[direccion] . "\t";
+		$linea .= $arregloDatos[telefonos_fijos] . "\t";
+		$linea .= $arregloDatos[departamento] . "\t";
+		$linea .= $arregloDatos[ciudad] . "\t";
+		$linea .= fechaddmmaaaa($arregloDatos[fecha_entrada]) . "\t";
+    $linea .= fechaddmmaaaa($arregloDatos[fecha_salida]) . "\t";
+		$linea .= " " . "\t"; //NUMFAC = No Aplica
+    $linea .= $arregloDatos[base] . "\t";
+    $linea .= $arregloDatos[porcentaje] . "\t";
+    $linea .= $arregloDatos[anulada];
+
+    //Sucursal
+    $unArchivo->escribirContenido($linea . "\n");
   }
 
   // Para interfase SIiGO
@@ -941,5 +1277,6 @@ class InterfasePresentacion {
     }
     $this->creditos = 0;
   }
+
 }
 ?>

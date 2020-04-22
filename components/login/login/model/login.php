@@ -1,60 +1,79 @@
 <?php
-class LoginModelo{
-
+class LoginModelo {
 	var $arbol;
 	
-	function LoginModelo(){
-		$this->arbol="";
+	function LoginModelo() {
+		$this->arbol = "";
 	}
 	
-	function validar_usuario($arreglo){
+	function validar_usuario($arreglo) {
 		$db = $_SESSION['conexion'];
-		
-		$query="SELECT us.*,
-		 			   se.nombre as nombre_sede,
-		 			   se.tipo_sede
-		          FROM usuarios us,
-		          	   perfiles pe,
-		          	   sedes se
-		         WHERE us.usuario='$arreglo[usuario]'
-		           AND us.clave = md5('$arreglo[clave]')
-		           AND us.estado = 'A'
-		           AND pe.estado = 'A'
-		           AND us.perfil_id = pe.id
-		           AND se.codigo = us.sede_id";
+		               
+    $query = "SELECT us.*, se.nombre AS nombre_sede, se.tipo_sede,clientes.numero_documento,razon_social as nombre_empresa
+		          FROM sedes se,perfiles pe,usuarios us
+		          LEFT JOIN clientes ON numero_documento=us.empresa_id
+		          WHERE us.usuario = '$arreglo[usuario]'
+		            AND us.clave = md5('$arreglo[clave]')
+		            AND us.estado = 'A'
+		            AND pe.estado = 'A'
+		            AND us.perfil_id = pe.id
+		            AND us.sede_id = '$arreglo[sede_id]'
+                AND se.codigo = us.sede_id";
+
 		$db->query($query);
-		$total=$db->countRows();
-		$rows=$db->fetch();
+		$total = $db->countRows();
+		$rows = $db->fetch();
 		
-		if($total>0){
-			
-			$_SESSION['datos_logueo']['usuario']          = $rows->usuario;
-			$_SESSION['datos_logueo']['usuario_id']       = $rows->id;
-			$_SESSION['datos_logueo']['perfil_id']        = $rows->perfil_id;
-			$_SESSION['datos_logueo']['nombre_usuario']   = $rows->nombre_usuario;
+		if($total > 0) {
+			// Captura de datos del usuario encontrado
+			$_SESSION['datos_logueo']['nombre_empresa'] = $rows->nombre_empresa;
+			$_SESSION['datos_logueo']['usuario'] = $rows->usuario;
+			$_SESSION['datos_logueo']['usuario_id'] = $rows->id;
+			$_SESSION['datos_logueo']['perfil_id'] = $rows->perfil_id;
+			$_SESSION['datos_logueo']['nombre_usuario'] = $rows->nombre_usuario;
 			$_SESSION['datos_logueo']['apellido_usuario'] = $rows->apellido_usuario;
-			$_SESSION['sede']                             =$rows->sede_id;
-			$_SESSION['sede_tipo']			      =$rows->tipo_sede;
+			$_SESSION['sede'] = $rows->sede_id;
+			$_SESSION['sede_tipo'] = $rows->tipo_sede;
+      $_SESSION['nombre_sede'] = $rows->nombre_sede;
+      $_SESSION['datos_logueo']['sesion'] = $rows->sesion;
 			return 'true';
 		}
 		return 'false';
 	}
-	
-	function armar_menu_principal(){
+
+	function registra_sesion($arreglo) {
+		$db = $_SESSION['conexion'];
+		               
+    $query = "UPDATE usuarios SET sesion = 1 WHERE (id = $arreglo[id])";
+
+		$db->query($query);
+		return 'true';
+	}
+
+	function registra_salida($arreglo) {
+		$db = $_SESSION['conexion'];
+		               
+    $query = "UPDATE usuarios SET sesion = 0 WHERE (id = $arreglo[id])";
+
+		$db->query($query);
+		return 'true';
+	}
+
+	function armar_menu_principal() {
 		$this->crearArbol('id','nombre','id_padre',0,'-');
 		return $this->arbol;
 	}
 	
-	function crearArbol($id_field, $show_data, $link_field, $parent, $prefix){
+	function crearArbol($id_field, $show_data, $link_field, $parent, $prefix) {
 		$db = $_SESSION['conexion'];
 		
-	    $sql="select m.* 
-	            from menu m,
-	                 permisos_menu pm
-	           where estado='A'
-	             AND pm.perfil_id = ".$_SESSION['datos_logueo']['perfil_id']."
-	             AND pm.menu_id = m.id
-	             AND m.".$link_field."=".$parent." ORDER BY m.orden";
+    $sql = "SELECT m.* 
+            FROM menu m, permisos_menu pm
+            WHERE estado='A'
+              AND pm.perfil_id = ".$_SESSION['datos_logueo']['perfil_id']."
+              AND pm.menu_id = m.id
+              AND m.".$link_field."=".$parent." ORDER BY m.orden";
+            
 	    $db->query($sql);
 	    $arreglo = $db->getArray();
 	    
@@ -88,5 +107,36 @@ class LoginModelo{
 	    	$this->arbol.='</ul>';
 	    }
 	}
+  
+  function build_list($table, $code, $name_camp, $where = '') {
+    $db = $_SESSION['conexion'];
+
+    $sql = "SELECT $code,$name_camp FROM $table $where";
+
+    $db->query($sql);
+    $result = $db->GetArray();
+    $array = array();
+
+    foreach ($result as $key => $index) {
+      foreach ($index as $keyAux => $value) {
+        $je = $keyAux;
+        $$je = $value;
+      }
+      $array[$$code] = $$name_camp;
+    }
+    return $array;
+  }
+  
+  function armSelect($array, $title = '-', $seleccion = 'NA', $maxCaracteres = 50) {
+    $returnValue = "<OPTION VALUE=\"\" SELECTED>$title</OPTION> \n";
+    foreach ($array as $key => $value) {
+      $selected = ($seleccion == $key) ? ' SELECTED' : '';
+      $returnValue.= "<OPTION VALUE=\""
+        . $key
+        . "\"$selected>"
+        . htmlentities(ucwords(substr($value, 0, $maxCaracteres)), ENT_QUOTES) . "</OPTION>\n";
+    }
+    return $returnValue;
+  }
 }
 ?>

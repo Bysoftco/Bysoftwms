@@ -65,17 +65,17 @@ class Interfase extends MYDB {
   function getInterfase($arregloDatos) {
     $sede = $_SESSION['sede'];
     $sql="SELECT DISTINCT fd.codigo, fd.factura, fm.numero_oficial, fm.fecha_factura,
-            fm.fecha_salida, fm.iva as ivam, fm.rte_fuente AS rte_fuentem,
+            fm.fecha_salida, fm.fecha_entrada, fm.iva as ivam, fm.rte_fuente AS rte_fuentem,
             fm.rte_ica AS rte_icam, fm.rte_iva AS rte_ivam, fm.anticipo, fm.valor_anticipo,
             fm.efectivo, fm.cheque, fm.banco, fm.recibo, fm.vendedor, fm.interfase,
             fm.fecha_interfase, fm.centro_costo, fm.subcentro_costo, fm.orden, fm.pedido,
-            fm.intermediario, servicios.codigo AS idservicio, servicios.tipo AS tipo_tercero,
-            fd.concepto, fd.base, fd.valor, fd.valor_unitario, fm.subtotal, fm.total,
+            fm.intermediario, fm.anulada, servicios.codigo AS idservicio, servicios.tipo AS tipo_tercero,
+            fd.concepto, fd.base, fd.porcentaje, fd.valor, fd.valor_unitario, fm.subtotal, fm.total,
             servicios.cuenta, fd.iva, fd.rte_fuente AS rte_fuented, fm.efectivo, fm.banco,
-            fm.credito, fm.cheque, fd.rte_iva, fd.rte_ica, clientes.numero_documento AS nit,
-            clientes.razon_social, clientes.razon_social AS nombre_cliente, clientes.tipo, 
-            clientes.cuenta AS cuenta_filial, servicios.nombre AS nombreservicio,
-            servicios.naturaleza
+            fm.credito, fm.cheque, fm.observaciones, fd.rte_iva, fd.rte_ica, clientes.numero_documento AS nit,
+            clientes.digito_verificacion, clientes.razon_social AS nombre_cliente,
+						clientes.direccion, clientes.telefonos_fijos, clientes.tipo, clientes.cuenta AS cuenta_filial,
+						clientes.ciudad, servicios.nombre AS nombreservicio, servicios.naturaleza
           FROM facturas_detalle fd, facturas_maestro fm, servicios, clientes
           WHERE fd.concepto = servicios.codigo
             AND clientes.numero_documento = fm.cliente		

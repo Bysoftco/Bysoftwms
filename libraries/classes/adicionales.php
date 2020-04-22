@@ -1,5 +1,4 @@
 <?php
-
 	function build_list($table,$code,$name_camp)
 	 {
 	 	global $db;
@@ -93,5 +92,4 @@ function get_flash($tipo = 'notice', $mensaje = ''){
 function clean_flash(){
     unset($_SESSION['flash']);
 }
-
 ?>
