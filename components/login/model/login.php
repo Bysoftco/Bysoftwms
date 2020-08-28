@@ -8,7 +8,7 @@ class LoginModelo {
 	
 	function validar_usuario($arreglo) {
 		$db = $_SESSION['conexion'];
-		               
+		//AND us.sede_id = '$arreglo[sede_id]'               
     $query = "SELECT us.*, se.nombre AS nombre_sede, se.tipo_sede,clientes.numero_documento,razon_social as nombre_empresa
 		          FROM sedes se,perfiles pe,usuarios us
 		          LEFT JOIN clientes ON numero_documento=us.empresa_id
@@ -17,7 +17,7 @@ class LoginModelo {
 		            AND us.estado = 'A'
 		            AND pe.estado = 'A'
 		            AND us.perfil_id = pe.id
-		            AND us.sede_id = '$arreglo[sede_id]'
+		            
                 AND se.codigo = us.sede_id";
 
 		$db->query($query);
@@ -36,6 +36,22 @@ class LoginModelo {
 			$_SESSION['sede_tipo'] = $rows->tipo_sede;
       $_SESSION['nombre_sede'] = $rows->nombre_sede;
       $_SESSION['datos_logueo']['sesion'] = $rows->sesion;
+	  
+	  	if($_SESSION['datos_logueo']['perfil_id']==26){
+				 $sql="SELECT * FROM sedes WHERE codigo='$arreglo[sede_id]'";
+				 $db->query($sql);
+				 $consulta = $db->fetch();
+		
+		
+				 $_SESSION['sede']=$arreglo[sede_id];
+				 $_SESSION['nombre_sede']=$consulta->nombre;
+				 $_SESSION['datos_logueo']['nombre_empresa'] = $consulta->nombre;
+			 }	 
+	  
+	  
+	  
+	  
+	  
 			return 'true';
 		}
 		return 'false';
@@ -58,6 +74,21 @@ class LoginModelo {
 		$db->query($query);
 		return 'true';
 	}
+	function findSede($arreglo) {
+		$db = $_SESSION['conexion'];
+		  $q= $_GET["q"];           
+    $query = "SELECT * FROM sedes WHERE nombre like '%$q%' ";
+
+		$db->query($query);
+		 $arreglo = $db->getArray();
+		 foreach($arreglo as $value)
+	    {
+			$nombre = $value['nombre'];
+			//$nombre= $query;
+			$codigo = $value['codigo'];
+      		echo "$nombre|$codigo\n";
+		}
+	}
 
 	function armar_menu_principal() {
 		$this->crearArbol('id','nombre','id_padre',0,'-');
@@ -73,7 +104,7 @@ class LoginModelo {
               AND pm.perfil_id = ".$_SESSION['datos_logueo']['perfil_id']."
               AND pm.menu_id = m.id
               AND m.".$link_field."=".$parent." ORDER BY m.orden";
-            
+           
 	    $db->query($sql);
 	    $arreglo = $db->getArray();
 	    

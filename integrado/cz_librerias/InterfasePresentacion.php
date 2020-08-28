@@ -193,9 +193,11 @@ class InterfasePresentacion {
         $this->getInterfaseElisa($arregloDatos, $unArchivo);
         break;
       case 2:
+        // Interface SIIGO
         $this->getInterfaseSigo($arregloDatos,$unArchivo);
         break;
       case 3:
+        // Interface FoxconPro
         $this->getInterfaseFoxconPro($arregloDatos,$unArchivo);
         break;
     }
@@ -506,7 +508,9 @@ class InterfasePresentacion {
       $arregloDatos[cuenta_aux1] = $this->datos->cuenta;
 			$arregloDatos[observaciones] = $this->datos->observaciones;
       $arregloDatos[naturaleza] = $this->datos->naturaleza;
-			$arregloDatos[base] = $this->datos->base;
+      // BASE para los Conceptos (Detalle)
+			$arregloDatos[base] = $this->datos->valor;
+      $arregloDatos[baseaux] = $this->datos->subtotal;
 			$arregloDatos[porcentaje] = $this->datos->porcentaje;
 			$arregloDatos[anulada] = $this->datos->anulada;
       $arregloDatos[valor] = round($this->datos->valor);
@@ -570,7 +574,6 @@ class InterfasePresentacion {
       $unConcepto->otrosConceptos($arregloDatos);
 
       while ($unConcepto->fetch()) {
-        $arregloDatos[prorcentaje_iva] = 0;
         $arregloDatos[prorcentaje_rte] = 0;
         $arregloDatos[prorcentaje_ica] = 0;
         $arregloDatos[base_retencion] = 0;
@@ -581,6 +584,7 @@ class InterfasePresentacion {
             $arregloDatos[nombreservicio] = $unConcepto->nombre;
             $arregloDatos[naturaleza] = $unConcepto->naturaleza;
             $arregloDatos[cuenta] = $unConcepto->cuenta;
+            $arregloDatos[base] = $arregloDatos[baseaux];
             $longitud_nit = strlen($arregloDatos[intermediario]); // antes estaba el [nit] 28/11/2008 
             $nitCliente = substr($arregloDatos[intermediario], 0, $longitud_nit - 1);
             if($arregloDatos[tipo_cliente] == 2) { //ES UNA FILIAL
@@ -633,6 +637,9 @@ class InterfasePresentacion {
 
             $arregloDatos[base_retencion] = $unTotal->traerDetalle($arregloDatos);   // Se guarda la Base de Calculo de Iva.
             $arregloDatos[valor] = round($arregloDatos[base_retencion] * $unConcepto->iva / 100);
+            
+            // Cálculo de la BASE
+            $arregloDatos[base] = $arregloDatos[base_retencion];
 
             if(trim($unConcepto->naturaleza) == "D") {
               $this->debitos = $this->debitos + $arregloDatos[valor];
@@ -654,6 +661,8 @@ class InterfasePresentacion {
             $arregloDatos[nombreservicio] = $unConcepto->nombre;
             $arregloDatos[naturaleza] = $unConcepto->naturaleza;
             $arregloDatos[cuenta] = $unConcepto->cuenta;
+            // Cálculo de la BASE
+            $arregloDatos[base] = $unConcepto->subtotal;
             if($arregloDatos[valor_anticipo] + $arregloDatos[total_anticipos] <= $total_factura) {
               $arregloDatos[valor] = $arregloDatos[total];
               // Agregado el 22-Feb-2020 - Sábado
@@ -676,6 +685,8 @@ class InterfasePresentacion {
             $arregloDatos[prorcentaje_rte] = $unConcepto->rte_fuente;
             $arregloDatos[base_retencion] = $unTotal->traerDetalle($arregloDatos);   // Se guarda la Base de Calculo de Iva.
             $arregloDatos[valor] = round($arregloDatos[base_retencion] * $unConcepto->rte_fuente / 100);
+            // Cálculo de la BASE
+            $arregloDatos[base] = $arregloDatos[base_retencion];
             if($arregloDatos[valor] > 0 and $arregloDatos[rte_fuentem] > 0) {
               if(trim($unConcepto->naturaleza) == "D") {
                 $this->debitos = $this->debitos + $arregloDatos[valor];
@@ -700,6 +711,8 @@ class InterfasePresentacion {
             $arregloDatos[base_retencion] = $unTotal->traerDetalle($arregloDatos);   // Se guarda la Base de Calculo de Iva.
             $arregloDatos[valor] = round($arregloDatos[base_retencion] * $unConcepto->rte_ica / 100);
             if($arregloDatos[valor] > 0 and $arregloDatos[rte_icam] > 0) { // es necesario condicionar el rte_ica del maestro para saber si aplicaba o no ICA
+              // Cálculo de la BASE
+              $arregloDatos[base] = $arregloDatos[base_retencion];
               if(trim($unConcepto->naturaleza) == "D") {
                 $this->debitos = $this->debitos + $arregloDatos[valor];
                 $arregloDatos[debito] = $arregloDatos[valor];
@@ -726,6 +739,8 @@ class InterfasePresentacion {
             $arregloDatos[valor] = round($unReteIva->rte_iva);
             if($base_rete_iva > 0) {
               $arregloDatos[base_retencion] = round($base_rete_iva);
+              // Cálculo de la BASE
+              $arregloDatos[base] = $arregloDatos[base_retencion];
               if(trim($unConcepto->naturaleza) == "D") {
                 $this->debitos = $this->debitos + $arregloDatos[valor];
                 $arregloDatos[debito] = $arregloDatos[valor];

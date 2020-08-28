@@ -34,7 +34,11 @@ class SedesModelo extends BDControlador {
                 AND us.estado = 'A'
                 AND se.codigo = us.sede_id";
 
-    $db->query($query);
+    if($_SESSION['datos_logueo']['perfil_id']==26){
+		$query = "SELECT codigo, nombre as nombre_sede FROM sedes WHERE cdzonafranca=652 ";
+	}	
+	
+	$db->query($query);
     $result = $db->GetArray();
     $array = array();
 
@@ -63,18 +67,22 @@ class SedesModelo extends BDControlador {
 	function validar_infousuario($arreglo) {
 		$db = $_SESSION['conexion'];
     $usuario = $_SESSION['datos_logueo']['usuario'];
-		               
+		//AND us.sede_id = '$arreglo[sede]'               
     $query = "SELECT us.*,
 		 			      se.nombre as nombre_sede,
-		 			      se.tipo_sede
-		          FROM usuarios us,
+		 			      se.tipo_sede,
+						  razon_social as nombre_empresa
+		          FROM usuarios us
+				   LEFT JOIN clientes ON numero_documento=us.empresa_id
+				  ,
+				  
 		            perfiles pe,
 		            sedes se
 		          WHERE us.usuario='$usuario'
 		            AND us.estado = 'A'
 		            AND pe.estado = 'A'
 		            AND us.perfil_id = pe.id
-		            AND us.sede_id = '$arreglo[sede]'
+		            
                 AND se.codigo = us.sede_id";
 
 		$db->query($query);
@@ -86,10 +94,22 @@ class SedesModelo extends BDControlador {
 			$_SESSION['datos_logueo']['usuario_id'] = $rows->id;
 			$_SESSION['datos_logueo']['perfil_id'] = $rows->perfil_id;
 			$_SESSION['datos_logueo']['nombre_usuario'] = $rows->nombre_usuario;
-			$_SESSION['datos_logueo']['apellido_usuario'] = $rows->apellido_usuario;
-			$_SESSION['sede'] = $rows->sede_id;
+			$_SESSION['datos_logueo']['apellido_usuario'] = $rows->nombre_empresa;
+			$_SESSION['sede'] = $arreglo[sede];
 			$_SESSION['sede_tipo'] = $rows->tipo_sede;
-      $_SESSION['nombre_sede'] = $rows->nombre_sede;
+			
+			//$_SESSION['datos_logueo']['nombre_empresa']=$rows->nombre_empresa;
+			
+    		 
+			$sql="SELECT * FROM sedes WHERE codigo='$arreglo[sede]'";
+			
+				 $db->query($sql);
+				 $consulta = $db->fetch();
+				 $_SESSION['nombre_sede'] = $consulta->nombre;
+			$_SESSION['datos_logueo']['nombre_empresa']=$consulta->nombre;
+				 
+		
+		 
 			return 'true';
 		}
 		return 'false';
@@ -110,6 +130,7 @@ class SedesModelo extends BDControlador {
             AND pm.menu_id = m.id
             AND m.".$link_field."=".$parent." ORDER BY m.orden";
             
+	    //echo  $sql; die();
 	    $db->query($sql);
 	    $arreglo = $db->getArray();
 	    

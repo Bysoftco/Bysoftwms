@@ -44,11 +44,17 @@ class usuarios {
 	}
 	
 	function editar($arreglo) {
+		
 		if(isset($arreglo['edClave'])) {
 			$this->datos->editarClave($arreglo);
 		}
 		if(isset($arreglo['id']) && !empty($arreglo['id'])) {
       $id = $arreglo['id'];
+	  $cantidad=$this->datos->existeSede($arreglo);
+	  
+	  if($cantidad =='0'){
+	  	$this->datos->creaUsuarioSede($arreglo);
+	  }
       $arreglo['alerta_accion'] = 'Usuario Editado Con &Eacute;xito';
     } else {
       $id = null;
@@ -107,6 +113,10 @@ class usuarios {
   
 	function cambiarSede($arreglo) {
 		$this->vista->cambiarSede($arreglo);
+	}
+	function borrarSede($arreglo) {
+		$this->datos->borrarSede($arreglo);
+		$this->listadoUsuarios($arreglo);
 	}
 }
 ?>

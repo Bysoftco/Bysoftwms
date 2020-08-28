@@ -20,12 +20,19 @@ class sedes {
 	}
   
   function cambiaSede($arreglo) {
+	
     $this->datos->validar_infousuario($arreglo);
+
     if(isset($_SESSION['datos_logueo']['usuario'])) {
       $menu='<div id="myslidemenu" class="jqueryslidemenu">';
       $menu.=$this->datos->armar_menu_principal();
       $menu.='</div>';
-      $_SESSION['menu'] = base64_encode($menu);
+	  if($_SESSION['datos_logueo']['perfil_id']==26){
+	  }else{  
+      	$_SESSION['menu'] = base64_encode($menu);
+	  }
+	  
+	  
       print('cambiosede');
     }
   }	

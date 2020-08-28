@@ -56,6 +56,7 @@
     </div>
   </fieldset>
 	<br />
+    {sedesUsuarios}
 	<fieldset class="fieldset_rda" style="display:{edicion_clave};">
 		<legend>
 			<input type="checkbox" name="edClave" id="edClave" onclick="javascript:editarClave(this.checked)" />
@@ -90,6 +91,7 @@
 		<input name="enviar" id="enviar" class="button small yellow2" type="submit" value="Enviar" />
 	</center>
 </form>
+
 <div style="height: 20px;"></div>
 <script>
   Nifty("div.div_barraFija","top transparent");

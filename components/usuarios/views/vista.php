@@ -1,4 +1,5 @@
 <?php
+require_once COMPONENTS_PATH . 'usuarios/model/usuarios.php';
 class UsuariosVista {
   function UsuariosVista() {
 		$this->template = new HTML_Template_IT();
@@ -59,6 +60,9 @@ class UsuariosVista {
 			$this->template->setVariable('idestado',$value['estado']);
 			$this->template->setVariable('estado',$estado);
 			$this->template->setVariable('fecha_creacion',$value['fecha_creacion']);
+			
+			
+			
 			$this->template->parseCurrentBlock("ROW");
 		}
 		$this->template->show();
@@ -76,8 +80,30 @@ class UsuariosVista {
 		$this->template->setVariable('apellido_usuario',isset($arreglo['datosUsuario']['apellido_usuario'])?$arreglo['datosUsuario']['apellido_usuario']:'');
 		$this->template->setVariable('mail_usuario',isset($arreglo['datosUsuario']['mail_usuario'])?$arreglo['datosUsuario']['mail_usuario']:'');
 		$this->template->setVariable('select_sedes',$arreglo['select_sedes']);
+		
+		//$this->template->setVariable('sede','XXXXXX');
+		$sedesUsuario=$this->sedesUsuarios($arreglo);
+		$this->template->setVariable('sedesUsuarios',$sedesUsuario);
+		
 		$this->template->show();
 	}
+	
+	function sedesUsuarios($arreglo) {
+		
+		$unaSede = new UsuariosModelo();
+		$sedesU = new HTML_Template_IT();
+		$sedesU->loadTemplateFile(COMPONENTS_PATH . 'usuarios/views/tmpl/listarSedes.html');
+		$datos=$unaSede->listadoSedes($arreglo);
+		
+		foreach($datos['datos'] as $key => $value) {
+			$sedesU->setCurrentBlock("ROW");
+			$sedesU->setVariable('sede',$value['nombre_sede']);
+			$sedesU->setVariable('sede_id',$value['sede_id']);
+			$sedesU->parseCurrentBlock("ROW");
+		}	
+		$sedesU->setVariable('COMODIN','');
+		return $sedesU->get();
+	}	
 
 	function verUsuario($arreglo) {
 		$this->template->loadTemplateFile(COMPONENTS_PATH . 'usuarios/views/tmpl/verUsuario.php');

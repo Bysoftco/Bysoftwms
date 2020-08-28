@@ -8,7 +8,7 @@ class UsuariosModelo extends BDControlador{
 	var $nombre_usuario;
 	var $apellido_usuario;
 	var $mail_usuario;
-	var $sede_id;
+	//var $sede_id;
 	
 	var $table_name = "usuarios";
 	var $module_directory= 'usuarios';
@@ -124,5 +124,67 @@ class UsuariosModelo extends BDControlador{
 				 WHERE id=$arreglo[id]";
 		$db->query($query);
 	}
+	
+		
+	function listadoSedes($arreglo){
+		//var_dump($arreglo);
+		$db = $_SESSION['conexion'];
+		
+		$orden = " us.fecha_creacion DESC ";
+		$buscar = "";
+		if(isset($arreglo['orden']) && !empty($arreglo['orden'])){
+			$orden= " $arreglo[orden] $arreglo[id_orden]";
+		}
+		
+		$usuario=$arreglo['datosUsuario']['usuario'];
+		$query= "
+		SELECT DISTINCT sede_id,nombre AS nombre_sede 
+			FROM usuarios,sedes
+			WHERE usuarios.sede_id=sedes.codigo
+			AND usuario='$usuario'
+		";
+		
+	 	$db->query($query);
+		$retornar['datos']=$db->getArray();
+		return $retornar;
+	}
+	
+	function existeSede($arreglo){
+		$db = $_SESSION['conexion'];
+		$query="SELECT sede_id FROM usuarios WHERE sede_id='$arreglo[sede_id]' and  usuario='$arreglo[usuario]'";
+		
+		$db->query($query);
+		$total = $db->countRows();
+		return $total;
+	}
+	
+	function creaUsuarioSede($arreglo){
+		$clave=$this->getClave($arreglo);
+		$db = $_SESSION['conexion'];
+		$query="INSERT INTO 	  usuarios(usuario,clave,perfil_id,nombre_usuario,apellido_usuario,mail_usuario,fecha_creacion,sede_id,empresa_id,estado,sesion)
+VALUES('$arreglo[usuario]','$clave[clave]',$arreglo[perfil_id],'$arreglo[nombre_usuario]','$arreglo[apellido_usuario]','$arreglo[mail_usuario]',CURDATE(),'$arreglo[sede_id]','','A',0)";
+		//echo $query;
+		$db->query($query);
+	}
+	
+	function getClave($arreglo){
+		$db = $_SESSION['conexion'];
+		$query="SELECT clave  FROM usuarios WHERE  usuario='$arreglo[usuario]'";
+	
+		$db->query($query);
+		$info = $db->getArray();
+		return $info[0];
+		
+	}
+	
+	function borrarSede($arreglo){
+		$db = $_SESSION['conexion'];
+		$query="DELETE  FROM usuarios WHERE sede_id='$arreglo[sede_id]' and  usuario='$arreglo[usuario]'";
+		
+		$db->query($query);
+		
+		
+	}
+	
 }
 ?>

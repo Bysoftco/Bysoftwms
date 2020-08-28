@@ -24,7 +24,8 @@ class login {
 		if(empty($arreglo['usuario'])||empty($arreglo['clave'])) {
 			print('faltante');
 		} else {
-		  // Busca usuario en la tabla - verificando su existencia		  
+		  // Busca usuario en la tabla - verificando su existencia	
+		    
 			$this->datos->validar_usuario($arreglo);
 			if(isset($_SESSION['datos_logueo']['usuario'])) {
         $menu='<div id="myslidemenu" class="jqueryslidemenu">';
@@ -44,7 +45,19 @@ class login {
 			} else print('error');
 		}
 	}
-	
+	function findSede($arregloDatos) {
+    	
+    	$this->datos->findSede($arregloDatos);
+   	 	/*$arregloDatos[q] = strtolower($_GET["q"]);
+    	header( 'Content-type: text/html; charset=iso-8859-1' );
+    	while($this->datos->fetch()) {
+      		$nombre = trim($this->datos->nombre);
+      		echo "$nombre|$datos->codigo\n";
+    	}
+    	if($this->datos->N == 0) {
+      		echo "No hay Resultados|0\n";
+    	}*/
+  }	
 	function cerrar_sesion() {
     // Verifica Perfil de Tercero
     if($_SESSION['datos_logueo']['perfil_id'] == 23) {
