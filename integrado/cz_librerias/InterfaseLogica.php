@@ -1,7 +1,7 @@
 <?php
 require_once("InterfaseDatos.php");
 require_once("InterfasePresentacion.php");
-require_once("ReporteExcel.php");
+require_once("ReporteExcelWO.php");
 require_once("InventarioDatos.php");
 
 class InterfaseLogica {
@@ -108,6 +108,14 @@ class InterfaseLogica {
     $this->datos->getInterfase($arregloDatos);	
     $this->pantalla->generaInterfase($arregloDatos);		
   }
+
+  // Exporta Interfaz WorldOffice en Excel
+  function generaExcel($arregloDatos) {
+    $f = Date("YmdHi");
+    $arregloDatos['titulo'] = str_replace('Interface ', '', $arregloDatos[interfase])."-".$f;
+    $unExcel = new reporteExcelWO();
+    $unExcel->generarExcel($arregloDatos);
+  } 
     
   //Función que retorna un título
   function titulo($arregloDatos) {

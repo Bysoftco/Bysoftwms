@@ -2,6 +2,8 @@
   /***************************************************
     Modificado para Interfaz FoxConPro - Fredy Salom
     Enero 27, 2020 - Lunes
+    Modificao para Interfaz WorldOffice - Fredy Salom
+    Agosto 30, 2020 - Domingo
    ***************************************************/
 
   function EnviarformularioInterfase() {
@@ -17,6 +19,7 @@
       }
     });*/
   }
+  $("#generar_interfase").hide();
   $(document).ready(function() {
     $("#formularioInterfase{accion}").validate({
       submitHandler: function(form) {
@@ -101,13 +104,15 @@
         </p>
 		
         <p id="tipo_interfase"> 
-          <label for="curl">Tipo Interfase:</label>
-          <input type="radio" name="tipo_interfase" value="1" checked>
+          <label for="curl">Tipo Interface:</label>
+          <input type="radio" name="tipo_interfase" value="1">
           Siigo 
           <input type="radio" name="tipo_interfase" value="2">
           Helisa
           <input type="radio" name="tipo_interfase" value="3">
           FoxconPro
+          <input type="radio" name="tipo_interfase" value="4">
+          WorldOffice
         </p>
       </fieldset>
       <input name="aux" type="hidden" id="aux2" value="{restrinje}">

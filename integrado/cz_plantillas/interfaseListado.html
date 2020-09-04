@@ -10,6 +10,7 @@
 <script>
   $(function() {
   	$("#generar_interfase").hide();
+    $("#generar_interfase_excel").hide();
     $("a.documento_id").click(function() { //check for the first selection
       var $column = $(this).attr('id'); // assign the ID of the column
 
@@ -24,7 +25,7 @@
 	  	var metodo;
       metodo = 'getPreFactura';
       $("div#htmlListado").load("./scripts_index.php", {
-        clase:'Interfase',metodo:'getInterfase',num_interfase:num_prefactura,nombre_interfase:num_prefactura,tipo_interfase:'{tipo_interfase}'
+        clase:'Interfase',metodo:'getInterfase',num_interfase:num_prefactura,nombre_interfase:'{interfase_filtro}',tipo_interfase:'{tipo_interfase}'
         },
 		    function(data) {
           //alert(data)	

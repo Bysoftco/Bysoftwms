@@ -9,8 +9,14 @@
 </style>
 <script>
   $(function() {
- 	  $("#generar_interfase").show();
-    $("div#titulo_interfase").html("{nombre_interfase}");
+    if({tipo_interfase}==4) {
+      $("#generar_interfase").hide();
+      $("#generar_interfase_excel").show();
+    } else {
+      $("#generar_interfase").show();
+      $("#generar_interfase_excel").hide();
+    }
+    $("div#titulo_interfase").html("{interfase}");
   });	
 </script>
 <span id="msgbox" style="display:block;text-align:left" class="{estilo}"> {mensaje} 
@@ -43,6 +49,25 @@
             </a><a href="#" class="signup documento_id" title="Consultar Do {do_asignado}" id="{n}" cursor> 
             </a>{valor}<a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor></a></td>
         </tr>
+        <input name="fecha_factura[]" type="hidden" id="fecha_factura" value="{fecha_factura}"/>
+        <input name="numero_oficial[]" type="hidden" id="numero_oficial" value="{numero_oficial}"/>
+        <input name="concepto[]" type="hidden" id="concepto" value="{nombreservicio}"/>
+        <input name="valor[]" type="hidden" id="valor" value="{valor}"/>
+        <input name="empresa[]" type="hidden" id="empresa" value="{nombre_cliente}"/>
+        <input name="prefijo[]" type="hidden" id="prefijo" value="{prefijo}"/>
+        <input name="tercero_interno[]" type="hidden" id="tercero_interno" value="{intermediario}"/>
+        <input name="tercero_externo[]" type="hidden" id="tercero_externo" value="{facturado_a}"/>
+        <input name="nota[]" type="hidden" id="nota" value="{nota}"/>
+        <input name="formapago[]" type="hidden" id="formapago" value="{forma_pago}"/>
+        <input name="verificada[]" type="hidden" id="verificada" value="{verificada}"/>
+        <input name="anulada[]" type="hidden" id="anulada" value="{anulada}"/>
+        <input name="producto[]" type="hidden" id="producto" value="{cuenta}"/>
+        <input name="cantidad[]" type="hidden" id="cantidad" value="{porcentaje}"/>
+        <input name="iva[]" type="hidden" id="iva" value="{srviva}"/>
+        <input name="valor_unitario[]" type="hidden" id="valor_unitario" value="{base}"/>
+        <input name="descuento[]" type="hidden" id="descuento" value="{descuento}"/>
+        <input name="vencimiento[]" type="hidden" id="vencimiento" value="{vencimiento}"/>
+        <input name="filas" type="hidden" id="filas" value="{n}"/>
         <!-- END ROW -->
 		    <tr class="{odd}"> 
           <td >Total<a href="#" class="signup documento_id" title="Consultar Factura {do_asignado}" id="{n}" cursor></a></td>
@@ -55,5 +80,8 @@
         </tr>
       </tbody>
     </table>
+    <input name="clase" type="hidden" id="clase" value="Interfase"/>
+    <input name="metodo" type="hidden" id="metodo" value="generaExcel"/>
+    <input name="interfase" type="hidden" id="interfase" value="{interfase}"/>
   </form>
 </div>

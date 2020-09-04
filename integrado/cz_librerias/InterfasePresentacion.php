@@ -172,7 +172,7 @@ class InterfasePresentacion {
     
     $n = 0;
     $total_valor = 0;
-    
+
     if($this->datos->N == 0) {
       if(!empty($arregloDatos[accion])) {
         $mensaje = 'No hay Registros a que generar Interfase';
@@ -199,6 +199,10 @@ class InterfasePresentacion {
       case 3:
         // Interface FoxconPro
         $this->getInterfaseFoxconPro($arregloDatos,$unArchivo);
+        break;
+      case 4:
+        // Interface WorldOffice
+        $this->getInterfaseWorldOffice($arregloDatos,$unArchivo);
         break;
     }
   }
@@ -294,6 +298,7 @@ class InterfasePresentacion {
     $this->plantilla->setVariable('total_valor',$total_valor);
     $this->plantilla->setVariable('mensaje', $mensaje);
     $this->plantilla->setVariable('estilo', $estilo);
+    $this->plantilla->setvariable('tipo_interfase', $arregloDatos[tipo_interfase]);
 
     $this->plantilla->show();
   }
@@ -441,7 +446,8 @@ class InterfasePresentacion {
     $this->plantilla->setVariable('total_valor', $total_valor);
     $this->plantilla->setVariable('mensaje', $mensaje);
     $this->plantilla->setVariable('estilo', $estilo);
-    $this->plantilla->setVariable('nombre_interfase', "Interfase " . $arregloDatos[nombre_interfase]);
+    $this->plantilla->setVariable('nombre_interfase', "Interface " . $arregloDatos[nombre_interfase]);
+    $this->plantilla->setvariable('tipo_interfase', $arregloDatos[tipo_interfase]);
     $this->plantilla->show();
   }
 
@@ -556,6 +562,7 @@ class InterfasePresentacion {
     $this->plantilla->setVariable('total_interfase_f',number_format($total_valor,0,',','.'));
     $this->plantilla->setVariable('mensaje', $mensaje);
     $this->plantilla->setVariable('estilo', $estilo);
+    $this->plantilla->setvariable('tipo_interfase', $arregloDatos[tipo_interfase]);
 
     $this->plantilla->show();
   }
@@ -789,6 +796,77 @@ class InterfasePresentacion {
 
     //Sucursal
     $unArchivo->escribirContenido($linea . "\n");
+  }
+
+  // Genera Interface WorldOffice - Fredy Salom - Domingo 30/08/2020
+  function getInterfaseWorldOffice($arregloDatos,$unArchivo) {
+    $unPrefijo = new Interfase();
+    while($this->datos->fetch()) {
+      $arregloDatos[total_interfase] = $arregloDatos[total_interfase] + $this->datos->valor;
+      $arregloDatos[total_interfase_f] = number_format($arregloDatos[total_interfase],0,',','.');
+
+      $arregloDatos[sede] = $this->datos->sede;
+      $arregloDatos[nombre_cliente] = $this->datos->nombre_cliente;
+      $unPrefijo->obtenerPrefijo($arregloDatos);
+      // Se obtiene el Prefijo de la resolución actualizada
+      $unPrefijo->fetch();
+      $arregloDatos[prefijo] = $unPrefijo->prefijo;
+      $arregloDatos[numero_oficial] = $this->datos->numero_oficial;
+      $arregloDatos[fecha_factura] = fechaddmmaaaa($this->datos->fecha_factura);
+      $arregloDatos[intermediario] = $this->datos->intermediario;
+      $arregloDatos[facturado_a] = $this->datos->nit;
+      $arregloDatos[nota] = $this->datos->observaciones;
+      $arregloDatos[forma_pago] = $this->datos->efectivo==1 ? "Contado" : "Credito";
+      $arregloDatos[verificada] = $this->datos->verificada;
+      $arregloDatos[anulada] = $this->datos->anulada;
+      $arregloDatos[cuenta] = $this->datos->cuenta;
+      $arregloDatos[porcentaje] = $this->datos->porcentaje;
+      $arregloDatos[srviva] = $this->datos->srviva;
+      $arregloDatos[base] = $this->datos->base;
+      $arregloDatos[descuento] = $this->datos->descuento;
+      $arregloDatos[vencimiento] = fechaddmmaaaa($this->datos->fecha_salida);
+      $arregloDatos[valor] = round($this->datos->valor);
+      //Se Recalcula Total por el tema  del redondeo
+      $arregloDatos[total] = round($this->datos->subtotal) + round($this->datos->ivam) - round($this->datos->rte_fuentem) - round($this->datos->rte_ivam) - round($this->datos->rte_icam) - ($this->datos->valor_anticipo + $arregloDatos[total_anticipos]);
+      /*$arregloDatos[vendedor] = $this->datos->codigo_vendedor;
+      $arregloDatos[centro_costo] = $this->datos->centro_costo;
+
+      $arregloDatos[subcentro_costo] = $this->datos->subcentro_costo;
+      $arregloDatos[credito] = $this->datos->credito;*/
+
+      if($factura_actual == 0) {
+        $factura_actual = $this->datos->factura;
+      }
+      if($factura_actual <> $this->datos->factura) {
+        $secuencia = 0;
+      }
+      $secuencia = $secuencia + 1;
+      $arregloDatos[secuencia] = $secuencia;
+      $this->plantilla->setCurrentBlock('ROW');
+      $arregloDatos[valor] = number_format($arregloDatos[valor], 0, ',', '.');
+      $this->mantenerDatos($arregloDatos, $this->plantilla);
+      $this->plantilla->setVariable('n', $n + 1);
+      $this->plantilla->setVariable('nombreservicio', $this->datos->nombreservicio);
+      $total_valor = $total_valor + $this->datos->valor;
+      $n = $n + 1;
+
+      if($factura_actual <> $this->datos->factura) {
+        $arregloDatos[factura] = $factura_actual;
+        $factura_actual = $this->datos->factura;
+      }
+
+      if($this->datos->N == $n) {
+        $arregloDatos[factura] = $this->datos->factura;
+      }
+      $this->plantilla->parseCurrentBlock();
+    }
+
+    $this->plantilla->setVariable('total_valor', $total_valor);
+    $this->plantilla->setVariable('mensaje', $mensaje);
+    $this->plantilla->setVariable('estilo', $estilo);
+    $this->plantilla->setVariable('interfase', "Interface " . $arregloDatos[nombre_interfase]);
+    $this->plantilla->setvariable('tipo_interfase', $arregloDatos[tipo_interfase]);
+    $this->plantilla->show();
   }
 
   // Para interfase SIiGO
@@ -1292,6 +1370,5 @@ class InterfasePresentacion {
     }
     $this->creditos = 0;
   }
-
 }
 ?>
