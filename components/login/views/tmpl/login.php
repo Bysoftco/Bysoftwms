@@ -1,94 +1,7 @@
-<stiles>
-
-<script type='text/javascript' src='./integrado/cz_javascript/lib/jquery.autocomplete.js'></script>
-<script>
-function seleccionar(elemento) {
-   var combo = document.forms["envio_datos"].sede_id;
-   var cantidad = combo.length;
-   for (i = 0; i < cantidad; i++) {
-      if (combo[i].value == elemento) {
-         combo[i].selected = true;
-      }   
-   }
-}
-
-$(function() {
-	$("#sede_nombre").autocomplete("index_blank.php?component=login&method=findSede", {
-                width: 260,
-                selectFirst: false
-		});
-		$("#sede_nombre").result(function(event, data, formatted) 
-     	{
-            
-			seleccionar(data[1])
-			
-			//alert(data[1])
-			//document.
-			//$("#facturado_a_nit").val(data[1]);
-			//$("#facturado_a_nit_aux").val(data[1]);                         
-        });
-	
-    	
-	} );
-	</script>
-    
-    <style>
-	.ac_results {
-	padding: 0px;
-	border: 1px solid black;
-	background-color: white;
-	overflow: hidden;
-	z-index: 99999;
-}
-
-.ac_results ul {
-	width: 100%;
-	list-style-position: outside;
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
-
-.ac_results li {
-	margin: 0px;
-	padding: 2px 5px;
-	cursor: default;
-	display: block;
-	/* 
-	if width will be 100% horizontal scrollbar will apear 
-	when scroll mode will be used
-	*/
-	/*width: 100%;*/
-	font: menu;
-	font-size: 12px;
-	/* 
-	it is very important, if line-height not setted or setted 
-	in relative units scroll will be broken in firefox
-	*/
-	line-height: 16px;
-	overflow: hidden;
-}
-
-.ac_loading {
-	background: white url('indicator.gif') right center no-repeat;
-}
-
-.ac_odd {
-	background-color: #eee;
-}
-
-.ac_over {
-	background-color: #0A246A;
-	color: white;
-}
-
-	</style>
-
+<link rel="stylesheet" href="integrado/cz_estilos/jquery.autocomplete.css" />
 {COMODIN}
-
 <div id="content">
   <div id="div_login"></div>
-   
   <form name="envio_datos" id="envio_datos" method="post" action="index_blank.php">
     <div class="centraTabla">
       <div id="alerta_error"></div>
@@ -106,11 +19,10 @@ $(function() {
         </tr>
         <tr>
 				  <td class="font_login">Sede : </td>
-          <td><input  type="text" name="sede_nombre" id="sede_nombre"  class="login"/>
+          <td>
+            <input  type="text" name="sede_nombre" id="sede_nombre" class="login"/>
             <select class="login" name="sede_id" id="sede_id" >
-              
               {select_sedes}
-            
             </select>
           </td>
         </tr>
@@ -133,7 +45,30 @@ $(function() {
     <input type="hidden" name="method" id="method" value="mostrarAlertas" />
   </form>
 </div>
+<script type='text/javascript' src='integrado/cz_javascript/lib/jquery.autocomplete.js'>
+</script>
 <script>
+  function seleccionar(elemento) {
+    var combo = document.forms["envio_datos"].sede_id;
+    var cantidad = combo.length;
+
+    for(i=0;i<cantidad;i++) {
+      if(combo[i].value == elemento) {
+        combo[i].selected = true;
+      }   
+    }
+  }
+
+  $(function() {
+    $("#sede_nombre").autocomplete("index_blank.php?component=login&method=findSede", {
+      width: 260,
+      selectFirst: false
+    });
+    $("#sede_nombre").result(function(event, data, formatted) {    
+      seleccionar(data[1]);                       
+    });
+  });
+
   function validar_envio() {
     $.ajax({
       url: $('#envio_datos').attr('action'),

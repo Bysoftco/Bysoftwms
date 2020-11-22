@@ -19,7 +19,7 @@
     </div>
   </div>
   <div id="conversor" title="Conversor de Divisas" style="display:none;">
-    <iframe style="display:block;margin: 0 auto;background:#ffffff;" src="http://dolar.wilkinsonpc.com.co/widgets/oanda-convertidor-divisas-300x250-pub.php" width="300" height="175" align="middle" frameborder="0" scrolling="no">
+    <iframe style="display:block;margin: 0 auto;background:#ffffff;" src="https://dolar.wilkinsonpc.com.co/widgets/oanda-convertidor-divisas-300x250-pub.php" width="300" height="175" align="middle" frameborder="0" scrolling="no">
     </iframe>
   </div>
 </div>

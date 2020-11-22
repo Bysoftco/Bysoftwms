@@ -1,11 +1,9 @@
 <?php 
-class TemplateModelo{
-	
-	function __construct(){
+class TemplateModelo {
+	function __construct() {
 	}
 	
-	function test(){
-		
+	function test() {	
 	}
 }
 ?>

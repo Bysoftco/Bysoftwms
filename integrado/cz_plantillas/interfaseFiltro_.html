@@ -1,0 +1,122 @@
+<script>
+  /***************************************************
+    Modificado para Interfaz FoxConPro - Fredy Salom
+    Enero 27, 2020 - Lunes
+   ***************************************************/
+
+  function EnviarformularioInterfase() {
+    /*	
+    $.ajax({
+      url:'scripts_index.php',
+      type: "POST",
+      async:false,
+      data:$('#formularioInterfase').serialize(),
+      success: function (msm){
+        jQuery(document.body).overlayPlayground('close');void(0);
+        $('#componente_central').html(msm);
+      }
+    });*/
+  }
+  $(document).ready(function() {
+    $("#formularioInterfase{accion}").validate({
+      submitHandler: function(form) {
+        $.ajax({
+          url: 'scripts_index.php',
+          type: "POST",
+          async: false,
+          data: $('#formularioInterfase{accion}').serialize(),
+          success: function (msm) {
+            $( "#ventana_interfase{accion}" ).dialog( "close" );
+						$('#componente_central').html(msm);
+          }
+        }); 
+      }
+		});	
+  });    
+
+  $(function() {
+    $( "#btnConsulta" ).button();
+    $("#fecha_inicio").datepicker();
+    $("#fecha_inicio").datepicker('option', {
+      dateFormat: 'yy/mm/dd',
+      changeYear: true,
+      changeMonth: true,
+      showOn: 'both',
+      buttonImage: 'integrado/imagenes/calendar.png',
+      buttonImageOnly: true
+    });
+    $('#fecha_inicio').val('{fecha_inicio}');
+    $("#fecha_fin").datepicker();
+    $("#fecha_fin").datepicker('option', {
+      dateFormat: 'yy/mm/dd',
+      changeYear: true,
+      changeMonth: true,
+      showOn: 'both',
+      buttonImage: 'integrado/imagenes/calendar.png',
+      buttonImageOnly: true
+    });
+    //$('#fecha_fin').val('{fecha_fin}');
+  });
+
+  $(function() {
+    $("#buscarCliente{accion}").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
+      width: 260,
+      selectFirst: false
+    });
+
+    $("#buscarCliente{accion}").result(function(event, data, formatted) {
+      if(data) $(this).parent().next().find("input").val(data[1]);
+    });
+    $("#fechaDesde_interfase{accion}").datepicker();
+		$("#fechaDesde_interfase{accion}").datepicker('option', {dateFormat: 'yy/mm/dd',changeYear: true,changeMonth: true,showOn: 'both',buttonImage: 'integrado/imagenes/calendar.png',buttonImageOnly: true
+    });
+		$("#fechaHasta_interfase{accion}").datepicker();
+    $("#fechaHasta_interfase{accion}").datepicker('option', {dateFormat: 'yy/mm/dd',changeYear: true,showOn: 'both',buttonImage: 'integrado/imagenes/calendar.png',buttonImageOnly: true
+    });
+  });	
+</script>
+	
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+<div class="demo">
+  <div id="dialog-form" title="Asignaci&oacute;n de DOs">
+    <p class="validateTips">Seleccione uno o varios filtros para delimitar resultados.</p>
+    <form class="formularioInterfase{accion}" id="formularioInterfase{accion}" method="post" action="javascript:EnviarformularioInterfase()" name="formularioInterfase{accion}">
+      <fieldset class="ui-widget ui-widget-content ui-corner-all">
+        <legend class="ui-widget ui-widget-header ui-corner-all">  
+          <div id="nombre_reporte">Interface</div>
+        </legend>
+   	  
+        <p style="display:{mostrarFiltro};">
+          <label for="ap">Interface <span style="color:red">*</span>:</label>
+          <input name="interfase_filtro" type="text" class=" {requiredName} ui-widget-content"  id="interfase_filtro">
+        </p>
+        <p style="display:{mostrarFiltroEstado};" id="id_fecha_desde">
+          <label for="curl">Fecha Desde:</label>
+    		  <input type="text" name="fechaDesde" id="fechaDesde_interfase{accion}" class=" ui-widget-content" placeholder="aaaa/mm/dd"/>
+        </p>
+		
+        <p style="display:{mostrarFiltroEstado};"  id="id_fecha_hasta">
+          <label for="curl">Fecha Hasta:</label>
+    		  <input type="text" name="fechaHasta" id="fechaHasta_interfase{accion}" class=" ui-widget-content" placeholder="aaaa/mm/dd"/>
+        </p>
+		
+        <p id="tipo_interfase"> 
+          <label for="curl">Tipo Interfase:</label>
+          <input type="radio" name="tipo_interfase" value="1" checked>
+          Siigo 
+          <input type="radio" name="tipo_interfase" value="2">
+          Helisa
+          <input type="radio" name="tipo_interfase" value="3">
+          FoxconPro
+        </p>
+      </fieldset>
+      <input name="aux" type="hidden" id="aux2" value="{restrinje}">
+      <input name="clase" type="hidden" id="claseOrden" value="Interfase">
+      <input name="metodo" type="hidden" id="metodoOrden" value="{metodoAux}">
+      <input name="filtro" type="hidden" id="filtro" value="1">
+      <input name="comodin" type="hidden" id="comodin" value="{comodin}">
+      <input name="accion" type="hidden" id="accion" value="{accion}">
+    </form>
+    <p id="msgfiltrois">El campo marcado con un asterisco (<span style="color:red">*</span>) es obligatorio.</p>
+  </div>
+</div>

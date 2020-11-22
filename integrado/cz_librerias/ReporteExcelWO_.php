@@ -1,11 +1,11 @@
 <?php
-require_once('./libraries/classes/PHPExcel.php');
+require_once("./libraries/classes/PHPExcel.php");
 
-class reporteExcelWO {
+class ReporteExcelWO {
   var $objPHPExcel;
   var $objWriter;
   
-  function reporteExcelWO() {
+  function ReporteExcelWO() {
     $this->objPHPExcel = new PHPExcel();
   }
   
