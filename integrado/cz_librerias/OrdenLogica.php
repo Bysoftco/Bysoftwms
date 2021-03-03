@@ -277,20 +277,17 @@ class OrdenLogica {
 		return  $htmlDatosOrden;
 	}
 
-	function addArribo($arregloDatos) 
-	{
-	
+	function addArribo($arregloDatos) {
 		$arregloDatos[tab_index] = 1;
-    	//Valida creación arribo desde Orden Crear
-   		if($arregloDatos[flgnewa]) 
-		{
+		//Valida creación arribo desde Orden Crear
+		if($arregloDatos[flgnewa]) {
 			$arregloDatos = $this->datos->newArribo($arregloDatos);
-      		$unaLista = new Orden();
-      		$lista = $unaLista->lista('transportador','','');
-		  	$lista = armaSelect($lista,'[seleccione]',$arregloDatos['transportador']);		
-      		$arregloDatos[selectTransportador] = $lista;
-    	}
-	
+			$unaLista = new Orden();
+			$lista = $unaLista->lista('transportador','','');
+			$lista = armaSelect($lista,'[seleccione]',$arregloDatos['transportador']);		
+			$arregloDatos[selectTransportador] = $lista;
+		}
+
 		$this->datos->addArribo($arregloDatos);
 		$this->pantalla->ordenArriboMaestro($arregloDatos,$this->datos);
 	}
@@ -439,6 +436,21 @@ class OrdenLogica {
 			echo "No hay Resultados|0\n";
 		}	
 	}
+
+ 	function findShipper($arregloDatos) {
+		$unaConsulta = new Orden();
+
+		$unaConsulta->findShipper($arregloDatos);
+		$arregloDatos[q] = strtolower($_GET["q"]);
+
+		while($unaConsulta->fetch()) {
+			$nombre = trim($unaConsulta->razon_social);
+ 			echo "$nombre\n";
+		}
+		if($unaConsulta->N == 0) {
+			echo "No hay Resultados|0\n";
+		}	
+	}	
 	
 	function updateOrden($arregloDatos) {
 		$this->datos->updateOrden($arregloDatos);

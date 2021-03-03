@@ -167,7 +167,7 @@ class ClientesModelo extends BDControlador {
   function datosReferencias($arreglo) {
     $db = $_SESSION['conexion'];
     $query = "SELECT * FROM referencias WHERE cliente = '$arreglo[documento]'";
-   //echo  $query;
+
     $db->query($query);
     return $db->getArray();
   }
@@ -200,14 +200,13 @@ class ClientesModelo extends BDControlador {
                   unidad_venta, presentacion_venta, fecha_expira, min_stock, alto, largo,
                   ancho, serial, tipo, grupo_item, factor_conversion,vigencia,parte_numero,lote_cosecha)
                 VALUES('$arreglo[id_referencia]', '$arreglo[SKU_Proveedor]', '$arreglo[nombre_referencia]',
-                  '$arreglo[cliente]', $arreglo[embalaje_referencia], '$arreglo[unidad_referencia]',
-                  $arreglo[presenta_venta], $arreglo[vence_referencia], $arreglo[minimo_stock], $arreglo[alto_referencia],
+                  '$arreglo[cliente]', $arreglo[embalaje_referencia], $arreglo[unidad_referencia],
+                  '$arreglo[presenta_venta]', $arreglo[vence_referencia], $arreglo[minimo_stock], $arreglo[alto_referencia],
                   $arreglo[largo_referencia], $arreglo[ancho_referencia], $arreglo[serial_referencia],
-                  '$arreglo[tipo_referencia]', RIGHT('$arreglo[grupo_items]',4),$arreglo[factor_conversion],'$arreglo[vigencia]',
+                  $arreglo[tipo_referencia], RIGHT('$arreglo[grupo_items]',4),$arreglo[factor_conversion],'$arreglo[vigencia]',
 				  '$arreglo[parte_numero]','$arreglo[lote_cosecha]')";
-                  
-      //echo  $query;
-	  $db->query($query);
+
+      $db->query($query);
       return $db->getInsertID();
     }  
   }
@@ -217,26 +216,83 @@ class ClientesModelo extends BDControlador {
 
     $query = "INSERT INTO grupo_items(codigo,numide,nombre)
                 VALUES(RIGHT('$arreglo[numero_documento]',4),'$arreglo[numero_documento]',UPPER('$arreglo[razon_social]'))";
-                  
+
     $db->query($query);
+
     return true;
   }
-  
+
+  //Función Creada por Fredy Salom - 21/01/2021
+  function obtenerGrupoItems($arreglo) {
+    $db = $_SESSION['conexion'];
+
+    $query = "SELECT nombre FROM grupo_items WHERE numide = '$arreglo[numero_documento]'";
+
+    $db->query($query);
+
+    return $db->fetch();
+  }
+
+  //Función Creada por Fredy Salom - 21/01/2021
+  function obtenerCodigoUnidadMedida($arreglo) {
+    $db = $_SESSION['conexion'];
+
+    $query = "SELECT codigo FROM unidades_medida WHERE id = $arreglo[id]";
+
+    $db->query($query);
+
+    return $db->fetch();
+  }
+
+  //Función Creada por Fredy Salom - 22/01/2021
+  function obtenerIdUnidadInventario($arreglo) {
+    $db = $_SESSION['conexion'];
+
+    $query = "SELECT id FROM unidades_medida WHERE codigo = '$arreglo[presenta_venta]'";
+
+    $db->query($query);
+
+    return $db->fetch();
+  }
+ 
+  //Función Creada por Fredy Salom - 21/01/2021
+  function obtenerCodUnidadMedida($arreglo) {
+    $db = $_SESSION['conexion'];
+
+    $query = "SELECT * FROM unidades_medida WHERE codigo = '$arreglo[codigo_unidadmedida]'";
+
+    $db->query($query);
+
+    return $db->getArray();
+  }
+
   function editarReferencia($arreglo) {
     $arreglo[vence_referencia] = (isset($arreglo[vence_referencia])?1:0);
     $arreglo[serial_referencia] = (isset($arreglo[serial_referencia])?1:0);
     $arreglo[minimo_stock] = (isset($arreglo[minimo_stock])?1:0);
     $db = $_SESSION['conexion'];
-    
-    $query = "UPDATE referencias SET ref_prove = '$arreglo[SKU_Proveedor]', nombre = '$arreglo[nombre_referencia]', 
-                cliente = '$arreglo[cliente]', unidad = $arreglo[embalaje_referencia], unidad_venta = '$arreglo[unidad_referencia]',
-                presentacion_venta = $arreglo[presenta_venta], fecha_expira = $arreglo[vence_referencia],
-                min_stock = $arreglo[minimo_stock], alto = $arreglo[alto_referencia], largo = $arreglo[largo_referencia], 
-                ancho = $arreglo[ancho_referencia], serial = $arreglo[serial_referencia], tipo = $arreglo[tipo_referencia],
-                grupo_item = '$arreglo[grupo_items]', factor_conversion = $arreglo[factor_conversion],parte_numero='$arreglo[parte_numero]',
-				vigencia='$arreglo[vigencia]'
-              WHERE (codigo_ref = '$arreglo[id_referencia]') AND (cliente = '$arreglo[cliente]')";
+ 
+    //Organizado por Fredy Salom - 21/01/2021   
+    $query = "UPDATE referencias SET ref_prove = '$arreglo[SKU_Proveedor]',".
+             "nombre = '$arreglo[nombre_referencia]',cliente = '$arreglo[cliente]',".
+             "unidad = $arreglo[embalaje_referencia],".
+             "unidad_venta = '$arreglo[unidad_referencia]',".
+             "presentacion_venta = $arreglo[presenta_venta],".
+             "fecha_expira = $arreglo[vence_referencia],".
+             "min_stock = $arreglo[minimo_stock],".
+             "alto = $arreglo[alto_referencia],".
+             "largo = $arreglo[largo_referencia],".
+             "ancho = $arreglo[ancho_referencia],".
+             "serial = $arreglo[serial_referencia],".
+             "tipo = $arreglo[tipo_referencia],".
+             "factor_conversion = $arreglo[factor_conversion],".
+             "parte_numero = '$arreglo[parte_numero]',".
+             "vigencia = '$arreglo[vigencia]'".
+             "WHERE (codigo_ref = '$arreglo[id_referencia]')".
+             " AND (cliente = '$arreglo[cliente]')";
+
     $db->query($query);
+
     return true;
   }
   

@@ -72,14 +72,16 @@
           <tr>
             <td align="center">
               <div class="popupsAgregarR borde_circular">
-                <a href="">
+                <!-- Titulo Ventana Agregado por Fredy Salom - 21/01/2021 -->
+                <a href="" title="Agregar Referencia">
                   <img src="img/acciones/agregar.png" title="Agregar Referencia" width="25" height="25" border="0" />
                 </a>
               </div>
             </td>
             <td align="center">
               <div class="popupsEditarR borde_circular noSeleccion">
-                <a href="">
+                <!-- Titulo Ventana Agregado por Fredy Salom - 21/01/2021 -->
+                <a href="" title="Editar Referencia">
                   <img src="img/acciones/edit.png" title="Editar Referencia" width="25" height="25" border="0" />
                 </a>
               </div>
@@ -198,9 +200,10 @@
       height: 285,
       overlay: {
         clickToClose: false,
-        background: '#000000'},
+        background: '#000000'
+      },
       onclose: function() {$('.formError').remove();},
-	    before: function() {
+      before: function() {
 		    var numero_documento = $('#numero_documento').attr('value');
         $.ajax({
           url: 'index_blank.php?component=clientes&method=agregarReferencia',
@@ -220,7 +223,8 @@
       height: 285,
       overlay: {
         clickToClose: false,
-        background: '#000000'},
+        background: '#000000'
+      },
       onclose: function() {$('.formError').remove();},
       before: function() {
 		    var numero_documento = $('#numero_documento').attr('value');

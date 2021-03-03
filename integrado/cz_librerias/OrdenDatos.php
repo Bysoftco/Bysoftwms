@@ -110,7 +110,7 @@ class Orden extends MYDB {
 						FROM clientes,vendedores v
             WHERE (razon_social LIKE '%$arregloDatos[q]%' OR  numero_documento  LIKE '%$arregloDatos[q]%')           
               AND (v.codigo = vendedor)";
-//echo $sql;
+
 		$this->query($sql);
 		if($this->_lastError) {
 			echo $sql;
@@ -234,6 +234,17 @@ class Orden extends MYDB {
 	function findPaisCompra($arregloDatos) {
 		$sql = "SELECT codigo,nombre
 						FROM paises WHERE (nombre LIKE '%$arregloDatos[q]%') ORDER BY nombre";
+            
+		$this->query($sql);
+		if($this->_lastError) {
+			echo $sql;
+			return TRUE;
+		}
+	}
+
+	function findShipper($arregloDatos) {
+		$sql = "SELECT razon_social
+						FROM clientes WHERE (razon_social LIKE '%$arregloDatos[q]%' AND tipo = 8) ORDER BY razon_social";
             
 		$this->query($sql);
 		if($this->_lastError) {
@@ -662,7 +673,9 @@ class Orden extends MYDB {
     $arregloDatos[fecha_doc_tt] = $this->fecha_doc_tt;
     $arregloDatos[tipo_documento] = $this->tipo_documento;
     $arregloDatos[metros] = 1;
-    $arregloDatos[estibas] = 1;$arregloDatos[valor_fob] = 1;
+    $arregloDatos[estibas] = 1;
+    $arregloDatos[trm]=1;$arregloDatos[cif] = 1;
+    $arregloDatos[fob] = 1;$arregloDatos[valor_fob] = 1;
     $arregloDatos[seguros] = 1;$arregloDatos[otros_gastos] = 0;
     $arregloDatos[fletes] = 1;
     $arregloDatos[parcial] = $this->paiscompra;$arregloDatos[fmm] = $this->fmm;
@@ -706,6 +719,9 @@ class Orden extends MYDB {
                     seguros='$arregloDatos[seguros]',
                     otros_gastos='$arregloDatos[otros_gastos]',
 										fletes='$arregloDatos[fletes]',
+										trm='$arregloDatos[trm]',
+										cif='$arregloDatos[cif]',
+										fob='$arregloDatos[fob]',
 										valor_fob='$arregloDatos[valor_fob]',
 										moneda='$arregloDatos[moneda]',
 										hora_llegada='$arregloDatos[hora_llegada]',
@@ -734,6 +750,7 @@ class Orden extends MYDB {
 		if(empty($arregloDatos[peso_bruto])){$arregloDatos[peso_bruto]=0;}
 		$fecha = date('Y/m/d');
     $nombre_sede = $_SESSION['nombre_sede'];    
+
     //Valida creación arribo desde Orden Crear
     if($arregloDatos[flgnewa]) {
 	

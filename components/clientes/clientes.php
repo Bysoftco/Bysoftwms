@@ -108,11 +108,15 @@ class clientes {
       $arreglo[nombre_referencia] = 'BULTOS O PIEZAS';
       $arreglo[cliente] = $arreglo['numero_documento'];
       $arreglo[embalaje_referencia] = 3; $arreglo[unidad_referencia] = 6;
-      $arreglo[presenta_venta] = '45'; $arreglo[vence_referencia] = 0;
+      $arreglo[presenta_venta] = '24'; $arreglo[vence_referencia] = 0;
       $arreglo[minimo_stock] = 0; $arreglo[alto_referencia] = 1;
       $arreglo[largo_referencia] = 1; $arreglo[ancho_referencia] = 1;
       $arreglo[serial_referencia] = 0; $arreglo[tipo_referencia] = 15;
-      $arreglo[grupo_items] = $arreglo['numero_documento']; $arreglo[factor_conversion] = 1;
+      $arreglo[grupo_items] = $arreglo['numero_documento'];
+      $arreglo[factor_conversion] = 1; $arreglo[parte_numero] = '1';
+      $arreglo[lote_cosecha] = '0';
+      //Inicializa Fecha de Vigencia con la Fecha Actual
+      $arreglo[vigencia] = date('Y-m-d'); //Autor: Fredy Salom - Fecha: 21/01/2021
       $arreglo['automatica'] = 1;
       $this->nuevaReferencia($arreglo);
       $arreglo['alerta_accion'] = 'Cliente Creado Con &Eacute;xito';
@@ -189,15 +193,20 @@ class clientes {
     $lista_tiporef = $this->datos->build_list("tipos_referencias", "codigo", "nombre"," ORDER BY nombre ");
     $arreglo['select_tiporef'] = $this->datos->armSelect($lista_tiporef, 'Seleccione Tipo Referencia...', 0);
 
-    $lista_unidad = $this->datos->build_list("unidades_medida", "id", "medida"," ORDER BY medida ");
-    $arreglo['select_unidad'] = $this->datos->armSelect($lista_unidad, 'Seleccione Unidad...', 1);
+    //Implementada por Fredy Salom - 22/01/2021
+    $lista_unidad = $this->datos->build_list("unidades_medida", "codigo", "medida"," ORDER BY medida ");
+    $arreglo['select_unidad'] = $this->datos->armSelect($lista_unidad, 'Seleccione Unidad...', 'U');
 
-    $lista_tipoemb = $this->datos->build_list("embalajes ", "codigo", "nombre"," ORDER BY nombre ");
-    $arreglo['select_tipoemb'] = $this->datos->armSelect($lista_tipoemb, 'Seleccione Presentacion Venta...', 0);
-    
-    $lista_grupo = $this->datos->build_list("grupo_items", "codigo", "nombre"," ORDER BY nombre ");
-    $arreglo['select_grupo'] = $this->datos->armSelect($lista_grupo, 'Seleccione Grupo Items...', 0);
+    //Implementada por Fredy Salom - 21/01/2021
+    $lista_tipoemb = $this->datos->build_list("unidades_medida", "codigo", "medida"," ORDER BY medida ");
+    $arreglo['select_tipoemb'] = $this->datos->armSelect($lista_tipoemb, 'Seleccione Unidad...', 'U');
 
+    //Obtiene Grupo Item del Cliente - Autor: Fredy Salom - Fecha: 21/01/2021
+    $arreglo['grupo_item'] = $this->datos->obtenerGrupoItems($arreglo);
+
+    //Obtiene Código Unidad de Medida - Autor: Fredy Salom - Fecha: 21/01/2021
+    $arreglo['codigo_unidadmedida'] = 'U';
+		$arreglo['cod_uniref'] = $this->datos->obtenerCodUnidadMedida($arreglo);
 
     $this->vista->agregarReferencia($arreglo);
   }
@@ -208,6 +217,12 @@ class clientes {
       $arreglo['documento'] = $arreglo['cliente'];
       $arreglo['datosReferencias'] = $this->datos->datosReferencias($arreglo);
     } else {
+			//Obtiene Id Unidad de Medida - Autor: Fredy Salom - Fecha: 22/01/2021
+			$arreglo['presenta_venta'] = $this->datos->obtenerIdUnidadInventario($arreglo);
+			$arreglo['presenta_venta'] = $arreglo['presenta_venta']->id;
+			//Obtiene Código Unidad de Medida - Autor: Fredy Salom - Fecha: 21/01/2021
+			$arreglo['cod_uniref'] = $this->datos->obtenerCodUnidadMedida($arreglo);
+			$arreglo['unidad_referencia'] = $arreglo['cod_uniref'][0]['id'];
       $arreglo['id_referencia'] = $this->datos->editarReferencia($arreglo);
       $arreglo['documento'] = $arreglo['cliente'];
       $arreglo['datosReferencias'] = $this->datos->datosReferencias($arreglo);
@@ -224,20 +239,29 @@ class clientes {
   }
 
   function editarReferencia($arreglo) {
-  
     $arreglo['infoReferencia'] = $this->datos->datosReferenciaCliente($arreglo);
 
     $lista_tiporef = $this->datos->build_list("tipos_referencias", "codigo", "nombre");
     $arreglo['select_tiporef'] = $this->datos->armSelect($lista_tiporef, 'Seleccione Tipo Referencia...', $arreglo['infoReferencia']->tipo);
 
-    $lista_unidad = $this->datos->build_list("unidades_medida", "id", "medida");
-    $arreglo['select_unidad'] = $this->datos->armSelect($lista_unidad, 'Seleccione Unidad Comercial...', $arreglo['infoReferencia']->unidad_venta);
+    //Implementada por Fredy Salom - 21/02/2021
+    $lista_unidad = $this->datos->build_list("unidades_medida", "codigo", "medida"," ORDER BY medida ");
+    $arreglo['id'] = $arreglo['infoReferencia']->presentacion_venta;
+    $arreglo['presenta_venta'] = $this->datos->obtenerCodigoUnidadMedida($arreglo);
+    $arreglo['select_unidad'] = $this->datos->armSelect($lista_unidad, 'Seleccione Unidad...', $arreglo['presenta_venta']->codigo);
 
-    $lista_tipoemb = $this->datos->build_list("embalajes ", "codigo", "nombre");
-    $arreglo['select_tipoemb'] = $this->datos->armSelect($lista_tipoemb, 'Seleccione Unidad Inventario...', $arreglo['infoReferencia']->presentacion_venta);
-    
-    $lista_grupo = $this->datos->build_list("grupo_items", "codigo", "nombre");
-    $arreglo['select_grupo'] = $this->datos->armSelect($lista_grupo, 'Seleccione Grupo Items...', $arreglo['infoReferencia']->grupo_item);
+    //Implementada por Fredy Salom - 21/01/2021
+    $lista_tipoemb = $this->datos->build_list("unidades_medida", "codigo", "medida"," ORDER BY medida ");
+    $arreglo['id'] = $arreglo['infoReferencia']->unidad_venta;
+    $arreglo['codigo_unidadmedida'] = $this->datos->obtenerCodigoUnidadMedida($arreglo);
+    $arreglo['select_tipoemb'] = $this->datos->armSelect($lista_tipoemb, 'Seleccione Unidad...', $arreglo['codigo_unidadmedida']->codigo);
+
+ 		//Obtiene Grupo Item del Cliente - Autor: Fredy Salom - Fecha: 21/01/2021
+    $arreglo['grupo_item'] = $this->datos->obtenerGrupoItems($arreglo);
+
+    //Obtiene Código Unidad de Medida - Autor: Fredy Salom - Fecha: 21/01/2021
+    $arreglo['codigo_unidadmedida'] = $arreglo['codigo_unidadmedida']->codigo;
+    $arreglo['cod_uniref'] = $this->datos->obtenerCodUnidadMedida($arreglo);
 
     $arreglo['accion'] = 1;
 

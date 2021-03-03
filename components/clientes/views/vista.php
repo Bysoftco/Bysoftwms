@@ -47,7 +47,7 @@ class ClientesVista {
     $this->template->show();
   }
 	
-  function agregarCliente($arreglo) {  
+  function agregarCliente($arreglo) {
     $this->template->loadTemplateFile( COMPONENTS_PATH . 'clientes/views/tmpl/editarCliente.php' );
     $this->template->setVariable('COMODIN', '');
     
@@ -250,9 +250,8 @@ class ClientesVista {
     $template->setVariable('vigencia'         , isset($value['vigencia'])?$value['vigencia']:'' );
     $template->show();
   }
-  // 
-  function verReferencias($arreglo) {
 
+  function verReferencias($arreglo) {
     $template = new HTML_Template_IT();
     $template->loadTemplateFile( COMPONENTS_PATH . 'clientes/views/tmpl/verReferencias.php' );
     $template->setVariable('COMODIN', '' );
@@ -260,8 +259,6 @@ class ClientesVista {
     
     if(!is_null($arreglo['datosReferencias'])) {
       foreach($arreglo['datosReferencias'] as $key => $value) {
-	  	
-	  	
         $template->setCurrentBlock("ROW");
         $template->setVariable('id_referencia'	   , $value['codigo_ref'] );
         $template->setVariable('nombre_referencia' , $value['nombre'] );
@@ -278,17 +275,17 @@ class ClientesVista {
         $template->setVariable('minimo_stock', $value['min_stock']);
         $template->setVariable('grupo_items', $value['grupo_item']);
         $template->setVariable('factor_conversion', $value['factor_conversion']);
-		$template->setVariable('parte_numero', $value['parte_numero']);
-		$template->setVariable('vigencia', $value['vigencia']);
-		$template->parseCurrentBlock("ROW");
+        $template->setVariable('parte_numero', $value['parte_numero']);
+        $template->setVariable('vigencia', $value['vigencia']);
+        $template->parseCurrentBlock("ROW");
       }  
     }
     
     $template->show();
   }
+
   //Abre ventana formulario nueva referencia y editar referencia
   function agregarReferencia($arreglo) {
- 
     $this->template->loadTemplateFile( COMPONENTS_PATH . 'clientes/views/tmpl/agregarReferencia.php' );
     $this->template->setVariable('COMODIN', '' );
     $this->template->setVariable('id_referencia', isset($arreglo['infoReferencia']->codigo_ref)?$arreglo['infoReferencia']->codigo_ref:'');
@@ -297,6 +294,7 @@ class ClientesVista {
     $this->template->setVariable('SKU_Proveedor', isset($arreglo['infoReferencia']->ref_prove)?$arreglo['infoReferencia']->ref_prove:'');
     $this->template->setVariable('select_unidad', $arreglo['select_unidad']);
     $this->template->setVariable('select_tipoemb', $arreglo['select_tipoemb']);
+    $this->template->setVariable('cod_uniref', $arreglo['cod_uniref'][0]['codigo']);
     $this->template->setVariable('ancho_referencia', isset($arreglo['infoReferencia']->ancho)?$arreglo['infoReferencia']->ancho:1);
     $this->template->setVariable('largo_referencia', isset($arreglo['infoReferencia']->largo)?$arreglo['infoReferencia']->largo:1);
     $this->template->setVariable('alto_referencia', isset($arreglo['infoReferencia']->alto)?$arreglo['infoReferencia']->alto:1);
@@ -304,29 +302,29 @@ class ClientesVista {
     if($arreglo['infoReferencia']->fecha_expira==1) $this->template->setVariable('vence_referencia','checked');
     if($arreglo['infoReferencia']->serial==1) $this->template->setVariable('serial_referencia','checked');
     if($arreglo['infoReferencia']->min_stock==1) $this->template->setVariable('minimo_stock','checked');
-	$this->template->setVariable('parte_numero', $arreglo['infoReferencia']->parte_numero);
-	$this->template->setVariable('vigencia', $arreglo['infoReferencia']->vigencia);
-	$this->template->setVariable('ancho', $arreglo['infoReferencia']->ancho);
-	$this->template->setVariable('largo', $arreglo['infoReferencia']->largo);
-	$this->template->setVariable('alto', $arreglo['infoReferencia']->alto);
-	$this->template->setVariable('lote_cosecha', $arreglo['infoReferencia']->lote_cosecha);	
-	if(empty($arreglo['infoReferencia']->codigo_ref)){
-		$this->template->setVariable('parte_numero', '1');
-	}
-	if(empty($arreglo['infoReferencia']->codigo_ref)){
-		 $fecha = new DateTime();
-         $fecha = $fecha->format('Y-m-d');
-		$this->template->setVariable('vigencia',  $fecha);
-	}
-	if(empty($arreglo['infoReferencia']->ancho)){
-		$this->template->setVariable('ancho', '1');
-	}
-	if(empty($arreglo['infoReferencia']->largo)){
-		$this->template->setVariable('largo', '1');
-	}
-	if(empty($arreglo['infoReferencia']->alto)){
-		$this->template->setVariable('alto', '1');
-	}
+    $this->template->setVariable('parte_numero', $arreglo['infoReferencia']->parte_numero);
+    $this->template->setVariable('vigencia', $arreglo['infoReferencia']->vigencia);
+    $this->template->setVariable('grupo_item', $arreglo['grupo_item']->nombre);
+    $this->template->setVariable('ancho', $arreglo['infoReferencia']->ancho);
+    $this->template->setVariable('largo', $arreglo['infoReferencia']->largo);
+    $this->template->setVariable('alto', $arreglo['infoReferencia']->alto);
+    $this->template->setVariable('lote_cosecha', $arreglo['infoReferencia']->lote_cosecha);
+
+    if(empty($arreglo['infoReferencia']->codigo_ref)) {
+      $this->template->setVariable('parte_numero', '1');
+    }
+
+    if(empty($arreglo['infoReferencia']->ancho)){
+      $this->template->setVariable('ancho', '1');
+    }
+
+    if(empty($arreglo['infoReferencia']->largo)){
+      $this->template->setVariable('largo', '1');
+    }
+
+    if(empty($arreglo['infoReferencia']->alto)){
+      $this->template->setVariable('alto', '1');
+    }
 	
     $this->template->setVariable('select_grupo', $arreglo['select_grupo']);
     $this->template->setVariable('factor_conversion', isset($arreglo['infoReferencia']->factor_conversion)?$arreglo['infoReferencia']->factor_conversion:1);

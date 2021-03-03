@@ -49,6 +49,29 @@
     }
     inconsistencia = " El ARRIBO "+$("#arribo").val()+" presenta una INCONSISTENCIA de ";
   }
+
+	//Implementación Cálculo CIF y FOB - Autor: Fredy Salom
+	//Fecha: Domingo, 21 de Febrero de 2021
+	function calcula_ciffob() {
+		var trm = $("#trm").val();
+		var moneda = $("#select").val();
+
+		//Validamos si TRM es igual a 0
+		if(trm==0) {
+			alert("Error, la TRM debe ser un valor diferente de 0");
+		} else {
+			//Validamos el Tipo de Moneda
+			if(moneda==2) { //Dólar
+				//Asignamos FOB y Calculamos CIF en Pesos
+				$("#fob").val($('#valor_fob').val());
+				$("#cif").val($('#valor_fob').val()*trm);
+			} else {
+				//Asignamos CIF y Calculamos FOB en Dólares
+				$("#cif").val($('#valor_fob').val());
+				$("#fob").val($('#valor_fob').val()/trm);
+			}
+		}
+	}
   
   //Verifica Tipo de Documento para inicializar las planillas
   if(($("#tipo_documento").val() == 'GA') || ($("#tipo_documento").val() == 'CP')) {
@@ -126,7 +149,18 @@
 		.click(function() {
 			//$('.verInventario a').click();		
 		});
-		
+
+		//Implementación Autocompletar Shipper/Remitente - Autor: Fredy Salom
+		//Fecha: Domingo, 31 de Enero de 2021
+		$("#shipper{id_form}").autocomplete("./scripts_index.php?clase=Orden&metodo=findShipper", {
+			width: 260,
+			selectFirst: false
+		});
+
+		$("#shipper{id_form}").result(function(event, data, formatted) {
+			$("#shipper{id_form}").val(data[0])
+		}); //Final Autocompletar Shipper/Remitente
+
 		$("#placa{id_form}").autocomplete("./scripts_index.php?clase=Orden&metodo=findConductor", {
 			width: 260,
 			selectFirst: false
@@ -336,7 +370,7 @@
 								<td><input name="agente" type="text" id="agente2" value="{agente}" size="15" class="ui-widget-content" /></td>
 								<td><input name="origen" type="text" class=" required ui-widget-content"id="origen" value="{origen}" size="15" /></td>
 								<td><input name="destino" type="text" class=" required ui-widget-content" id="destino" value="{destino}" size="15" /></td>
-								<td><input name="shipper" type="text"  class=" required ui-widget-content" id="shipper" value="{shipper}" size="15" /></td>
+								<td><input name="shipper" type="text"  class="required ui-widget-content" id="shipper{id_form}" value="{shipper}" size="15" /></td>
 								<td>
                 	<input name="manifiesto" type="text" class=" required ui-widget-content" id="manifiesto2" value="{manifiesto}" size="20" maxlength="15"
                   	 minlength="15" />
@@ -455,6 +489,7 @@
                 <th style="width:1%;">Seguros</th>
                 <th style="width:1%;">Otros Gastos</th>
                 <th style="width:1%;">Valor FOB/CIF</th>
+                <th style="width:1%;">TRM</th>
                 <th style="width:1%;">Moneda</th>
 							</tr>
 							<tr> 
@@ -476,10 +511,15 @@
 								</td>
 								<td style="white-space:nowrap;">
               		<input name="valor_fob" type="text" style="text-align:right;" id="valor_fob" value="{valor_fob}" size="20"
-                		class="required number ui-widget-content" />
+                		class="required number ui-widget-content" onchange="calcula_ciffob();" />
+                	<input name="cif" type="hidden" id="cif" value="{cif}" />
+                	<input name="fob" type="hidden" id="fob" value="{fob}" />	
+              	</td>
+              	<td style="white-space:nowrap;">
+              		<input name="trm" type="text" style="text-align:right;" id="trm" value="{trm}" size="20" class="required number ui-widget-content" onchange="calcula_ciffob();" />
               	</td>
 								<td style="white-space:nowrap;">
-                  <select name="moneda" id="select" class="required ui-widget-content">{selectMonedas}</select>
+                  <select name="moneda" id="select" class="required ui-widget-content" onchange="calcula_ciffob();">{selectMonedas}</select>
                 </td>
 							</tr>
 						</table>
@@ -517,13 +557,13 @@
                 <button class="submit" type="button" id="btnInventario{id_form}" style="display:{mostrarInventario};">Inventario</button>
                 <button class="submit" type="button" id="btnBorrar{id_form}" >Borrar</button>
               </td>
-              <td>
+              <!-- <td>
                 <div class="noMostrar">
                   <button class="submit" type="button" id="btnBascula{id_form}" >B&aacute;scula</button>
                   <input id="archivos" type="file" name="archivos[]" multiple="multiple" onchange="seleccionado();" />
                   <span><b style="color:red;">*</b>&nbsp;Los documentos adjuntos deben ser seleccionados desde la misma carpeta.</span>                
                 </div>                           
-              </td>
+              </td> -->
             </tr>
           </table>
         </td>
