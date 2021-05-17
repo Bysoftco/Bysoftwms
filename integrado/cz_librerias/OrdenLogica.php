@@ -451,6 +451,21 @@ class OrdenLogica {
 			echo "No hay Resultados|0\n";
 		}	
 	}	
+
+ 	function findBascula($arregloDatos) {
+		$unaConsulta = new Orden();
+
+		$unaConsulta->findBascula($arregloDatos);
+		$arregloDatos[q] = strtolower($_GET["q"]);
+
+		while($unaConsulta->fetch()) {
+			$nombre = trim($unaConsulta->nombre);
+ 			echo "$nombre\n";
+		}
+		if($unaConsulta->N == 0) {
+			echo "No hay Resultados|0\n";
+		}	
+	}	
 	
 	function updateOrden($arregloDatos) {
 		$this->datos->updateOrden($arregloDatos);

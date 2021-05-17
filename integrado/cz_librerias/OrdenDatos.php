@@ -252,6 +252,18 @@ class Orden extends MYDB {
 			return TRUE;
 		}
 	}
+
+	function findBascula($arregloDatos) {
+		$sede = $_SESSION['sede'];
+		$sql = "SELECT nombre
+						FROM basculas WHERE (nombre LIKE '%$arregloDatos[q]%' AND sede = '$sede') ORDER BY nombre";
+            
+		$this->query($sql);
+		if($this->_lastError) {
+			echo $sql;
+			return TRUE;
+		}
+	}
             
   function listarFotos($arregloDatos) {
 		$sql = "SELECT id, orden, fecha_foto, nombre_foto
@@ -682,6 +694,7 @@ class Orden extends MYDB {
     $arregloDatos[transportador] = $this->transportador;$arregloDatos[agente] = $this->agente;
     $arregloDatos[origen] = $this->origen;$arregloDatos[destino] = $this->destino;
     $arregloDatos[shipper] = $this->shipper;
+    $arregloDatos[bascula] = $this->bascula;
     $arregloDatos[sitio] = $this->sitio;
     $arregloDatos[moneda] = 2;
     
@@ -705,6 +718,7 @@ class Orden extends MYDB {
 										id_camion='$arregloDatos[id_camion]',
 										cantidad='$arregloDatos[cantidad]',
 										peso_bruto='$arregloDatos[peso_bruto]',
+										bascula='$arregloDatos[bascula]',
 										metros='$arregloDatos[metros]',
 										estibas='$arregloDatos[estibas]',
 										ubicacion='$arregloDatos[ubicacion]',
@@ -756,10 +770,7 @@ class Orden extends MYDB {
 	
       $arregloDatos[paiscompra] = $this->findCodigoPais($arregloDatos[paiscompra]);      
 		  $sql = "INSERT INTO arribos(orden,factura,fecha_arribo,manifiesto,fecha_manifiesto,fecha_doc_tt,
-                tipo_documento,cantidad,peso_bruto,repeso,metros,estibas,seguros,otros_gastos,valor_fob,
-                fletes,dice_contener,ubicacion,parcial,fmm,transportador,agente,origen,destino,shipper,
-                placa,id_camion,planilla,planilla_recepcion,peso_planilla,observacion,sitio,
-                fecha_exp,precinto,moneda,hora_llegada)
+                tipo_documento,cantidad,peso_bruto,repeso,metros,estibas,seguros,otros_gastos,valor_fob,fletes,dice_contener,ubicacion,parcial,fmm,transportador,agente,origen,destino,shipper,placa,id_camion,planilla,planilla_recepcion,peso_planilla,bascula,observacion,sitio,fecha_exp,precinto,moneda,hora_llegada)
 						  VALUES('$arregloDatos[do_asignado]','$arregloDatos[factura]','$fecha','$arregloDatos[manifiesto]',
                 '$arregloDatos[fecha_manifiesto]','$arregloDatos[fecha_doc_tt]','$arregloDatos[fecha_doc_tt]',
                 '$arregloDatos[cantidad]','$arregloDatos[peso_bruto]','$arregloDatos[repeso]',
@@ -769,17 +780,17 @@ class Orden extends MYDB {
                 '$arregloDatos[fmm]','$arregloDatos[transportador]','$arregloDatos[agente]',
                 '$arregloDatos[origen]','$arregloDatos[destino]','$arregloDatos[shipper]','$arregloDatos[placa]',
                 '$arregloDatos[id_camion]','$arregloDatos[planilla]','$arregloDatos[planilla_recepcion]',
-                '$arregloDatos[peso_planilla]','$arregloDatos[observacion]','$nombre_sede','$arregloDatos[fecha_exp]',      
+                '$arregloDatos[peso_planilla]','$arregloDatos[bascula]','$arregloDatos[observacion]','$nombre_sede','$arregloDatos[fecha_exp]',      
                 '$arregloDatos[precinto]','$arregloDatos[moneda]','$arregloDatos[hora_llegada]')";
     } else {
       $arregloDatos[parcial] = substr($arregloDatos[origen],strpos($arregloDatos[origen],',')+2,
         strlen($arregloDatos[origen])-(strpos($arregloDatos[origen],',')+2));
       $arregloDatos[paiscompra] = $this->findCodigoPais($arregloDatos[parcial]);
 		  $sql = "INSERT INTO arribos(orden,fecha_arribo,manifiesto,origen,destino,ubicacion,
-                tipo_documento,parcial,sitio,peso_bruto,moneda)
+                tipo_documento,parcial,sitio,peso_bruto,bascula,moneda)
               VALUES('$arregloDatos[do_asignado]','$fecha','$arregloDatos[manifiesto]',
                 '$arregloDatos[origen]','$arregloDatos[destino]','$arregloDatos[ubicacion]',
-                '$arregloDatos[tipo_documento]','$arregloDatos[paiscompra]','$nombre_sede',$arregloDatos[peso_bruto],'$arregloDatos[moneda]')";
+                '$arregloDatos[tipo_documento]','$arregloDatos[paiscompra]','$nombre_sede',$arregloDatos[peso_bruto],'$arregloDatos[bascula]',$arregloDatos[moneda])";
     }
 
 		$this->query($sql);

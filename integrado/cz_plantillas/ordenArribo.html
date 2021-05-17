@@ -182,6 +182,17 @@
 			$("#ubicacion{id_form}").val(data[1]);
 		});
 
+		//Implementación Autocompletar Báscula - Autor: Fredy Salom
+		//Fecha: Jueves, 29 de Abril de 2021
+		$("#bascula{id_form}").autocomplete("./scripts_index.php?clase=Orden&metodo=findBascula", {
+			width: 260,
+			selectFirst: false
+		});
+
+		$("#bascula{id_form}").result(function(event, data, formatted) {
+			$("#bascula{id_form}").val(data[0])
+		}); //Final Autocompletar Báscula
+
 		$("#fecha_manifiesto{id_form}").datepicker();
 		$("#fecha_manifiesto{id_form}").datepicker('option', {
 			dateFormat: 'yy/mm/dd',  
@@ -436,6 +447,7 @@
 								<th>Pl.Recepci&oacute;n </th>
 								<th>PiezasBDG</th>
 								<th>PesoBDG</th>
+								<th>B&aacute;scula</th>
 								<th>Metros</th>
 								<th>Pos.Estibas</th>
 								<th>Ubicaci&oacute;n</th>
@@ -453,6 +465,8 @@
 								<td>
                 	<input name="peso_bruto" type="text" style="text-align:right;" id="peso_bruto" value="{peso_bruto}" size="10"
                   	class="require number ui-widget-content" onchange="checkPiezasPesos()" {readonly} /> 
+								</td>
+								<td><input name="bascula" type="text"  class="required ui-widget-content" id="bascula{id_form}" value="{bascula}" size="15" />
 								</td>
 								<td>
                 	<input name="metros" type="text" style="text-align:right;" class="required ui-widget-content" id="metros" value="{metros}"
