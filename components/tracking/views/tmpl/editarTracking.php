@@ -10,24 +10,24 @@
         	<th style="text-align:left;">Remite:</th>
           <td>
           	<input type="text" name="remite" id="remite" value="{remite}"
-              style="width:617px;height:12px;text-transform:lowercase;" readonly="" />
+              style="width:617px;height:14px;text-transform:lowercase;" readonly="" />
           </td>
 				</tr>
         <tr>
 					<th style="text-align:left;">Destino:</th>
           <td>
           	<input type="text" name="email" id="email" value="{destino}" 
-            	style="width:617px;height:12px;text-transform:lowercase;" />
+            	style="width:617px;height:14px;text-transform:lowercase;" />
           </td>
 				</tr>
         <tr>
         	<th style="text-align:left;">Asunto:</th>
-          <td><input type="text" name="asunto" id="asunto" value="{asunto}" style="width:617px;height:12px;text-transform:none;"/></td>
+          <td><input type="text" name="asunto" id="asunto" value="{asunto}" style="width:617px;height:14px;text-transform:none;"/></td>
         </tr>
         <tr>
         	<th style="text-align:left;">Adjuntos:</th>
           <td>
-            <input type="text" name="adjunto" id="adjunto" value="{adjunto}" style="width:617px;height:12px;text-transform:none;"/>
+            <input type="text" name="adjunto" id="adjunto" value="{adjunto}" style="width:617px;height:14px;text-transform:none;"/>
           </td>
         </tr>
         <tr>
@@ -44,6 +44,7 @@
       <input type="submit" class="button small yellow2" name="enviar" id="enviar" value="Enviar" />
       <input id="archivos" type="file" name="archivos[]" multiple="multiple" onchange="seleccionar();" />
     </center></p>
+    <input type="hidden" name="id" id="id" value="{id}" />
     <input type="hidden" name="sedex" id="sedex" value="{sede}" />
     <input type="hidden" name="do_asignado" id="do_asignado" value="{do_asignado}" />
     <input type="hidden" name="doc_tte" id="doc_tte" value="{doc_tte}" />
@@ -57,9 +58,7 @@
 <script>
   Nifty("div.borde_circular","transparent");
   Nifty("div.div_barra","top transparent");
-  $('.noSeleccion').css('display', 'none');
-  $('.noElimina').css('display', 'none');
-  	
+
   $().ready(function() {
     $("#datTracking").validate();
   });
@@ -76,15 +75,6 @@
   }
 
   function enviarDatos() {
-		var fecha = new Date;
-		var dd = fecha.getDate();
-		var mm = fecha.getMonth()+1;
-		var aaaa = fecha.getFullYear();
-		
-		dd = dd < 10 ? '0' + dd : dd;
-		mm = mm < 10 ? '0' + mm : mm;
-		var fecha = aaaa + '-' + mm + '-' + dd;
-
     $.ajax({
       url: 'index_blank.php?component=tracking&method=nuevoTracking',
       data: {
@@ -94,7 +84,6 @@
         doc_tte: $("#doc_tte").val(),
 				por_cuenta: $("#por_cuenta").val(),
         razon_social: $("#razon_social").val(),
-				fecha: fecha,
 				remite: $("#remite").val(),
 				destino: $("#email").val(),
 				asunto: $("#asunto").val(),

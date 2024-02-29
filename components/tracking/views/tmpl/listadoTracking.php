@@ -130,6 +130,7 @@
   <input type="hidden" name="doasignadot" id="doasignadot" value="{doasignadot}" />
   <input type="hidden" name="docttet" id="docttet" value="{docttet}" />
   <input type="hidden" name="emaildestino" id="emaildestino" value="{emaildestino}" />
+  <input type="hidden" name="perfil" id="perfil" value="{perfil}" />
 </form>
 
 <script>
@@ -154,7 +155,7 @@
     $('#por_cuenta').attr('value', por_cuenta);
     $('#destino').attr('value', destino);
     $('#creador').attr('value', creador);
-    
+
     //Valida Perfil Administrador
     if($("#perfil").attr('value') == 1) $('.noElimina').css('display', 'block');
   }

@@ -1,7 +1,7 @@
 <?php 
 if(!defined('entrada_valida')) die('Acceso directo no permitido');
-require_once COMPONENTS_PATH . 'usuarios/model/usuarios.php';
-require_once COMPONENTS_PATH . 'usuarios/views/vista.php';
+require_once COMPONENTS_PATH.'usuarios/model/usuarios.php';
+require_once COMPONENTS_PATH.'usuarios/views/vista.php';
 
 class usuarios {
 	var $vista;
@@ -21,10 +21,10 @@ class usuarios {
 	}
 	
 	function agregarUsuario($arreglo) {
-		$lista_perfil = $this->datos->build_list("perfiles", "id", "nombre", "WHERE estado<>'E' ORDER BY nombre ");
-    $arreglo['select_perfil'] = $this->datos->armSelect($lista_perfil ,'Seleccione Perfil...');
-    $lista_sedes = $this->datos->build_list("sedes", "codigo", "nombre");
-    $arreglo['select_sedes'] = $this->datos->armSelect($lista_sedes ,'Seleccione Sede...');
+		$lista_perfil = $this->datos->build_list("perfiles","id","nombre", "WHERE estado<>'E' ORDER BY nombre ");
+    $arreglo['select_perfil'] = $this->datos->armSelect($lista_perfil,'Seleccione Perfil...');
+    $lista_sedes = $this->datos->build_list("sedes","codigo","nombre");
+    $arreglo['select_sedes'] = $this->datos->armSelect($lista_sedes,'Seleccione Sede...');
 		$arreglo['edicion_clave'] = 'none';
     $arreglo['titulo_tabla'] = 'AGREGAR USUARIO';
 
@@ -32,29 +32,27 @@ class usuarios {
 	}
 	
 	function editarUsuario($arreglo) {
-		$lista_perfil = $this->datos->build_list("perfiles", "id", "nombre", "WHERE estado<>'E' ORDER BY nombre ");
+		$lista_perfil = $this->datos->build_list("perfiles","id","nombre", "WHERE estado<>'E' ORDER BY nombre ");
 		$arreglo['datosUsuario'] = $this->datos->infoUsuario($arreglo);
-    $arreglo['select_perfil'] = $this->datos->armSelect($lista_perfil ,'Seleccione Perfil...', $arreglo['datosUsuario']['perfil_id']);	
-    $lista_sedes = $this->datos->build_list("sedes", "codigo", "nombre");
-    $arreglo['select_sedes'] = $this->datos->armSelect($lista_sedes ,'Seleccione Sede...',$arreglo['datosUsuario']['sede_id']);
+    $arreglo['select_perfil'] = $this->datos->armSelect($lista_perfil,'Seleccione Perfil...',$arreglo['datosUsuario']['perfil_id']);	
+    $lista_sedes = $this->datos->build_list("sedes","codigo","nombre");
+    $arreglo['select_sedes'] = $this->datos->armSelect($lista_sedes,'Seleccione Sede...',$arreglo['datosUsuario']['sede_id']);
 		$arreglo['edicion_clave'] = 'block';
     $arreglo['titulo_tabla'] = 'EDITAR USUARIO';
 
 		$this->vista->agregarUsuario($arreglo);
 	}
 	
-	function editar($arreglo) {
-		
+	function editar($arreglo) {		
 		if(isset($arreglo['edClave'])) {
 			$this->datos->editarClave($arreglo);
 		}
 		if(isset($arreglo['id']) && !empty($arreglo['id'])) {
       $id = $arreglo['id'];
-	  $cantidad=$this->datos->existeSede($arreglo);
-	  
-	  if($cantidad =='0'){
-	  	$this->datos->creaUsuarioSede($arreglo);
-	  }
+			$cantidad = $this->datos->existeSede($arreglo);	  
+	  	if($cantidad =='0') {
+	  		$this->datos->creaUsuarioSede($arreglo);
+	  	}
       $arreglo['alerta_accion'] = 'Usuario Editado Con &Eacute;xito';
     } else {
       $id = null;
@@ -78,16 +76,16 @@ class usuarios {
 		if(is_numeric($arreglo['id'])) {
 			$deleted = $this->datos->deleted($arreglo['id']);
 			if($deleted === false) {
-        set_flash('error', 'La informaci&oacute;n ingresada no es correcta');
+        set_flash('error','La informaci&oacute;n ingresada no es correcta');
       } else {
         if($deleted === null) {
-          set_flash('error', 'Los datos ingresados para la operaci&oacute;n no son v&aacute;lidos');
+          set_flash('error','Los datos ingresados para la operaci&oacute;n no son v&aacute;lidos');
         } else {
-          set_flash('notice', 'El registro se elimin&oacute; correctamente');
+          set_flash('notice','El registro se elimin&oacute; correctamente');
         }
       }
 		} else {
-      set_flash('error', 'El dato ingresado no es v&aacute;lido.');
+      set_flash('error','El dato ingresado no es v&aacute;lido.');
     }
 		$this->listadoUsuarios($arreglo);
 	}
@@ -114,6 +112,7 @@ class usuarios {
 	function cambiarSede($arreglo) {
 		$this->vista->cambiarSede($arreglo);
 	}
+	
 	function borrarSede($arreglo) {
 		$this->datos->borrarSede($arreglo);
 		$this->listadoUsuarios($arreglo);

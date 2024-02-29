@@ -1,6 +1,10 @@
 <?php
-  require_once("Image/Barcode/code128.php");
-  $bc = new Image_Barcode_Code128('',2,4);
-  $ubicacion = $_GET['ubicacion'];
-  $bc->draw($ubicacion, 'png', true, 'png');
+//Configuración Ruta de Acceso a los Paquetes PEAR
+ini_set("include_path", '/home1/isamis/php:' . ini_get("include_path") );
+require_once('Image/Barcode2.php');
+$bcObj = new Image_Barcode2();
+$ubicacion = $_GET['ubicacion'];
+$bcAltura = 25;
+$bc = $bcObj->draw($ubicacion, "Code128", "png", false, $bcAltura);
+imagepng($bc);
 ?>

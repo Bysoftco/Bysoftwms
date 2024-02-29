@@ -18,21 +18,21 @@ class sizfra_item {
 		$this->vista->filtroSizfra($arreglo);
 	}
 	
-    function listadoSizfra($arreglo) {
-        $arreglo['datos'] = $this->datos->listadoSizfra($arreglo);
-            
-        //Instacia la clase Archivo
-        $datosInterfaz = new Archivo();
-        //Creamos el archivo
-        $datosInterfaz->crear("integrado/_files/".$arreglo['nombreinterfaz'].".txt");
+  function listadoSizfra($arreglo) {
+    $arreglo['datos'] = $this->datos->listadoSizfra($arreglo);
         
-        $this->vista->listadoSizfra($arreglo,$datosInterfaz);
-    }
+    //Instancia la clase Archivo
+    $datosInterfaz = new Archivo();
+    //Creamos el archivo
+    $datosInterfaz->crear("integrado/_files/".$arreglo['nombreinterfaz'].".txt");
+    
+    $this->vista->listadoSizfra($arreglo,$datosInterfaz);
+  }
    
   function enviarAdjunto($arreglo) {
 		//Envía Mensaje de Correo Interfaz Sizfra
-    $arreglo[mensajeTexto] = $arreglo[mensaje]; 
-		$arreglo[asunto_mail] = $arreglo[asunto];
+    $arreglo['mensajeTexto'] = $arreglo['mensaje']; 
+		$arreglo['asunto_mail'] = $arreglo['asunto'];
     //Verifica internamente si hay archivos adjuntos
 		$this->envioMail($arreglo);
 
@@ -46,11 +46,11 @@ class sizfra_item {
 
 		$mail = new EnvioMail();
 
-    $mail->adjuntarArchivo($arreglo[adjunto]);
-		$mail->cuerpo($arreglo[mensajeTexto]);
-		$mail->cargarCabecera($destino, $remite, $arreglo[asunto_mail]);
+    $mail->adjuntarArchivo($arreglo['adjunto']);
+		$mail->cuerpo($arreglo['mensajeTexto']);
+		$mail->cargarCabecera($destino, $remite, $arreglo['asunto_mail']);
 		//Procedimiento de Envío de mail y validación de envío correcto
-		$arreglo[info] = $mail->enviarEmail() ? TRUE : FALSE;
+		$arreglo['info'] = $mail->enviarEmail() ? TRUE : FALSE;
 		$this->vista->mostrarMensaje($arreglo);
 	}
 }

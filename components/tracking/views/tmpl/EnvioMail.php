@@ -1,11 +1,9 @@
 <?php
+ini_set("include_path",'/home1/isamis/php:.:/opt/cpanel/ea-php56/root/usr/share/pear' . ini_get("include_path") );
 require_once('Mail.php');
 require_once('Mail/mime.php');
-//ini_set('include_path', URL_BASE .'_scripts/phpmailer/');
-//require("class.phpmailer.php");
 
-//require("class.phpmailer.php");
-class EnvioMail extends Mail_mime {    
+class EnvioMail extends Mail_mime {  
 	var $destino;
 	var $remite;
 	var $cabecera;
@@ -38,7 +36,7 @@ class EnvioMail extends Mail_mime {
     $posFinal = strpos($this->destino, ">");
 		$largo = $posFinal-$posInicial;
             
-		$direccion = substr($this->destino,$posInicial+ 1, $largo-1);
+		$direccion = substr($this->destino,$posInicial+ 1,$largo-1);
 
     return $direccion;
 	}
@@ -66,8 +64,8 @@ class EnvioMail extends Mail_mime {
 	/**
 		* EnvioMail::cuerpo()
 		* Es pública 
-		* Recibe como parametros un nombre y el arreglo de campos que se deben
-		* remplazar en una plantilla que debe existe en la dirección TPLDIR
+		* Recibe como parámetros un nombre y el arreglo de campos que se deben
+		* remplazar en una plantilla que debe existir en la dirección TPLDIR
 		* @return 
 		**/
 	function cuerpo_($tplTexto=NULL,$tplHtml=NULL,$arregloCampos) {
@@ -85,10 +83,10 @@ class EnvioMail extends Mail_mime {
 		}
 
 		if($tplHtml <> NULL) {
-			if(empty($arregloCampos[ruta_plantillas])) {
+			if(empty($arregloCampos['ruta_plantillas'])) {
 				$ruta = './_plantillas';
 			} else {
-				$ruta = $arregloCampos[ruta_plantillas];
+				$ruta = $arregloCampos['ruta_plantillas'];
         echo "<script>alert($ruta);</script>";
 			}
 
@@ -123,13 +121,12 @@ class EnvioMail extends Mail_mime {
 
 	function cargarInformacion() {
     $ruta = "integrado/_mail/";
-		//si se creo la variable de texto se asume que se envio un texto directamente
-		//y no se utiliza plantilla
+		//si se creó la variable de texto se asume que se envió un texto directamente y no se utiliza plantilla
 		if(!empty($this->mensajeTexto)) {
 			$this->setTXTBody($this->mensajeTexto);
 		} else {
 			if(isset($this->tplTexto)) {
-				//se verifica que se utilizo la plantilla y se asigna a el cuerpo
+				//se verifica que se utilizó la plantilla y se asigna el cuerpo
 				//en modo texto
 				$this->setTXTBody($this->tplTexto->get());
 			}
@@ -139,7 +136,7 @@ class EnvioMail extends Mail_mime {
 			$this->setHTMLBody($mensajeHtml);
 		} else {
 			if(isset($this->tplHtml)) {
-				//se verifica que se utilizo la plantilla y se asigna a el cuerpo
+				//se verifica que se utilizó la plantilla y se asigna el cuerpo
 				//en modo html
 				$this->setHTMLBody($this->tplHtml->get());
 			}
@@ -153,7 +150,6 @@ class EnvioMail extends Mail_mime {
       }
 		}
 		// se asigna el cuerpo al correo
-		$this->Mail_mime();
 		$this->cuerpo = $this->get();
 	}
 
@@ -162,7 +158,7 @@ class EnvioMail extends Mail_mime {
 		* Es privada de la clase
 		* Retorna falso si no existe
 		* Esta función se encarga de validar si el dominio de la dirección de 
-		* correo existe recibe como parametro una direccion de correo
+		* correo existe recibe como parámetro una dirección de correo
 		* Comprueba registros DNS correspondientes a nombres de máquinas en Internet o direcciones IP 
 		* @return 
 		**/
@@ -173,7 +169,7 @@ class EnvioMail extends Mail_mime {
 			if(checkdnsrr(array_pop(explode("@",$email)),"MX")) { 
 				return true; 
 			} else { 
-				$this->logger = 'La dirección de Correo '.$email.' no existe o el servidor no esta disponible';
+				$this->logger = 'La dirección de Correo '.$email.' no existe o el servidor no está disponible';
 				return false; 
 			} 
 		} else { 
@@ -183,9 +179,9 @@ class EnvioMail extends Mail_mime {
 
 	/**
 		* EnvioMail::adjuntarArchivo()
-		* publica recibe como argumento el nombre del imput de la plantilla que
-		* captura los parametros del archivo, si el archivo tiene una extencion que esta dentro
-		* del listado de no validas retorna false.
+		* pública recibe como argumento el nombre del input de la plantilla que
+		* captura los parámetros del archivo, si el archivo tiene una extensión
+		* que está dentro del listado de no válidas retorna false.
 		* @return  boolean
 		**/
 	
@@ -201,7 +197,7 @@ class EnvioMail extends Mail_mime {
 			$this->nombreAdjunto = $userfile_name;   
 
 			if(strpos($extensionesnoValidas, $extension)) {
-				$this->logger = "El Archivo que intenta subir tiene una extensión no valida [$extension]";
+				$this->logger = "El Archivo que intenta subir tiene una extensión no válida [$extension]";
 				return false;
 			}
 		} 
@@ -215,7 +211,7 @@ class EnvioMail extends Mail_mime {
 		return true;
 	}
 
-	function lipiarPlantillas($contenidoTexto = '' , $contenidoHTML = '') {
+	function limpiarPlantillas($contenidoTexto = '',$contenidoHTML = '') {
 		$this->tplCuerpo->free();
 		$this->tplTexto->free();;
 	}
@@ -227,7 +223,7 @@ class EnvioMail extends Mail_mime {
 		$params["username"] = "blogistic@grupobysoft.com";
 		$params["password"] = "bysoft01";
 
-		$unMTA = & Mail::factory('smtp', $params);
+		$unMTA = Mail::factory('smtp',$params);
 
 		$returnValue = $unMTA->send($this->destino,$this->cabecera,$this->cuerpo);
 		if(PEAR::isError($returnValue)) {

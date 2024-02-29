@@ -19,7 +19,7 @@
     </div>
   </div>
   <div id="conversor" title="Conversor de Divisas" style="display:none;">
-    <iframe style="display:block;margin: 0 auto;background:#ffffff;" src="https://dolar.wilkinsonpc.com.co/widgets/oanda-convertidor-divisas-300x250-pub.php" width="300" height="175" align="middle" frameborder="0" scrolling="no">
+    <iframe style="display:block;margin: 0 auto;background:#ffffff;" src="https://dolar.wilkinsonpc.com.co/widgets/calculadora-divisas-300x250.html" width="300" height="250" align="middle" frameborder="0" scrolling="no">
     </iframe>
   </div>
 </div>
@@ -27,17 +27,17 @@
 <script>
   // Utilidad de Conversión de Divisas
   var ctrlPressed = false;
-  var teclaCtrl = 17, teclaI = 73;
+  var teclaCtrl = 17, teclaX = 88;
 
   $(document).keydown(function(e) {
     if(e.keyCode == teclaCtrl)
       ctrlPressed = true;
 
-    if(ctrlPressed && (e.keyCode == teclaI)) {
+    if(ctrlPressed && (e.keyCode == teclaX)) {
       $( "#conversor" ).dialog({
         autoOpen: true,
         resizable: false,
-        height: 225,
+        height: 300,
         width: 350,
         modal: true,
       });
@@ -52,7 +52,8 @@
   function salir() {
     if(confirm("\xbf Realmente desea abandonar la sesi\xf3n ?")) {
       $.ajax({
-        url: 'index_blank.php?component=login&method=cerrar_sesion',
+        //url: 'index_blank.php?component=login&method=cerrar_sesion',
+        url: 'index.php?component=login&method=cerrar_sesion',
         success: function(msm) {
           location.href = "";
         }

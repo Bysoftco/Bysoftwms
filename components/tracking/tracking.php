@@ -1,8 +1,8 @@
 <?php 
 if(!defined('entrada_valida')) die('Acceso directo no permitido');
-require_once COMPONENTS_PATH . 'tracking/model/tracking.php';
-require_once COMPONENTS_PATH . 'tracking/views/vista.php';
-require_once COMPONENTS_PATH . 'tracking/views/tmpl/EnvioMail.php';
+require_once COMPONENTS_PATH.'tracking/model/tracking.php';
+require_once COMPONENTS_PATH.'tracking/views/vista.php';
+require_once COMPONENTS_PATH.'tracking/views/tmpl/EnvioMail.php';
 
 class tracking {
   var $vista;
@@ -13,6 +13,10 @@ class tracking {
     $this->datos = new TrackingModelo();
   }
 	
+  function filtroTracking($arreglo) {
+    $this->vista->filtroTracking($arreglo);
+  }
+
   function listadoTracking($arreglo) {
     if(!isset($arreglo['pagina']) || empty($arreglo['pagina'])) {
       $arreglo['pagina'] = 1;
@@ -21,10 +25,6 @@ class tracking {
     $arreglo['perfil'] = $_SESSION['datos_logueo']['perfil_id'];
     $this->vista->listadoTracking($arreglo);
   }
-
-	function filtroTracking($arreglo) {
-		$this->vista->filtroTracking($arreglo);
-	}
   
   function agregarTracking($arreglo) {
     $datosTracking = $this->datos->datosTracking($arreglo);
@@ -50,10 +50,10 @@ class tracking {
   
   function nuevoTracking($arreglo) {
 		recuperar_Post($this->datos);
-		$this->datos->save($id);
+		$this->datos->save($arreglo['id'],'id');
 		// Envía Mensaje de Correo para Tracking
-    $arreglo[mensajeTexto] = $arreglo[mensaje]; 
-		$arreglo[asunto_mail] = $arreglo[asunto];
+    $arreglo['mensajeTexto'] = $arreglo['mensaje']; 
+		$arreglo['asunto_mail'] = $arreglo['asunto'];
     // Verifica internamente si hay archivos adjuntos
 		$this->envioMail($arreglo);
 
@@ -61,7 +61,7 @@ class tracking {
   }
   
   function findCliente($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findCliente($arreglo);
     $Existe = count($unaConsulta); 
 
@@ -80,21 +80,21 @@ class tracking {
   }
   
   function cargarArchivo($arreglo) {
-		$ruta = "integrado/_mail/"; $arreglo[adjuntos] = '';    
+		$ruta = "integrado/_mail/"; $arreglo[adjuntos] = '';
 		foreach($_FILES as $key) {
     	if($key['error'] == UPLOAD_ERR_OK ) {//Verificamos si se subio correctamente
 				$nombre = $key['name']; //Definimos el nombre del archivo en el servidor
       	$temporal = $key['tmp_name']; //Obtenemos el nombre del archivo temporal
       	move_uploaded_file($temporal, $ruta . $nombre); //Movemos el archivo temporal a la ruta especificada
-        $arreglo[adjuntos] .= $nombre.' ';
+        $arreglo['adjuntos'] .= $nombre.' ';
 				$estado = true;
 			} else {
-				echo $key['error']; //Si no se cargo mostramos el error
+				echo $key['error']; //Si no se cargó mostramos el error
 				$estado = false;
 			}
 		}
 		if($estado) {
-			$mensaje = $arreglo[adjuntos];
+			$mensaje = $arreglo['adjuntos'];
 		} else {
 			$mensaje = "Este correo no contiene documentos adjuntos.";
 		}
@@ -109,12 +109,12 @@ class tracking {
 		$mail = new EnvioMail();
 
     // Verifica si tiene documentos adjuntos
-    if($arreglo[wadjunto] == '1') $mail->adjuntarArchivo($arreglo[adjuntos]);
-		$mail->cuerpo($arreglo[mensajeTexto]);
-		$mail->cargarCabecera($destino, $remite, $arreglo[asunto_mail]);
+    if($arreglo['wadjunto']=='1') $mail->adjuntarArchivo($arreglo['adjuntos']);
+		$mail->cuerpo($arreglo['mensajeTexto']);
+		$mail->cargarCabecera($destino, $remite, $arreglo['asunto_mail']);
 		//Procedimiento de Envío de mail y validación de envío correcto
-		$arreglo[info] = $mail->enviarEmail() ? TRUE : FALSE;
+		$arreglo['info'] = $mail->enviarEmail() ? TRUE : FALSE;
 		$this->vista->mostrarMensaje($arreglo);
-	}  
+	}
 }
 ?>

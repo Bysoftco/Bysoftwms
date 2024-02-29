@@ -1,7 +1,6 @@
 {COMODIN}
-<div style="height: 5px;"></div>
 <div class="div_barraFija">
-	<div id="titulo_ruta">{titulo_accion}</div>
+	<div id="titulo_ruta" style="width: 100%;text-align: center;">{titulo_accion}</div>
 </div><br />
 <form name="envioDatos" id="envioDatos" action="javascript:enviarDatos()">
   <fieldset>

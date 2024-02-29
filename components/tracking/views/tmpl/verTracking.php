@@ -8,25 +8,25 @@
           <th style="text-align:left;">Remite:</th>
           <td>
             <input type="text" name="remite" id="remite" value="{remite}"
-              style="width:617px;height:12px;text-transform:lowercase;" readonly="" />
+              style="width:617px;height:14px;text-transform:lowercase;" readonly="" />
           </td>
         </tr>
         <tr>
           <th style="text-align:left;">Destino:</th>
           <td>
             <input type="text" name="destino" id="destino" value="{destino}" 
-              style="width:617px;height:12px;text-transform:lowercase;" readonly="" />
+              style="width:617px;height:14px;text-transform:lowercase;" readonly="" />
           </td>
         </tr>
         <tr>
           <th style="text-align:left;">Asunto:</th>
           <td><input type="text" name="asunto" id="asunto" value="{asunto}"
-            style="width:617px;height:12px;text-transform:none;" readonly="" /></td>
+            style="width:617px;height:14px;text-transform:none;" readonly="" /></td>
         </tr>
         <tr>
           <th style="text-align:left;">Adjunto:</th>
           <td><input type="text" name="adjunto" id="adjunto" value="{adjunto}"
-            style="width:617px;height:12px;text-transform:none;" readonly="" /></td>
+            style="width:617px;height:14px;text-transform:none;" readonly="" /></td>
         </tr>
         <tr>
           <th colspan="2" style="width:617px;text-align:left;">Mensaje:</th>

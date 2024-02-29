@@ -29,7 +29,7 @@ class ubicaciones {
   }
   
   function findCliente($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findCliente($arreglo);
     $Existe = count($unaConsulta); 
 
@@ -42,7 +42,7 @@ class ubicaciones {
   }
   
   function findDocumento($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findDocumento($arreglo);
     $Existe = count($unaConsulta);
     
@@ -56,7 +56,7 @@ class ubicaciones {
   }
   
   function findUbicacion($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findUbicacion($arreglo);
     $Existe = count($unaConsulta); 
 
@@ -69,7 +69,7 @@ class ubicaciones {
   }
   
   function findReferencia($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findReferencia($arreglo);
     $Existe = count($unaConsulta); 
 

@@ -52,32 +52,44 @@ class TrackingModelo extends BDControlador {
                 AND tracking.sede = '$sede'$buscar";
     							
 		//Prepara la condición de filtro
-		if(!empty($arreglo[nitt])) $query .= " AND por_cuenta = '$arreglo[nitt]'";
-		if(!empty($arreglo[fechadesdet])) $query .= " AND fecha >= '$arreglo[fechadesdet]'";
-		if(!empty($arreglo[fechahastat])) $query .= " AND fecha <= '$arreglo[fechahastat]'";
-		if(!empty($arreglo[doasignadot])) $query .= " AND do_asignado = '$arreglo[doasignadot]'";
-    if(!empty($arreglo[docttet])) $query .= "AND doc_tte = '$arreglo[docttet]'";
-    if(!empty($arreglo[emaildestino])) $query .= " AND destino = '$arreglo[emaildestino]'";
-    
+		if(!empty($arreglo['nitt'])) {
+      $query .= " AND por_cuenta = '$arreglo[nitt]'";
+    }
+		if(!empty($arreglo['fechadesdet'])) {
+      $query .= " AND fecha >= '$arreglo[fechadesdet]'";
+    }
+		if(!empty($arreglo['fechahastat'])){
+      $query .= " AND fecha <= '$arreglo[fechahastat]'";
+    }
+		if(!empty($arreglo['doasignadot'])) {
+      $query .= " AND do_asignado = '$arreglo[doasignadot]'";
+    }
+    if(!empty($arreglo['docttet'])) {
+      $query .= "AND doc_tte = '$arreglo[docttet]'";
+    }
+    if(!empty($arreglo['emaildestino'])) {
+      $query .= " AND destino = '$arreglo[emaildestino]'";
+    }
 		//Ordena el Listado
 		$query .= " ORDER BY $orden";
 
+
+    //echo $query;
     $db->query($query);
     $mostrar = 15;
     $retornar['paginacion'] = $this->paginar($arreglo['pagina'],$db->countRows(),$mostrar);
 		
-    $limit= ' LIMIT '. ($arreglo['pagina'] -1) * $mostrar . ',' . $mostrar;
-    $query.=$limit;
+    $limit = ' LIMIT '. ($arreglo['pagina'] -1) * $mostrar . ',' . $mostrar;
+    $query .= $limit;
     $db->query($query);
-    $retornar['datos']=$db->getArray();
+    $retornar['datos'] = $db->getArray();
     return $retornar;
   }
   
 	function findCliente($arreglo) {
     $db = $_SESSION['conexion'];
     
-		$query = "SELECT numero_documento,razon_social,correo_electronico,v.nombre as nvendedor
-						FROM clientes, vendedores v WHERE (razon_social LIKE '%$arreglo[q]%') AND (v.codigo = vendedor)";
+		$query = "SELECT numero_documento,razon_social,correo_electronico,v.nombre AS nvendedor FROM clientes, vendedores v WHERE (razon_social LIKE '%$arreglo[q]%') AND (v.codigo = vendedor)";
 
 		$db->query($query);
     return $db->getArray();
@@ -87,9 +99,7 @@ class TrackingModelo extends BDControlador {
     $db = $_SESSION['conexion'];
     $sede = $_SESSION['sede'];
 
-    $query = "SELECT *,tracking.do_asignado,cl.razon_social,dob.sigla FROM tracking,clientes cl, do_bodegas dob
-              WHERE id = $arreglo[id] AND por_cuenta = cl.numero_documento
-                AND tracking.sede = '$sede' AND dob.sede = '$sede'";
+    $query = "SELECT *,tracking.do_asignado,cl.razon_social,dob.sigla FROM tracking,clientes cl,do_bodegas dob WHERE id = $arreglo[id] AND por_cuenta = cl.numero_documento AND tracking.sede = '$sede' AND dob.sede = '$sede'";
 
     $db->query($query);
     return $db->getArray();

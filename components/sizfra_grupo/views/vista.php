@@ -6,24 +6,20 @@ class SizfraVista {
   var $datos;
 	
   function SizfraVista() {
-    $this->template = new HTML_Template_IT();
+    $this->template = new HTML_Template_IT(COMPONENTS_PATH);
     $this->datos = new SizfraModelo();
   }
   
 	function filtroSizfra($arreglo) {  	   	   
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'sizfra_grupo/views/tmpl/filtroSizfra.php' );
-    $this->template->setVariable('COMODIN', '');
-    
-    // Carga información del Perfil y Usuario
-    //$arreglo[perfil] = $_SESSION['datos_logueo']['perfil_id'];
-    //$arreglo[usuario] = $_SESSION['datos_logueo']['usuario'];
-    
+    $this->template->loadTemplateFile('sizfra_grupo/views/tmpl/filtroSizfra.php');
+    $this->template->setVariable('COMODIN','');
+
     $this->template->show();
 	}
   	
   function listadoSizfra($arreglo,$datosInterfaz) {    
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'sizfra_grupo/views/tmpl/listadoSizfra.php' );
-    $this->template->setVariable('COMODIN', '');
+    $this->template->loadTemplateFile('sizfra_grupo/views/tmpl/listadoSizfra.php');
+    $this->template->setVariable('COMODIN','');
     
     $this->template->setVariable('nombreinterfaz',$arreglo['nombreinterfaz']);
     $this->template->setVariable('emaildestino',$arreglo['emaildestino']);
@@ -46,8 +42,8 @@ class SizfraVista {
   }
     
 	function mostrarMensaje($arreglo) {
-		if($arreglo[info]) {
-			$msg = "Se ha enviado un correo a la cuenta: ".$arreglo[destino]." satisfactoriamente.";
+		if($arreglo['info']) {
+			$msg = "Se ha enviado un correo a la cuenta: ".$arreglo['destino']." satisfactoriamente.";
 		} else {
 			$msg = "Error al enviar el correo electr\u00f3nico, por favor revisar el servidor de correo saliente.";
 		}

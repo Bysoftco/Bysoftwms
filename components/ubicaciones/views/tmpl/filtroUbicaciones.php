@@ -36,7 +36,7 @@
           <label>Ubicaci&oacute;n:</label>
           <input type="text" name="ubicacion" id="ubicacion" />
           <input type="hidden" name="ubicacionu" id="ubicacionu" />
-          <input type="checkbox" class="css-checkbox" id="todos" name="todos" value="1" />
+          <input type="checkbox" class="css-checkbox" name="todos" id="todos" value="0"/>
           <label for="todos" class="css-label mac-style">Todas</label>
         </p>
         <p>
@@ -72,16 +72,6 @@
         }
       },
 		});
-  });
-  
-  $(function() {
-    $("#todos").click(function() {
-		  if($("#todos").is(':checked')) {
-        $("#todos").val(1);
-		  } else {
-        $("#todos").val(0);
-		  }
-    });
   });
 
   // Muestra la Ventana de Filtro

@@ -3,15 +3,15 @@
   label { display: inline-block; }
   legend { padding: 0.5em; }
   fieldset fieldset label { display: block; }
-  #frmfiltrois label { width: 135px; margin-left: 5px;} /*ancho de las etiquetas de los campos*/
+  #frmfiltroisw label { width: 135px; margin-left: 5px;} /*ancho de las etiquetas de los campos*/
   .ui-dialog .ui-state-error { padding: .3em; }  
 </style>
 {COMODIN}
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
-<div id="winfiltrois" title="Generar Interfaz Items Sizfra">
-  <div id="frmfiltrois" >    
-    <form name="frmSizfra" id="frmSizfra" method="post" action="">
-      <fieldset class="ui-widget ui-widget-content ui-corner-all">        
+<div id="winfiltroisw" title="Generar Interfaz Items Sizfra">
+  <div id="frmfiltroisw" >    
+    <form name="frmSizfraw" id="frmSizfraw" method="post" action="">
+      <fieldset class="ui-widget ui-widget-content ui-corner-all" style="margin-top:10px;">        
         <p>
           <label>Nombre de Interfaz <span style="color:red">*</span>:</label>
           <input type="text" name="nombreinterfaz" id="nombreinterfaz" size="20" class="required ui-widget-content" />
@@ -36,7 +36,7 @@
 <input type="hidden" name="cliente" id="cliente" value="{cliente}" />
 <script>
   $(document).ready(function() {
-    $("#frmSizfra").validate({
+    $("#frmSizfraw").validate({
       submitHandler: function(form) {
         bValid = true;
         
@@ -56,9 +56,9 @@
               url: 'index_blank.php?component=sizfra_item&method=listadoSizfra',
               type: "POST",
               async: false,
-              data: $('#frmSizfra').serialize(),
+              data: $('#frmSizfraw').serialize(),
               success: function(msm) {
-                $("#winfiltrois").dialog("close");
+                $("#winfiltroisw").dialog("close");
                 $('#componente_central').html(msm);
               }
             });
@@ -69,29 +69,27 @@
   });
  
 	$(function() {
-    $( "#winfiltrois" ).dialog({
+    $( "#winfiltroisw" ).dialog({
       autoOpen: false,
       resizable: false,
-      height: 448,
+      height: 260,
       width: 600,
 			modal: true,
 			buttons: {
         "Aceptar": function() {
-          $("#frmSizfra").submit();
+          $("#frmSizfraw").submit();
         }
       },
 		});
   });
 
   // Muestra la Ventana de Filtro
-  $( "#winfiltrois" ).dialog( "open" );
+  $( "#winfiltroisw" ).dialog( "open" );
 
   // Limpia los campos del formulario
-  $("#frmSizfra")[0].reset();
-    
-    
-    
-    $(function() {
+  $("#frmSizfraw")[0].reset();
+
+  $(function() {
     $("#buscarClientefe").autocomplete("./index_blank.php?component=sizfra&method=findCliente", {
       width: 300,
       selectFirst: false
@@ -100,8 +98,5 @@
     $("#buscarClientefe").result(function(event, data, formatted) {
       $("#nitfe").val(data[1]);
     });
-  });
-   
-    
-    
+  }); 
 </script>

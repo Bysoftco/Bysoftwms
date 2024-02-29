@@ -68,7 +68,7 @@
       "iDisplayLength": 20,
       "aLengthMenu": [[20, 40, 60, -1], [20, 40, 60, "Todos"]],
       "oLanguage": {
-        "sLengthMenu": "Mostrar _MENU_ registros por página",
+        "sLengthMenu": "Mostrar _MENU_ registros por p&aacute;gina",
         "sZeroRecords": "No hay registros para mostrar",
         "sInfo": "Mostrando _START_ a _END_ registros de _TOTAL_",
         "sInfoEmpty": "Mostrando 0 a 0 registros de 0",

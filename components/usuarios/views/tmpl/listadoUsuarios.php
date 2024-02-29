@@ -12,21 +12,21 @@
 			<tr>
 				<td align="center">
 					<div class="popupsAgregar borde_circular">
-						<a href="">
+						<a href="" title="Agregar Usuario">
 							<img src="img/acciones/agregar.png" title="Agregar" width="25" height="25" border="0" />
 						</a>
 					</div>
 				</td>
 				<td align="center">
 					<div class="popupsVer borde_circular noSeleccion">
-						<a href="">
+						<a href="" title="Ver Usuario">
 							<img src="img/acciones/ver.png" title="Ver" width="25" height="25" border="0" />
 						</a>
 					</div>
 				</td>
 				<td align="center">
 					<div class="popupsEditar borde_circular noSeleccion">
-						<a href="">
+						<a href="" title="Editar Usuario">
 							<img src="img/acciones/edit.png" title="Editar" width="25" height="25" border="0" />
 						</a>
 					</div>
@@ -131,114 +131,118 @@
 </form>
 
 <script>
-
 Nifty("div.borde_circular","transparent");
 Nifty("div.div_barra","top transparent");
 $('.noSeleccion').css('display', 'none');
 
 ordenadoActual();
 
-function seleccionado(nombre, id, idestado){
+function seleccionado(nombre, id, idestado) {
 	$('#nombreSeleccionado').attr('value', nombre);
 	$('#idSeleccionado').attr('value', id);
 	$('#idEstado').attr('value', idestado);
 	$('.noSeleccion').css('display', 'block');
 }
 
-function paginar(pagina){
+function paginar(pagina) {
 	$('#pagina').attr('value', pagina);
-    filtrar();
+  filtrar();
 }
 
-function ordenadoActual(){
+function ordenadoActual() {
 	$('.noOrden').html('');
 	var orden_actual = $('#orden').attr('value');
 	var id_actual = $('#id_orden').attr('value');
 	var cSpan = orden_actual.replace('.','');
-	if(id_actual=='ASC'){
+	if(id_actual=='ASC') {
 		$('#span'+cSpan).html('<span style="font-size: 15px">&uarr;</span>');
-	}
-	else if(id_actual=='DESC'){
+	} else if(id_actual=='DESC') {
 		$('#span'+cSpan).html('<span style="font-size: 15px">&darr;</span>');
-	}
-	else{
+	} else {
 		$('#span'+cSpan).html('');
 	}
 }
 
 $('.popupsAgregar a').wowwindow({
-    draggable: true,
-    width:800,
-    overlay: {clickToClose: false,
-    	      background: '#000000'},
-	onclose: function() {$('.formError').remove();},
-	before: function(){
+  draggable: true,
+  width:800,
+  overlay: {
+  	clickToClose: false,
+  	background: '#000000'
+  },
+	onclose: function() { $('.formError').remove(); },
+	before: function() {
 		$.ajax({
 			url:'index_blank.php?component=usuarios&method=agregarUsuario',
 			async:true,
 			type: "POST",
-			success: function(msm){
+			success: function(msm) {
 				$('#wowwindow-inner').html(msm);
-	        }
+	    }
 		});
 	}
 });
 
 $('.popupsVer a').wowwindow({
-    draggable: true,
-    width:800,
-    overlay: {clickToClose: false,
-    	      background: '#000000'},
-	onclose: function() {$('.formError').remove();},
-	before: function(){
+  draggable: true,
+  width: 800,
+  height: 250,
+  overlay: {
+  	clickToClose: false,
+  	background: '#000000'
+  },
+	onclose: function() { $('.formError').remove(); },
+	before: function() {
 		$.ajax({
 			url:'index_blank.php?component=usuarios&method=verUsuarios',
 			async:true,
 			type: "POST",
 			data:'id='+$('#idSeleccionado').attr('value'),
-			success: function(msm){
+			success: function(msm) {
 				$('#wowwindow-inner').html(msm);
-	        }
+	    }
 		});
 	}
 });
 
 $('.popupsEditar a').wowwindow({
-    draggable: true,
-    width:800,
-    overlay: {clickToClose: false,
-	      background: '#000000' },
-	onclose: function() {$('.formError').remove();},
-    before: function(){
-    	$.ajax({
+  draggable: true,
+  width:800,
+  overlay: {
+  	clickToClose: false,
+    background: '#000000' 
+  },
+	onclose: function() { $('.formError').remove(); },
+  before: function() {
+  	$.ajax({
 			url:'index_blank.php?component=usuarios&method=editarUsuario',
 			async:true,
 			data:'id='+$('#idSeleccionado').attr('value'),
-			success: function(msm){
+			success: function(msm) {
 				$('#wowwindow-inner').html(msm);
-	        }
+	    }
 		});
 	}
 });
 
-function buscarCoincidencias(){
+function buscarCoincidencias() {
 	$('#pagina').attr('value', 1);
-    filtrar();
+  filtrar();
 }
 
-function filtrar(){
+function filtrar() {
 	var busqueda = trim($('#campoBuscar').attr('value'));
 	$('#buscar').attr('value', busqueda);
 	$.ajax({
 	  url: 'index_blank.php?component=usuarios&method=listadoUsuarios',
 	  data: $('#form_filtros').serialize(),
-	  success: function(msm){
+	  success: function(msm) {
 	   $('#componente_central').html(msm);
 	  }
 	});
 }
 
-function activarDesactivar(){
+function activarDesactivar() {
 	var nombre = $('#nombreSeleccionado').attr('value');
 	var id = $('#idSeleccionado').attr('value');
 	var estado = $('#idEstado').attr('value');
@@ -251,26 +255,25 @@ function activarDesactivar(){
 		  type: "POST",
 		  url: 'index_blank.php',
 		  data: 'component=usuarios&method=cambiarEstadoUsuario&id='+id+'&estado='+estado,
-		  success: function(msm){
+		  success: function(msm) {
 		  	$('#componente_central').html(msm);
 		  }
 		});
 	}
 }
 
-function eliminarUsuario(){
+function eliminarUsuario() {
 	var nombre = $('#nombreSeleccionado').attr('value');
 	var id = $('#idSeleccionado').attr('value');
-	if(confirm('¿Realmente desea eliminar el usuario '+nombre+' ?')){
+	if(confirm('¿Realmente desea eliminar el usuario '+nombre+' ?')) {
 		$.ajax({
 		  type: "POST",
 		  url: 'index_blank.php',
 		  data: 'component=usuarios&method=cambiarEstadoUsuario&id='+id+'&estado=E',
-		  success: function(msm){
-		   $('#componente_central').html(msm);
+		  success: function(msm) {
+		  	$('#componente_central').html(msm);
 		  }
 		});
 	}
 }
-
 </script>

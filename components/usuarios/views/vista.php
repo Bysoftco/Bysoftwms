@@ -1,16 +1,19 @@
 <?php
-require_once COMPONENTS_PATH . 'usuarios/model/usuarios.php';
+require_once COMPONENTS_PATH.'usuarios/model/usuarios.php';
+
 class UsuariosVista {
+	var $template;
+
   function UsuariosVista() {
-		$this->template = new HTML_Template_IT();
+		$this->template = new HTML_Template_IT(COMPONENTS_PATH);
 	}
 
-	function template_inicial($arreglo, $datos, $paginacion, $filtros) {
-		$plantilla = new HTML_Template_IT();
-		$plantilla->loadTemplateFile(COMPONENTS_PATH . 'usuarios/views/tmpl/templateArbol.php');
-		$plantilla->setVariable('COMODIN', '');
+	function template_inicial($arreglo,$datos,$paginacion,$filtros) {
+		$plantilla = new HTML_Template_IT(COMPONENTS_PATH);
+		$plantilla->loadTemplateFile('usuarios/views/tmpl/templateArbol.php');
+		$plantilla->setVariable('COMODIN','');
 		ob_start();
-		$this->listadoUsuarios($arreglo, $datos, $paginacion);
+		$this->listadoUsuarios($arreglo,$datos,$paginacion);
 		$contenido = ob_get_contents();
 		ob_end_clean();
 		$plantilla->setVariable('contenido',$contenido);
@@ -19,15 +22,15 @@ class UsuariosVista {
 	}
 
 	function listadoUsuarios($arreglo) {
-		$this->template->loadTemplateFile(COMPONENTS_PATH . 'usuarios/views/tmpl/listadoUsuarios.php');
-		$this->template->setVariable('COMODIN', '');
+		$this->template->loadTemplateFile('usuarios/views/tmpl/listadoUsuarios.php');
+		$this->template->setVariable('COMODIN','');
 		$this->template->setVariable('paginacion',$arreglo['datosUsuario']['paginacion']);
 		$this->template->setVariable('pagina',$arreglo['pagina']);
 		$this->template->setVariable('verAlerta','none');
 		
-		$this->template->setVariable('orden',$arreglo['orden']);
-		$this->template->setVariable('id_orden',$arreglo['id_orden']);
-		$this->template->setVariable('campoBuscar',$arreglo['buscar']);
+		$this->template->setVariable('orden',isset($arreglo['orden'])?$arreglo['orden']:"");
+		$this->template->setVariable('id_orden',isset($arreglo['id_orden'])?$arreglo['id_orden']:"");
+		$this->template->setVariable('campoBuscar',isset($arreglo['buscar'])?$arreglo['buscar']:"");
 		
 		if(isset($arreglo['alerta_accion'])) {
 			$this->template->setVariable('alerta_accion',$arreglo['alerta_accion']);
@@ -60,16 +63,13 @@ class UsuariosVista {
 			$this->template->setVariable('idestado',$value['estado']);
 			$this->template->setVariable('estado',$estado);
 			$this->template->setVariable('fecha_creacion',$value['fecha_creacion']);
-			
-			
-			
 			$this->template->parseCurrentBlock("ROW");
 		}
 		$this->template->show();
 	}
 
 	function agregarUsuario($arreglo) {
-		$this->template->loadTemplateFile(COMPONENTS_PATH . 'usuarios/views/tmpl/editarUsuario.php');
+		$this->template->loadTemplateFile('usuarios/views/tmpl/editarUsuario.php');
 		$this->template->setVariable('COMODIN','');
 		$this->template->setVariable('titulo_accion',$arreglo['titulo_tabla']);
 		$this->template->setVariable('select_perfil',$arreglo['select_perfil']);
@@ -82,18 +82,17 @@ class UsuariosVista {
 		$this->template->setVariable('select_sedes',$arreglo['select_sedes']);
 		
 		//$this->template->setVariable('sede','XXXXXX');
-		$sedesUsuario=$this->sedesUsuarios($arreglo);
+		$sedesUsuario = $this->sedesUsuarios($arreglo);
 		$this->template->setVariable('sedesUsuarios',$sedesUsuario);
 		
 		$this->template->show();
 	}
 	
 	function sedesUsuarios($arreglo) {
-		
 		$unaSede = new UsuariosModelo();
-		$sedesU = new HTML_Template_IT();
-		$sedesU->loadTemplateFile(COMPONENTS_PATH . 'usuarios/views/tmpl/listarSedes.html');
-		$datos=$unaSede->listadoSedes($arreglo);
+		$sedesU = new HTML_Template_IT(COMPONENTS_PATH);
+		$sedesU->loadTemplateFile('usuarios/views/tmpl/listarSedes.html');
+		$datos = $unaSede->listadoSedes($arreglo);
 		
 		foreach($datos['datos'] as $key => $value) {
 			$sedesU->setCurrentBlock("ROW");
@@ -106,7 +105,7 @@ class UsuariosVista {
 	}	
 
 	function verUsuario($arreglo) {
-		$this->template->loadTemplateFile(COMPONENTS_PATH . 'usuarios/views/tmpl/verUsuario.php');
+		$this->template->loadTemplateFile('usuarios/views/tmpl/verUsuario.php');
 		$this->template->setVariable('COMODIN','');
 		$this->template->setVariable('titulo_accion','Ver Usuario');
 		$this->template->setVariable('id',isset($arreglo['id'])?$arreglo['id']:'0');

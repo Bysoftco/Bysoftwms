@@ -1,7 +1,7 @@
 <?php 
 require_once(CLASSES_PATH.'BDControlador.php');
-class UsuariosModelo extends BDControlador{
-	
+
+class UsuariosModelo extends BDControlador {	
 	var $id;
 	var $usuario;
 	var $perfil_id;
@@ -14,21 +14,21 @@ class UsuariosModelo extends BDControlador{
 	var $module_directory= 'usuarios';
 	var $object_name = "UsuariosModelo";
 	  
-	var $campos = array('id', 'usuario', 'perfil_id', 'nombre_usuario', 'apellido_usuario', 'mail_usuario', 'sede_id');
+	var $campos = array('id','usuario','perfil_id','nombre_usuario','apellido_usuario','mail_usuario','sede_id');
 	
-	function UsuariosModelo(){
+	function UsuariosModelo() {
 		parent :: Manejador_BD();
 	}
 	
-	function listadoUsuarios($arreglo){
+	function listadoUsuarios($arreglo) {
 		$db = $_SESSION['conexion'];
 		
 		$orden = " us.fecha_creacion DESC ";
 		$buscar = "";
-		if(isset($arreglo['orden']) && !empty($arreglo['orden'])){
+		if(isset($arreglo['orden']) && !empty($arreglo['orden'])) {
 			$orden= " $arreglo[orden] $arreglo[id_orden]";
 		}
-		if(isset($arreglo['buscar']) && !empty($arreglo['buscar'])){
+		if(isset($arreglo['buscar']) && !empty($arreglo['buscar'])) {
 			$buscar= " AND (us.usuario LIKE '%$arreglo[buscar]%' 
 						OR us.nombre_usuario LIKE '%$arreglo[buscar]%'
 						OR us.apellido_usuario LIKE '%$arreglo[buscar]%'
@@ -53,7 +53,7 @@ class UsuariosModelo extends BDControlador{
 		
 		$db->query($query);
 		$mostrar = 15;
-		$retornar['paginacion']=$this->paginar($arreglo['pagina'],$db->countRows(),$mostrar);
+		$retornar['paginacion'] = $this->paginar($arreglo['pagina'],$db->countRows(),$mostrar);
 		
 		$limit= ' LIMIT '. ($arreglo['pagina'] -1) * $mostrar . ',' . $mostrar;
 		$query.=$limit;
@@ -62,21 +62,21 @@ class UsuariosModelo extends BDControlador{
 		return $retornar;
 	}
 	
-	function validarRepetido($arreglo){
+	function validarRepetido($arreglo) {
 		$db = $_SESSION['conexion'];
 
-		$query="SELECT * FROM usuarios WHERE usuario = '$arreglo[usuario]' AND sede_id = '$arreglo[sede]' AND estado <> 'E'";
+		$query = "SELECT * FROM usuarios WHERE usuario = '$arreglo[usuario]' AND sede_id = '$arreglo[sede]' AND estado <> 'E'";
 		
-		if(isset($arreglo['id']) && !empty($arreglo['id'])){
+		if(isset($arreglo['id']) && !empty($arreglo['id'])) {
 			$query.=" AND id <> $arreglo[id]";
 		}
 		$db->query($query);
 		return $db->getArray();
 	}
 	
-	function validarClave($arreglo){
+	function validarClave($arreglo) {
 		$db = $_SESSION['conexion'];
-		$query="SELECT * FROM usuarios WHERE id=$arreglo[id] AND clave=md5('$arreglo[clave]')";
+		$query = "SELECT * FROM usuarios WHERE id=$arreglo[id] AND clave=md5('$arreglo[clave]')";
 	
 		$db->query($query);
 		return $db->getArray();
@@ -84,7 +84,7 @@ class UsuariosModelo extends BDControlador{
 	
 	function infoUsuario($arreglo){
 		$db = $_SESSION['conexion'];
-		$query="SELECT us.id,
+		$query = "SELECT us.id,
 					   us.usuario,
 					   us.perfil_id,
 					   us.nombre_usuario,
@@ -108,83 +108,75 @@ class UsuariosModelo extends BDControlador{
 		return $info[0];
 	}
 	
-	function editarClave($arreglo){
+	function editarClave($arreglo) {
 		$db = $_SESSION['conexion'];
-		$query="UPDATE usuarios us
+		$query = "UPDATE usuarios us
 				   SET us.clave = md5('$arreglo[claveNueva]')
 		         WHERE us.id = $arreglo[id]";
 		
 		$db->query($query);
 	}
 	
-	function cambiarEstadoUsuario($arreglo){
+	function cambiarEstadoUsuario($arreglo) {
 		$db = $_SESSION['conexion'];
-		$query="UPDATE usuarios
-				   SET estado = '$arreglo[estado]'
+		$query = "UPDATE usuarios SET estado = '$arreglo[estado]'
 				 WHERE id=$arreglo[id]";
 		$db->query($query);
 	}
 	
 		
-	function listadoSedes($arreglo){
-		//var_dump($arreglo);
+	function listadoSedes($arreglo) {
 		$db = $_SESSION['conexion'];
 		
 		$orden = " us.fecha_creacion DESC ";
 		$buscar = "";
-		if(isset($arreglo['orden']) && !empty($arreglo['orden'])){
-			$orden= " $arreglo[orden] $arreglo[id_orden]";
+		if(isset($arreglo['orden']) && !empty($arreglo['orden'])) {
+			$orden = " $arreglo[orden] $arreglo[id_orden]";
 		}
-		
-		$usuario=$arreglo['datosUsuario']['usuario'];
-		$query= "
-		SELECT DISTINCT sede_id,nombre AS nombre_sede 
-			FROM usuarios,sedes
-			WHERE usuarios.sede_id=sedes.codigo
-			AND usuario='$usuario'
-		";
+
+		$usuario = isset($arreglo['datosUsuario']['usuario'])?$arreglo['datosUsuario']['usuario']:'';
+		$query = "SELECT DISTINCT sede_id,nombre AS nombre_sede FROM usuarios,sedes WHERE usuarios.sede_id=sedes.codigo AND usuarios.usuario='$usuario'";
 		
 	 	$db->query($query);
-		$retornar['datos']=$db->getArray();
+		$retornar['datos'] = $db->getArray();
 		return $retornar;
 	}
 	
-	function existeSede($arreglo){
+	function existeSede($arreglo) {
 		$db = $_SESSION['conexion'];
-		$query="SELECT sede_id FROM usuarios WHERE sede_id='$arreglo[sede_id]' and  usuario='$arreglo[usuario]'";
+
+		$query = "SELECT sede_id FROM usuarios WHERE sede_id='$arreglo[sede_id]' and  usuario='$arreglo[usuario]'";
 		
 		$db->query($query);
 		$total = $db->countRows();
 		return $total;
 	}
 	
-	function creaUsuarioSede($arreglo){
-		$clave=$this->getClave($arreglo);
+	function creaUsuarioSede($arreglo) {
+		$clave = $this->getClave($arreglo);
 		$db = $_SESSION['conexion'];
-		$query="INSERT INTO 	  usuarios(usuario,clave,perfil_id,nombre_usuario,apellido_usuario,mail_usuario,fecha_creacion,sede_id,empresa_id,estado,sesion)
-VALUES('$arreglo[usuario]','$clave[clave]',$arreglo[perfil_id],'$arreglo[nombre_usuario]','$arreglo[apellido_usuario]','$arreglo[mail_usuario]',CURDATE(),'$arreglo[sede_id]','','A',0)";
-		//echo $query;
+
+		$query = "INSERT INTO usuarios(usuario,clave,perfil_id,nombre_usuario,apellido_usuario,mail_usuario,fecha_creacion,sede_id,empresa_id,estado,sesion) VALUES('$arreglo[usuario]','$clave[clave]',$arreglo[perfil_id],'$arreglo[nombre_usuario]','$arreglo[apellido_usuario]','$arreglo[mail_usuario]',CURDATE(),'$arreglo[sede_id]','','A',0)";
+
 		$db->query($query);
 	}
 	
-	function getClave($arreglo){
+	function getClave($arreglo) {
 		$db = $_SESSION['conexion'];
-		$query="SELECT clave  FROM usuarios WHERE  usuario='$arreglo[usuario]'";
+
+		$query="SELECT clave FROM usuarios WHERE usuario='$arreglo[usuario]'";
 	
 		$db->query($query);
 		$info = $db->getArray();
-		return $info[0];
-		
+		return $info[0];		
 	}
 	
-	function borrarSede($arreglo){
+	function borrarSede($arreglo) {
 		$db = $_SESSION['conexion'];
-		$query="DELETE  FROM usuarios WHERE sede_id='$arreglo[sede_id]' and  usuario='$arreglo[usuario]'";
+
+		$query = "DELETE  FROM usuarios WHERE sede_id='$arreglo[sede_id]' and  usuario='$arreglo[usuario]'";
 		
 		$db->query($query);
-		
-		
-	}
-	
+	}	
 }
 ?>

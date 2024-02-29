@@ -11,20 +11,20 @@ class UbicacionesModelo extends BDControlador {
     $sede = $_SESSION['sede'];
     
     //Valida visualización de todas las ubicaciones
-    if(!$arreglo[todos]) {
-      $arreglo[movimiento] = "1,2,3,30";
-      $arreglo[GroupBy] = "GROUP BY inv.orden, inv.codigo_ref";
-      $arreglo[having] = "HAVING (TRUNCATE(c_nal,1) > 0 OR TRUNCATE(c_ext,1) > 0) AND (TRUNCATE(cantidad,1) > 0)";
-      $arreglo[where] = ""; //Inicializa acumulador de requerimientos del filtro
+    if(!isset($arreglo['todos'])) {
+      $arreglo['movimiento'] = "1,2,3,30";
+      $arreglo['GroupBy'] = "GROUP BY inv.orden, inv.codigo_ref";
+      $arreglo['having'] = "HAVING (TRUNCATE(c_nal,1) > 0 OR TRUNCATE(c_ext,1) > 0) AND (TRUNCATE(cantidad,1) > 0)";
+      $arreglo['where'] = ""; //Inicializa acumulador de requerimientos del filtro
       
       //Prepara la condición del filtro
       //Operación para no visualizar -1 en Nit
-      $arreglo[nitu] = (strlen($arreglo[nitu])==1 ? -1 : $arreglo[nitu]); 
-      if(!empty($arreglo[nitu])) $arreglo[where] .= " AND do_asignados.por_cuenta='$arreglo[nitu]'";
-      if(!empty($arreglo[doctteu])) $arreglo[where] .= " AND do_asignados.doc_tte = '$arreglo[doctteu]'";
-      if(!empty($arreglo[doasignadou])) $arreglo[where] .= " AND do_asignados.do_asignado = '$arreglo[doasignadou]'";
-      if(!empty($arreglo[ubicacionu])) $arreglo[where] .= " AND ie.posicion = '$arreglo[ubicacionu]'";
-      if(!empty($arreglo[referenciau])) $arreglo[where] .= " AND ie.referencia = '$arreglo[referenciau]'";
+      $arreglo['nitu'] = (strlen($arreglo['nitu'])==1 ? -1 : $arreglo['nitu']); 
+      if(!empty($arreglo['nitu'])) $arreglo['where'] .= " AND do_asignados.por_cuenta='$arreglo[nitu]'";
+      if(!empty($arreglo['doctteu'])) $arreglo['where'] .= " AND do_asignados.doc_tte = '$arreglo[doctteu]'";
+      if(!empty($arreglo['doasignadou'])) $arreglo['where'] .= " AND do_asignados.do_asignado = '$arreglo[doasignadou]'";
+      if(!empty($arreglo['ubicacionu'])) $arreglo['where'] .= " AND ie.posicion = '$arreglo[ubicacionu]'";
+      if(!empty($arreglo['referenciau'])) $arreglo['where'] .= " AND ie.referencia = '$arreglo[referenciau]'";
       
       //Prepara la condición del filtro
       $query = "SELECT orden, doc_tte, inventario_entrada, inventario_entrada AS item, arribo, nombre_referencia, cod_referencia, codigo_ref, documento, fecha,
@@ -125,8 +125,7 @@ class UbicacionesModelo extends BDControlador {
 	function findCliente($arreglo) {
     $db = $_SESSION['conexion'];
     
-		$query = "SELECT numero_documento,razon_social,correo_electronico,v.nombre as nvendedor
-						FROM clientes, vendedores v WHERE (razon_social LIKE '%$arreglo[q]%') AND (v.codigo = vendedor)";
+		$query = "SELECT numero_documento,razon_social,correo_electronico,v.nombre as nvendedor FROM clientes, vendedores v WHERE (razon_social LIKE '%$arreglo[q]%') AND (v.codigo = vendedor)";
 
 		$db->query($query);
     return $db->getArray();

@@ -15,12 +15,12 @@ class UbicacionesVista {
 	}
 
   function listadoUbicaciones($arreglo) {
-    $ruta = !$arreglo['todos'] ? 'ubicaciones/views/tmpl/listadoUbicaciones.php' : 'ubicaciones/views/tmpl/soloUbicaciones.php';
+    $ruta = !isset($arreglo['todos']) ? 'ubicaciones/views/tmpl/listadoUbicaciones.php' : 'ubicaciones/views/tmpl/soloUbicaciones.php';
     $this->template->loadTemplateFile( COMPONENTS_PATH . $ruta );
     $this->template->setVariable('COMODIN', '');
     
     //Valida visualización solo Ubicaciones
-    if(!$arreglo['todos']) {
+    if(!isset($arreglo['todos'])) {
       $tpiezas = $tpeso = 0;
       foreach($arreglo['datos'] as $value) {
         $this->template->setCurrentBlock("ROW");

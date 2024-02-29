@@ -3,15 +3,15 @@
   label { display: inline-block; }
   legend { padding: 0.5em; }
   fieldset fieldset label { display: block; }
-  #frmfiltrois label { width: 135px; margin-left: 5px;} /*ancho de las etiquetas de los campos*/
+  #frmfiltroisx label { width: 135px; margin-left: 5px;} /*ancho de las etiquetas de los campos*/
   .ui-dialog .ui-state-error { padding: .3em; }  
 </style>
 {COMODIN}
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
-<div id="winfiltrois" title="Generar Interfaz Grupos Sizfra">
-  <div id="frmfiltrois" >    
-    <form name="frmSizfra" id="frmSizfra" method="post" action="">
-      <fieldset class="ui-widget ui-widget-content ui-corner-all">        
+<div id="winfiltroisx" title="Generar Interfaz Grupos Sizfra">
+  <div id="frmfiltroisx" >    
+    <form name="frmSizfrax" id="frmSizfrax" method="post" action="">
+      <fieldset class="ui-widget ui-widget-content ui-corner-all" style="margin-top:10px;">
         <p>
           <label>Nombre de Interfaz <span style="color:red">*</span>:</label>
           <input type="text" name="nombreinterfaz" id="nombreinterfaz" size="20" class="required ui-widget-content" />
@@ -28,7 +28,7 @@
 <input type="hidden" name="cliente" id="cliente" value="{cliente}" />
 <script>
   $(document).ready(function() {
-    $("#frmSizfra").validate({
+    $("#frmSizfrax").validate({
       submitHandler: function(form) {
         bValid = true;
         
@@ -48,9 +48,9 @@
               url: 'index_blank.php?component=sizfra_grupo&method=listadoSizfra',
               type: "POST",
               async: false,
-              data: $('#frmSizfra').serialize(),
+              data: $('#frmSizfrax').serialize(),
               success: function(msm) {
-                $("#winfiltrois").dialog("close");
+                $("#winfiltroisx").dialog("close");
                 $('#componente_central').html(msm);
               }
             });
@@ -61,24 +61,23 @@
   });
  
 	$(function() {
-    $( "#winfiltrois" ).dialog({
+    $( "#winfiltroisx" ).dialog({
       autoOpen: false,
       resizable: false,
-      height: 448,
+      height: 200,
       width: 600,
 			modal: true,
 			buttons: {
         "Aceptar": function() {
-          $("#frmSizfra").submit();
+          $("#frmSizfrax").submit();
         }
       },
 		});
   });
 
   // Muestra la Ventana de Filtro
-  $( "#winfiltrois" ).dialog( "open" );
+  $( "#winfiltroisx" ).dialog( "open" );
 
   // Limpia los campos del formulario
-  $("#frmSizfra")[0].reset();
-    
+  $("#frmSizfrax")[0].reset(); 
 </script>

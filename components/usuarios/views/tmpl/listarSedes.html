@@ -1,53 +1,40 @@
 <script>
-	function borrarSede(sede){
-	if(confirm('Seguro que desea borrar la sede '+sede)){
-	
-		
-	  $.ajax({
-                url: 'index_blank.php?component=usuarios&method=borrarSede&id_sede_borrar='+sede,
-                type: "POST",
-                async: false,
-                data: $('#envioDatos').serialize(),
-                success: function(contenido) {
-				  jQuery(document.body).overlayPlayground('close');void(0);
-                  $('#componente_central').html(contenido);
-                  
-                }
-              });
-	   }		  
+	function borrarSede(sede) {
+		if(confirm('¿Seguro que desea borrar la sede '+sede+'?')) {	
+	  	$.ajax({
+        url: 'index_blank.php?component=usuarios&method=borrarSede&id_sede_borrar='+sede,
+        type: "POST",
+        async: false,
+        data: $('#envioDatos').serialize(),
+        success: function(contenido) {
+  				jQuery(document.body).overlayPlayground('close');void(0);
+          $('#componente_central').html(contenido);         
+        }
+      });
+	  }		  
 	}
 </script>
-
-  <fieldset>
-    <legend>Informaci&oacute;n de Las  Sedes del Usuario</legend>
-    <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general">
-	<tr>
-		<th colspan="9">SEDES{COMODIN}</th>
-	</tr>
-	<tr>
-		<th class="cursor_ordenar" onClick="javascript:ordenar('us.usuario')" title="Ordenar por Usuario">
-			Codigo
-			<span id="spanususuario" class="noOrden"></span>
-		</th>
-		<th class="cursor_ordenar" onClick="javascript:ordenar('pe.nombre')" title="Ordenar por Perfil">
-			Sede</th>
-		<th class="cursor_ordenar" onClick="javascript:ordenar('us.nombre_usuario')" title="Ordenar por Nombres">
-			Acciòn</th>
-		
-				</tr>
-	<!-- BEGIN ROW  -->
-	<tr id="{id_tr_estilo}">
-		<td>{sede_id}</td>
-		<td>{sede}</td>
-		<td><a href="javascript: borrarSede( {sede_id})" class="signup documento_id" title="Borrar Sede {sede_id}" id="cuenta{n}" cursor>
-              <img src="integrado/imagenes/borrar.gif" border="0" /> 
-            </a></td>
-		
-		
-	</tr>
-	<!-- END ROW  -->
-</table>
-
- </fieldset>
-
-
+<fieldset>
+	<legend>Informaci&oacute;n Sedes del Usuario</legend>
+	<table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general">
+		<tr>
+			<th colspan="9">SEDES{COMODIN}</th>
+		</tr>
+		<tr>
+			<th class="cursor_ordenar" onClick="javascript:ordenar('us.usuario')" title="Ordenar por Usuario">C&oacute;digo
+				<span id="spanususuario" class="noOrden"></span>
+			</th>
+			<th class="cursor_ordenar" onClick="javascript:ordenar('pe.nombre')" title="Ordenar por Perfil">Sede</th>
+			<th class="cursor_ordenar" onClick="javascript:ordenar('us.nombre_usuario')" title="Ordenar por Nombres">Acci&oacute;n</th>
+		</tr>
+		<!-- BEGIN ROW  -->
+		<tr id="{id_tr_estilo}">
+			<td style="text-align:center;">{sede_id}</td>
+			<td style="padding-left:5px;">{sede}</td>
+			<td style="text-align:center;"><a href="javascript: borrarSede( {sede_id})" class="signup documento_id" title="Borrar Sede {sede_id}" id="cuenta{n}" cursor>
+          <img src="integrado/imagenes/borrar.gif" border="0" /> 
+        </a></td>
+		</tr>
+		<!-- END ROW  -->
+	</table>
+</fieldset>
