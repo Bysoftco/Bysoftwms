@@ -23,10 +23,7 @@
     }
     #tabla_remesa th {
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      /* font-size: 17px; */
       font-size: 20px;
-      /* line-height: 20px; */
-      /* line-height: 23px; */
       line-height: 30px;
       font-style: normal;
       font-weight: normal;
@@ -34,11 +31,8 @@
       text-shadow: white 1px 1px 1px;
     }
     #tabla_remesa td {
-      /* line-height: 5px; */
-      /* line-height: 9px; */
       line-height: 16px;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      /* font-size: 8px; */
       font-size: 12px;
       border: 1px solid #000;
     }
@@ -47,7 +41,7 @@
     }
   </style>
   <tr id="tabla_remesa">
-    <td height="21" class="titulosTabla" colspan="6" style="border:none;">La mercanc&iacute;a se entrega a satisfaccion y por lo tanto no nos hacemos responsables si no queda una anotaci&oacute;n en contrario. por lo tanto despues de retirada la mercancia no se aceptar&aacute;n reclamaciones de ninguna naturaleza.</td>
+    <td height="21" class="titulosTabla" colspan="6" style="border:none;">La mercanc&iacute;a se entrega a satisfacci&oacute;n y por lo tanto no nos hacemos responsables si no queda una anotaci&oacute;n en contrario. por lo tanto despues de retirada la mercanc&iacute;a no se aceptar&aacute;n reclamaciones de ninguna naturaleza.</td>
   </tr>
   <tr>
     <td height="21" colspan="6" class="tituloLinea" style="text-align:center;font-weight:bold;">DETALLE DE LA REMESA</td>
@@ -59,8 +53,9 @@
         <td class="titulosTabla" style="text-align:center;"><strong>DO</strong></td>
         <td class="titulosTabla" style="text-align:center;"><strong>DOCUMENTO</strong></td>
         <td class="titulosTabla" style="text-align:center;"><strong>FMM</strong></td>
-        <td class="filasTabla" style="text-align:center;"><strong>CODIGO</strong>	</td>
+        <td class="filasTabla" style="text-align:center;"><strong>C&Oacute;DIGO</strong>	</td>
         <td class="filasTabla" style="text-align:center;"><strong>REFERENCIA</strong></td>
+        <td class="filasTabla" style="text-align:center;"><strong>UBICACI&Oacute;N</strong></td>
         <td class="filasTabla" style="text-align:center;"><strong>CANTIDAD</strong></td>
         <td class="filasTabla" style="text-align:center;"><strong>PESO</strong></td>
         <td class="filasTabla" style="text-align:center;"><strong>VALOR CIF</strong></td>
@@ -71,20 +66,21 @@
         <td class="titulosTabla" style="text-align:center;">{doc_tte}</td>
         <td class="titulosTabla" style="text-align:center;">{un_fmm}</td>
         <td class="filasTabla" style="text-align:center;">{ref_cliente}</td>
-        <td class="filasTabla" style="text-align:center;">{nombre_referencia}</td>
+        <td class="filasTabla" style="padding-left:5px;">{nombre_referencia}</td>
+        <td class="filasTabla" style="text-align:center;">{posicion}</td>
         <td class="filasTabla" style="text-align:center;">{cantidad_f}{sn} {cant_nonac_f}</td>
-        <td class="filasTabla" style="text-align:center;">{peso_f}{sn}{peso_nonac_f}</td>
-        <td class="filasTabla" style="text-align:center;">{cif_f} {sn}{fob_nonac_f}</td>
+        <td class="filasTabla" style="text-align:center;"><span style="display:{verPeso}">{peso_f}{sn}{peso_nonac_f}</span></td>
+        <td class="filasTabla" style="text-align:center;"><span style="display:{verCif}">{cif_f}{sn}{fob_nonac_f}</span></td>
       </tr>
       <!-- END ROW -->
-      <tr> 
-        <td class="titulosTabla" style="text-align:center;" colspan="5"><strong>TOTALES</strong></td>
-        <td class="filasTabla" style="text-align:center;"><strong>{tot_cant_nac} 
-          {sn_aux}{tot_cant_nonac}</strong></td>
-        <td class="filasTabla" style="text-align:center;"><strong>{tot_peso_nac} 
-          {sn_aux}{tot_peso_nonac}</strong></td>
-        <td class="filasTabla" style="text-align:center;"><strong>{tot_cif} {sn_aux}{total_fob}</strong></td>
+      <!-- BEGIN Totales -->
+      <tr>
+        <td class="titulosTabla" style="text-align:center;" colspan="6"><strong>TOTALES</strong></td>
+        <td class="filasTabla" style="text-align:center;"><strong>{tot_cant_nac} {sn_aux}{tot_cant_nonac}</strong></td>
+        <td class="filasTabla" style="text-align:center;"><span style="display:{verPeso}"><strong>{tot_peso_nacf} {sn_aux}{tot_peso_nonacf}</strong></span></td>
+        <td class="filasTabla" style="text-align:center;"><span style="display:{verCif}"><strong>{tot_cif} {sn_aux}{total_fob}</strong></span></td>
       </tr>
+      <!-- END Totales -->
     </table>
     </td>
   </tr>
@@ -99,11 +95,12 @@
         <tr><td colspan="5" style="border: none;"></td></tr>
         <tr><td colspan="5" style="border: none;"></td></tr>
         <tr>
-          <td style="border-left:none;border-right:none;border-bottom:none;width:20%;text-align:center;"><strong>JEFE - BODEGA</strong></td>
+          <td style="border-left:none;border-right:none;border-bottom:none;width:20%;text-align:center;"><strong>Coordinador Planta</strong></td>
+          <td width="20%" style="border: none;"></td>
+
+          <td style="border-left:none;border-right:none;border-bottom:none;width:20%;text-align:center;"><strong>Almacenista</strong></td>
           <td width="20%" style="border: none;"></td>
           
-        <td style="border-left:none;border-right:none;border-bottom:none;width:20%;text-align:center;">&nbsp;</td>
-          <td width="20%" style="border: none;"></td>
           <td style="border-left:none;border-right:none;border-bottom:none;width:20%;text-align:center;"><strong>NOMBRE_RECIBE_A_SATISFACCI&Oacute;N</strong></td>
         </tr>      
       </table>

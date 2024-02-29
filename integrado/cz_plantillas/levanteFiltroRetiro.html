@@ -12,7 +12,8 @@
 		$("#buscarCliente_retiros{metodo}").result(function(event, data, formatted) {
 		  $("#cliente").val(data[0]); //Capturo el Nombre del Cliente
 			$("#por_cuenta_retiros_filtro{metodo}").val(data[1]);
-      $("#email").val(data[2]); //Capturo el Correo Electrónico       
+      $("#email").val(data[2]); //Capturo el Correo Electrónico
+      $("#ncliente").val(data[4]); //Nit Completo
 		});
 		
 		$("#buscarReferencia{metodo}").autocomplete("./scripts_index.php?clase=Orden&metodo=findReferencia", {
@@ -30,7 +31,7 @@
 		});
 
 		$("#modelo_filtro{metodo}").result(function(event, data, formatted) {
-			$("#modelo_filtro{metodo}").val(data[1]);                         
+			$("#modelo_filtro{metodo}").val(data[1]);                     
 		});
   });
 
@@ -38,10 +39,13 @@
     $("#movimiento_interno").hide();
     $("#{metodo}").validate({
       submitHandler: function(form) {
-        form.tipo_retiro_label.value		= form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text.toUpperCase(); //Convierto el Nombre del Movimiento en Mayúscula
-        $.post("./scripts_index.php",{ clase:'Levante',metodo:'existeCliente',
-          por_cuenta:$('#por_cuenta_retiros_filtro{metodo}').val(),num_levante:$('#num_levante_filtro').val() },
-          function(data) {
+        form.tipo_retiro_label.value = form.tipo_retiro.options[form.tipo_retiro.selectedIndex].text.toUpperCase(); //Convierto el Nombre del Movimiento en Mayúscula
+        $.post("./scripts_index.php",{
+            clase:'Levante',
+            metodo:'existeCliente',
+            por_cuenta:$('#por_cuenta_retiros_filtro{metodo}').val(),
+            num_levante:$('#num_levante_filtro').val()
+          }, function(data) {
             var bValid = true;
               
             if(data == 0) {
@@ -81,7 +85,9 @@
   div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
   .ui-dialog .ui-state-error { padding: .3em; }
   tbody tr.odd th,tbody tr.odd td {border-color:#EBE5D9;background:#F7F4EE;}
-  tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
+  tbody tr:hover td,tbody tr:hover th {
+    background:#EAECEE;border-color:#523A0B;
+  }
 </style>	
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
 <div align="center"></div>
@@ -116,27 +122,27 @@
     <p> 
       <label>Documento: </label>
       <textarea name="un_doc_filtro" rows="5" class=" ui-widget-content" id="un_doc_filtro{metodo}"></textarea>
-    </p> 
-    <p style="display:{mostrarFiltroRetiro};"> 
+    </p>
+    <p style="display:{mostrarFiltroRetiro};">
       <label>Tipo retiros: </label>
-      <select name="tipo_retiro" id="tipo_retiro"  class="{required} ui-widget-content">
+      <select name="tipo_retiro" id="tipo_retiro" class="{required} ui-widget-content">
         {listaTiposRemesa}
       </select>
-    </p> 
-  <p style="display:{mostrarFiltroRetiro};" id="movimiento_interno"> 
-    <label>Movimiento Interno?: 
-    <input name="interno" type="checkbox" id="interno" value="1">
-    </label>
-  </p>
+    </p>
+    <p style="display:{mostrarFiltroRetiro};" id="movimiento_interno"> 
+      <label>Movimiento Interno?: 
+      <input name="interno" type="checkbox" id="interno" value="1">
+      </label>
+    </p>
   </fieldset>  
-  <input name="clase" type="hidden" id="clase" value="Levante" />
-  <input name="metodo" type="hidden" id="metodo_retiro" value="{metodo_aux}" />
+  <input type="hidden" name="clase" id="clase" value="Levante" />
+  <input type="hidden" name="metodo" id="metodo_retiro" value="{metodo_aux}" />
   <input name="tipo_retiro_label" type="hidden" id="tipo_retiro_label" value="" />
   <input type="hidden" name="cliente" id="cliente" value="" />
+  <input type="hidden" name="ncliente" id="ncliente" value="" />
   <input name="orden_filtro" type="hidden" id="orden_filtro" value="" />
   <input name="arribo_filtro" type="hidden" id="arribo_filtro" value="" />
   <input name="documento_filtro" type="hidden" id="doc_filtro" value="" />
   <input name="id_levante" type="hidden" id="id_levante_aux" value="" />
   <input type="hidden" name="email" id="email" value="" />
-  {metodo_auxX} 
 </form> 

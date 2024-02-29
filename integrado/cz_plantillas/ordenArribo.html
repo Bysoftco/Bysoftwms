@@ -19,15 +19,10 @@
   } else {
     $('.noMostrar').css('display', 'none');
   }
-    
-  // Inicializa las variables requeridas en Tracking para la Edición del Arribo
-  $("#razon_social").attr('value',$("#cliente_title").val());
-  $("#por_cuenta").attr('value',$("#por_cuenta_cliente").val());
-  $("#fecham").attr('value',$("#fecham_cliente").val());
   
   // Verifica Inconsistencias en Piezas y Pesos
   var inconsistencia = " El ARRIBO "+$("#arribo").val()+" presenta una INCONSISTENCIA de ";
-  var observa = $("#observacion").val(); 
+  var observa = $("#observacion").val();
 
   function checkPiezasPesos() {
     var difPiezas = $("#cantidad").val() - $("#repeso").val();
@@ -50,26 +45,20 @@
     inconsistencia = " El ARRIBO "+$("#arribo").val()+" presenta una INCONSISTENCIA de ";
   }
 
-	//Implementación Cálculo CIF y FOB - Autor: Fredy Salom
-	//Fecha: Domingo, 21 de Febrero de 2021
+	//Modificado Cálculo CIF y FOB - Autor: Fredy Salom
+	//Fecha: Sábado, 18 de Noviembre de 2023
 	function calcula_ciffob() {
 		var trm = $("#trm").val();
-		var moneda = $("#select").val();
+		//var moneda = $("#select").val();
 
 		//Validamos si TRM es igual a 0
 		if(trm==0) {
 			alert("Error, la TRM debe ser un valor diferente de 0");
 		} else {
-			//Validamos el Tipo de Moneda
-			if(moneda==2) { //Dólar
-				//Asignamos FOB y Calculamos CIF en Pesos
-				$("#fob").val($('#valor_fob').val());
-				$("#cif").val($('#valor_fob').val()*trm);
-			} else {
-				//Asignamos CIF y Calculamos FOB en Dólares
-				$("#cif").val($('#valor_fob').val());
-				$("#fob").val($('#valor_fob').val()/trm);
-			}
+			//Asignamos FOB y Calculamos la TRM para Pesos
+			$("#fob").val($('#fob').val());
+			$("#cif").val($('#fob').val()*trm);
+			$("#valor_fob").val($("#cif").val());
 		}
 	}
   
@@ -326,10 +315,8 @@
 	}
 	$('#transportador').change(function ()
 	{   //agente2
-		$("#agente2").val($('select[name="transportador"] option:selected').text());
-    	//alert($('select[name="transportador"] option:selected').text()) 
-	});
-	
+		$("#agente2").val($('select[name="transportador"] option:selected').text()); 
+	});	
 </script>
 <style>
 	.ui-datepicker-trigger { position: relative; top: 5px; right: 1px; height: 22px; }
@@ -345,15 +332,15 @@
 			<input type="hidden" name="metodo" id="metodo" value="updateArribo" />
       <input type="hidden" name="accion" id="accion" value="{metodo}" />
 			<input type="hidden" name="id_form" id="id_form" value="{id_form}" />
-			<input type="hidden" name="razon_social" id="razon_social" value="" />
-			<input type="hidden" name="fecham" id="fecham" value="" />
+			<input type="hidden" name="razon_social" id="razon_social" value="{razon_social}" />
+			<input type="hidden" name="fecham" id="fecham" value="{fecham}" />
 			<input type="hidden" name="do_asignado_full" id="do_asignado_full" value="{do_asignado_full}" />
       <input type="hidden" name="arribo" id="arribo" value="{arribo}" />
 			<input type="hidden" name="doc_tte" id="doc_tte" value="{doc_ttex}" />
 			<input type="hidden" name="tipo_documento" id="tipo_documento" value="{tipo_documento}" />
 			<input type="hidden" name="do_asignado" id="do_asignado" value="{do_asignado}" />
 			<input type="hidden" name="email" id="email" value="{email}" />
-			<input type="hidden" name="por_cuenta" id="por_cuenta" value="" />
+			<input type="hidden" name="por_cuenta" id="por_cuenta" value="{por_cuenta}" />
       <input type="hidden" name="adjuntos" id="adjuntos" value="" />
       <input type="hidden" name="wadjunto" id="wadjunto" value="0" />
 		</legend>
@@ -361,7 +348,7 @@
 			<tr> 
 				<td width="16%">
 					<fieldset class="ui-widget ui-widget-content ui-corner-all">
-						<legend class="">Datos de Documentos </legend>
+						<legend class="ui-widget ui-widget-header ui-corner-all">Datos de Documentos </legend>
 						<table width="100%" border="0">
             	<tr class="ui-widget ui-widget-header ui-corner-all" > 
 								<th width="16%">Transportador</th>
@@ -441,7 +428,7 @@
 			<tr> 
 				<td width="16%">
 					<fieldset class="ui-widget ui-widget-content ui-corner-all">
-						<legend class="">Datos en Bodega</legend>
+						<legend class="ui-widget ui-widget-header ui-corner-all">Datos en Bodega</legend>
 						<table width="100%" border="0">
 							<tr class="ui-widget ui-widget-header ui-corner-all" > 
 								<th>Pl.Recepci&oacute;n </th>
@@ -494,7 +481,7 @@
 			<tr> 
       	<td width="16%">
 					<fieldset class="ui-widget ui-widget-content ui-corner-all">
-						<legend class="">Datos de La Mercanc&iacute;a </legend>
+						<legend class="ui-widget ui-widget-header ui-corner-all">Datos de La Mercanc&iacute;a </legend>
 						<table style="width:100%" border="0">
 							<tr class="ui-widget ui-widget-header ui-corner-all"> 
                 <th style="width:1%;">Factura Compra</th>
@@ -502,7 +489,7 @@
 								<th style="width:1%;">Fletes</th>
                 <th style="width:1%;">Seguros</th>
                 <th style="width:1%;">Otros Gastos</th>
-                <th style="width:1%;">Valor FOB/CIF</th>
+                <th style="width:1%;">Valor FOB (USD)</th>
                 <th style="width:1%;">TRM</th>
                 <th style="width:1%;">Moneda</th>
 							</tr>
@@ -524,16 +511,16 @@
               		<input name="otros_gastos" type="text" style="text-align:right;" id="otros_gastos" value="{otros_gastos}" size="10" class="required number ui-widget-content" /> 
 								</td>
 								<td style="white-space:nowrap;">
-              		<input name="valor_fob" type="text" style="text-align:right;" id="valor_fob" value="{valor_fob}" size="20"
-                		class="required number ui-widget-content" onchange="calcula_ciffob();" />
+              		<input name="fob" type="text" style="text-align:right;" id="fob" value="{fob}" size="20"
+                		class="required number ui-widget-content" />
                 	<input name="cif" type="hidden" id="cif" value="{cif}" />
-                	<input name="fob" type="hidden" id="fob" value="{fob}" />	
+                	<input name="valor_fob" type="hidden" id="valor_fob" value="{valor_fob}" />	
               	</td>
               	<td style="white-space:nowrap;">
               		<input name="trm" type="text" style="text-align:right;" id="trm" value="{trm}" size="20" class="required number ui-widget-content" onchange="calcula_ciffob();" />
               	</td>
 								<td style="white-space:nowrap;">
-                  <select name="moneda" id="select" class="required ui-widget-content" onchange="calcula_ciffob();">{selectMonedas}</select>
+                  <select name="moneda" id="select" class="required ui-widget-content">{selectMonedas}</select>
                 </td>
 							</tr>
 						</table>

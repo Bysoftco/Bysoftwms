@@ -1,9 +1,15 @@
 <script>
-//alert($("#cliente_email").val())
-$("#email").val($("#cliente_email").val())
+  $("#email").val($("#cliente_email").val())
+  $("#nombre_cliente_correo").val($("#nombre_cliente").val())
+  $("#nombre_posicion").autocomplete("./scripts_index.php?clase=Inventario&metodo=findPosicion&id_cliente="+$("#por_cuenta_aux").val(), {
+		width: 260,
+		selectFirst: false
+	});
 
-$("#nombre_cliente_correo").val($("#nombre_cliente").val())
-
+	$("#nombre_posicion").result(function(event, data, formatted) {
+		$("#posicion").val(data[1]);
+	});
+ 
   $.validator.setDefaults({
     submitHandler: function() {},
     highlight: function(input) {
@@ -54,7 +60,7 @@ $("#nombre_cliente_correo").val($("#nombre_cliente").val())
         $.post("./scripts_index.php", {
           clase: 'Levante',
           metodo: 'existeLevante',
-          por_cuenta: $('#por_cuenta_filro').val(),
+          por_cuenta: $('#por_cuenta_filtro').val(),
           num_levante: $('#num_levante').val()
         },function(data) {
             $("#do_asignado_retiro").val($("#orden_maestro").val());
@@ -70,13 +76,8 @@ $("#nombre_cliente_correo").val($("#nombre_cliente").val())
             });
           }
         );		
-      }
-    });
-  });
-
-  $(document).ready(function() {
-    $("#formUpdateCabeza").validate({
-      rules: {referencia: "justifique"}
+      },
+      rules: {referencia: "justifique"}      
     });
 
     $("#btnGuardarLevante").button({
@@ -100,63 +101,95 @@ $("#nombre_cliente_correo").val($("#nombre_cliente").val())
     $("#btnCerrar").button({
       text: true,
       icons: { primary: "ui-icon-key" }
-    }).click(function() {
-	
-		 $("#cerrarRetiro").val(1);
-	 
-	 	$("#e_cantidad_nacional").val($("#tot_cant_nac").val()) 
-	   $("#e_cantidad_extranjera").val($("#tot_cant_nonac").val())
-	   
-	   
-		$("#e_peso_nacional").val($("#tot_peso_nacsf").val()) 
-	    $("#e_peso_extranjero").val($("#tot_peso_nonacsf").val())
-	   
-	   $("#e_tot_fob").val($("#tot_fob").val())
-	   $("#e_tot_cif").val($("#tot_cif").val())
-	 
-      if(!confirm("\u00bfConfirma que desea guardar y cerrar, al guardar y cerrar ya no podra modificar el movimiento?")) {
+    }).click(function() { 
+      $("#cerrarRetiro").val(1);
+
+      $("#e_cantidad_nacional").val($("#tot_cant_nac").val()) 
+      $("#e_cantidad_extranjera").val($("#tot_cant_nonac").val())
+
+
+      $("#e_peso_nacional").val($("#tot_peso_nacsf").val()) 
+      $("#e_peso_extranjero").val($("#tot_peso_nonacsf").val())
+
+      $("#e_tot_fob").val($("#tot_fob").val())
+      $("#e_tot_cif").val($("#tot_cif").val())
+
+      if(!confirm("\u00bfConfirma que desea guardar y cerrar, al guardar y cerrar ya no podr\u00e1 modificar el movimiento?")) {
         return false;
       }
-     
-	  
     });
 
-    if($('#cerrarRetiro').val()/1 == 0) {
+    if(parseInt($('#cerrarRetiro').val())==0) {
       //$('#tabs').tabs( "select" , 1 ) ;
-    }	
-  });	
+    }    
+  });
 </script>
-<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
-<p id="msgbox_aviso" class="ui-state-highlight">Guarde y cierre la operaci&oacute;n 
-  para notificaci&oacute;n autom&aacute;tica v&iacute;a correo .</p>
+<script type = "text/javascript">
+  function actualizaObs() {
+    var psbrt = $('#peso_bruto').val();
+    var blts = $('#bultos').val();
+    var newobs = $('#textarea').val();
+    var loncadena = newobs.length;
+    const resto = newobs.indexOf("[")==0 || newobs.indexOf("[")==-1 ? 0 : 3;
+    var extraer;
 
-<form class="formUpdateCabeza" name="formGuardaLevante"  id="formUpdateCabeza"  method="post" action="javascript:formUpdateCabeza()">
+    if(newobs.indexOf("[")==0) {
+      extraer = loncadena;
+    } else if(newobs.indexOf("[")==-1) {
+      extraer = 0;
+    } else {
+      extraer = (loncadena-newobs.indexOf("["))+resto;
+    }
+
+    //Inicializa Observaciones
+    newobs = newobs.slice(0,loncadena-extraer);
+
+    //Actualiza Observación con Peso Bruto
+    if(psbrt.length!=0) {
+      newobs += newobs.length==0 ? '[' + psbrt + ']' : ' - ' + '[' + psbrt + ']';
+    }
+    //Actualiza Observación con Bultos
+    if(blts.length!=0) {
+      newobs += newobs.length==0 ? '{' + blts + '}' : ' - ' + '{' + blts + '}';
+    }
+    //Verifica ocultar Peso
+    newobs += document.getElementById('ocultarPB').checked ? ' - (1' : ' - (0';
+    //Verifica ocultar Valor CIF
+    newobs += document.getElementById('ocultarVC').checked ? '1)' : '0)';
+    $('#textarea').val(newobs);
+  }
+</script>  
+<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
+<p id="msgbox_aviso" class="ui-state-highlight">Guarde y cierre la operaci&oacute;n para notificaci&oacute;n autom&aacute;tica v&iacute;a correo .</p>
+<form class="formUpdateCabeza" name="formGuardaLevante" id="formUpdateCabeza"  method="post" action="javascript:formUpdateCabeza()">
   <fieldset class="ui-widget ui-widget-content ui-corner-all">
-  <legend class="ui-widget ui-widget-header ui-corner-all"> Datos del Retiro {id_levante} 
-  <input name="clase" type="hidden" id="clase" value="Levante" />
-  <input name="metodo" type="hidden" id="metodo" value="{metodoCabezaEnvia}" />
-  <input name="plantilla" type="hidden" id="plantilla" value="ordenDatosInfo.html" />
-  <input name="comodin" type="hidden" id="comodin" value="{comodin}" />
-  <input name="id_levante" type="hidden" id="id_levante" value="{id_levante}" />
-  <input name="nuevo_estado" type="hidden" id="nuevo_estado" value="0" />
-  <input name="do_asignado" type="hidden" id="do_asignado_retiro" />
-  <input name="tipo_retiro_m" type="hidden" id="tipo_retiro_m" value="{tipo_retiro}" />
-  <input name="email" type="hidden" id="email" value="{email} ">
-  <input name="nombre_cliente_correo" type="hidden" id="nombre_cliente_correo" value="{name_cliente} ">
-  <input name="e_cantidad_nacional" type="hidden" id="e_cantidad_nacional">
-  <input name="e_cantidad_extranjera" type="hidden" id="e_cantidad_extranjera">
-  <input name="e_tot_fob" type="hidden" id="e_tot_fob">
-  <input name="e_tot_cif" type="hidden" id="e_tot_cif">
-  <input name="e_peso_nacional" type="hidden" id="e_peso_nacional">
-  <input name="e_peso_extranjero" type="hidden" id="e_peso_extranjero">
-  </legend>
-  <table width="100%" border="0">
-      <tr class="ui-widget ui-widget-header ui-corner-all">
-        <th>Pedido</th>
-        
-      <th>F.N.Despacho</th>
+    <legend class="ui-widget ui-widget-header ui-corner-all"> Datos del Retiro {id_levante} 
+      <input name="clase" type="hidden" id="clase" value="Levante" />
+      <input name="metodo" type="hidden" id="metodo" value="{metodoCabezaEnvia}" />
+      <input name="plantilla" type="hidden" id="plantilla" value="ordenDatosInfo.html" />
+      <input name="comodin" type="hidden" id="comodin" value="{comodin}" />
+      <input name="id_levante" type="hidden" id="id_levante" value="{id_levante}" />
+      <input name="nuevo_estado" type="hidden" id="nuevo_estado" value="0" />
+      <input name="do_asignado" type="hidden" id="do_asignado_retiro" />
+      <input name="tipo_retiro_m" type="hidden" id="tipo_retiro_m" value="{tipo_retiro}" />
+      <input name="email" type="hidden" id="email" value="{email} " />
+      <input name="nombre_cliente_correo" type="hidden" id="nombre_cliente_correo" value="{name_cliente} " />
+      <input name="e_cantidad_nacional" type="hidden" id="e_cantidad_nacional" />
+      <input name="e_cantidad_extranjera" type="hidden" id="e_cantidad_extranjera" />
+      <input name="e_tot_fob" type="hidden" id="e_tot_fob" />
+      <input name="e_tot_cif" type="hidden" id="e_tot_cif" />
+      <input name="e_peso_nacional" type="hidden" id="e_peso_nacional" />
+      <input name="e_peso_extranjero" type="hidden" id="e_peso_extranjero" />
+    </legend>
+    <table width="100%" border="0" class="ui-widget ui-widget-content">
+      <tr class="ui-widget-header">
+        <th>Pedido</th>       
+        <th>F.N.Despacho</th>
         <th>Placa</th>
         <th>Conductor</th>
+        <th>Ubicaci&oacute;n</th>
+        <th>Peso Bruto</th>
+        <th>Bultos</th>
       </tr>
       <tr>
         <td><input name="pedido" type="text" class="required ui-widget-content" id="pedido1" value="{pedido}" size="10" /></td>
@@ -165,17 +198,31 @@ $("#nombre_cliente_correo").val($("#nombre_cliente").val())
           <input name="placa" type="text" class="required ui-widget-content" id="placa" value="{placa}" size="15" /> 
           <input name="id_camion" type="hidden" class="required1 ui-widget-content" id="id_camion" value="{id_camion}" /> 
         </td>
-        <td><input name="conductor" type="text" id="conductor" value="{conductor_nombre}" size="60" />
-        <input name="ref_prove" type="hidden" id="ref_prove"></td>
+        <td>
+          <input name="conductor" type="text" id="conductor" value="{conductor_nombre}" size="50" />
+          <input name="ref_prove" type="hidden" id="ref_prove">
+        </td>
+        <td>
+          <input name="posicion" type="hidden" class=" required   ui-widget-content" id="posicion" value="{posicion}" size="15" />
+          <input name="nombre_posicion" type="text" id="nombre_posicion" value="{nombre_ubicacion}" size="30" {disabled} />
+        </td>
+        <td>
+          <input name="peso_bruto" type="text" class="required ui-widget-content" id="peso_bruto" style="text-align: right;" value="0" size="15" />
+        </td>
+        <td>
+          <input name="bultos" type="text" class="required ui-widget-content" id="bultos" style="text-align: right;" value="0" onfocusout="actualizaObs()" size="15" />
+        </td>
       </tr>
     </table>
-    <table width="100%" border="0">
-      <tr class="ui-widget ui-widget-header ui-corner-all"> 
-        <th width="12%" >Ciudad</th>
-        <th style="display:{mostrarOtros}">Bodega Destino</th>
-        <th width="35%" >Direcci&oacute;n Destinatario:</th>
-        <th width="16%" >Destinatario:</th>
-        <th width="16%" >Fecha:</th>
+    <table width="100%" border="0" class="ui-widget ui-widget-content">
+      <tr class="ui-widget-header">
+        <th width="10%" >Ciudad</th>
+        <th width="20%" style="display:{mostrarOtros}">Bodega Destino</th>
+        <th width="20%" >Direcci&oacute;n Destinatario:</th>
+        <th width="10%" >Destinatario:</th>
+        <th width="15%" >Fecha:</th>
+        <th width="10%" >Ocultar Peso:</th>
+        <th width="15%" >Ocultar Valor CIF:</th>
       </tr>
       <tr> 
         <td>
@@ -193,15 +240,22 @@ $("#nombre_cliente_correo").val($("#nombre_cliente").val())
           <input name="destinatario" type="text" class="required ui-widget-content" id="destinatario" value="{destinatario}" size="50" />
         </td>
         <td>{fecha}</td>
+        <td style="text-align: center;">
+          <input type="checkbox" id="ocultarPB" onChange="actualizaObs()" />
+        </td>
+        <td style="text-align: center;">
+          <input type="checkbox" id="ocultarVC" onChange="actualizaObs()" />
+        </td>        
       </tr>
     </table>
-    <table width="100%" border="0">
-      <tr class="ui-widget ui-widget-header ui-corner-all"> 
-        
-      <th colspan="3">Observaci&oacute;n:</th>
+    <table width="100%" border="0" class="ui-widget ui-widget-content">
+      <tr class="ui-widget-header"> 
+        <th colspan="3">Observaci&oacute;n:</th>
       </tr>
       <tr>
-        <td style="width: 60%"><textarea name="obs" cols="125" id="textarea">{obs}</textarea></td>
+        <td style="width: 60%">
+          <textarea name="obs" cols="125" id="textarea">{obs}</textarea>
+        </td>
         <td style="width: 10%;">
           <button class="submit" type="submit"  id="btnGuardarLevante" style="display:{mostrarBotonGuardar};margin:0 10%;">Guardar</button>
         </td>
@@ -217,9 +271,8 @@ $("#nombre_cliente_correo").val($("#nombre_cliente").val())
   <input name="num_levante" type="hidden" id="num_levante" value="No" />
   <input name="cierre" type="hidden" id="cerrarRetiro" value="{cierre}" />
   <input type="hidden" name="estadoCierre" value="{cierre}" id="estadoCierre" />
-  <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="{cliente}" />
+  <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="{cliente}" />  
   <input type="hidden" name="nombre_movimiento" id="nombre_movimiento" value="{tipo_retiro_label}" />
   <input type="hidden" name="fecha" id="fecha" value="{fecha}" />
   {metodoCabezaEnviaX}
 </form>
-

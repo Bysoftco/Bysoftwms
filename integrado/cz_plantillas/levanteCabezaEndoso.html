@@ -1,67 +1,144 @@
 <script>
-  /*Marcacion VERSION 06032017*/
+
     function formUpdateCabeza() {
-	}
 
-	$(function()
-	{
-		$('#btnAdicionales').hide();
-		$("#conductor").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
-		width: 260,
-		selectFirst: false
-	});
 
-	$("#conductor").result(function(event, data, formatted) {
-	//$("#placa").val(data[1]);
-	$("#destinatario").val(data[1]);   
-	//$("#id_camion").val(data[4]);
-	});
-	}); 
 
-	 $(function()
-	{
-		$("#posicion_name").autocomplete("./scripts_index.php?clase=Inventario&metodo=findPosicion&id_cliente="+'830036507', {
-		width: 260,
-		selectFirst: false
-	});
+    }
 
-	$("#posicion_name").result(function(event, data, formatted) {
-		$("#posicion").val(data[1]);   
-	});
-	});  
+
+
+    $(function()
+
+    {
+
+		 $('#btnAdicionales').hide();
+
+        $("#conductor").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
+
+            width: 260,
+
+            selectFirst: false
+
+        });
+
+
+
+        $("#conductor").result(function(event, data, formatted) {
+
+            //$("#placa").val(data[1]);
+
+            $("#destinatario").val(data[1]);   
+
+            //$("#id_camion").val(data[4]);
+
+        });
+
+     }); 
+
+	 
+
+	     $(function()
+
+    	{
+
+		
+
+        $("#posicion_name").autocomplete("./scripts_index.php?clase=Inventario&metodo=findPosicion&id_cliente="+'830036507', {
+
+            width: 260,
+
+            selectFirst: false
+
+        });
+
+
+
+        $("#posicion_name").result(function(event, data, formatted) {
+
+            
+
+            $("#posicion").val(data[1]);   
+
+            
+
+        });
+
+     });  
+
+        
+
+       
+
+
 
     $.validator.setDefaults(
-	{
-		submitHandler: function()
-		{
-			$.post("./scripts_index.php", {clase: 'Levante', metodo: 'existeLevante', por_cuenta: $('#por_cuenta_filro').val(), num_levante: $('#num_levante').val()}, function(data)
-			{
-				$("#do_asignado_retiro").val($("#orden_maestro").val());
-				$("#msgbox_levante").html('').addClass('');
-				$.ajax(
-				{
-					url: './scripts_index.php',
-					type: "POST",
-					async: false,
-					data: $("#formUpdateCabeza").serialize(),
-					success: function(msm)
-					{
-						//alert(msm)
-						$('#htmlLevante').html(msm);
-					}
-				});
-			});
-		},
-		highlight: function(input)
-		{
-			$(input).addClass("ui-state-highlight");
-		},
-		unhighlight: function(input)
-		{
-			$(input).removeClass("ui-state-highlight");
 
-         }
-	});
+            {
+
+                submitHandler: function()
+
+                {
+
+                    $.post("./scripts_index.php", {clase: 'Levante', metodo: 'existeLevante', por_cuenta: $('#por_cuenta_filro').val(), num_levante: $('#num_levante').val()}, function(data)
+
+                    {
+
+                        $("#do_asignado_retiro").val($("#orden_maestro").val());
+
+                        $("#msgbox_levante").html('').addClass('');
+
+                        $.ajax(
+
+                                {
+
+                                    url: './scripts_index.php',
+
+                                    type: "POST",
+
+                                    async: false,
+
+                                    data: $("#formUpdateCabeza").serialize(),
+
+                                    success: function(msm)
+
+                                    {
+
+																			//alert(msm)
+
+                                        $('#htmlLevante').html(msm);
+
+
+
+                                    }
+
+                                });
+
+
+
+                    });
+
+
+
+                },
+
+                highlight: function(input)
+
+                {
+
+                    $(input).addClass("ui-state-highlight");
+
+                },
+
+                unhighlight: function(input)
+
+                {
+
+                    $(input).removeClass("ui-state-highlight");
+
+                }
+
+            });
 
 
 
@@ -224,7 +301,8 @@ $('#tabs').tabs( "select" , 0 ) ;
   <input name="do_asignado" type="hidden" id="do_asignado_retiro">
 
   <input name="tipo_retiro_m" type="hidden" id="tipo_retiro_m" value="{tipo_retiro}">
-  {metodoCabezaEnvia}</legend>
+
+  {metodoCabezaEnviax}</legend>
 
   <table width="100%" border="0">
 
@@ -253,7 +331,7 @@ $('#tabs').tabs( "select" , 0 ) ;
 
       <th width="69%" ><input name="conductor" type="text" id="conductor" value="{nombre_destinatario}" size="50"></th>
 
-      <th width="69%" ><input type="text" name="destinatario" id="destinatario" value="{destinatario}"  readonly="readonly" class=" required  ui-widget-content"/></th>
+      <th width="69%" ><input type="text" name="destinatario" id="destinatario" value="{destinatario}"  readonly="readonly"/></th>
 
       <th width="69%" ><input name="posicion_name" type="text" id="posicion_name" value="{nombre_posicion}">
 

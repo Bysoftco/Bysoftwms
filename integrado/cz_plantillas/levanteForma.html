@@ -1,529 +1,427 @@
 <script>
-	// Version 2712/2016
-    function EnviarFormulario(){
-	}
+	// Versión 27/12/2016
+  function EnviarFormulario() { }
 
-    $(document).ready(function() {
+	$(document).ready(function() {
+		// por defecto se carga la subpartida campo referencia del cliente
+		// alert({cod_referencia})
 	
-	// por defecto se carga la subpartida campo referencia del cliente
-	// alert({cod_referencia})
-	
-	
-	$.post( "./scripts_index.php" ,{ clase:'Levante',metodo:'getFOB',unitem:'{item}' } ,function( data ) {
-		//alert($('#cantidad_naci_para{id_form}').val())
-		$('#fob').val(data*$('#cantidad_naci_para{id_form}').val()/1);
-		$("#valor_unitario").val(data)
-		
-		
-	});
-	
+		$.post( "./scripts_index.php" ,{
+				clase: 'Levante',
+				metodo: 'getFOB',
+				unitem: '{item}' }, function( data ) {
+				//Queda comentarizado el cálculo - debe inicializar con el FOB
+				//Que aparece en el Listado de la Mercancia - 22/oct/2023
+				//$('#fob').val(data*$('#cantidad_naci_para{id_form}').val()/1);
+				$('#fob').val(({fob_nonac}).toFixed(2));	
+				$("#valor_unitario").val({fob_nonac}/$('#cantidad_naci_para{id_form}').val());
+			}
+		);
 
-	 if($("#cod_supartida").val()==""){
-	 
-	 	$.post( "./scripts_index.php" ,{ clase:'Levante',metodo:'getDatosSubpartida',subpartida:'{ref_prove}' } ,function( data ) {
-  		 var info_subpartida = data.split('|');
-			
-		$("#subpartida").val(info_subpartida[0]);// 0 nombre, 1 codigo ,2 arancel,3
-		$("#cod_supartida").val(info_subpartida[1]);
-		$("#arancel").val(info_subpartida[2]);
-		$("#iva").val(info_subpartida[3]);
-		
-	 });
-	 }
-	 
-	 
-  	$("#subpartida").autocomplete("./scripts_index.php?clase=Levante&metodo=findPosicion", 
-	{
-		width: 260,
-		selectFirst: false
-	});
+		if($("#cod_supartida").val()=="") {
+			$.post( "./scripts_index.php" ,{
+					clase:'Levante',
+					metodo:'getDatosSubpartida',
+					subpartida:'{ref_prove}'
+				} ,function( data ) {
+					var info_subpartida = data.split('|');
+				
+					$("#subpartida").val(info_subpartida[0]);// 0 nombre, 1 codigo ,2 arancel,3
+					$("#cod_supartida").val(info_subpartida[1]);
+					$("#arancel").val(info_subpartida[2]);
+					$("#iva").val(info_subpartida[3]);
+				}
+	 		);
+		}
 
-	$("#subpartida").result(function(event, data, formatted) {
-		$("#subpartida").val(data[0]);// 0 nombre, 1 codigo ,2 arancel,3
-		$("#cod_supartida").val(data[1]);
-		$("#arancel").val(data[2]);
-		$("#iva").val(data[6]);
-		
-		//alert(data[6]);
-	});
-  	
+  	$("#subpartida").autocomplete("./scripts_index.php?clase=Levante&metodo=findPosicion", {
+			width: 260,
+			selectFirst: false
+		});
+
+		$("#subpartida").result(function(event, data, formatted) {
+			$("#subpartida").val(data[0]);// 0 nombre, 1 codigo ,2 arancel,3
+			$("#cod_supartida").val(data[1]);
+			$("#arancel").val(data[2]);
+			$("#iva").val(data[6]);
+		});
+	
+		$("#posicion1").autocomplete("./scripts_index.php?clase=Levante&metodo=findPos", {
+			width: 260,
+			selectFirst: false
+		});
+
+		$("#posicion1").result(function(event, data, formatted) {
+			$("#cod_posicion").val(data[1]);
+		});	
   });
  	
 	$.validator.setDefaults({
-		submitHandler: function(){
-		 
-			if($('#envio').val()/1==1){
-			    return 0;
-			 }
-			 $('#envio').val(1);
-			 
-			  
-			$.post("./scripts_index.php",{ clase:'Levante',metodo:'existeLevante',num_levante:$('#levante').val() } ,function(data){ 
-				var valida=1;
-				// si el MULTIPLE no se valida el nùmero de levante
-			
-				//alert($('#multiple_lista').val());
-				if($('#multiple_lista').val()/1>=1)
-				{
-					data=0;
+		submitHandler: function() {
+			if($('#envio').val()/1==1) { return 0; }
+			$('#envio').val(1);
+  
+			$.post("./scripts_index.php",{
+					clase:'Levante',
+					metodo:'existeLevante',
+					num_levante:$('#levante').val()
+				}, function(data) {
+					var valida = 1;
+					//alert($('#multiple_lista').val());
+					// si es MULTIPLE no se valida el número de levante
+					if($('#multiple_lista').val()/1>=1) { data = 0; }
+					if(data >= 1) {
+						var valida = 0;
+						$("#msgbox_mov{id_form}").html('El N\u00famero de Levante '+$('#levante').val()+' Ya Existe en la BD').addClass('ui-state-error');
+					} else {
+						$("#msgbox_mov{id_form}").html('').addClass('');
+					}
+
+					if(valida) {
+						$( "#dialog-form-hacer-levante" ).dialog( "close" );
+						$('#por_cuenta').val($('#por_cuenta_aux').val());
+						$('#documento').val($('#doc_filtro_aux').val());
+
+						$.ajax({
+							url: './scripts_index.php',
+							type: "POST",
+							async: false,
+							data: $("#formularioParaLevante").serialize(),
+							success: function(msm) {
+								$('#htmlMercancia').html(msm);
+						  }
+					  });
+		  		}
+			  	$("#dialog-form-hacer-levante").dialog("close");
 				}
-				if(data >= 1){
-					var valida=0;
-					$("#msgbox_mov{id_form}").html('El Numero de Levante '+$('#levante').val()+' Ya Existe en la BD').addClass('ui-state-error');
-				}else{
-					$("#msgbox_mov{id_form}").html('').addClass('');
-				}
+			);
+		},
+		highlight: function(input) {
+			$(input).addClass("ui-state-highlight");
+		},
+		unhighlight: function(input) {
+			$(input).removeClass("ui-state-highlight");
+		}
+	});
 
-               	if(valida){
-					$( "#dialog-form-hacer-levante" ).dialog( "close" );
-					$('#por_cuenta').val($('#por_cuenta_aux').val());
-					$('#documento').val($('#doc_filtro_aux').val());
-
-                    $.ajax({
-						url:'./scripts_index.php',
-						type: "POST",
-						async:false,
-						data:$("#formularioParaLevante").serialize(),
-						success: function (msm){
-							$('#htmlMercancia').html(msm);
-					    }
-				     });
-			   }else{
-			   
-			     } 
-				   $("#dialog-form-hacer-levante").dialog("close");
-
-        });
-	},
-	highlight: function(input){
-		$(input).addClass("ui-state-highlight");
-	},
-	unhighlight: function(input){
-		$(input).removeClass("ui-state-highlight");
-	}
-});
-
-	$.validator.addMethod("peso_maximo", function(value){
-		if($("#peso_naci_para{id_form}").val()/1 > $("#peso_naci_aux{id_form}").val()/1){
+	$.validator.addMethod("peso_maximo", function(value) {
+		if($("#peso_naci_para{id_form}").val()/1 > $("#peso_naci_aux{id_form}").val()/1) {
 			return false;	
-		}else{
+		} else {
 			return true;
 		}
 	}, '* El peso indicado no puede ser mayor al peso disponible!');
 
-    $.validator.addMethod("cantidad_maxima", function(value){
-		if($("#peso_naci_para{id_form}").val()/1 > $("#peso_naci_aux{id_form}").val()/1){
+	$.validator.addMethod("cantidad_maxima", function(value) {
+		if($("#peso_naci_para{id_form}").val()/1 > $("#peso_naci_aux{id_form}").val()/1) {
 			return false;	
-		}else{
+		} else {
 			return true;
 		}
 	}, '* La cantidad indicada no puede ser mayor a la cantidad disponible!');
 
-   $(function(){
+	$(function() {
 		$("#formularioParaLevante").validate({
-			rules:{ peso_naci_para: "peso_maximo"}
+			rules:{ peso_naci_para: "peso_maximo" }
+		});
+
+		//Cálculo de Valores
+		$('#flete').blur(function() {
+			var valor_aduana = $('#fob').val()/1 + $('#flete').val()/1;
+			$('#valor_aduana').val(valor_aduana);
+			valor_cif = valor_aduana/1 * $('#trm').val()/1;
+			$('#fob_naci_para{id_form}').val(valor_cif);
+		});
+
+		$('#levante').blur(function() {
+			$('#num_declaracion').val($('#levante').val());
+		});
+
+		$('#iva').blur(function() {
+			var valor_aduana = parseFloat($('#fob').val()) + parseFloat($('#flete').val());
+			var valor_cif = valor_aduana * parseFloat($('#trm').val());
+			var por_arancel = $('#arancel').val() / 100;
+			var arancel = valor_cif * por_arancel;
+			var iva = (valor_cif + arancel) * $('#iva').val() / 100;
+			var total = arancel + iva;
+			$('#total').val(total.toFixed(1));
+		});
 	});
 
-	// Calculo de valores que se pueden calcular
-	$('#flete').blur(function(){
-		var valor_aduana =$('#fob').val()/1+$('#flete').val()/1;
-		$('#valor_aduana').val(valor_aduana);
-		valor_cif =valor_aduana/1*$('#trm').val()/1;
-		$('#fob_naci_para{id_form}').val(valor_cif);
-
-      });
-
-      $('#levante').blur(function(){
-			$('#num_declaracion').val( $('#levante').val());
-		});
-
-       $('#iva').blur(function() {
-			var valor_aduana    =$('#fob').val()/1+$('#flete').val()/1;
-			var valor_cif       =valor_aduana/1*$('#trm').val()/1;
-			var por_arancel=$('#arancel').val()/100;
-			var arancel         =valor_cif *por_arancel;
-			var iva             =(valor_cif/1+arancel/1)*$('#iva').val()/100;
-			var total           =arancel/1+iva/1;
-			$('#total').val( total.toFixed(1));
-		});
-	 })
 	// Validaciones
-
-    $(function(){
-		if($("#tipo_movimiento").val()==2 ){// Nacionalizacion
-			var catProp    =  {cant_bultos}/{num_declaraciones};
-			catProp        =catProp.toFixed(1);  // se recorta a un decimal
-			//si es la ultima se ajusta y se obliga a sacar todo el peso se cambia el estilo para que el cliente se percate
-			$("#peso_naci_para{id_form}").val("")
-			$("#fob_naci_para{id_form}").val("")
-			if({cant_declaraciones}/1=={num_declaraciones}/1){
-				//$("#cantidad_naci_para{id_form}").val( {cantidad} /1-{sum_cant_naci});
-				$("#peso_naci_para{id_form}").val({peso_nonac} );
-				$("#msgbox_mov{id_form}").html('Ultima declaraci&oacute;n , debe nacionalizar todo el inventario restante,si no es mercanc&iacute;a con parciales').addClass('ui-state-error');
+	$(function() {
+		if($("#tipo_movimiento").val()==2) {// Nacionalización
+			//var catProp =  {cant_bultos}/{num_declaraciones};
+			var catProp = $("#cantidad_naci_aux").val();
+			catProp = catProp.toFixed(1);  // se recorta a un decimal
+			//si es la última se ajusta y se obliga a sacar todo el peso, se cambia el estilo para que el cliente se percate
+			$("#peso_naci_para{id_form}").val("");
+			$("#fob_naci_para{id_form}").val("");
+			if({cant_declaraciones}/1=={num_declaraciones}/1) {
+				$("#peso_naci_para{id_form}").val({peso_nonac});
+				$("#msgbox_mov{id_form}").html('&Uacute;ltima declaraci&oacute;n, debe nacionalizar todo el inventario restante, si no es mercanc&iacute;a con parciales').addClass('ui-state-error');
 				$('#peso_naci_para{id_form}').addClass("ui-state-error-text");
-			}else{
-				$("#cantidad_naci_para{id_form}").val(catProp)   
+			} else {
+				$("#cantidad_naci_para{id_form}").val(catProp);  
 			}
 		}
-	})
+	});
 
-    // Coloca los valores proporcionales
-	function setValores(form){
-		var pesoProp            =  (form.peso_naci_aux.value/form.cantidad_naci_aux.value)* form.cantidad_naci_para.value;
-		pesoProp                =  pesoProp.toFixed(2);
-		form.peso_naci_para.value    =  pesoProp;
-		var fobProp            =  (form.fob_naci_aux.value/form.cantidad_naci_aux.value)* form.cantidad_naci_para.value;
-		fobProp                =  fobProp.toFixed(2);
-		//form.fob_naci_para.value    =  fobProp ;
+  // Coloca los valores proporcionales
+	function setValores(form) {
+		var pesonaux = parseFloat(form.peso_naci_aux.value);
+		var cantinaux = parseFloat(form.cantidad_naci_aux.value);
+		var cantinpar = parseFloat(form.cantidad_naci_para.value);
+		var pesoProp = (pesonaux/cantinaux)*cantinpar;
+
+		pesoProp = pesoProp.toFixed(2);
+		form.peso_naci_para.value = pesoProp;
+		var fobnaux = parseFloat(form.fob_naci_aux.value);
+		var fobProp = (fobnaux/cantinaux)*cantinpar;
+		fobProp = fobProp.toFixed(2);
 	}
 
-	function setValoresNoNacional(form){
-		var pesoProp            =  (form.peso_yanaci_aux.value/form.cantidad_yanaci_aux.value)* form.cantidad_yanaci.value;
-		pesoProp                =  pesoProp.toFixed(2);
-		form.peso_yanaci.value  =  pesoProp;
-		var fobProp            =  (form.fob_yanaci_aux.value/form.cantidad_yanaci_aux.value)* form.cantidad_yanaci.value;
-		fobProp                =  fobProp.toFixed(2);
-		//form.fob_yanaci.value    =  fobProp ;  // Se calcula en el encabezado
+	function setValoresNoNacional(form) {
+		var pesoynaux = parseFloat(form.peso_yanaci_aux.value);
+		var cantiynaux = parseFloat(form.cantidad_yanaci_aux.value);
+		var cantiynpar = parseFloat(form.cantidad_yanaci.value);
+		var pesoProp = (pesoynaux/cantiynaux)*cantiynpar;
+		pesoProp = pesoProp.toFixed(2);
+		form.peso_yanaci.value = pesoProp;
+		var fobynaux = parseFloat(form.fob_yanaci_aux.value);
+		var fobProp = (fobynaux/cantiynaux)*cantiynpar;
+		fobProp = fobProp.toFixed(2);
 	}
-
-	</script>
-		<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
-		<span id="msgbox_mov{id_form}" style="display:block" class="{estilo}"  > {mensaje} 
-		</span> 
-
-		<form class="formularioParaLevante" name="formularioParaLevante"  id="formularioParaLevante"  method="post" action="javascript:EnviarFormulario()">
-		{formaCosteo}
-		<script>
-		$(function(){
-			$( "#btnGuardar" ).button(
-			{
-				text: true,
-				icons: {primary: "ui-icon-disk"}
-			})
-
-        	$("#fecha{id_form}").datepicker();
-			$("#fecha{id_form}").datepicker('option', {   dateFormat: 'yy/mm/dd',
-				changeYear: true,
-				changeMonth: true,
-				showOn: 'both',
-				buttonImage: 'integrado/imagenes/calendar.png',
-				buttonImageOnly: true
-			});
-
-       		$('#fecha{id_form}').val('{fecha}');
-
-			$('#cantidad_naci_para{id_form}').blur(function() {
-				
-				$('#fob').val($("#valor_unitario").val()*$('#cantidad_naci_para{id_form}').val()/1);
-				
-
-			});
-			
-			$('#trm').blur(function() {
-				//alert('test')
-				//$('#trm').val(1200);
-				var valor_aduana =$('#fob').val()/1+$('#flete').val()/1;
-				$('#valor_aduana').val(valor_aduana);
-				valor_cif =valor_aduana/1*$('#trm').val()/1;
-				$('#fob_naci_para{id_form}').val(valor_cif);
-				
-
-			});	
+</script>
+<script>
+	$(function() {
+		$( "#btnGuardar" ).button({
+			text: true,
+			icons: {primary: "ui-icon-disk"}
 		})
 
-   
+		$("#fecha{id_form}").datepicker();
+		$("#fecha{id_form}").datepicker('option', {
+			dateFormat: 'yy/mm/dd',
+			changeYear: true,
+			changeMonth: true,
+			showOn: 'both',
+			buttonImage: 'integrado/imagenes/calendar.png',
+			buttonImageOnly: true
+		});
 
-   $(document).ready(function(){
-	$("#aplica_pago").click(function(event){
-	if($(this).is(":checked")) {
-		$("#pago_total").val($("#total").val()); 
-	}else{
+		$('#fecha{id_form}').val('{fecha}');
+
+		$('#cantidad_naci_para{id_form}').blur(function() {
+			$('#fob').val((parseFloat($("#valor_unitario").val())*parseFloat($('#cantidad_naci_para{id_form}').val())).toFixed(2));
+		});
+
+		$('#trm').blur(function() {
+			var valor_aduana = $('#fob').val()/1+$('#flete').val()/1;
+			$('#valor_aduana').val(valor_aduana);
+			valor_cif = valor_aduana/1*$('#trm').val()/1;
+			$('#fob_naci_para{id_form}').val(valor_cif);
+		});	
+	})
+
+	$(document).ready(function() {
+		$("#aplica_pago").click(function(event) {
+			if($(this).is(":checked")) {
+				$("#pago_total").val($("#total").val()); 
+			}
+		});
+	});
+</script>
+<style>
+	.ui-datepicker-trigger {
+		position: relative;
+    top: -2px;
+    margin-left: 0px;
+    vertical-align: middle;
+	}
+	/* Alineación de los botones - centrado */
+	.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+		float: none;
 	}
 
-   });
- });	
-
-</script>
-
+	.ui-dialog .ui-dialog-buttonpane {
+		text-align: center; /* izquierda/centro/derecha */
+	}
+</style>
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
-
-<p id="msgbox_levante"></p>
-
-
-
-  <fieldset class="ui-widget ui-widget-content ui-corner-all" >
-
-    <legend class="ui-widget ui-widget-header ui-corner-all">
-
-        
-
-        Datos de la Declaraci&ograve;n  {cant_declaraciones}  de {num_declaraciones} {id_levanteX} {comodin}
-
-            
-
-    </legend>
-
-   
-
-    
-  <table width="100%" border="0">
-    <tr  class="ui-widget ui-widget-header ui-corner-all" > 
-      <th ># Levante: </th>
-      <th ># de Formulario:</th>
-      <th >Fecha:</th>
-      <th title="Tipo Declaraci&ograve;n">T Declaraci&ograve;n </th>
-      <th >Sub. Arancelaria </th>
-      <th >TRM:</th>
-      <th >Modalidad: </th>
-    </tr>
-    <tr> 
-      <td> <input name="num_levante" type="text" class=" required   ui-widget-content" id="levante" value="{prefijo}" size="20"  maxlength="15" minlength="15"></td>
-      <td> <input name="num_declaracion" type="text" class=" required   ui-widget-content" id="num_declaracion" value="{prefijo}" size="20"  maxlength="15" minlength="15"> 
-      </td>
-      <td> <input name="fecha" type="text" class=" required   ui-widget-content" id="fecha{id_form}" value="{fecha}" size="15" > 
-        <input name="fmm" type="hidden" class=" required   ui-widget-content" id="fmm" value="0" size="15"> 
-      </td>
-      <td> <input name="tipo_declaracion" type="text" id="tipo_declaracion" value="{tipo_declaracion}" size="15"> 
-      </td>
-      <td> <input name="subpartida" type="text" id="subpartida" value="" size="15"> 
-        <input name="cod_supartida" type="hidden" class=" required" id="cod_supartida"   > 
-      </td>
-      <td> <input name="trm" type="text" id="trm" value="{trm}" size="10" class=" required  number"> 
-      </td>
-      <td> <input name="modalidad" type="text" id="modalidad" value="{modalidad}" size="15"> 
-      </td>
-    </tr>
-  </table>
-
-      
-
-        
-
-  <table width="100%" border="0">
-
-    <tr  class="ui-widget ui-widget-header ui-corner-all" > 
-
-      <th >FOB</th>
-
-      <th >Fletes</th>
-
-      <th title="Valor de Aduana">Vlr Aduana</th>
-
-      <th >Arancel</th>
-
-      <th >Iva</th>
-
-      <th >Total</th>
-
-      <th >Con Pago</th>
-
-      <th >Pago Total</th>
-
-      <th >Observaci&ograve;n</th>
-
-    </tr>
-
-    <tr> 
-
-      <td> <input name="fob" type="text" id="fob" value="{fob}" size="15" class="  required  number"> 
-
-      </td>
-
-      <td> <input name="fletes" type="text" id="flete" value="{flete}" size="15" class=" required  number"> 
-
-      </td>
-
-      <td> <input name="aduana" type="text" id="valor_aduana" value="{valor_aduana}" size="15" class="required   number"> 
-
-      </td>
-
-      <td> <input name="arancel" type="text" id="arancel" value="{arancel}" size="5" class=" required  number"> 
-
-      </td>
-
-      <td> <input name="iva" type="text" id="iva" value="{iva}" size="5" class=" required  number"> 
-
-      </td>
-
-      <td> <input name="total" type="text" id="total" value="{total}" size="15"> 
-
-      </td>
-
-      <td><input name="aplica_pago" type="checkbox" id="aplica_pago" value="1"></td>
-
-      <td> <input name="pago_total" type="text" id="pago_total" value="0" size="15" > 
-
-      </td>
-
-      <td> <input name="obs" type="text" id="obs3" value="{obs}" size="20"> </td>
-
-    </tr>
-
-  </table>
-
-  </fieldset>
-
- <input name="id_levante" type="hidden" id="clase" value="{id_levante}">
-
-    
-
-  
-
-    
-
-  <fieldset class="ui-widget ui-widget-content ui-corner-all">
-  <legend class="ui-widget ui-widget-header ui-corner-all"> Mercancia {item} 
-  <input name="clase" type="hidden" id="clase" value="Levante">
-  <input name="metodo" type="hidden" id="metodo" value="addItemLevante">
-  <input name="id_form" type="hidden" id="id_form" value="{id_form} ">
-  <input name="id_item" type="hidden" id="arribo_aux" value="{id_item} ">
-  <input name="fmm" type="hidden" id="fmm" value="{fmm}">
-  </legend>
-  <input name="tipo_movimiento" type="hidden" id="tipo_movimiento_lev" value="{tipo_movimiento} ">
-
-  {tipo_movimientox} 
-
-  <table width="100%" border="0">
-
-    <tr  class="ui-widget ui-widget-header ui-corner-all" > 
-
-        <th width="35%" >Referencia 
-
-            <input name="referencia" type="hidden" id="referencia{id_form}" value="{referencia}" {disabled}> 
-
-            <input name="id_levante" type="hidden" id="id_levante" value="{id_levante}" {disabled}>
-      </th>
-
-        <th >Documento</th>
-
-        <th title="Modelo/Lote/Cosecha">M/L/C</th>
-
-        <th >FMMN/ParteNo</th>
-
-        <th >Embalajes</th>
-
-        <th>U. Empaque</th>
-
-    </tr>
-
-    
-
-    <tr> 
-
-      <td>[{cod_referencia}]{nombre_referencia} </td>
-
-      <td>{doc_tte}</td> 
-
-      <td>{modelo}</td>
-
-      <td>{fmm}</td>
-
-      <td>{q_embalaje}</td>
-
-      <td>{nombre_empaque}</td>
-
-    </tr>
-
-  </table>
-
-		    
-
-       
-
-  <table width="100%" border="0">
-
-    <tr  class="ui-widget ui-widget-header ui-corner-all" > 
-
-      <th width="15%" >Item</th>
-
-      <th width="20%" >Extranjero</th>
-
-      <th width="20%" >Nacional</th>
-
-      <th width="15%" >Total</th>
-
-    </tr>
-
-    <tr> 
-
-      <td>Cantidad </td>
-
-      <td> <input name="cantidad_naci_para" type="{type_nonac}" class="ui-widget-content {required:true,number:true,min:0,max:{cantidad_nonac}}" id="cantidad_naci_para{id_form}" value="{cantidad_nonac}" size="10" onBlur="javascript: setValores(this.form)" {readonlyx} {disableNonac}>
-
-        {v_aux_nonac} de : {cantidad_nonac} 
-
-        <input name="cantidad_naci_aux" type="hidden" id="cantidad_naci_aux" value="{cantidad_nonac}">
-        <input name="valor_unitario" type="hidden" id="valor_unitario" value="0"> </td>
-
-      <td> {cant_naci_f} 
-
-        <input name="cantidad_yanaci_aux" type="hidden" id="cantidad_yanaci_aux" value="{cantidad_naci}"> 
-
-      </td>
-
-      <td> {cantidad} </td>
-
-    </tr>
-
-    <tr> 
-
-      <td>Peso </td>
-
-      <td> <input name="peso_naci_para" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="peso_naci_para{id_form}" value="{peso_nonac}" size="10" >
-
-        {v_aux_nonac} de : {peso_nonac} 
-
-        <input name="peso_naci_aux" type="hidden" id="peso_naci_aux{id_form}" value="{peso_nonac}"> 
-
-      </td>
-
-      <td> {peso_naci_f} 
-
-        <input name="peso_yanaci_aux" type="hidden" id="peso_yanaci_aux" value="{peso_naci}"> 
-
-      </td>
-
-      <td>{peso} </td>
-
-    </tr>
-
-    <tr> 
-
-      <td> V.Cif </td>
-
-      <td> <input name="fob_naci_para" type="{type_nonac}" class="ui-widget-content {required:true,number:true,min:0}" id="fob_naci_para{id_form}" value="{fob}" size="10">
-
-        <input name="fob_naci_aux" type="hidden" id="fob_naci_aux" value="{fob_nonac}"> 
-
-      </td>
-
-      <td> {cif_f} 
-
-        <input name="fob_yanaci_aux" type="hidden" id="fob_yanaci_aux" value="{fob_naci}"> 
-
-      </td>
-
-      <td>{valor} </td>
-
-    </tr>
-
-  </table>
-
-  
-
-   
-
- </fieldset>
-
-  <br>
-
-   <input name="por_cuenta_filtro" type="hidden" id="por_cuenta" value="">
-
-  <input name="doc_filtro" type="hidden" id="documento" value="">
-
-  <input name="grupo" type="hidden" id="documento" value="{id_grupo}">
-
-  <input name="un_formulario" type="hidden" id="un_formulario" value="formularioParaLevante">
-  <input type="hidden" name="orden_filtro" id="orden_filtro" value="{orden_filtro}">
-  <input name="envio" type="hidden" id="envio" value="0" >
+<span id="msgbox_mov{id_form}" style="display:block" class="{estilo}"  > {mensaje} 
+</span>
+<form class="formularioParaLevante" name="formularioParaLevante" id="formularioParaLevante" method="post" action="javascript:EnviarFormulario()">
+	{formaCosteo}
+	<p id="msgbox_levante"></p>
+	<fieldset class="ui-widget ui-widget-content ui-corner-all" >
+		<legend class="ui-widget ui-widget-header ui-corner-all">
+			Datos de la Declaraci&oacute;n  {cant_declaraciones}  de {num_declaraciones} {id_levanteX} {comodin}
+		</legend>
+		<table width="100%" border="0" class="ui-widget ui-widget-content">
+			<tr class="ui-widget ui-widget-header ui-corner-all"> 
+		    <th># Levante: </th>
+		    <th># de Formulario:</th>
+		    <th>Fecha:</th>
+		    <th title="Tipo Declaraci&oacute;n">T Declaraci&oacute;n</th>
+	      <th>Sub. Arancelaria</th>
+	      <th>TRM:</th>
+	      <th>Modalidad:</th>
+    	</tr>
+    	<tr> 
+    		<td>
+    			<input name="num_levante" type="text" class="required   ui-widget-content" id="levante" value="{prefijo}" size="20"  maxlength="15" minlength="15" />
+    		</td>
+      	<td>
+      		<input name="num_declaracion" type="text" class="required ui-widget-content" id="num_declaracion" value="{prefijo}" size="20"  maxlength="15" minlength="15" /> 
+      	</td>
+      	<td>
+      		<input name="fecha" type="text" style="height:17px;" class="ui-datepicker-trigger required ui-widget-content" id="fecha{id_form}" value="" size="15" />
+      	</td>
+      	<td>
+      		<input name="tipo_declaracion" type="text" id="tipo_declaracion" value="{tipo_declaracion}" size="15" /> 
+      	</td>
+      	<td>
+      		<input name="subpartida" type="text" id="subpartida" value="" size="15" /> 
+        	<input name="cod_supartida" type="hidden" class="required" id="cod_supartida" /> 
+      	</td>
+      	<td>
+      		<input name="trm" type="text" id="trm" value="{trm}" size="10" class="required number"> 
+      	</td>
+      	<td>
+      		<input name="modalidad" type="text" id="modalidad" value="{modalidad}" size="15" /> 
+      	</td>
+    	</tr>
+  	</table>
+		<table width="100%" border="0" class="ui-widget ui-widget-content">
+			<tr class="ui-widget ui-widget-header ui-corner-all" > 
+				<th>FOB</th>
+				<th>Fletes</th>
+				<th title="Valor de Aduana">Vlr Aduana</th>
+				<th>Arancel</th>
+				<th>Iva</th>
+				<th>Total</th>
+				<th>Con Pago</th>
+				<th>Pago Total</th>
+				<th>Observaci&oacute;n</th>
+			</tr>
+			<tr> 
+				<td>
+					<input name="fob" type="text" id="fob" value="{fob}" size="15" class="required number" /> 
+      	</td>
+				<td>
+					<input name="fletes" type="text" id="flete" value="{flete}" size="15" class="required number" /> 
+				</td>
+				<td>
+					<input name="aduana" type="text" id="valor_aduana" value="{valor_aduana}" size="15" class="required number" /> 
+				</td>
+				<td>
+					<input name="arancel" type="text" id="arancel" value="{arancel}" size="5" class="required number" /> 
+				</td>
+				<td>
+					<input name="iva" type="text" id="iva" value="{iva}" size="5" class="required number" /> 
+				</td>
+				<td>
+					<input name="total" type="text" id="total" value="{total}" size="15" /> 
+				</td>
+				<td>
+					<input name="aplica_pago" type="checkbox" id="aplica_pago" value="1" />
+				</td>
+				<td>
+					<input name="pago_total" type="text" id="pago_total" value="0" size="15" /> 
+      	</td>
+				<td>
+					<input name="obs" type="text" id="obs3" value="{obs}" size="20" />
+				</td>
+    	</tr>
+		</table>
+	</fieldset><br />
+	<input name="id_levante" type="hidden" id="id_levante" value="{id_levante}" />
+	<fieldset class="ui-widget ui-widget-content ui-corner-all">
+ 		<legend class="ui-widget ui-widget-header ui-corner-all"> Mercanc&iacute;a {item} 
+		  <input name="clase" type="hidden" id="clase" value="Levante" />
+		  <input name="metodo" type="hidden" id="metodo" value="addItemLevante" />
+		  <input name="id_form" type="hidden" id="id_form" value="{id_form}" />
+		  <input name="id_item" type="hidden" id="arribo_aux" value="{id_item}" />
+		  <input name="fmm" type="hidden" id="fmm" value="{fmm}" />
+  	</legend>
+  	<input name="tipo_movimiento" type="hidden" id="tipo_movimiento_lev" value="{tipo_movimiento}" />
+		{tipo_movimientox}
+		<table width="100%" border="0" class="ui-widget ui-widget-content">
+			<tr class="ui-widget ui-widget-header ui-corner-all" > 
+				<th width="35%">Referencia 
+					<input name="referencia" type="hidden" id="referencia{id_form}" value="{cod_referencia}" {disabled} />
+      	</th>
+				<th>Documento</th>
+				<th title="Modelo/Lote/Cosecha">M/L/C</th>
+				<th>FMMN/ParteNo</th>
+				<th>Posici&oacute;n</th>
+				<th>U. Empaque</th>
+			</tr>
+			<tr> 
+				<td style="text-align: center;">[{cod_referencia}]&nbsp;{nombre_referencia} </td>
+				<td style="text-align: center;">{doc_tte}</td> 
+				<td style="text-align: center;">{modelo}</td>
+				<td style="text-align: center;">{fmm}</td>
+				<td style="text-align: center;">
+					<input name="posicion1" type="text" id="posicion1" value="{nombre_posicion}" size="15" /> 
+					<input name="cod_posicion" type="hidden" class=" required" id="cod_posicion" value="{cod_posicion}" />
+				</td>
+				<td style="text-align: center;">{nombre_empaque}</td>
+			</tr>
+		</table>
+		<table width="100%" border="0" class="ui-widget ui-widget-content">
+			<tr class="ui-widget ui-widget-header ui-corner-all" > 
+				<th width="15%">Item</th>
+				<th width="20%">Extranjero</th>
+				<th width="20%">Nacional</th>
+				<th width="15%">Total</th>
+			</tr>
+			<tr> 
+				<td>Cantidad</td>
+				<td>
+					<input name="cantidad_naci_para" type="{type_nonac}" class="ui-widget-content {required:true,number:true,min:0,max:{cantidad_nonac}}" id="cantidad_naci_para{id_form}" value="{cantidad_nonac}" size="10" onBlur="javascript: setValores(this.form)" {readonlyx} {disableNonac}>
+					{v_aux_nonac} de : {cantidad_nonac} 
+					<input name="cantidad_naci_aux" type="hidden" id="cantidad_naci_aux" value="{cantidad_nonac}">
+					<input name="valor_unitario" type="hidden" id="valor_unitario" value="0">
+				</td>
+				<td>
+					{cant_naci_f} 
+					<input name="cantidad_yanaci_aux" type="hidden" id="cantidad_yanaci_aux" value="{cantidad_naci}" />
+				</td>
+				<td> {cantidad} </td>
+			</tr>
+			<tr> 
+				<td>Peso </td>
+				<td>
+					<input name="peso_naci_para" type="text" class="ui-widget-content {required:true,number:true,min:0}" id="peso_naci_para{id_form}" value="{peso_nonac}" size="10" />
+					{v_aux_nonac} de : {peso_nonac} 
+					<input name="peso_naci_aux" type="hidden" id="peso_naci_aux{id_form}" value="{peso_nonac}" /> 
+				</td>
+				<td> {peso_naci_f} 
+					<input name="peso_yanaci_aux" type="hidden" id="peso_yanaci_aux" value="{peso_naci}" /> 
+				</td>
+				<td>{peso} </td>
+			</tr>
+			<tr> 
+				<td> V.Cif </td>
+				<td>
+					<input name="fob_naci_para" type="{type_nonac}" class="ui-widget-content {required:true,number:true,min:0}" id="fob_naci_para{id_form}" value="{fob}" size="10" />
+					<input name="fob_naci_aux" type="hidden" id="fob_naci_aux" value="{fob_nonac}" /> 
+				</td>
+				<td>
+					{cif_f} 
+					<input name="fob_yanaci_aux" type="hidden" id="fob_yanaci_aux" value="{fob_naci}" /> 
+				</td>
+				<td>{valor} </td>
+			</tr>
+		</table>
+	</fieldset>
+	<br />
+	<input name="por_cuenta_filtro" type="hidden" id="por_cuenta" value="" />
+	<input name="doc_filtro" type="hidden" id="documento" value="" />
+	<input name="grupo" type="hidden" id="grupo" value="{id_grupo}" />
+  <input name="un_formulario" type="hidden" id="un_formulario" value="formularioParaLevante" />
+  <input type="hidden" name="orden_filtro" id="orden_filtro" value="{orden_filtro}" />
+  <input name="envio" type="hidden" id="envio" value="0" />
 </form>

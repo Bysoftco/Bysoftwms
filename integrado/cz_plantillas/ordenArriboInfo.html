@@ -276,7 +276,7 @@
 								<th style="width:1%;">Fletes</th>
                 <th style="width:1%;">Seguros</th>
                 <th style="width:1%;">Otros Gastos</th>
-                <th style="width:1%;">Valor FOB/CIF</th>
+                <th style="width:1%;">Valor FOB (USD)</th>
                 <th style="width:1%;">TRM</th>
                 <th style="width:1%;">Moneda</th>
 							</tr>
@@ -286,7 +286,7 @@
 								<td><div align="right">{fletes} </div></td>
                 <td><div align="right">{seguros} </div></td>
                 <td><div align="right">{otros_gastos} </div></td>
-								<td><div align="right">{valor_fob}</div></td>
+								<td><div align="right">{fob}</div></td>
 								<td><div align="right">{trm}</div></td>
 								<td><div align="right">{moneda} </div></td>
 							</tr>
@@ -328,6 +328,7 @@
   <input type="hidden" name="do_asignado" id="do_asignado" value="{do_asignado}" />
   <input type="hidden" name="do_asignado_full" id="do_asignado_full" value="{do_asignado_full}" />
   <input type="hidden" name="por_cuenta_de" id="por_cuenta_de" value="{razon_social}" />
+	<input type="hidden" name="por_cuenta" id="por_cuenta" value="{por_cuenta}" />
   <input type="hidden" name="doc_ttex" id="doc_ttex" value="{doc_tte}" />
   <input type="hidden" name="fecham" id="fecham" value="{fecha_do}" />
   <input type="hidden" name="arribo" id="arribo" value="{id_form}" />

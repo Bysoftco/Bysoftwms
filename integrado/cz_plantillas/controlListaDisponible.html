@@ -2,7 +2,7 @@
   $(function() {
     $("a.id_mercancia").click(function() { //check for the first selection
       var $column = $(this).attr('id'); // assign the ID of the column
-
+      
       with(document.listadoControlar) {
         //Carga la Ventana de Datos de la Mercancia a Bloquear
         $("#dialog-form-hacer-bloqueo").dialog("open");

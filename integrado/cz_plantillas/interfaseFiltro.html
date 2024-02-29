@@ -2,23 +2,11 @@
   /***************************************************
     Modificado para Interfaz FoxConPro - Fredy Salom
     Enero 27, 2020 - Lunes
-    Modificao para Interfaz WorldOffice - Fredy Salom
+    Modificado para Interfaz WorldOffice - Fredy Salom
     Agosto 30, 2020 - Domingo
    ***************************************************/
 
-  function EnviarformularioInterfase() {
-    /*	
-    $.ajax({
-      url:'scripts_index.php',
-      type: "POST",
-      async:false,
-      data:$('#formularioInterfase').serialize(),
-      success: function (msm){
-        jQuery(document.body).overlayPlayground('close');void(0);
-        $('#componente_central').html(msm);
-      }
-    });*/
-  }
+  function EnviarformularioInterfase() { }
   $("#generar_interfase").hide();
   $(document).ready(function() {
     $("#formularioInterfase{accion}").validate({
@@ -58,18 +46,9 @@
       buttonImage: 'integrado/imagenes/calendar.png',
       buttonImageOnly: true
     });
-    //$('#fecha_fin').val('{fecha_fin}');
   });
 
   $(function() {
-    $("#buscarCliente{accion}").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
-      width: 260,
-      selectFirst: false
-    });
-
-    $("#buscarCliente{accion}").result(function(event, data, formatted) {
-      if(data) $(this).parent().next().find("input").val(data[1]);
-    });
     $("#fechaDesde_interfase{accion}").datepicker();
 		$("#fechaDesde_interfase{accion}").datepicker('option', {dateFormat: 'yy/mm/dd',changeYear: true,changeMonth: true,showOn: 'both',buttonImage: 'integrado/imagenes/calendar.png',buttonImageOnly: true
     });
@@ -81,7 +60,7 @@
 	
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
 <div class="demo">
-  <div id="dialog-form" title="Asignaci&oacute;n de DOs">
+  <div id="dialog-form" title="Datos de Filtro de la Interface">
     <p class="validateTips">Seleccione uno o varios filtros para delimitar resultados.</p>
     <form class="formularioInterfase{accion}" id="formularioInterfase{accion}" method="post" action="javascript:EnviarformularioInterfase()" name="formularioInterfase{accion}">
       <fieldset class="ui-widget ui-widget-content ui-corner-all">
@@ -105,13 +84,13 @@
 		
         <p id="tipo_interfase"> 
           <label for="curl">Tipo Interface:</label>
-          <input type="radio" name="tipo_interfase" value="1">
+          <input type="radio" name="tipo_interfase" value="1" />
           Siigo 
-          <input type="radio" name="tipo_interfase" value="2">
+          <input type="radio" name="tipo_interfase" value="2" />
           Helisa
-          <input type="radio" name="tipo_interfase" value="3">
+          <input type="radio" name="tipo_interfase" value="3" />
           FoxconPro
-          <input type="radio" name="tipo_interfase" value="4">
+          <input type="radio" name="tipo_interfase" value="4" />
           WorldOffice
         </p>
       </fieldset>

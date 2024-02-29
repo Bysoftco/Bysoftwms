@@ -62,70 +62,67 @@
       $("#tipo_retiro").val($("#tipo_retiro_filtro").val());
       $("#do_asignado").val($("#orden_maestro").val());
                     
-      cantidad_retirada=$("#cantidad_nonaci_para").val()/1;
-      cantidad_retirada_max=$("#cantidad_nonaci_aux").val()/1;
-      peso_retirado=$("#peso_nonaci_para").val()/1;
-      peso_retirado_aux=$("#peso_nonaci_para{id_form}").val()/1; 
+      cantidad_retirada = $("#cantidad_nonaci_para").val()/1;
+      cantidad_retirada_max = $("#cantidad_nonaci_aux").val()/1;
+      peso_retirado = $("#peso_nonaci_para").val()/1;
+      peso_retirado_aux = $("#peso_nonaci_para{id_form}").val()/1; 
 
       cantidad_retirada.toFixed(2);
       cantidad_retirada_max.toFixed(2);
-      peso_retirado.toFixed(2);
-      peso_retirado_aux.toFixed(2);
+      peso_retirado.toFixed(3);
+      peso_retirado_aux.toFixed(3);
 
-      if((peso_retirado==peso_retirado_aux) &&(cantidad_retirada < cantidad_retirada_max)) {
-        alert("Debe dejar peso Extranjero pues no esta retirando la totalidad de piezas");
+      if((peso_retirado==peso_retirado_aux) && (cantidad_retirada<cantidad_retirada_max)) {
+        alert("Debe dejar peso Extranjero pues no est\u00E1 retirando la totalidad de piezas");
         $("#peso_nonaci_para").focus();
         return 0;
       }
 
       //Cantidades
-      if((cantidad_retirada == cantidad_retirada_max) &&(peso_retirado < peso_retirado_aux)) {
-        var r = confirm("Si retira la totalidad de piezas  Extranjeras tambien debe retirar todo el peso!");
-        if(r == true) {
-          // pasa no hace nada
-        } else {
+      if((cantidad_retirada==cantidad_retirada_max) && (peso_retirado < peso_retirado_aux)) {
+        var r = confirm("Si retira la totalidad de piezas Extranjeras tambi\u00E9n debe retirar todo el peso!");
+        if(r!=true) {
           $("#peso_nonaci_para").focus();
           return 0;
         }
       }
 										
       //Nacional
-      cantidad_retirada=$("#cantidad_naci_para").val()/1;
-      cantidad_retirada_max=$("#cantidad_naci_aux").val()/1;
-      peso_retirado=$("#peso_naci_para").val()/1;
-      peso_retirado_aux=$("#peso_naci_aux").val()/1;
+      cantidad_retirada = $("#cantidad_naci_para").val()/1;
+      cantidad_retirada_max = $("#cantidad_naci_aux").val()/1;
+      peso_retirado = $("#peso_naci_para").val()/1;
+      peso_retirado_aux = $("#peso_naci_aux").val()/1;
 
       cantidad_retirada.toFixed(2);
       cantidad_retirada_max.toFixed(2);
-      peso_retirado.toFixed(2);
-      peso_retirado_aux.toFixed(2);
+      peso_retirado.toFixed(3);
+      peso_retirado_aux.toFixed(3);
 
       var alerta = 0;
-      if((peso_retirado==peso_retirado_aux) &&(cantidad_retirada < cantidad_retirada_max)) {
-        alert("Debe dejar peso Nacional pues no esta retirando la totalidad de piezas");
+      if((peso_retirado==peso_retirado_aux) && (cantidad_retirada<cantidad_retirada_max)) {
+        alert("Debe dejar peso Nacional pues no est\u00E1 retirando la totalidad de piezas");
         $("#peso_naci_para").focus();
         return 0;
       }	
-      if((cantidad_retirada == cantidad_retirada_max) &&(peso_retirado < peso_retirado_aux)) {
-        var r = confirm("Si retira la totalidad de piezas Nacionales tambien debe retirar todo el peso!");
-        if(r == true) {
-          // pasa no hace nada
-        } else {
+      if((cantidad_retirada==cantidad_retirada_max) && (peso_retirado<peso_retirado_aux)) {
+        var r = confirm("Si retira la totalidad de piezas Nacionales tambi\u00E9n debe retirar todo el peso!");
+        if(r != true) {
           $("#peso_naci_para").focus();
           return 0;
         }
       }
 
+      //Funcionalidad al dar clic en el botón Aceptar
       $.ajax({
         url: './scripts_index.php',
         type: "POST",
         async: false,
         data: $("#formParaRetiro").serialize(),
         success: function(msm) {
-          // alert(msm)
+          $("#dialog-form-hacer-levante").dialog("close")
           $('#htmlMercancia').html("");
           $('#htmlMercancia').html(msm);
-          $("#dialog-form-hacer-levante").dialog("close");
+          //$("#dialog-form-hacer-levante").dialog("close");
         }
       });
     },
@@ -145,43 +142,37 @@
 
   $('#cantidad_naci_para').blur(function() {//Nacional
     // solo si es mayor a cero
-	
-    if($('#peso_naci_aux').val() > 0) {
-	
-      var pesoProp = ($('#peso_naci_aux').val() / $('#cantidad_naci_aux').val()) * $('#cantidad_naci_para').val();
-      pesoProp = pesoProp.toFixed(2);
+    if($('#peso_naci_aux').val()>0) {
+      var pesoProp = ($('#peso_naci_aux').val()/$('#cantidad_naci_aux').val())*$('#cantidad_naci_para').val();
+      pesoProp = pesoProp.toFixed(3);
       $('#peso_naci_para').val(pesoProp);
     }
 	
-    if($('#fob_yanaci_aux').val() > 0) {
-      var fobProp = ($('#fob_yanaci_aux').val() / $('#cantidad_naci_aux').val()) * $('#cantidad_naci_para').val();
+    if($('#fob_yanaci_aux').val()>0) {
+      var fobProp = ($('#fob_yanaci_aux').val()/$('#cantidad_naci_aux').val())*$('#cantidad_naci_para').val();
       fobProp = fobProp.toFixed(2);
       $('#cif_ret').val(fobProp);
     }
   });
 
   $('#cantidad_nonaci_para').blur(function() { //Extranjero
-    if($('#peso_nonaci_para{id_form}').val() > 0) {
-      var pesoProp = ($('#peso_nonaci_para{id_form}').val() / $('#cantidad_nonaci_aux').val()) * $('#cantidad_nonaci_para').val();
-      pesoProp = pesoProp.toFixed(2);
+    if($('#peso_nonaci_para{id_form}').val()>0) {
+      var pesoProp = ($('#peso_nonaci_para{id_form}').val()/$('#cantidad_nonaci_aux').val())*$('#cantidad_nonaci_para').val();
+      pesoProp = pesoProp.toFixed(3);
       $('#peso_nonaci_para').val(pesoProp);
     }
 
-    if($('#fob_nonaci_aux').val() > 0) {
-      var fobProp = ($('#fob_nonaci_aux').val() / $('#cantidad_nonaci_aux').val()) * $('#cantidad_nonaci_para').val();
+    if($('#fob_nonaci_aux').val()>0) {
+      var fobProp = ($('#fob_nonaci_aux').val()/$('#cantidad_nonaci_aux').val())*$('#cantidad_nonaci_para').val();
       fobProp = fobProp.toFixed(2);
       $('#fob_ret').val(fobProp);
     }
   });
-</script>
-<link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
-<span id="msgbox_mov{id_form}" style="display:block" class="{estilo}"  > {mensaje} </span> 
-<form class="formParaRetiro" name="formParaRetiro"  id="formParaRetiro"  method="post" action="javascript:EnviarFormulario()">
-<script>
+
   $(function() {
     $("#btnGuardar").button({
       text: true,
-      icons: {primary: "ui-icon-disk"}
+      icons: { primary: "ui-icon-disk" }
     })
 
     $("#fecha{id_form}").datepicker();
@@ -206,18 +197,14 @@
           setcero_nacional();
         }
 
-        var proceso=$('#aplicaMatriz').val();
-        if(typeof proceso=="undefined") {
-          //alert("no exixte");
-        } else {	
+        var proceso = $('#aplicaMatriz').val();
+        if(typeof proceso!="undefined") { 
           seleccion(1);
         }
       } else {
         setcero_extranjero();
-        var proceso=$('#aplicaMatriz').val();
-        if(typeof proceso=="undefined") {
-          //alert("no exixte");
-        } else {	
+        var proceso = $('#aplicaMatriz').val();
+        if(typeof proceso!="undefined") { 
           seleccion(0);
         }
       }
@@ -231,10 +218,8 @@
         $('#peso_naci_para').val($('#peso_naci_aux').val());
         $('#cif_ret').val($('#fob_yanaci_aux').val());
 
-        var proceso=$('#aplicaMatriz').val();
-        if(typeof proceso=="undefined") {
-          //alert("no exixte");
-        } else {	
+        var proceso = $('#aplicaMatriz').val();
+        if(typeof proceso!="undefined") {
           seleccion_nal(1);
         }
 
@@ -243,10 +228,8 @@
         }
       } else {
         setcero_nacional();
-        var proceso=$('#aplicaMatriz').val();
-        if(typeof proceso=="undefined") {
-          //alert("no exixte");
-        } else {	
+        var proceso = $('#aplicaMatriz').val();
+        if(typeof proceso!="undefined") {
           seleccion_nal(0);
         }
       }
@@ -254,7 +237,7 @@
 
     $('#cantidad_nonaci_para').blur(function() {
       $('#check_ext').attr('checked', true);
-      if($('#cantidad_naci_para').val() == "") {
+      if($('#cantidad_naci_para').val()=="") {
         setcero_nacional();
       }
     });
@@ -277,41 +260,43 @@
       $('#peso_nonaci_para').val("0");
       $('#fob_ret').val("0");
     }
-  })
+  });
 </script>
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
-<form>
-  <p id="msgbox_levante"></p>
+<span id="msgbox_mov{id_form}" style="display:block" class="{estilo}"  > {mensaje} </span>
+<p id="msgbox_levante"></p> 
+<form class="formParaRetiro" name="formParaRetiro" id="formParaRetiro"  method="post" action="javascript:EnviarFormulario()">
   <fieldset class="ui-widget ui-widget-content ui-corner-all">
-    <legend class="ui-widget ui-widget-header ui-corner-all"> Mercanc&iacute;a para Retiro {item} 
-      <input name="clase" type="hidden" id="clase" value="Levante" />
-      <input name="metodo" type="hidden" id="metodo" value="{sendmetodo}" />
-      <input name="id_form" type="hidden" id="id_form" value="{id_form}" />
-      <input name="id_item" type="hidden" id="arribo_aux" value="{id_item}" />
-  {sendmetodoX} </legend>
-    <input name="guia_filtro" type="hidden" id="guia_filtro" value="{filtro_guia_aux}" />
-    <input name="tipo_movimiento" type="hidden" id="tipo_movimiento_retiro" value="{tipo_movimiento} " />
-    <input name="id_levante_retiro" type="hidden" id="id_levante_retiro" value="" />
-    <table width="100%" border="0">
-      <tr class="ui-widget ui-widget-header ui-corner-all" > 
-        <th width="35%" >Referencia 
-          <input name="referencia" type="hidden" id="referencia{id_form}" value="{referencia}" {disabled}> 
-          <input name="id_levante" type="hidden" id="id_levante" value="{id_levante}" {disabled}>
+    <legend class="ui-widget ui-widget-header ui-corner-all"> Mercanc&iacute;a para Retiro {item}
+      <input type="hidden" name="clase" id="clase" value="Levante" />
+      <input type="hidden" name="metodo" id="metodo" value="{sendmetodo}" />
+      <input type="hidden" name="id_form" id="id_form" value="{id_form}" />
+      <input type="hidden" name="id_item" id="arribo_aux" value="{id_item}" />
+    </legend>
+    <input type="hidden" name="guia_filtro" id="guia_filtro" value="{filtro_guia_aux}" />
+    <input type="hidden" name="tipo_movimiento" id="tipo_movimiento_retiro" value="{tipo_movimiento} " />
+    <input type="hidden" name="id_levante_retiro" id="id_levante_retiro" value="" />
+    <input type="hidden" name="posicion_retiro" id="posicion_retiro" value="{posicion}" />
+    <table width="100%" border="0" class="ui-widget ui-widget-content">
+      <tr class="ui-widget-header"> 
+        <th width="35%">Referencia 
+          <input type="hidden" name="referencia" id="referencia{id_form}" value="{referencia}" {disabled} /> 
+          <input type="hidden" name="id_levante" id="id_levante" value="{id_levante}" {disabled} />
         </th>
         <th>Documento</th>
         <th>Orden</th>
         <th title="Modelo/Lote/Cosecha">M/L/C</th>
-        <th>FMMN/ParteNo</th>
+        <th>FMMN/ParteNo.</th>
         <th>Embalajes</th>
         <th>U. Empaque</th>
       </tr>
       <tr> 
-        <td>[{cod_referencia}]{nombre_referencia} </td>
+        <td>[{cod_referencia}]&nbsp;{nombre_referencia}</td>
         <td>{doc_tte}
-          <input name="doc_tte" type="hidden" id="doc_tte" value="{doc_tte}" />
+          <input type="hidden" name="doc_tte" id="doc_tte" value="{doc_tte}" />
         </td> 
         <td>{orden}
-          <input name="orden" type="hidden" id="orden_remesa" value="{orden}" />
+          <input type="hidden" name="orden" id="orden_remesa" value="{orden}" />
         </td> 
         <td>{modelo}</td>
         <td>{fmm}</td>
@@ -319,62 +304,66 @@
         <td>{nombre_embalaje}</td>
       </tr>
     </table>
-    <table width="100%" border="0">
+    <table width="100%" border="0" class="ui-widget ui-widget-content">
       <tr class="ui-widget ui-widget-header ui-corner-all" > 
-        <th width="15%" >Item</th>
-        <th width="20%" >Extranjero
-          <input name="check_ext" type="checkbox" id="check_ext" value="checkbox" />
+        <th width="15%">Item</th>
+        <th width="20%">Extranjero
+          <input type="checkbox" name="check_ext" id="check_ext" value="checkbox" />
         </th>
-        <th width="20%" >Nacional
-          <input name="check_nal" type="checkbox" id="check_nal" value="checkbox" />
+        <th width="20%">Nacional
+          <input type="checkbox" name="check_nal" id="check_nal" value="checkbox" />
         </th>
-        <th width="15%" >Total Ingreso</th>
+        <th width="15%">Total Ingreso</th>
       </tr>
       <tr> 
         <td>Cantidad </td>
-        <td> <input name="cantidad_nonaci_para" type="{type_nonac}" id="cantidad_nonaci_para" size="10" class="required number ui-widget-content" />
+        <td><input type="{type_nonac}" name="cantidad_nonaci_para" id="cantidad_nonaci_para" size="10" class="required number ui-widget-content" />
           {cantidad_nonaci_aux} de : {cant_nonac_f} 
-          <input name="cantidad_nonaci_aux" type="hidden" id="cantidad_nonaci_aux" value="{cantidad_nonac}" /> 
+          <input type="hidden" name="cantidad_nonaci_aux" id="cantidad_nonaci_aux" value="{cantidad_nonac}" /> 
         </td>
         <td>
-          <input name="cantidad_naci_para" type="text" class="required number ui-widget-content" id="cantidad_naci_para" size="10"   {disableNonac} />
+          <input type="text" name="cantidad_naci_para" class="required number ui-widget-content" id="cantidad_naci_para" size="10"   {disableNonac} />
           de: {cant_naci_f} 
-          <input name="cantidad_naci_aux" type="hidden" class="required number ui-widget-content" id="cantidad_naci_aux" value="{cantidad_naci}" size="10"  {disableNonac} />
+          <input type="hidden" name="cantidad_naci_aux" class="required number ui-widget-content" id="cantidad_naci_aux" value="{cantidad_naci}" size="10"  {disableNonac} />
       </td>
         <td>{cantidad} </td>
       </tr>
       <tr> 
         <td>Peso </td>
-        <td> <input name="peso_nonaci_para" type="{type_nonac}" id="peso_nonaci_para" size="10" class="required number ui-widget-content" />
+        <td>
+          <input type="{type_nonac}" name="peso_nonaci_para" id="peso_nonaci_para" size="10" class="required number ui-widget-content" />
           {peso_nonaci_aux} de : {peso_nonac_f} 
-          <input name="peso_nonaci_aux" type="hidden" id="peso_nonaci_para{id_form}" value="{peso_nonac}" /> 
+          <input type="hidden" name="peso_nonaci_aux" id="peso_nonaci_para{id_form}" value="{peso_nonac}" /> 
         </td>
-        <td> <input name="peso_naci_para" type="text" class="required number ui-widget-content" id="peso_naci_para" size="10" />
+        <td>
+          <input type="text" name="peso_naci_para" class="required number ui-widget-content" id="peso_naci_para" size="10" />
           de: {peso_naci_f} 
-          <input name="peso_naci_aux" type="hidden" id="peso_naci_aux" value="{peso_naci}" />
-      </td>
+          <input type="hidden" name="peso_naci_aux" id="peso_naci_aux" value="{peso_naci}" />
+        </td>
         <td>{peso} </td>
       </tr>
       <tr> 
         <td> Fob/Cif </td>
-        <td> <input name="fob_ret" type="{type_nonac}" id="fob_ret" size="10"  class="required number ui-widget-content" />
+        <td>
+          <input type="{type_nonac}" name="fob_ret" id="fob_ret" size="10" class="required number ui-widget-content" />
           {fob_nonaci_aux} de : {fob_nonac_f} 
-          <input name="fob_naci_aux" type="hidden" id="fob_nonaci_aux" value="{fob_nonac}" />
+          <input type="hidden" name="fob_naci_aux" id="fob_nonaci_aux" value="{fob_nonac}" />
         </td>
-        <td> <input name="cif_ret" type="text" class="required number ui-widget-content" id="cif_ret" size="10" />
+        <td>
+          <input type="text" name="cif_ret" class="required number ui-widget-content" id="cif_ret" size="10" />
           {v_aux_nac} de: {cif_f} 
-          <input name="fob_yanaci_aux" type="hidden" id="fob_yanaci_aux" value="{cif}" />
-      </td>
+          <input type="hidden" name="fob_yanaci_aux" id="fob_yanaci_aux" value="{cif}" />
+        </td>
         <td>{valor} </td>
       </tr>
     </table>
   </fieldset>
   {detalleProducto}
-  <input name="por_cuenta_filtro" type="hidden" id="por_cuenta" value="{por_cuenta_filtro}" />
-  <input name="doc_filtro" type="hidden" id="documento" value="" />
-  <input name="grupo" type="hidden" id="documento" value="{id_grupo}" />
-  <input name="un_formulario" type="hidden" id="un_formulario" value="formParaRetiro" />
-  <input name="tipo_retiro" type="hidden" id="tipo_retiro" value="{tipo_retiro_filtro}" />
+  <input type="hidden" name="por_cuenta_filtro" id="por_cuenta" value="{por_cuenta_filtro}" />
+  <input type="hidden" name="doc_filtro" id="documento" value="" />
+  <input type="hidden" name="grupo" id="documento" value="{id_grupo}" />
+  <input type="hidden" name="un_formulario" id="un_formulario" value="formParaRetiro" />
+  <input type="hidden" name="tipo_retiro" id="tipo_retiro" value="{tipo_retiro_filtro}" />
   <input type="hidden" name="email" id="email_aux" value="{email}" />
   <input type="hidden" name="nombre_cliente" id="nombre_cliente" value="{nombre_cliente}" />
   <input type="hidden" name="nombre_movimiento" id="nombre_movimiento" value="{nombre_movimiento}" />
@@ -385,7 +374,7 @@
   <input type="hidden" name="ciudad" id="ciudad" value="{ciudad}" />
   <input type="hidden" name="direccion" id="direccion" value="{direccion}" />
   <input type="hidden" name="mercancia" id="mercancia" value="[{cod_referencia}] {nombre_referencia}" />
-  <input name="cod_ref_aux" type="hidden" id="cod_ref_aux" value="{cod_ref} " />
-  <input name="orden_retiro_aux" type="hidden" id="orden_retiro_aux" value="{orden_retiro} " />
+  <input type="hidden" name="cod_ref_aux" id="cod_ref_aux" value="{cod_ref} " />
+  <input type="hidden" name="orden_retiro_aux" id="orden_retiro_aux" value="{orden_retiro} " />
   {tipo_retiro_filtroX}{ordenX} {tipo_retiro_filtroX} {tipo_movimientoX} 
 </form>

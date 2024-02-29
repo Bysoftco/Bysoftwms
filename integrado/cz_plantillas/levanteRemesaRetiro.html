@@ -51,18 +51,22 @@
     #tabla_remesa td:hover {
       background-color: #fff;
     }
+    td.ajustarancho {
+      width: 1px;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
   {comodin}
   <div align="center" class="{estilo} ">
     {mensajeError} 
-  </div> 
+  </div>
+  <input name="obs" type="hidden" id="obs" value="{obs}" />
   <table id="tabla_remesa" width="90%" height="232" align="center" style="padding-right: 0em;">
     <tr class="titulos" bgColor="ffffff" >
-      <td width="14%">Fecha: <strong>{fecha_impresion}</strong></td>
-      
-    <td height="21" colspan="4" align="center"><strong>SALIDA DE MERCANCIA {tipo_salida}</strong></td>
+      <td width="14%">Fecha: <strong>{fecha_impresion}</strong></td>  
+      <td height="21" colspan="4" align="center"><strong>SALIDA DE MERCANCIA {tipo_salida}</strong></td>
       <td width="10%">Hora: <strong>{hora_impresion}</strong></td>
     </tr>
     <tr class="textoGris" bgColor="ffffff">
@@ -71,13 +75,13 @@
           <table width="100%" border="0">
             <tr class="filasTabla" style="height:5px;">
               <td style="border:none;width:30%;"></td>
-			  <td style="border:none;width:40%;height:20px;text-align:center" rowspan="2"><img src="integrado/imagenes/cliente.png" style="width:79px;height:37px;" /></td>
+              <td style="border:none;width:40%;height:20px;text-align:center" rowspan="2"><img src="integrado/imagenes/cliente.png" style="width:79px;height:37px;" /></td>
               <td style="border:none;width:30%;"></td>
             </tr>
             <tr class="filasTabla" style="height:10px;">
-              <td width="35%">Se&ntilde;ores: <strong>{nombre_cliente}</strong></td>
-              <td width="25%"><p>Salida No. <strong>{id_levante}</strong>::Pedido 
-                No. <strong>{pedido}</strong></p></td>
+              <td width="35%">Se&ntilde;ores: <strong>{nombre_cliente}</strong>
+                <br/>NIT: <strong>{ncliente}</strong></td>
+              <td width="25%"><p>Salida No. <strong>{id_levante}</strong>::Pedido No. <strong>{pedido}</strong></p></td>
             </tr>
           </table>
         </div>
@@ -87,24 +91,44 @@
       <td height="21" colspan="6" class="tituloLinea" style="text-align:center;font-weight:bold;">INFORMACI&Oacute;N DE LA SALIDA</td>
     </tr>
     <tr>
-      <td width="20%" class="titulosTabla" colspan="2">Fecha: <strong>{fecha}</strong></td>
-      <td height="21" class="titulosTabla" style="width:30%;" colspan="2">Destinatario: <strong>{destinatario}</strong></td>
-      <td height="21" class="titulosTabla" colspan="2">Ciudad y Direcci&oacute;n: {ciudad}<br><br>{direccion}</td>
-    </tr>   
+      <td width="20%" class="titulosTabla" colspan="2">Fecha: <strong>{fecha}</strong><br/>
+        Peso Neto: 
+        <input name="pesoneto" type="text" id="pesoneto" style="font-weight:bold;text-align:right;" value="{pesoneto}" size="15" readonly />
+      </td>
+      <td height="21" class="titulosTabla" style="width:30%;" colspan="2">Destinatario: <strong>{destinatario}</strong><br/>
+        Peso Bruto: <input name="pesobruto" type="text" id="pesobruto" style="font-weight:bold;text-align:right;" value="" size="13" readonly />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bultos: <input name="bultos" type="text" id="bultos" style="font-weight:bold;text-align:right;" value="" size="5" readonly />
+      </td>
+      <script>
+        var observa = document.getElementById("obs").value;
+
+        //Obtenemos el Peso Bruto
+        var pb = observa.split('[');
+        let valor = pb[1].split(']')[0];
+
+        const numActual = +valor.replace(/,/g, '')
+        const peso = numActual.toLocaleString('en-US',{minimumFractionDigits: 2})
+        document.getElementById("pesobruto").value = peso;
+
+        //Obtenemos Bultos
+        var nblts = observa.split('{');
+        let vblts = nblts[1].split('}')[0];
+        document.getElementById("bultos").value = vblts;
+      </script>
+      <td height="21" class="titulosTabla" colspan="2">Ciudad y Direcci&oacute;n: {ciudad}<br/>{direccion}</td>
+    </tr>  
     <tr>
-      <td height="21" class="titulosTabla" colspan="2">Conductor: {conductor_nombre}</td>
-      <td height="21" class="titulosTabla" colspan="2">Identificación: {conductor_identificacion}</td>
+      <td height="21" class="titulosTabla ajustarancho" colspan="2">Conductor: {conductor_nombre}</td>
+      <td height="21" class="titulosTabla" colspan="2">Identificaci&oacute;n: {conductor_identificacion}</td>
       <td width="321" class="titulosTabla" colspan="2">Placa: {placa}</td>
     </tr>
     <tr>
       <td class="titulosTabla" style="width:30%;" colspan="4">Empresa Transportadora: {empresa}</td>
       
-    <td class="titulosTabla" colspan="2">Planilla Envio/N.Despacho: {fmm}</td>
+    <td class="titulosTabla" colspan="2">Pl.Envio/FMM/N.Despacho: {fmm}</td>
     </tr>
     <tr>
       <td class="titulosTabla" colspan="6">Observaciones: {obs}</td>
     </tr>
-    <tr><td colspan="6"></td></tr>
     {cuerpoRetiro}
   </table> 
 </body>

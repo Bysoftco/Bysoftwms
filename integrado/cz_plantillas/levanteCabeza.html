@@ -1,49 +1,26 @@
 <script>
+  function formUpdateCabeza() {}
 
-    function formUpdateCabeza(){
+  $(function() {
+    $('#btnImprimir').hide();  // las nacionalizaciones no se imprimen
+    $('#btnBuscar').hide();  // las nacionalizaciones no es útil el filtro
 
-	   		
+    $("#parcial").click(function() {
+      // Si no están todas las supartidas no se puede crear el siguiente grupo
+      $("#lev_cant").val(""); 
+      $("#lev_bultos").val(""); 
+    });
 
-    }
-
-    
-
-    $(function() 
-
-    {
-
-	$('#btnImprimir').hide();  // las nacionalizaciones no se imprimen
-
-	$('#btnBuscar').hide();  // las nacionalizaciones no es util el filtro	
-
-        $("#parcial").click(function() {
-
-           // Si no estan todas las supartidas no se puede crear el siguiente grupo
-
-		   $("#lev_cant").val(""); 
-
-           $("#lev_bultos").val(""); 
-
-        });
-
-        
-
-        $("#siaNombre{id_form}").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
-
-                width: 260,
-
-                selectFirst: false
-
-
-
-        });
-
+    $("#siaNombre{id_form}").autocomplete("./scripts_index.php?clase=Orden&metodo=findCliente", {
+      width: 260,
+      selectFirst: false
+    });
 
 		$("#btnRetiro").button({
       text: true,
       icons: { primary: "ui-icon-folder-collapsed" }
     }).click(function() {
-      if(!confirm("\u00bfSeguro que desea cambiar el estado de la mercancia a retirado?")) {
+      if(!confirm("\u00bfSeguro que desea cambiar el estado de la mercanc\u00eda a retirado?")) {
         return false;
       }
       $("#nuevo_estado").val(3);
@@ -53,252 +30,183 @@
     $("#btnCerrar").button({
       text: true,
       icons: { primary: "ui-icon-key" }
-    }).click(function() {
-	
-		 $("#cierre").val(1);
-	 
-	 
-	 
-      if(!confirm("\u00bfConfirma que desea guardar y cerrar, al guardar y cerrar ya no podra modificar el movimiento?")) {
+    }).click(function() {	
+      $("#cierre").val(1);
+      if(!confirm("\u00bfConfirma que desea guardar y cerrar, al guardar y cerrar ya no podr\u00e1 modificar el movimiento?")) {
         return false;
-      }
-     
-	  
+      }	  
     });
 
+    $("#siaNombre{id_form}").result(
+      function(event, data, formatted) {
+        if(data) $("#sia").val(data[1]);
+    });
+  });	
 
-        $("#siaNombre{id_form}").result(function(event, data, formatted) {
+  $.validator.setDefaults({
+    submitHandler: function() {
+      var sigue = 1;
 
-        if (data)
+      if(document.formUpdateCabeza.parcial.checked) {
+        if(!confirm("confirma el ingreso de un nuevo parcial?\n un nuevo parcial inicia conteo de declaraciones. ")) {
+          sigue=0;
+        }
+      }  
 
-                $("#sia").val(data[1]);
+      $("#do_asignado").val($("#orden_filtro").val());
+      $("#orden_filtro").val($("#orden_filtro").val());
 
+      if(sigue==1) {
+        $.ajax({
+          url:'./scripts_index.php',
+          type: "POST",
+          async:false,
+          data:$("#formUpdateCabeza").serialize(),
+          success: function(msm) {
+            $('#htmlLevante').html(msm);
+          }
         });
+      }  
+    },
 
-		
+    highlight: function(input) {
+      $(input).addClass("ui-state-highlight");
+    },
 
-    });	
+    unhighlight: function(input) {
+      $(input).removeClass("ui-state-highlight");
+    }
+  });
 
-
-
-    $.validator.setDefaults(
-
-    {
-
-        submitHandler: function() 
-
-        {
-
-            var sigue=1
-
-           if(document.formUpdateCabeza.parcial.checked) {
-
-              if(!confirm("confirma el ingreso de un nuevo parcial?\n un nuevo parcial inicia conteo de declaraciones. ")){
-
-                  sigue=0;
-
-              }
-
-          }  
-
-		  $("#do_asignado").val($("#orden_maestro").val());
-
-		 
-
-          if(sigue==1){
-
-            $.ajax(
-
-                {
-
-                    url:'./scripts_index.php',
-
-                    type: "POST",
-
-                    async:false,
-
-                    data:$("#formUpdateCabeza").serialize(),
-
-                    success: function (msm)
-
-                    {
-
-						
-
-                        $('#htmlLevante').html(msm);
-
-
-
-                    }
-
-                });
-
-            }  
-
-                              
-
-        			
-
-	},
-
-	highlight: function(input) 
-
-        {
-
-            $(input).addClass("ui-state-highlight");
-
-	},
-
-	unhighlight: function(input) 
-
-        {
-
-            $(input).removeClass("ui-state-highlight");
-
-	}
-
+  $(function() {
+    $("#formUpdateCabeza").validate({
+      rules: {referencia: "justifique"}
     });
 
+    $( "#btnGuardar" ).button({
+      text: true,
+      icons: {primary: "ui-icon-disk"}
+    })
 
-
-
-
-	
-
-    $(function() 
-
-    {
-
-	$("#formUpdateCabeza").validate(
-
-        {
-
-            rules: {referencia: "justifique"}
-
-	});
-
-		
-
-	$( "#btnGuardar" ).button(
-
-    	{
-
-        	text: true,
-
-			icons: {primary: "ui-icon-disk"}
-
-   	})
-
-    $( "#btnParcial" ).button(
-
-    	{
-
-        	text: true,
-
-			
-
-   	}) 
-
-	    
+    $( "#btnParcial" ).button({
+      text: true,
+    })
 
     $("#fecha{id_form}").datepicker();
 
-	$("#fecha{id_form}").datepicker('option', 
+    $("#fecha{id_form}").datepicker('option', {
+      dateFormat: 'yy-mm-dd',
+      onSelect: function(textofecha) {
+        var d = new Date(); // for now
+        var h = d.getHours();
+        h = (h < 10) ? ("0" + h) : h ;
 
-        {   dateFormat: 'yy/mm/dd',
+        var m = d.getMinutes();
+        m = (m < 10) ? ("0" + m) : m ;
 
-            changeYear: true,
+        var s = d.getSeconds();
+        s = (s < 10) ? ("0" + s) : s ;
 
-            changeMonth: true,
+        textofecha = textofecha + " " + h + ":" + m + ":" + s;
+        $('#fecha{id_form}').val(textofecha);
+      },
+      changeYear: true,
+      changeMonth: true,
+      showOn: 'both',
+      buttonImage: 'integrado/imagenes/calendar.png',
+      buttonImageOnly: true
+    });
 
-            showOn: 'both',
-
-            buttonImage: 'integrado/imagenes/calendar.png',
-
-            buttonImageOnly: true
-
-				 
-
-         });
-
-        $('#fecha{id_form}').val('{fecha}');
+    $('#fecha{id_form}').val('{fecha}');
 
 		$("#msgbox_levante").removeClass().addClass('{estilo}').text('{mensaje}').fadeIn(1000);
 
-    	 if('{estilo}'=='ui-state-highlight'){setTimeout ("$('#msgbox_levante').removeClass().addClass('').text('').delay();", 5000); }
+    if('{estilo}'=='ui-state-highlight') {
+      setTimeout ("$('#msgbox_levante').removeClass().addClass('').text('').delay();", 5000);
+    }
+  });
 
-   })	
+  $(function() {
+    //Ajustamos el ancho de la entrada de Fecha y Hora
+    var entrada = document.querySelector("input[name='fecha']"); //Obtenemos el elemento de entrada
+    entrada.addEventListener("input[name='fecha']", reajustarEntrada); //Vinculamos la devolución a la llamada "reajustarEntrada" al evento "input[name='fecha']"
+    reajustarEntrada.call(entrada); //Llamamos inmediatamente a la función
+  });
 
+  function reajustarEntrada() {
+    this.style.width = this.value.length + "ch";
+  }
 </script>
-
+<style>
+  input[name='fecha'] { font-size:1em; padding:.20em; }
+  /* Ajusta el ícono con el cuadro de texto */
+  .ui-datepicker-trigger {
+    position: relative;
+    top: -2px;
+    margin-left: 0px;
+    vertical-align: middle;
+  }
+</style>
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
-
 <p id="msgbox_levante" class="{estilo}">{mensaje}</p>
-
 <form class="formParaLevante{id_form}" name="formUpdateCabeza"  id="formUpdateCabeza"  method="post" >
-
-     <fieldset class="ui-widget ui-widget-content ui-corner-all" >
-
-  <legend class="ui-widget ui-widget-header ui-corner-all"> Datos del levante 
-
-  {id_levante} {comodin} </legend>
-
-  <table width="100%" border="0">
-    <tr  class="ui-widget ui-widget-header ui-corner-all" > 
-      <th >Ag Aduana:</th>
-      <th >Fecha:</th>
-      <th >Modalidad</th>
-      <th >Parcial</th>
-      <th ># Subpartidas: </th>
-      <th >Bultos</th>
-      <th >FMM</th>
-      <th >observaci&ograve;n 
+  <fieldset class="ui-widget ui-widget-content ui-corner-all" >
+    <legend class="ui-widget ui-widget-header ui-corner-all"> Datos del levante {id_levante} {comodin} </legend>
+    <table width="100%" class="ui-widget ui-widget-content">
+      <tr class="ui-widget-header"> 
+        <th>Ag Aduana:</th>
+        <th>Fecha:</th>
+        <th>Modalidad</th>
+        <th>Parcial</th>
+        <th># Subpartidas:</th>
+        <th>Bultos</th>
+        <th>FMM</th>
+        <th>Observaci&oacute;n 
         <input name="cierre" type="hidden" id="cierre" value="{cierre}"></th>
-    </tr>
-    <tr> 
-      <td> <input name="siaNombre" type="text" class=" required  ui-widget-content" id="siaNombre{id_form}" value="{razon_social}" size="40" > 
-        <input name="sia" type="hidden" id="sia{id_form}" value="{lev_sia}"  class=" required "> 
-      </td>
-      <td><input name="fecha" type="text" class=" required   ui-widget-content" id="fecha{id_form}" value="{fecha}"></td>
-      <td><input name="multiple" type="hidden" id="multiple" value="1" {checked_multiple}>
-        <select name="multiple_lista" id="multiple_lista">
-		{selectMultiple}
-
-        </select></td>
-      <td> <input name="parcial" type="checkbox" id="parcial" value="1" {checked}>
-        {parcial} </td>
-      <td><input name="lev_cant" type="text" class=" required  digits ui-widget-content" id="lev_cant" value="{lev_cant}" size="5" > 
-      </td>
-      <td><input name="lev_bultos" type="text" class=" required   ui-widget-content" id="lev_bultos" value="{lev_bultos}" size="10"></td>
-      <td><input name="fmm" type="text" class=" required   ui-widget-content" id="fmm" value="{fmm}" size="10"></td>
-      <td><input name="obs" type="text" id="obs3" value="{obs}" size="40"> </td>
-    </tr>
-  </table>
-
-<button class="submit" type="submit"  id="btnGuardar" style="display:{mostrarBotonCerrar}">Guardar</button>
-<button class="submit" type="submit"  id="btnCerrar" style="display:{mostrarBotonCerrar}">Guardar 
-        y Cerrar</button>
-
-
-      </fieldset>
-
-     <input name="clase" type="hidden" id="clase" value="Levante">
-
-     <input name="metodo" type="hidden" id="metodo" value="updateLevanteCabeza">    
-
-     <input name="id_levante" type="hidden" id="id_levante" value="{id_levante}"> 
-
-     <input name="id_grupo" type="hidden" id="id_grupo" value="{lev_cuenta_grupo}">
-
-     <input name="bultos_aux" type="hidden" id="bultos_aux" value="{lev_bultos}"> 
-
-     <input name="num_declaraciones_aux" type="hidden" id="num_declaraciones_aux" value="{lev_cant}">
+      </tr>
+      <tr> 
+        <td>
+          <input name="siaNombre" type="text" class="required  ui-widget-content" id="siaNombre{id_form}" value="{razon_social}" size="40" > 
+          <input name="sia" type="hidden" id="sia{id_form}" value="{lev_sia}"  class=" required "> 
+        </td>
+        <td>
+          <input name="fecha" type="text" class="ui-datepicker-trigger required ui-widget-content" id="fecha{id_form}" value="{fecha}">
+        </td>
+        <td>
+          <input name="multiple" type="hidden" id="multiple" value="1" {checked_multiple}>
+          <select name="multiple_lista" id="multiple_lista">
+		        {selectMultiple}
+          </select>
+        </td>
+        <td>
+          <input name="parcial" type="checkbox" id="parcial" value="1" {checked}>
+          {parcial}
+        </td>
+        <td>
+          <input name="lev_cant" type="text" class="required digits ui-widget-content" id="lev_cant" value="{lev_cant}" size="10" > 
+        </td>
+        <td>
+          <input name="lev_bultos" type="text" class="required   ui-widget-content" id="lev_bultos" value="{lev_bultos}" size="10">
+        </td>
+        <td>
+          <input name="fmm" type="text" class="required ui-widget-content" id="fmm" value="{fmm}" size="10">
+        </td>
+        <td>
+          <input name="obs" type="text" id="obs3" value="{obs}" size="40">
+        </td>
+      </tr>
+    </table><br />
+    <button class="submit" type="submit"  id="btnGuardar" style="display:{mostrarBotonCerrar}">Guardar</button>
+    <button class="submit" type="submit"  id="btnCerrar" style="display:{mostrarBotonCerrar}">Guardar y Cerrar</button>
+  </fieldset>
+  <input name="clase" type="hidden" id="clase" value="Levante">
+  <input name="metodo" type="hidden" id="metodo" value="updateLevanteCabeza">    
+  <input name="id_levante" type="hidden" id="id_levante" value="{id_levante}"> 
+  <input name="id_grupo" type="hidden" id="id_grupo" value="{lev_cuenta_grupo}">
+  <input name="bultos_aux" type="hidden" id="bultos_aux" value="{lev_bultos}"> 
+  <input name="num_declaraciones_aux" type="hidden" id="num_declaraciones_aux" value="{lev_cant}">
   <input name="cant_declaraciones" type="hidden" id="cant_declaraciones" value="{cant_declaraciones}">
-
   <input name="peso_declaraciones" type="hidden" id="peso_declaraciones" value="{peso_declaraciones}">
-
   <input name="do_asignado" type="hidden" id="do_asignado">
-
 </form>
-
 {parciales}

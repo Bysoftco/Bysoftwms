@@ -61,10 +61,6 @@
   });
 
   $('.eliminarItem a').click(function() {
-   if($("#dividir"+$("#item_seleccionado").val()).val()=="block"){
-   		alert('El inventario '+$("#item_seleccionado").val() +' no se puede borrar, ya tiene retiros');
-		return false;
-   }
     if(confirm('\u00BFSeguro que desea borrar el item '+$("#item_seleccionado").val()+'?')) {
       var url = 'scripts_index.php?clase=Inventario&metodo=delInventario&id_item='+$("#item_seleccionado").val()
         +'&do_asignado='+$("#do_asignado").val()+'&do_asignado_full='+$("#do_asignado_full").val()+'&id_arribo='+$("#arribo_seleccionado").val(); 

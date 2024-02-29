@@ -30,7 +30,6 @@
       buttonImageOnly: true
     });
 
-    $('#fecha_inicio_factura{accion}').val('{fecha_inicio_factura}');
     $("#fecha_fin_factura{accion}").datepicker();
     $("#fecha_fin_factura{accion}").datepicker('option', {
       dateFormat: 'yy/mm/dd',
@@ -49,7 +48,10 @@
     });
 
     $("#buscarClienteReporte{accion}").result(function(event, data, formatted) {
-      if(data) $("#por_cuenta_filro{accion}").val(data[1]);
+      if(data) {
+        $("#por_cuenta_filro{accion}").val(data[1]);
+        $("#ncliente{accion}").val(data[4]); //Nit Completo
+      }
     });
   });
 </script>
@@ -74,6 +76,7 @@
         <p>
           <label>Nit: </label>
           <input name="por_cuenta_filtro" type="text" class="ui-widget-content" id="por_cuenta_filro{accion}" value="{usuario}" {soloLectura} />
+          <input type="hidden" name="ncliente" id="ncliente{accion}" value="{ncliente}" />
         </p> 
         <p style="display:{mostrarFiltro};">
           <label for="curl">Fecha Movimiento Desde:</label>

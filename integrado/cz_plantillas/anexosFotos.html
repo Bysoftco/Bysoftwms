@@ -1,15 +1,19 @@
 <script>
+  Nifty("div.borde_circular","transparent");
+  Nifty("div.div_barra","top transparent");
+
   $(function() {
     /*** Configuración de la Ventana ***/
     $("#vtn_filtro_c").dialog({
       autoOpen: false,
-      height: 225,
-      width: 450,
+      resizable: false,
+      height: 200,
+      width: 470,
       modal: true,
       buttons: {
         "Consulta": function() {
           var bValid = true;
-          
+
           $.ajax({
             url: 'scripts_index.php',
             type: "POST",
@@ -24,9 +28,9 @@
       },
       close: function() {}
     });
-
-    if('{filtroc}'!=1) {
-      $("#vtn_filtro_c").dialog("open");
+    
+    if({mostrar}==1) {
+      $("#vtn_filtro_c").dialog("open");      
     }
   });
 </script>
@@ -65,6 +69,6 @@
   }
 </script>
 <div id="vtn_filtro_c" title="Consulta de Anexos - Fotos">
-  {filtrocEntradaConsulta}
+  {filtroAnexos}
 </div>
 <!-- End ventana -->	

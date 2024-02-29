@@ -3,7 +3,7 @@
     <td width="25" align="center">
       <div class="popupsAgregar borde_circular">
         <a href="#">
-          <img src="img/acciones/agregar.png" title="Nueva Transacci&ograve;n" width="25" height="25" border="0" />
+          <img src="img/acciones/agregar.png" title="Nueva Transacci&oacute;n" width="25" height="25" border="0" />
         </a>
       </div>
     </td>
@@ -16,7 +16,7 @@
     </td>
     <td width="25" align="center" id="btnImprimir">
       <div class="tblank borde_circular noSeleccion">
-        <a href=""  target="_blank" class="tblank">
+        <a href="" target="_blank" class="tblank">
           <img src="img/acciones/printer.gif" title="Imprimir Remesa" width="25" height="25" border="0" />
         </a>
       </div> 
@@ -49,9 +49,8 @@
         </a>
       </div>
     </td>
-    <!-- </td> -->
     <td width="25" align="center">
-      <div class=" nuevo_camion borde_circular noSeleccion" >
+      <div class="nuevo_camion borde_circular noSeleccion" >
         <a href="#">
           <img src="img/acciones/camion.gif" title="Agregar Cami&oacute;n" width="25" height="25" border="0" />
         </a>
@@ -62,6 +61,7 @@
 <form>
   <input name="comodin" type="hidden" id="comodin" value="{clase}" />
   <input type="hidden" name="nombre_cliente" id="clientew" value="{cliente}" />
+  <input type="hidden" name="nitcliente" id="nitcliente" value="{ncliente}" />
   <input type="hidden" name="nombre_movimiento" id="nombre_movimiento" value="{tipo_retiro_label}" />
   <input type="hidden" name="email" id="email_aux" value="{email}" />
 </form>
@@ -89,20 +89,19 @@
 
   $(function() {
     $('a[class="tblank"]').click(function() {
-      if($("#num_registros_ret").val() == 0) {
-        alert("No hay movimientos para imprimir.\n antes de imprimir debe agregar Mercancia al movimiento")
+      if($("#num_registros_ret").val()==0) {
+        alert("No hay movimientos para imprimir.\n antes de imprimir debe agregar Mercanc\u00eda al movimiento")
         $('#tabs').tabs("select", 1);
         return false;
       }
 
-      if($('#tipo_movimiento').val() / 1 == 3 && $('#placa').val() == "") {
-        alert("No ha diligenciado los datos del retiro.\n Cabeza del movimiento")
+      if(parseInt($('#tipo_movimiento').val())==3 && $('#placa').val()=="") {
+        alert("No ha diligenciado los datos del retiro.\nCabeza del movimiento")
         $('#tabs').tabs("select", 0);
         return false;
       }
-			//alert("prueba");
-      window.open("./scripts_index.php?clase=Levante&metodo=impresion&id_levante=" + $('#id_levante').val() + "&tipo_retiro=" + $('#tipo_retiro_filtro').val() +
-         "&tipo_movimiento=" + $('#tipo_movimiento').val() + "&nombre_cliente=" + $("#clientew").val() + "&tipo_salida=" + $("#nombre_movimiento").val());
+
+      window.open("./scripts_index.php?clase=Levante&metodo=impresion&id_levante="+$('#id_levante').val()+"&tipo_retiro="+$('#tipo_retiro_filtro').val()+"&tipo_movimiento="+$('#tipo_movimiento').val()+"&nombre_cliente="+$("#clientew").val()+"&ncliente="+$("#nitcliente").val()+"&tipo_salida="+$("#nombre_movimiento").val());
       return false;
     });
   });
@@ -140,11 +139,11 @@
   });
 
   $('.popupsMatriz a').click(function() {
-    // si hay mercancía extranjera se manda como tipo de retiro el codigo 8 para que  incluya la salida con EXT
-    var mercancia_ext = 0
+    // si hay mercancía extranjera se manda como tipo de retiro el código 8 para que  incluya la salida con EXT
+    var mercancia_ext = 0;
 
-    if($('#tot_peso_nonac').val() / 1 > 0) {
-      mercancia_ext = 8
+    if(parseFloat($('#tot_peso_nonac').val()) > 0) {
+      mercancia_ext = 8;
     }
 
     window.open("./scripts_index.php?clase=Levante&metodo=matriz&id_levante=" + $('#id_levante').val() + "&tipo_retiro=" + mercancia_ext+"&tipo_movimiento="+$('#tipo_movimiento').val());
@@ -155,10 +154,10 @@
 
   $('.nuevo_camion  a').click(function() {
     $("#dialog-addCamion").dialog("open");
-    $("div#ventana_addcamion").load("./scripts_index.php", {clase: 'Orden', metodo: 'newCamion', mostrar: '1'}, function(datos) {
-      //alert(datos)
-      //$("div#ventana_addcamion").html(datos);
+    $("div#ventana_addcamion").load("./scripts_index.php", {
+      clase: 'Orden',
+      metodo: 'newCamion',
+      mostrar: '1'}, function(datos) {
     });
-    //alert("x")
   });
 </script>

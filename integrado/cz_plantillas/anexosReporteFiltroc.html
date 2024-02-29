@@ -1,10 +1,5 @@
 <script>
-  function EnviarFormulario() {
-  }
-
-  $(function() {
-    $("#btnConsulta").button();
-  });
+  function EnviarFormulario() {}
 
   $(function() {
     $("#buscarOrdenDoc").autocomplete("./scripts_index.php?clase=Anexos&metodo=findOrdenDoc", {
@@ -13,8 +8,7 @@
     });
 
     $("#buscarOrdenDoc").result(function(event, data, formatted) {
-      if(data)
-        $('#orden').val(data[2]);
+      if(data) $('#orden').val(data[2]);
     });
   });
 </script>
@@ -38,9 +32,9 @@
     <p class="validateTips">Seleccione Orden :: Documento de Transporte</p>
     <form class="formulario" id="formularioc" method="post" action="javascript:EnviarFormulario()" name="formularioc">
       <fieldset class="ui-widget ui-widget-content ui-corner-all">
-        <legend class="ui-widget ui-widget-header ui-corner-all">
+        <!-- <legend class="ui-widget ui-widget-header ui-corner-all">
           <div id="nombre_reporte">Cliente: {idCliente}</div>
-        </legend>
+        </legend> -->
         <p>
           <label>Documento de Transporte:</label>
           <input type="text" id="buscarOrdenDoc" name="buscarOrdenDoc" size="30"

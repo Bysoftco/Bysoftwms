@@ -22,7 +22,7 @@
     $.validator.addMethod("seleccion_doc", function(value) {
       if($("#doc_filtro_aux").val()=="0" ) return false;
       else return true;
-    }, '* Indique un documento valido,seleccione cliente y luego seleccione un documento!');
+    }, '* Indique un documento válido,seleccione cliente y luego seleccione un documento!');
   });
 
   $(document).ready(function() {
@@ -52,8 +52,9 @@
                   $('#componente_central').html(msm);
                 }
               });
-            }   
-          });
+            }  
+          }
+        );
       }
     });	
   });

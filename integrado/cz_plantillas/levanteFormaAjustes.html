@@ -1,11 +1,14 @@
 <script>
-<!-- Version 23/11/2016-->
     function formAjuste(){
 	   		
     }
     
-   $(function(){
-	$("#producto_adicional").autocomplete("./scripts_index.php?clase=Inventario&metodo=findReferencia&id_cliente="+$("#por_cuenta_aux").val(), 
+   $(function() 
+   {
+		
+
+		
+		 $("#producto_adicional").autocomplete("./scripts_index.php?clase=Inventario&metodo=findReferencia&id_cliente="+$("#por_cuenta_aux").val(), 
 		 {
 			width: 260,
 			selectFirst: false
@@ -18,47 +21,63 @@
 		
     });	
 
-    $.validator.setDefaults({
-        submitHandler: function(){
-          $("#id_levante_adicional_ajuste").val($("#id_levante").val());
-		 	$.ajax({ 
-            	url:'./scripts_index.php',
-                type: "POST",
-                async:false,
-                data:$("#formAjuste").serialize(),
-                success: function (msm){
-					$("#dialog-form-hacer-levante").dialog( "close" );
-					$('#htmlCuerpo').html(msm);
-				}
-             });
-         },
-		highlight: function(input){
-        	$(input).addClass("ui-state-highlight");
+    $.validator.setDefaults(
+    {
+        submitHandler: function() 
+        {
+          	//alert($("#id_levante").val());
+			$("#id_levante_adicional_ajuste").val($("#id_levante").val());
+		 	$.ajax(
+                { 
+                    url:'./scripts_index.php',
+                    type: "POST",
+                    async:false,
+                    data:$("#formAjuste").serialize(),
+                    success: function (msm)
+                    {
+						
+						//alert(msm);
+						$("#dialog-form-hacer-levante").dialog( "close" );
+						$('#htmlCuerpo').html(msm);
+						
+					}
+                });
+         		
 	},
-		unhighlight: function(input){
-        	$(input).removeClass("ui-state-highlight");
-		}
+	highlight: function(input) 
+        {
+            $(input).addClass("ui-state-highlight");
+	},
+	unhighlight: function(input) 
+        {
+            $(input).removeClass("ui-state-highlight");
+	}
     });
 
-	  $.validator.addMethod("maximo_cantidad", function(value){
-       	if($("#cantidad_ext_cab").val()/1 + $("#cantidad_nac_cab").val()/1 > $("#cantidad_cab").val()/1){
+	  $.validator.addMethod("maximo_cantidad", function(value) 
+       {
+            if($("#cantidad_ext_cab").val()/1 + $("#cantidad_nac_cab").val()/1 > $("#cantidad_cab").val()/1){
                     return false;	
             }else{
                     return true;
             }
         }, '* La Cantidad Nacional + Extrangera debe Sumar '+$("#cantidad_cab").val());
 	
-    $(function(){
-		$("#formAjuste").validate({
+    $(function() 
+    {
+		$("#formAjuste").validate(
+    	{
             rules: {cantidad_ext: "maximo_cantidad"}
 		});
-	})
 		
+		
+       
+   })	
 </script>
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
 <p id="msgbox_levante"></p>
 <span id="msgbox_proceso" style="display:block" class="{estilox}"  > {mensajex} 
-</span> 
+addItemAdicional </span> 
 <form class="formAjuste" name="formGuardaLevante"  id="formAjuste"  method="post" action="javascript:formAjuste()">
   <fieldset class="ui-widget ui-widget-content ui-corner-all">
   <legend class="ui-widget ui-widget-header ui-corner-all"> Datos del Nuevo Ajuste 
@@ -90,7 +109,7 @@
       <td><select name="unidad" id="unidad" class="required" >
 	  			{listaEmbalajes}		
         </select></td>
-      <td><input name="cantidad_ajuste" type="text" class="" id="cantidad_ajuste" size="15" disabled></td>
+      <td><input name="cantidad_ajuste" type="text" class=" required   ui-widget-content" id="cantidad_ajuste" size="15"></td>
       <td><input name="peso_ajuste" type="text" class=" required   ui-widget-content" id="peso_ajuste" size="15"></td>
       <td><input name="valor" type="text" class=" required   ui-widget-content" id="valor" size="15"></td>
     </tr>

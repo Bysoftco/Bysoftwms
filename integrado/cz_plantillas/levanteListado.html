@@ -26,10 +26,10 @@
             var registro = $("#cod_mov"+$column).val();
             url = 'index_blank.php?component=Alistamientos&method=mostrarAlistamiento&id_registro='+registro;
             break;
-			// case 7: //Sesion de derechos antes  pedidos
+          // case 7: //Sesion de derechos antes  pedidos
            // var registro = $("#cod_mov"+$column).val();
            //( url = 'index_blank.php?component=Alistamientos&method=mostrarAlistamiento&id_registro='+registro;
-            break;
+            //break;
           case 16: //Acondicionamiento
             var registro = $("#cod_mov"+$column).val();
             var tipo_mercancia = $("#cantidad"+$column).val()!=0?1:2;
@@ -47,6 +47,7 @@
       $("#doc").val($("#num_documento_aux"+$column).val())
       $("#por_cuenta").val($("#por_cuenta_aux"+$column).val())
       $("#cliente").val($("#nombre_cliente_ax"+$column).val())
+      $("#ncliente").val($("#nitcliente_ax"+$column).val())
       $("#tipo_retiro_label").val($("#nombre_movimiento_aux"+$column).val())
 
       $.ajax({
@@ -63,17 +64,14 @@
     $(":submit").button();
   });
 </script>
-
-<div id="users-contain" class="ui-widgetx">
+<div id="users-contain" class="ui-widgetx" style="margin-top:9px;">
   <form id="listadoMercancia" name="listadoMercancia">
     <fieldset class="ui-widgetx ui-widget-content ui-corner-all">
       <legend class="ui-widget ui-widget-header ui-corner-allx"> Movimientos</legend>
       <span id="msgbox_cuerpo" style="display:block" class="{estilo}"> {mensaje} </span>
       <table width="100%" class="ui-widget ui-widget-content" id="tabla_general_z" style="display:{mostrarCuerpo}">
         <thead>
-		<!--
-          <tr class="ui-widget-header ">  -->
-		  <tr > 
+		      <tr> 
             <th>#</th>
             <th>Fecha</th>
             <th>Movimiento</th>
@@ -87,26 +85,28 @@
           {comodin}
           <!-- BEGIN ROW -->
           <tr class="{oddx}"> 
-            <td width="1%" >{n}</td>
-            <td> {fecha}</td>
-            <td title="{descripcion}">[{cod_mov}]{nombre_movimiento} {tipo_retiro_nombre} </td>
-            <td> {nombre_cliente} </td>
-            <td>{lev_documento}/{placa}/{do_asignado}/{fmm} 
-              <input name="un_do" type="hidden" id="do_asignado_listado{n}" value="{do_asignado}"/>
+            <td width="1%">{n}</td>
+            <td>{fecha}</td>
+            <td title="{descripcion}">[{cod_mov}]&nbsp;{nombre_movimiento} {tipo_retiro_nombre}</td>
+            <td>{nombre_cliente}</td>
+            <!-- Corrección lev_documento cambia a doc_tte - 30/sep/2023 -->
+            <td>{doc_tte}/{placa}/{do_asignado}/{fmm}
+              <input name="un_do" type="hidden" id="do_asignado_listado{n}" value="{do_asignado}" />
             </td>
             <td>{nombre_aduana}/{conductor_nombre}</td>
             <td style="{verColumna}"> 
-              <input name="cod_mov" type="hidden" id="cod_mov{n}" value="{cod_mov}"/>
+              <input name="cod_mov" type="hidden" id="cod_mov{n}" value="{cod_mov}" />
               <input name="cantidad" type="hidden" id="cantidad{n}" value="{cantidad}" />
-              <input name="tipo_movimiento_all" type="hidden" id="tipo_movimiento_consulta{n}" value="{movimiento_tipo}"/>
-              <input name="tipo_retiro" type="hidden" id="tipo_retiro{n}" value="{tipo_retiro}"/>
+              <input name="tipo_movimiento_all" type="hidden" id="tipo_movimiento_consulta{n}" value="{movimiento_tipo}" />
+              <input name="tipo_retiro" type="hidden" id="tipo_retiro{n}" value="{tipo_retiro}" />
               <a href="#" class="signup id_mercancia" title="Ver Movimiento {n}" id="{n}" cursor>
                 <img src="integrado/imagenes/checkin.gif" border="1" style="display:block;margin:0 auto;"/> 
               </a> 
-              <input name="num_documento" type="hidden" id="num_documento_aux{n}" value="{lev_documento}"/> 
+              <input name="num_documento" type="hidden" id="num_documento_aux{n}" value="{lev_documento}" /> 
               <input name="por_cuenta" type="hidden" id="por_cuenta_aux{n}" value="{numero_documento}"/> 
-              <input name="nombre_cliente" type="hidden" id="nombre_cliente_ax{n}" value="{nombre_cliente}"/>
-              <input name="nombre_movimiento" type="hidden" id="nombre_movimiento_aux{n}" value="{nombre_movimiento}"/>
+              <input name="nombre_cliente" type="hidden" id="nombre_cliente_ax{n}" value="{nombre_cliente}" />
+              <input type="hidden" name="ncliente" id="ncliente_ax{n}" value="{nitcliente}" />
+              <input name="nombre_movimiento" type="hidden" id="nombre_movimiento_aux{n}" value="{nombre_movimiento}" />
             </td>
           </tr>
           <!-- END ROW -->
@@ -126,12 +126,11 @@
   </form>
 </div>
 <script>
-
   $(document).ready(function() {
     $('#tabla_general_z').dataTable({
       "aaSorting": [],
       "oLanguage": {
-        "sLengthMenu": "Mostrar _MENU_ registros por página",
+        "sLengthMenu": "Mostrar _MENU_ registros por p&aacute;gina",
         "sZeroRecords": "No hay registros para mostrar",
         "sInfo": "Mostrando _START_ a _END_ registros de _TOTAL_",
         "sInfoEmpty": "Mostrando 0 a 0 registros de 0",
@@ -141,4 +140,4 @@
     });
   });
   // cambio 21/08/2018
-  </script>
+</script>
