@@ -69,6 +69,7 @@
             <input name="fecha_inicio" type="hidden" id="fecha_inicio_aux" value="{fecha_inicio}" />
             <input name="fecha_fin" type="hidden" id="fecha_fin_aux" value="{fecha_fin}" />
           </th>
+          <th style="width:5%">OBS/Fact</th>
           <th style="text-align: center;">Acci&oacute;n 
             <input name="n" type="hidden" id="n" value="{num_registros}" />
           </th>
@@ -85,9 +86,8 @@
           </td>
           <td>{doc_tte} </td>
           <td>{bodega_nombre}</td>
-          <td>{operacion_nombre}
-            <a href="#" class="signup documento_id" title="Consultar Do {do_asignado}" id="{n}" cursor></a> 
-          </td>
+          <td>{operacion_nombre}</td>
+          <td>{obs}</td>
           <td style="text-align: center;">
             <a href="#" class="signup documento_id" title="Consultar Do {do_asignado}" id="{n}" cursor>
               <img src="integrado/imagenes/{img_editar}" border="0" /> 

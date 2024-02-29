@@ -1,140 +1,106 @@
-    <link rel="StyleSheet" href="./integrado/cz_estilos/reporteGerencial.css" type="text/css">
-
-    <style>
-
-        /*
-
+<head>
+  <link rel="StyleSheet" href="./integrado/cz_estilos/reporteGerencial.css" type="text/css">
+  <style>
+    /*
     table {
-
-       FONT-SIZE: 12px; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; COLOR:red;
-
+      FONT-SIZE: 12px; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; COLOR:red;
     }*/
-
-        
-
-		
-
   </style>
-
-    <script language="javascript" type="text/javascript">
-
+  <script language="javascript" type="text/javascript">
     function excel() {
-
-	//alert("x")
-
-        document.reporteForm.metodo.value='generaExcel' ;
-
-        document.reporteForm.submit();
-
+      //alert("x")
+      document.reporteForm.metodo.value='generaExcel' ;
+      document.reporteForm.submit();
     }
-
-	</script>
-
-</head><body id="home">
-
-<div id="boundary"> 
-
-  <div id="content">
-
-  	<div id="intro"> 
-
-      <h2><strong><font size="4" face="Verdana, Arial, Helvetica, sans-serif"><img src="./integrado/imagenes/cliente.png" width="90" height="45" align="right"></font></strong></h2>
-
-    </div>
-
-	<form action="./scripts_index.php" name="reporteForm" id="reporteForm" method="post" onSubmit="javascript : return formEnvio()">	
-
-      <div id="itsthetable"> 
-
-        <table summary="Submitted table designs" style=" font-size:12px;">
-          <caption>
-          Reporte Endosos{titulo} <a href="javascript: excel()" ><img src="./integrado/imagenes/report-excel.png" border="0" style="display:{mostrarExcel};" ></a> 
-          <a href="javascript: window.print();" ><img src="./integrado/imagenes/printer.png" border="0" style="display:{mostrarExcel};" ></a> 
-          </caption>
-          <thead>
-            <tr> 
-              <th height="23">Nuevo Cliente</th>
-              <th>Documento</th>
-              <th>Nueva Orden</th>
-              <th>Anterior Orden</th>
-              <th>Referencia</th>
-              <th>CantNal</th>
-              <th>&nbsp;</th>
-              <th>CantExt</th>
-              <th>PesoNal</th>
-              <th>PesoExt</th>
-              <th>CIF</th>
-              <th>FOB</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr> 
-              <th colspan="25" scope="row"> [{num_registros}]Registros 
-                <input name="nombreSede" type="hidden" id="nombreSede" value="{nombreSede}"> 
-                <input name="nombreEstado" type="hidden" id="nombreEstado2" value="{nombreEstado}">
-                {fechaActual} </th>
-            </tr>
-          </tfoot>
-          <tbody>
-            <!-- BEGIN ROW -->
-            <tr> 
-              <th scope="row" id="r101">[{endosado_a}]{cliente_endoso}</th>
-              <td>{doc_tte}</td>
-              <td>{nueva_orden}</td>
-              <td>{orden_ant}</td>
-              <td>{referencia_nombre}</td>
-              <td title="Peso Retirado Nacional">{cant_naci_f}</td>
-              <td title="Peso Salida Por Reempaque Nacional">&nbsp;</td>
-              <td title="Peso Salida Por Reempaque Extranjero">{cant_nonac_f}</td>
-              <td title="Peso Producto Terminado Nacional">{peso_naci_f}</td>
-              <td title="Peso Producto Terminado Extranjero">{peso_nonac_f}</td>
-              <td title="Peso Producto Terminado Extranjero">{cif_f}</td>
-              <td title="Peso Producto Terminado Extranjero">{fob_f}</td>
-            </tr>
-            <!-- END ROW -->
-          </tbody>
-          <tr> 
-            <th>Totales</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th>{t_cant_nal}</th>
-            <th>&nbsp;</th>
-            <th>{t_cant_ext}</th>
-            <th>{t_peso_nal}</th>
-            <th>{t_peso_ext}</th>
-            <th>{t_cif}</th>
-            <th>{t_fob}</th>
-          </tr>
-        </table>
-
+  </script>
+</head>
+<body id="home">
+  <div id="boundary"> 
+    <div id="content">
+      <div id="intro"> 
+        <h2><strong><font size="4" face="Verdana, Arial, Helvetica, sans-serif"><img src="./integrado/imagenes/cliente.png" width="90" height="45" align="right"></font></strong></h2>
       </div>
-
-      <div> 
-
-        <p><a href="javascript: excel()" ><img src="./integrado/imagenes/report-excel.png" border="0" style="display:{mostrarExcel};" ></a> 
-
-          <a href="javascript: window.print();" ><img src="./integrado/imagenes/printer.png" border="0" style="display:{mostrarExcel};" ></a> 
-
-          <input name="clase" type="hidden" id="clase" value="Reporte">
-
-          <input name="metodo" type="hidden" id="metodo" value="">
-
-          <input name="por_cuenta_filtro" type="hidden" id="por_cuenta_filtro" value="{por_cuenta_filtro}">
-
-          <input name="fecha_fin" type="hidden" id="fecha_fin" value="{fecha_fin}">
-
-          <input name="fecha_inicio" type="hidden" id="fecha_inicio" value="{fecha_inicio}">
-
-          <input name="titulo" type="hidden" id="titulo" value="{titulo}">
-
-        </p>
-
+      <form action="./scripts_index.php" name="reporteForm" id="reporteForm" method="post" onSubmit="javascript : return formEnvio()">	
+        <div id="itsthetable"> 
+          <table summary="Submitted table designs" style=" font-size:12px;">
+            <caption>
+              Reporte Endosos{titulo} <a href="javascript: excel()" ><img src="./integrado/imagenes/report-excel.png" border="0" style="display:{mostrarExcel};" ></a> 
+              <a href="javascript: window.print();" ><img src="./integrado/imagenes/printer.png" border="0" style="display:{mostrarExcel};" ></a> 
+            </caption>
+            <thead>
+              <tr> 
+                <th height="23">Nuevo Cliente</th>
+                <th>Documento</th>
+                <th>Nueva Orden</th>
+                <th>Anterior Orden</th>
+                <th>Referencia</th>
+                <th>CantNal</th>
+                <th>&nbsp;</th>
+                <th>CantExt</th>
+                <th>PesoNal</th>
+                <th>PesoExt</th>
+                <th>CIF</th>
+                <th>FOB</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr> 
+                <th colspan="25" scope="row"> [{num_registros}] Registros 
+                  <input name="nombreSede" type="hidden" id="nombreSede" value="{nombreSede}"> 
+                  <input name="nombreEstado" type="hidden" id="nombreEstado2" value="{nombreEstado}">
+                  {fechaActual}
+                </th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <!-- BEGIN ROW -->
+              <tr> 
+                <th scope="row" id="r101">[{endosado_a}]{cliente_endoso}</th>
+                <td>{doc_tte}</td>
+                <td>{nueva_orden}</td>
+                <td>{orden_ant}</td>
+                <td>{referencia_nombre}</td>
+                <td title="Peso Retirado Nacional">{cant_naci_f}</td>
+                <td title="Peso Salida Por Reempaque Nacional">&nbsp;</td>
+                <td title="Peso Salida Por Reempaque Extranjero">{cant_nonac_f}</td>
+                <td title="Peso Producto Terminado Nacional">{peso_naci_f}</td>
+                <td title="Peso Producto Terminado Extranjero">{peso_nonac_f}</td>
+                <td title="Peso Producto Terminado Extranjero">{cif_f}</td>
+                <td title="Peso Producto Terminado Extranjero">{fob_f}</td>
+              </tr>
+              <!-- END ROW -->
+            </tbody>
+            <!-- BEGIN Totales -->
+            <tr> 
+              <th>Totales</th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th>{t_cant_nal}</th>
+              <th>&nbsp;</th>
+              <th>{t_cant_ext}</th>
+              <th>{t_peso_nal}</th>
+              <th>{t_peso_ext}</th>
+              <th>{t_cif}</th>
+              <th>{t_fob}</th>
+            </tr>
+            <!-- END Totales -->
+          </table>
+        </div>
+        <div> 
+          <p>
+            <a href="javascript: excel()" ><img src="./integrado/imagenes/report-excel.png" border="0" style="display:{mostrarExcel};" ></a> 
+            <a href="javascript: window.print();" ><img src="./integrado/imagenes/printer.png" border="0" style="display:{mostrarExcel};" ></a> 
+            <input name="clase" type="hidden" id="clase" value="Reporte">
+            <input name="metodo" type="hidden" id="metodo" value="">
+            <input name="por_cuenta_filtro" type="hidden" id="por_cuenta_filtro" value="{por_cuenta_filtro}">
+            <input name="fecha_fin" type="hidden" id="fecha_fin" value="{fecha_fin}">
+            <input name="fecha_inicio" type="hidden" id="fecha_inicio" value="{fecha_inicio}">
+            <input name="titulo" type="hidden" id="titulo" value="{titulo}">
+          </p>
+        </div>
+      </form>
     </div>
-
-	</form>
-
-</div>
-
-</div></body>
+  </div>
+</body>

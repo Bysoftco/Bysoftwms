@@ -32,17 +32,17 @@
 <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general_z" class="display">
   <thead>
     <tr> 
-      <th width="20%">Cliente</th>
-      <th width="10%">Orden</th>
-      <th width="10%">Documento TTE</th>
-      <th width="10%">Referencia</th>
-      <th width="20%">Nombre Referencia</th>
-      <th width="5%">Piezas Nal.</th>
-      <th width="5%">Peso Nal.</th>
-      <th width="5%">Piezas Ext.</th>
-      <th width="5%">Peso Ext.</th>
-      <th width="5%">Cif</th>
-      <th width="5%">FOB</th>
+      <th>Cliente</th>
+      <th>Orden</th>
+      <th>Documento TTE</th>
+      <th>Referencia</th>
+      <th>Nombre Referencia</th>
+      <th>Piezas Nal/Nzo</th>
+      <th>Peso Nal.</th>
+      <th>Piezas Ext.</th>
+      <th>Peso Ext.</th>
+      <th>Cif</th>
+      <th>FOB</th>
     </tr>
   </thead>
   <tbody>
@@ -58,11 +58,12 @@
       <td style="text-align: center;">{cant_nonac_f}</td>
       <td style="text-align: center;">{peso_nonac_f}</td>
       <td style="text-align: center;">{cif_f}</td>
-      <td style="text-align: center;"> {fob_nonac_f}</td>
+      <td style="text-align: center;">{fob_nonac_f}</td>
     </tr>
     <!-- END ROW  -->
   </tbody>
   <tfoot>
+    <!-- BEGIN Totales  -->
     <tr> 
       <th colspan="2">Totales</th>
       <th></th>
@@ -75,6 +76,7 @@
       <th>{tot_cif}</th>
       <th>{total_fob}</th>
     </tr>
+    <!-- END Totales  -->
   </tfoot>
 </table>
 <form name="frmExcel" action="scripts_index.php" >
@@ -88,6 +90,7 @@
   <input type="hidden" name="method" id="method" value="exportarExcel" />
   <input type="hidden" name="clase" id="clase" value="Reporte" />
   <input type="hidden" name="metodo" id="metodo" value="excelAcondicionamientos" />
+  <input type="hidden" name="tipoLabel" id="tipoLabel" value="{tipoLabel}" />
 </form>
 <script>
   Nifty("div.borde_circular","transparent");
@@ -108,9 +111,16 @@
   });	
 
   $('a[class="tblank"]').click(function() {
-    window.open("./scripts_index.php?clase=Reporte&metodo=listadoRechazadas&cliente="+$("#cliente").val()+
+    if($('#tipoLabel').val()=='DEFECTUOSA') {
+      window.open("./scripts_index.php?clase=Reporte&metodo=listadoRechazadas&cliente="+$("#cliente").val()+
+      "&nitfr="+$("#nitfr").val()+"&fechadesdefr="+$("#fechadesdefr").val()+"&fechahastafr="+$("#fechahastafr").val()+"&una_orden="+$("#una_orden").val()+
+      "&un_doc_filtro="+$("#un_doc_filtro").val());      
+    } else {
+      window.open("./scripts_index.php?clase=Reporte&metodo=listadoAcondicionadas&cliente="+$("#cliente").val()+
       "&nitfr="+$("#nitfr").val()+"&fechadesdefr="+$("#fechadesdefr").val()+"&fechahastafr="+$("#fechahastafr").val()+"&una_orden="+$("#una_orden").val()+
       "&un_doc_filtro="+$("#un_doc_filtro").val());
+    }
+
     return false;
   });
   

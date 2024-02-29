@@ -2,7 +2,7 @@
 	.ui-button { margin-left: -1px; }
 	.ui-button-icon-only .ui-button-text { padding: 0.35em; } 
 	.ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; width:200px; }
-	#formularioEditar label.error, #formularioEditar button.submit { margin-left: 0px; }
+	#formularioOrden label.error, #formularioOrden button.submit { margin-left: 0px; }
   .ui-datepicker-trigger { position:relative; top: 5px; right: 1px; height:22px; } /* Configuración tamaño imagen del DatePicker */
 </style>
 <script>
@@ -45,7 +45,8 @@
           metodo:'existeCliente',
           por_cuenta:$('#por_cuenta').val(),
           doc_tte:$('#doc_tte').val(),
-					bodega:$('#bodega').val() }, function(data) {
+					bodega:$('#bodega').val()
+				}, function(data) {
 					bValid = true;
 					if(data == 0) {
 						bValid = false;  
@@ -54,7 +55,7 @@
 					if(data == 'docExistente') {
 						bValid = false; 
 						$("#msgbox").html('&nbsp;El documento <b>'+$('#doc_tte').val()+'</b> ya se encuentra en el <b>&Aacute;rea de Almacenamiento</b> seleccionada')
-							.addClass('ui-state-error');
+						.addClass('ui-state-error');
 					}
 					if(bValid) {
 						$("#msgbox").html('').removeClass();
@@ -183,126 +184,106 @@
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
 <span id="msgbox" style="display:block" class="{estilo}">{mensaje}</span><br/>
 <form class="formularioOrden" id="formularioOrden" method="post" action="javascript:crearOrden()" name="formularioOrden">
-	<fieldset class="ui-widget ui-widget-content ui-corner-all">
-		<legend class="ui-widget ui-widget-header ui-corner-all"> Nuevo {identificacion}</legend>
-    <table width="100%" border="0" id="users-contain1">
+	<fieldset style="width:98.3%;" class="ui-widget ui-widget-content ui-corner-all">
+		<legend class="ui-widget ui-widget-header ui-corner-all"> Nuevo DO</legend>
+		<fieldset class="ui-widget ui-widget-content ui-corner-all" style="margin-bottom:5px;">
+			<legend class="">Datos del Cliente</legend>
+			<table border="0" class="ui-widget">
+				<tr class="ui-corner-all ui-widget-header">
+					<th style="width:30%;">Por Cuenta de: </th>
+	      	<th style="width:20%;">Nit:</th>
+	      	<th style="width:25%;">Correo Electr&oacute;nico:</th>
+	      	<th style="width:15%;">Vendedor:</th>
+	        <th style="width:10%;">ZF_Code:</th>
+	      </tr>
+				<tr> 
+					<td><input type="text" name="name" class="ui-widget-content" id="buscarCliente" value="{cliente}" size="45" {soloLectura} /></td>
+					<td style="text-align: center;"><input type="text" name="por_cuenta" class="ui-widget-content" id="por_cuenta" value="{usuario}" readonly="" /></td>
+					<td style="text-align: center;"><input type="text" name="email" class="ui-widget-content" id="email" value="{email}" size="40" readonly="" /></td>
+					<td><input type="text" name="comercial" class="ui-widget-content" id="comercial" value="{comercial}" size="30" readonly="" /></td>
+	        <td style="text-align: center;"><input type="text" name="zfcode" class="ui-widget-content" id="zfcode" value="{zfcode}" size="10" /></td>
+				</tr>
+			</table>		
+		</fieldset>
+		<fieldset class="ui-widget ui-widget-content ui-corner-all" style="margin-bottom:5px;">
+			<legend class="">Datos del Documento</legend>
+			<table border="0" class="ui-widget">
+				<tr class="ui-corner-all ui-widget-header">
+					<th style="width:20%;">Fecha:</th>
+					<th style="width:25%;">Tipo Documento <font color="#FF0000">*</font>:</th>
+					<th style="width:25%;">Documento <font color="#FF0000">*</font>:</th>
+          <th style="width:25%;">Manifiesto <font color="#FF0000">*</font>:</th>
+					<th style="width:10%;">Modalidad <font color="#FF0000">*</font>:</th>
+	      </tr>
+				<tr> 
+					<td style="text-align:center;"><input type="text" name="fecham" id="fecham" value="" /></td>
+					<td style="text-align:center;"><select name="tipo_documento" class="required ui-widget-content" id="tipo_documento" onchange="asignaManifiesto(this.value)">{listaTiposDocumentos}</select></td>
+					<td style="text-align:center;"><input name="doc_tte" type="text" class="required ui-widget-content" id="doc_tte" value="{doc_tte}" size="30"/></td>
+					<td style="text-align:center;"><input name="manifiesto" type="text" class="required ui-widget-content" id="manifiesto2" value="{manifiesto}"
+          	size="30" maxlength="15" minlength="15"/>
+          </td>                
+					<td style="text-align:center;"><select name="modalidad" class="required ui-widget-content" id="modalidad">{listaModalidad}</select></td>
+				</tr>
+			</table>	
+		</fieldset>
+		<fieldset class="ui-widget ui-widget-content ui-corner-all" style="margin-bottom:5px;">
+			<legend class="">Datos de la Mercanc&iacute;a</legend>
+			<table border="0" class="ui-widget">
+				<tr class="ui-corner-all ui-widget-header">
+					<th style="width:15%;">&Aacute;rea Almacenamiento <font color="#FF0000">*</font>:</th>
+					<th style="width:30%;">Operaci&oacute;n <font color="#FF0000">*</font>:</th>
+					<th style="width:15%;">Tipo Carga:</th>
+					<th style="width:20%;">Tipo Ingreso:</th>
+					<th style="width:15%;">Observaci&oacute;n:</th>
+	      </tr>
+				<tr> 
+					<td style="text-align:center;center;width:5%;">
+						<input name="identificacion" type="hidden" id="identificacion" value="{identificacion}" />
+						&nbsp;&nbsp;<select name="bodega" class="required ui-widget-content" id="bodega">{listaBodegas}</select>
+	        </td>
+					<td style="text-align:center;">&nbsp;&nbsp;<select name="tipo_operacion" class="required ui-widget-content" id="tipo_operacion">{listaOperaciones}</select></td>
+					<td style="text-align:center;">
+						&nbsp;&nbsp;<input type="radio" name="suelta_conte" value="suelta" checked="" />Suelta
+						<input type="radio" name="suelta_conte" value="contenedor" />Contenedor
+	        </td>
+					<td style="text-align:center;">
+						&nbsp;&nbsp;<input type="radio" name="consig_asig" value="consignada" checked="" />Consignada
+						<input type="radio" name="consig_asig" value="asignada" />Asignada
+	      	</td>
+	      	<td rowspan="3"><textarea name="obs" cols="25" rows="5" id="obs">{obs}</textarea></td>
+				</tr>
+				<tr class="ui-corner-all ui-widget-header">
+					<th>Origen <font color="#FF0000">*</font>:</th>
+					<th>Puerto <font color="#FF0000">*</font>:</th>
+					<th>Destino <font color="#FF0000">*</font>:</th>
+					<th>Puerto <font color="#FF0000">*</font>:</th>
+	      </tr>
+	      <tr>
+	      	<td style="text-align:center;"><input type="text" name="origen" class="required ui-widget-content" id="buscarOrigen" value="{origen}" size="30" />
+	      	<input type="hidden" name="paisori" id="paisori" value="" />
+	        <input type="hidden" name="puertoini" id="puertoini" value="" /></td>
+	      	<td style="text-align:center;"><input type="text" name="puertori" class="required ui-widget-content" id="buscarPuertori" value="{puertori}" size="30" /></td>
+	      	<td style="text-align:center;"><input type="text" name="destino" class="required ui-widget-content" id="buscarDestino" value="{destino}" size="30" /></td>
+	      	<input type="hidden" name="paisdes" id="paisdes" value="" />
+          <input type="hidden" name="puertofin" id="puertofin" value="" />
+	      	<td style="text-align:center;"><input type="text" name="puertodes" class="required ui-widget-content" id="buscarPuertodes" value="{puertodes}" size="30" /></td>
+	      </tr>
+			</table>			
+		</fieldset>
+		<table border="0" class="ui-widget">
 			<tr> 
-				<td width="16%">
-					<fieldset class="ui-widget ui-widget-content ui-corner-all">
-						<legend class="">Datos del Cliente </legend>
-						<table width="100%" border="0">
-            	<tr class="ui-widget ui-widget-header ui-corner-all" > 
-								<th>&nbsp;&nbsp;Por Cuenta de: </th>
-              	<th>&nbsp;&nbsp;Nit:</th>
-              	<th>&nbsp;&nbsp;Correo Electr&oacute;nico:</th>
-              	<th>&nbsp;&nbsp;Vendedor:</th>
-                <th>&nbsp;&nbsp;ZF_Code:</th>
-							</tr>
-							<tr> 
-								<td>&nbsp;&nbsp;<input type="text" name="name" class="ui-widget-content" id="buscarCliente" value="{cliente}" size="60" {soloLectura} /></td>
-								<td>&nbsp;&nbsp;<input type="text" name="por_cuenta" class="ui-widget-content" id="por_cuenta" value="{usuario}" readonly="" /></td>
-								<td>&nbsp;&nbsp;<input type="text" name="email" class="ui-widget-content" id="email" value="{email}" size="35" readonly="" /></td>
-								<td>&nbsp;&nbsp;<input type="text" name="comercial" class="ui-widget-content" id="comercial" value="{comercial}" size="40" readonly="" /></td>
-                <td>&nbsp;&nbsp;<input type="text" name="zfcode" class="ui-widget-content" id="zfcode" value="{zfcode}" size="10" /></td>
-							</tr>
-						</table>
-					</fieldset>
-				</td>
-			</tr>
-			<tr> 
-				<td width="16%">
-					<fieldset class="ui-widget ui-widget-content ui-corner-all">
-						<legend class="">Datos del Documento</legend>
-						<table width="100%" border="0">
-							<tr class="ui-widget ui-widget-header ui-corner-all" >
-								<th>&nbsp;&nbsp;Fecha:</th>
-								<th>&nbsp;&nbsp;Tipo Documento <font color="#FF0000">*</font>:</th>
-								<th>&nbsp;&nbsp;Documento <font color="#FF0000">*</font>:</th>
-                <th>&nbsp;&nbsp;Manifiesto <font color="#FF0000">*</font>:</th>
-								<th>&nbsp;&nbsp;Modalidad <font color="#FF0000">*</font>:</th>
-							</tr>
-							<tr> 
-								<td>&nbsp;&nbsp;<input type="text" name="fecham" id="fecham" value="" /></td>
-								<td>&nbsp;&nbsp;<select name="tipo_documento" class="required ui-widget-content" id="tipo_documento" onchange="asignaManifiesto(this.value)">{listaTiposDocumentos}</select></td>
-								<td>&nbsp;&nbsp;<input name="doc_tte" type="text" class="required ui-widget-content" id="doc_tte" value="{doc_tte}" size="20"/></td>
-								<td>&nbsp;&nbsp;<input name="manifiesto" type="text" class="required ui-widget-content" id="manifiesto2" value="{manifiesto}"
-                	size="20" maxlength="15" minlength="15"/>
-                </td>                
-								<td>&nbsp;&nbsp;<select name="modalidad" class="required ui-widget-content" id="modalidad">{listaModalidad}</select></td>
-							</tr>
-						</table>
-					</fieldset>
-				</td>
-			</tr>
-			<tr> 
-      	<td width="16%">
-					<fieldset class="ui-widget ui-widget-content ui-corner-all">
-						<legend class="">Datos de la Mercanc&iacute;a </legend>
-						<table width="100%" border="0">
-							<tr class="ui-widget ui-widget-header ui-corner-all" > 
-								<th width="5%">&nbsp;&nbsp;&Aacute;rea Almacenamiento <font color="#FF0000">*</font>:</th>
-								<th width="12%">&nbsp;&nbsp;Operaci&oacute;n <font color="#FF0000">*</font>:</th>
-								<th width="19%">&nbsp;&nbsp;Tipo Carga:</th>
-								<th width="19%">&nbsp;&nbsp;Tipo Ingreso:</th>
-							</tr>
-							<tr> 
-								<td>
-									<input name="identificacion" type="hidden" id="identificacion" value="{identificacion}" />
-									&nbsp;&nbsp;<select name="bodega" class="required ui-widget-content" id="bodega">{listaBodegas}</select>
-                </td>
-								<td>&nbsp;&nbsp;<select name="tipo_operacion" class="required ui-widget-content" id="tipo_operacion">{listaOperaciones}</select></td>
-								<td>
-									&nbsp;&nbsp;<input type="radio" name="suelta_conte" value="suelta" checked="" />Suelta
-									<input type="radio" name="suelta_conte" value="contenedor" />Contenedor
-                </td>
-								<td>
-									&nbsp;&nbsp;<input type="radio" name="consig_asig" value="consignada" checked="" />Consignada
-									<input type="radio" name="consig_asig" value="asignada" />Asignada
-              	</td>
-							</tr>
-            </table>
-						<table width="100%" border="0">
-							<tr class="ui-widget ui-widget-header ui-corner-all" > 
-								<th>&nbsp;&nbsp;Origen <font color="#FF0000">*</font>:</th>
-								<th>&nbsp;&nbsp;Puerto <font color="#FF0000">*</font>:</th>
-								<th>&nbsp;&nbsp;Destino <font color="#FF0000">*</font>:</th>
-								<th>&nbsp;&nbsp;Puerto <font color="#FF0000">*</font>:</th>
-							</tr>
-							<tr> 
-								<td>&nbsp;&nbsp;<input type="text" name="origen" class="required ui-widget-content" id="buscarOrigen" value="{origen}" size="40" /></td>
-                <input type="hidden" name="paisori" id="paisori" value="" />
-                <input type="hidden" name="puertoini" id="puertoini" value="" />
-								<td>&nbsp;&nbsp;<input type="text" name="puertori" class="required ui-widget-content" id="buscarPuertori" value="{puertori}" size="40" /></td>
-								<td>&nbsp;&nbsp;<input type="text" name="destino" class="required ui-widget-content" id="buscarDestino" value="{destino}" size="40" /></td>
-                <input type="hidden" name="paisdes" id="paisdes" value="" />
-                <input type="hidden" name="puertofin" id="puertofin" value="" />
-								<td>&nbsp;&nbsp;<input type="text" name="puertodes" class="required ui-widget-content" id="buscarPuertodes" value="{puertodes}" size="40" /></td>
-							</tr>
-						</table>
-						<table width="100%" border="0">
-							<tr class="ui-widget ui-widget-header ui-corner-all" > 
-								<th>&nbsp;&nbsp;Observaci&oacute;n:</th>
-							</tr>
-							<tr>
-              	<td>&nbsp;&nbsp;<textarea name="obs" cols="60" class="ui-widget-content" id="obs">{obs}</textarea></td>
-              </tr>
-						</table>
-					</fieldset>
-				</td>
-			</tr>
-			<tr> 
-				<td width="16%">
+				<td>
           &nbsp;<button class="submit" type="submit" id="btnGuardar" >Guardar</button>
         	&nbsp;&nbsp;&nbsp;El campo marcado con un asterisco (<font color="#FF0000">*</font>) es obligatorio.
         </td>
       </tr>
-		</table>
+    </table>
 	</fieldset>
-	{restrinje1} {metodox} 
+	{restrinje1} {metodox}
   <input type="hidden" name="clase" id="clase" value="Orden"/>
   <input type="hidden" name="tab_index" id="tab_index" value="1"/>
   <input type="hidden" name="metodo" id="metodo" value="addOrden"/>
   <input type="hidden" name="flgnewa" id="flgnewa" value="0"/>
-  <input type="hidden" name="razon_social" id="razon_social" value="" />
+  <input type="hidden" name="razon_social" id="razon_social" value=""/>
   <input type="hidden" name="doc_ttex" id="doc_ttex" value="" />
 </form>

@@ -1,218 +1,118 @@
-    <link rel="StyleSheet" href="./integrado/cz_estilos/reporteGerencial.css" type="text/css">
-
-    <style>
-
-        /*
-
+<link rel="StyleSheet" href="./integrado/cz_estilos/reporteGerencial.css" type="text/css">
+<head>
+  <style>
+    /*
     table {
 
-       FONT-SIZE: 12px; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; COLOR:red;
+    FONT-SIZE: 12px; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; COLOR:red;
 
     }*/
-
-        
-
-		
-
   </style>
-
-    <script language="javascript" type="text/javascript">
-
+  <script language="javascript" type="text/javascript">
     function excel() {
-
-	//alert("x")
-
-        document.reporteForm.metodo.value='generaExcel' ;
-
-        document.reporteForm.submit();
-
+      //alert("x")
+      document.reporteForm.metodo.value='generaExcel';
+      document.reporteForm.submit();
     }
-
-	</script>
-
-</head><body id="home">
-
-<div id="boundary"> 
-
-  <div id="content">
-
-  	<div id="intro"> 
-
-      <h2><strong><font size="4" face="Verdana, Arial, Helvetica, sans-serif"><img src="./integrado/imagenes/cliente.png" width="90" height="45" align="right"></font></strong></h2>
-
-    </div>
-
-	<form action="./scripts_index.php" name="reporteForm" id="reporteForm" method="post" onSubmit="javascript : return formEnvio()">	
-
-      <div id="itsthetable"> 
-
-        <table summary="Submitted table designs" style=" font-size:12px;">
-
-          <caption>
-
-          Inventario por Valor{titulo} <a href="javascript: excel()" ><img src="./integrado/imagenes/report-excel.png" border="0" style="display:{mostrarExcel};" ></a> 
-
-          <a href="javascript: window.print();" ><img src="./integrado/imagenes/printer.png" border="0" style="display:{mostrarExcel};" ></a> 
-
-          </caption>
-
-          <thead>
-
-            <tr> 
-
-              <th height="23">Cliente</th>
-
-              <th>Orden</th>
-
-              <th>Documento</th>
-
-              <th>Referencia</th>
-
-              <th>Valor</th>
-
-              <th>FOB</th>
-
-             
-
-              <th>RET FOB</th>
-
-            
-
-              <th>&nbsp;</th>
-
-              <th>CIF</th>
-
-              <th>CIF PRO</th>
-
-              <th>CIF ENS</th>
-
-              <th>CIF RET</th>
-
-              <th>RPK</th>
-
-            </tr>
-
-          </thead>
-
-          <tfoot>
-
-            <tr> 
-
-              <th colspan="24" scope="row"> [{num_registros}]Registros 
-                <input name="nombreSede" type="hidden" id="nombreSede" value="{nombreSede}"> 
-
-                <input name="nombreEstado" type="hidden" id="nombreEstado2" value="{nombreEstado}">
-
-                {fechaActual} </th>
-
-            </tr>
-
-          </tfoot>
-
-          <tbody>
-
-            <!-- BEGIN ROW -->
-
-            <tr> 
-
-              <th scope="row" id="r101">{nombre_cliente}</th>
-
-              <td>{orden}</td>
-
-              <td>{doc_tte}</td>
-
-              <td>{nombre_referencia}</td>
-
-              <td title="Valor">{valor_f}</td>
-
-              <td title="Valor Nacional">{fob_f}</td>
-
-          
-
-              <td title="Valor Retirado Nacional">{fob_retiro}</td>
-
-           
-
-              <td title="Valor Salida Por Reempaque Nacional">&nbsp;</td>
-
-              <td title="Valor Salida Por Reempaque Extranjero">{cif_f}</td>
-
-              <td title="Valor Producto Terminado Nacional">{cif_proceso}</td>
-
-              <td title="Valor Producto Terminado Extranjero">{cif_ensamble}</td>
-
-              <td title="Valor Producto Terminado Extranjero">{cif_retiro}</td>
-
-              <td title="Valor Producto Terminado Extranjero">{v_rpk_f}</td>
-
-            </tr>
-
-            <!-- END ROW -->
-
-          </tbody>
-
-          <tr> 
-
-            <th>Totales</th>
-
-            <th></th>
-
-            <th></th>
-
-            <th></th>
-
-            <th>{tvalor_f}</th>
-
-            <th>{t_fob_f}</th>
-
-         
-
-            <th>{t_fob_ret}</th>
-
-          
-
-            <th>&nbsp;</th>
-
-            <th>{t_cif}</th>
-
-            <th>{t_cif_proc}</th>
-
-            <th>{t_cif_ensamb}</th>
-
-            <th>{t_cif_ret}</th>
-
-            <th>{t_rpk}</th>
-
-          </tr>
-
-        </table>
-
+  </script>
+</head>
+<body id="home">
+  <div id="boundary">
+    <div id="content">
+      <div id="intro"> 
+        <h2><strong><font size="4" face="Verdana, Arial, Helvetica, sans-serif"><img src="./integrado/imagenes/cliente.png" width="110" height="50" align="right"></font></strong></h2>
       </div>
-
-      <div> 
-
-        <p><a href="javascript: excel()" ><img src="./integrado/imagenes/report-excel.png" border="0" style="display:{mostrarExcel};" ></a> 
-
-          <a href="javascript: window.print();" ><img src="./integrado/imagenes/printer.png" border="0" style="display:{mostrarExcel};" ></a> 
-
-          <input name="clase" type="hidden" id="clase" value="Reporte">
-
-          <input name="metodo" type="hidden" id="metodo" value="">
-
-          <input name="por_cuenta_filtro" type="hidden" id="por_cuenta_filtro" value="{por_cuenta_filtro}">
-
-          <input name="fecha_fin" type="hidden" id="fecha_fin" value="{fecha_fin}">
-
-          <input name="fecha_inicio" type="hidden" id="fecha_inicio" value="{fecha_inicio}">
-
-          <input name="titulo" type="hidden" id="titulo" value="{titulo}">
-
-        </p>
-
+      <form action="./scripts_index.php" name="reporteForm" id="reporteForm" method="post" onSubmit="javascript : return formEnvio()">	
+        <div id="itsthetable"> 
+          <table summary="Submitted table designs" style=" font-size:12px;">
+            <caption>
+              Inventario por Valor{titulo} <a href="javascript: excel()" ><img src="./integrado/imagenes/report-excel.png" border="0" style="display:{mostrarExcel};" ></a> 
+              <a href="javascript: window.print();" ><img src="./integrado/imagenes/printer.png" border="0" style="display:{mostrarExcel};" ></a> 
+            </caption>
+            <thead>
+              <tr> 
+                <th height="23">Cliente</th>
+                <th>Orden</th>
+                <th>Documento</th>
+                <th>Referencia</th>
+                <th>Valor</th>
+                <!-- <th>&nbsp;</th> -->
+                <th>FOB</th>
+                <th>RET FOB</th>
+                <th>&nbsp;</th>
+                <th>CIF</th>
+                <th>CIF PRO</th>
+                <!-- <th>&nbsp;</th> -->
+                <th>CIF ENS</th>
+                <th>CIF RET</th>
+                <!-- <th>&nbsp;</th> -->
+                <th>RPK</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr> 
+                <th colspan="25" scope="row">[{num_registros}] Registros 
+                  <input name="nombreSede" type="hidden" id="nombreSede" value="{nombreSede}">
+                  <input name="nombreEstado" type="hidden" id="nombreEstado2" value="{nombreEstado}">
+                  {fechaActual}
+                </th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <!-- BEGIN ROW -->
+              <tr> 
+                <th scope="row" id="r101">{nombre_cliente}</th>
+                <td>{orden}</td>
+                <td>{doc_tte}</td>
+                <td>{nombre_referencia}</td>
+                <td title="Valor">{valor_f}</td>
+                <!-- <td>&nbsp;</td> -->
+                <td title="Valor Nacional">{fob_f}</td>
+                <td title="Valor Retirado Nacional">{fob_retiro}</td>
+                <td>&nbsp;</td>
+                <td title="Valor Salida Por Reempaque Extranjero">{cif_f}</td>
+                <td title="Valor Producto Terminado Nacional">{cif_proceso}</td>
+                <!-- <td>&nbsp;</td> -->
+                <td title="Valor Producto Terminado Extranjero">{cif_ensamble}</td>
+                <td title="Valor Producto Terminado Extranjero">{cif_retiro}</td>
+                <!-- <td>&nbsp;</td> -->
+                <td title="Valor Producto Terminado Extranjero">{v_rpk_f}</td>
+              </tr>
+              <!-- END ROW -->
+            </tbody>
+            <!-- BEGIN Totales -->
+            <tr> 
+              <th>Totales</th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th>{tvalor_f}</th>
+              <th>{t_fob_f}</th>
+              <th>{t_fob_ret}</th>
+              <th>&nbsp;</th>
+              <th>{t_cif}</th>
+              <th>{t_cif_proc}</th>
+              <th>{t_cif_ensamb}</th>
+              <th>{t_cif_ret}</th>
+              <th>{t_rpk}</th>
+            </tr>
+            <!-- END Totales -->
+          </table>
+        </div>
+        <div> 
+          <p>
+            <a href="javascript: excel()" ><img src="./integrado/imagenes/report-excel.png" border="0" style="display:{mostrarExcel};" ></a> 
+            <a href="javascript: window.print();" >
+              <img src="./integrado/imagenes/printer.png" border="0" style="display:{mostrarExcel};" ></a> 
+            <input name="clase" type="hidden" id="clase" value="Reporte">
+            <input name="metodo" type="hidden" id="metodo" value="">
+            <input name="por_cuenta_filtro" type="hidden" id="por_cuenta_filtro" value="{por_cuenta_filtro}">
+            <input name="fecha_fin" type="hidden" id="fecha_fin" value="{fecha_fin}">
+            <input name="fecha_inicio" type="hidden" id="fecha_inicio" value="{fecha_inicio}">
+            <input name="titulo" type="hidden" id="titulo" value="{titulo}">
+          </p>
+        </div>
+      </form>
     </div>
-
-	</form>
-
-</div>
-
-</div></body>
+  </div>
+</body>

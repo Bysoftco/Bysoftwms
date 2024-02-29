@@ -1,227 +1,118 @@
-	
-
 <table border="0">
-
-    <tr>
-
-        <td width="25" align="center">
-
-            <div class="popupsAgregar borde_circular">
-
-                <a href="#">
-
-                    <img src="img/acciones/ver.png" title="Filtro" width="25" height="25" border="0" />
-
-                </a>
-
-            </div>
-
-        </td>
-
-        <td width="25" align="center" id="btnBuscar">
-
-            <div class="Filtro borde_circular noSeleccion">
-
-                <a href="#">
-
-                    <img src="img/acciones/agregar.png" title="Filtros" width="25" height="25" border="0" />
-
-                </a>
-
-            </div> 
-
-        </td>
-
-    	
-
-
-
-      
-
-
-
-    </tr>
-
+  <tr>
+    <td width="25" align="center">
+      <div class="popupsAgregar borde_circular">
+        <a href="#">
+          <img src="img/acciones/ver.png" title="Filtro" width="25" height="25" border="0" />
+        </a>
+      </div>
+    </td>
+    <td width="25" align="center" id="btnBuscar">
+      <div class="Filtro borde_circular noSeleccion">
+        <a href="#">
+          <img src="img/acciones/agregar.png" title="Filtros" width="25" height="25" border="0" />
+        </a>
+      </div> 
+    </td>
+  </tr>
 </table>
-<input name="comodin" type="hidden" id="comodin" value="{clase}">
-
-
-
+<input name="comodin" type="hidden" id="comodin" value="{clase}" />
 <script>
+  Nifty("div.borde_circular", "transparent");
+  Nifty("div.div_barra", "top transparent");
 
+  $('.Filtro a').click(function() {
+    $("#window_filtro_ubicacion").dialog("open");
+    $("div#cuerpo_filtro").load("./scripts_index.php", {
+      clase:'Ubicacion',
+      metodo:'getFormaNueva',
+      mostrar:'1'
+    }, function(datos) { });
+  });
 
-
-
-
-    Nifty("div.borde_circular", "transparent");
-
-    Nifty("div.div_barra", "top transparent");
-
-
-
-    $('.Filtro a').click(function()
-
-    {
-
-
-		
-        $("#window_filtro_ubicacion").dialog("open");
-		//$("#cuerpo_filtro").html("cambio contenido de la ventana");
-		 $("div#cuerpo_filtro").load("./scripts_index.php", {clase:'Ubicacion',metodo:'getFormaNueva',mostrar:'1'}, function(datos){
-          });
-
-    });
-
-
-// filtro
-    $('.popupsAgregar a').click(function(){
-	        $("#window_filtro_ubicacion").dialog("open");
-			$("div#cuerpo_filtro").load("./scripts_index.php", {clase:'Ubicacion',metodo:'filtro',mostrar:'1'}, function(datos){
-          });
+  // filtro
+  $('.popupsAgregar a').click(function() {
+    $("#window_filtro_ubicacion").dialog("open");
+    $("div#cuerpo_filtro").load("./scripts_index.php", {
+      clase:'Ubicacion',
+      metodo:'filtro',
+      mostrar:'1'
+    }, function(datos) { });
 	});
 
-
-
-
-
-    $(function()
-
-    {
-
-
-
-        $('a[class="tblank"]').click(function() {
-
-            if ($("#num_registros_ret").val() == 0) {
-
-                alert("No hay movimientos para imprimir.\n antes de imprimir debe agregar Mercancia al movimiento")
-
-                $('#tabs').tabs("select", 1);
-
-                return false;
-
-
-
-            }
-
-
-
-            if ($('#tipo_movimiento').val() / 1 == 3 && $('#placa').val() == "") {
-
-                alert("No ha diligenciado los datos del retiro.\n Cabeza del movimiento")
-
-                $('#tabs').tabs("select", 0);
-
-                return false;
-
-            }
-			//alert("prueba");
-            window.open("./scripts_index.php?clase=Levante&metodo=impresion&id_levante=" + $('#id_levante').val() + "&tipo_retiro=" + $('#tipo_retiro_filtro').val() + "&tipo_movimiento=" + $('#tipo_movimiento').val());
-
-            return false;
-
-
-
-
-
-        });
-
-    });
-
-
-
-    $('.popupsCosteo a').click(function() {
-
-        $("#dialog-form-hacer-levante").dialog("open");
-
-        $("#ventana_levante").html("Espere un momento....");
-
-
-
-        $("div#ventana_levante").load("./scripts_index.php", {clase: 'Levante', metodo: 'getParaCosteo', mostrar: '1', doc_filtro: $("#doc_filtro_aux").val(), cliente: $("#por_cuenta_aux").val()}, function(datos) {
-
-            //alert(datos)
-
-        });
-
-    });
-
-
-
-    $('.popupsAdicionales a').click(function() {
-
-        $("#dialog-form-hacer-levante").dialog("open");
-
-        $("#ventana_levante").html("Espere un momento....");
-
-
-
-        $("div#ventana_levante").load("./scripts_index.php", {clase: 'Levante', metodo: 'getParaAdicionales', mostrar: '1', doc_filtro: $("#doc_filtro_aux").val(), cliente: $("#por_cuenta_aux").val()}, function(datos) {
-
-            //alert(datos)
-
-        });
-
-    });
-	
-	   $('.popupsAjustes a').click(function() {
-		   
-
-        $("#dialog-form-hacer-levante").dialog("open");
-		$("#ventana_levante").html("Espere un momento....");
-
-		$("div#ventana_levante").load("./scripts_index.php", {clase: 'Levante', metodo: 'getParaAjustes', mostrar: '1', doc_filtro: $("#doc_filtro_aux").val(), cliente: $("#por_cuenta_aux").val()}, function(datos) {
-
-            //alert(datos)
-
-        });
-
-    });
-
-    $('.popupsMatriz a').click(function() {
-
-        // si hay mercancía extranjera se manda como tipo de retiro el codigo 8 para que  incluya la salida con EXT
-
-        var mercancia_ext = 0
-
-        if ($('#tot_peso_nonac').val() / 1 > 0) {
-
-            mercancia_ext = 8
-
-        }
-
-		
-
-        window.open("./scripts_index.php?clase=Levante&metodo=matriz&id_levante=" + $('#id_levante').val() + "&tipo_retiro=" + mercancia_ext+"&tipo_movimiento="+$('#tipo_movimiento').val());
-
+  $(function() {
+    $('a[class="tblank"]').click(function() {
+      if($("#num_registros_ret").val() == 0) {
+        alert("No hay movimientos para imprimir.\n antes de imprimir debe agregar Mercancia al movimiento")
+        $('#tabs').tabs("select", 1);
         return false;
+      }
+      if(parseInt($('#tipo_movimiento').val())==3 && $('#placa').val()=="") {
+        alert("No ha diligenciado los datos del retiro.\n Cabeza del movimiento")
+        $('#tabs').tabs("select", 0);
+        return false;
+      }
 
+      window.open("./scripts_index.php?clase=Levante&metodo=impresion&id_levante=" + $('#id_levante').val() + "&tipo_retiro=" + $('#tipo_retiro_filtro').val() + "&tipo_movimiento=" + $('#tipo_movimiento').val());
+      return false;
     });
+  });
 
+  $('.popupsCosteo a').click(function() {
+    $("#dialog-form-hacer-levante").dialog("open");
+    $("#ventana_levante").html("Espere un momento....");
+    $("div#ventana_levante").load("./scripts_index.php", {
+      clase: 'Levante',
+      metodo: 'getParaCosteo',
+      mostrar: '1',
+      doc_filtro: $("#doc_filtro_aux").val(),
+      cliente: $("#por_cuenta_aux").val()
+    }, function(datos) { });
+  });
 
+  $('.popupsAdicionales a').click(function() {
+    $("#dialog-form-hacer-levante").dialog("open");
+    $("#ventana_levante").html("Espere un momento....");
+    $("div#ventana_levante").load("./scripts_index.php", {
+      clase: 'Levante',
+      metodo: 'getParaAdicionales',
+      mostrar: '1',
+      doc_filtro: $("#doc_filtro_aux").val(),
+      cliente: $("#por_cuenta_aux").val()
+    }, function(datos) { });
+  });
+	
+  $('.popupsAjustes a').click(function() {
+    $("#dialog-form-hacer-levante").dialog("open");
+		$("#ventana_levante").html("Espere un momento....");
+    $("div#ventana_levante").load("./scripts_index.php", {
+      clase: 'Levante',
+      metodo: 'getParaAjustes',
+      mostrar: '1',
+      doc_filtro: $("#doc_filtro_aux").val(),
+      cliente: $("#por_cuenta_aux").val()
+    }, function(datos) { });
+  });
 
-    
+  $('.popupsMatriz a').click(function() {
+    // si hay mercancía extranjera se manda como tipo de retiro el codigo 8 para que  incluya la salida con EXT
 
+    var mercancia_ext = 0
 
+    if(parseFloat($('#tot_peso_nonac').val()) > 0) {
+      mercancia_ext = 8
+    }
 
-    $('.nuevo_camion  a').click(function() {
+    window.open("./scripts_index.php?clase=Levante&metodo=matriz&id_levante=" + $('#id_levante').val() + "&tipo_retiro=" + mercancia_ext+"&tipo_movimiento="+$('#tipo_movimiento').val());
+    return false;
+  });
 
-
-
-        $("#dialog-addCamion").dialog("open");
-
-        $("div#ventana_addcamion").load("./scripts_index.php", {clase: 'Orden', metodo: 'newCamion', mostrar: '1'}, function(datos) {
-
-            //alert(datos)
-
-            //$("div#ventana_addcamion").html(datos);
-
-        });
-
-        //alert("x")
-
-    });
-
-
-
+  $('.nuevo_camion a').click(function() {
+    $("#dialog-addCamion").dialog("open");
+    $("div#ventana_addcamion").load("./scripts_index.php", {
+      clase: 'Orden',
+      metodo: 'newCamion',
+      mostrar: '1'
+    }, function(datos) { });
+  });
 </script>

@@ -26,7 +26,8 @@
     $("#item_seleccionado").val({item});
       var formulario = {id_form}
 
-      formulario = formulario/1;
+      //formulario = formulario/1; - Old Versión - Fredy Arévalo
+      formulario = parseInt(formulario); // - Fredy Salom
       $("#formItem"+formulario).validate();
 			$("#msgbox_arribo{id_form}").removeClass().addClass('{estilo_aux}').text('{mensaje_aux}').fadeIn(1000);
       if('{estilo_aux}'=='ui-state-error') {

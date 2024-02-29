@@ -1,6 +1,5 @@
 <script>
-  function frmUpdateCabeza() {
-  }
+  function frmUpdateCabeza() { }
   
 	$(function() { //Función Autocompletar
     $("#nombre_posicion").autocomplete("./scripts_index.php?clase=Inventario&metodo=findPosicion", {
@@ -75,7 +74,7 @@
       <input name="id_reempaque" type="hidden" id="id_reempaque" value="{id_reempaque}" />
       <input name="tipo_movimiento" type="hidden" id="tipo_movimiento" value="{tipo_movimiento}" />
     </legend>
-    <table width="100%" border="0">
+    <table width="100%" border="0" class="ui-widget ui-widget-content">
       <tr class="ui-widget ui-widget-header ui-corner-all" > 
         <th width="16%" align="left"><label>&nbsp;Fecha Reempaque *:</label></th>
         <th width="23%" align="left"><label>&nbsp;FMM *:</label></th>
