@@ -1,0 +1,65 @@
+body {
+  font-size: 62.5%;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+}
+
+legend {
+  padding: 0.5em;
+}
+
+fieldset fieldset label {
+  display: block;
+}
+
+#frmSalidas label {
+  width: 160px;
+  margin-left: 10px;
+} /*ancho de las etiquetas de los campos*/
+
+h1 {
+  font-size: 1.2em;
+  margin: .6em 0;
+}
+
+div#users-contain {
+  width: 100%;
+  margin: 5px 0;
+  margin-left: 0%;
+}
+
+div#users-contain table {
+  margin: 1em 0;
+  border-collapse:collapse;
+  width: 100%;
+}
+
+div#users-contain table td, div#users-contain table th {
+  border: 1px solid #eee;
+  padding: .6em 10px;
+  text-align: left;
+}
+
+.ui-dialog .ui-state-error {
+  padding: .3em;
+}
+
+tbody tr.odd th,tbody tr.odd td {
+  border-color:#EBE5D9;
+  background:#F7F4EE;
+}
+
+tbody tr:hover td,tbody tr:hover th {
+  background:#EAECEE;
+  border-color:#523A0B;
+}
+
+.ui-datepicker-trigger {
+  position: relative;
+  top: 5px;
+  right: 1px;
+  height:22px;
+} /* Configuración tamaño imagen del DatePicker */

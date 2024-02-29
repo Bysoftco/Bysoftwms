@@ -1,4 +1,3 @@
-
 /*
  * Table
  */
@@ -31,17 +30,15 @@ table.dataTable td.dataTables_empty {
 	text-align: center;
 }
 
-
-
 /*
  * Table wrapper
  */
 .dataTables_wrapper {
 	position: relative;
 	clear: both;
-	*zoom: 1;
+	*transform: scale(1); /* Actualizada por zoom */
+	/* *zoom: 1; */ /* Comentarizado por ser una propiedad no estándar */
 }
-
 
 /*
  * Page length menu
@@ -49,7 +46,6 @@ table.dataTable td.dataTables_empty {
 .dataTables_length {
 	float: left;
 }
-
 
 /*
  * Filter

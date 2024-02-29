@@ -20,7 +20,7 @@
 }
 
 #wowwindow-image-loading {
-    background: url(images/wowwindow-loading.gif) center center no-repeat;
+    background: url(../images/wowwindow-loading.gif) center center no-repeat;
     height: 100px;
     width: 100px;
     position: absolute;
@@ -54,18 +54,20 @@
     position: relative;
     overflow: hidden; /*contains floating elements*/
     /*IE6 rule*/
-    _zoom: 1;
+    /* _zoom: 1; */
+    _transform:  scale(1);
     overflow:auto;
 }
 
 .wowwindow-controlbar {
-    background: #252525 url(images/wowwindow-controlbar.gif) repeat-x;
+    background: #252525 url(../images/wowwindow-controlbar.gif) repeat-x;
     overflow: hidden;
     border-bottom: 1px solid #252525;
     padding: 0 30px 0 10px;
     line-height: 18px;
     /*IE6 rule*/
-    _zoom: 1;
+    /* _zoom: 1; */
+    _transform: scale(1);
 }
 
 a.wowwindow-close {
@@ -75,7 +77,7 @@ a.wowwindow-close {
     width: 20px;
     margin-right: -30px;
     text-indent: -999em;
-    background: url(images/wowwindow-close.gif) no-repeat top left;
+    background: url(../images/wowwindow-close.gif) no-repeat top left;
     border-left: 1px solid #7f7f7f;
     border-bottom: 1px solid #7f7f7f;
     -moz-border-radius-bottomleft: 3px;

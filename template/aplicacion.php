@@ -1,10 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
 	<title>Bysoft &reg; Logistic</title>
-	<!-- <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /> -->
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
 	<!-- Estilos generales del aplicativo -->
 	<link href="template/css/styles.css" rel="stylesheet" type="text/css" />
 	<link href="template/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
@@ -15,10 +13,14 @@
 	<!-- Estilos de integrado -->
 	<link type="text/css" href="integrado/cz_estilos/jquery-ui-1.8.10.custom.css" rel="stylesheet" />
   <link rel="stylesheet" href="integrado/cz_estilos/uploadify.css" type="text/css" />
+  <!-- Acceso a las librerias de Bootstrap 5.3.0 de estilos -->
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"> -->
 
 	<!-- Scripts generales del aplicativo -->
 	<!-- Librerias framework Jquery -->
 	<script type="text/javascript" src="./integrado/cz_javascript/jquery-1.4.4.js"></script>
+	<!-- <script src="{LIB_PATH}javascript/jquery-3.5.1.min.js"></script>
+	<script src="{LIB_PATH}javascript/jquery-migrate-3.3.0.js"></script> -->
 	<script type="text/javascript" src="{LIB_PATH}javascript/scripts.js"></script>
 	<!-- <script type="text/javascript" src="./integrado/cz_javascript/jquery-1.3.2.min.js"></script> -->
     
@@ -61,30 +63,8 @@
   <!-- Script para dar formato moneda a los números -->
   <script type="text/javascript" src="./integrado/cz_javascript/formatoNumero.js"></script>
   
-	<!-- NO SE USAN 
-	<script src="./integrado/cz_javascript/jquery.validate.js" type="text/javascript"></script>
-	<script type="text/javascript" src="{LIB_PATH}javascript/cz_javascript/jquery-1.4.4.js"></script>
-	
-	<script type="text/javascript" src="{LIB_PATH}javascript/jquery.min.js"></script>
-	
-	
-	<link href="template/css/jquery.treeview.css" rel="stylesheet" type="text/css" />
-	<link href="template/css/validationEngine.jquery.css" rel="stylesheet" type="text/css" />
-	<link href="template/css/scrollbar_demo.css" rel="stylesheet" type="text/css" />
-	<link href="template/css/jquery-ui.custom.css" rel="stylesheet" type="text/css"/>
-	<script type="text/javascript" src="{LIB_PATH}anychart/js/AnyChart.js"></script>
-	<script type="text/javascript" src="{LIB_PATH}javascript/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="{LIB_PATH}javascript/validar.js"></script>
-	<script type="text/javascript" src="{LIB_PATH}javascript/dialog_box.js"></script>
-	<script type="text/javascript" src="{LIB_PATH}javascript/jquery.cookie.js"></script>
-	<script type="text/javascript" src="{LIB_PATH}javascript/jquery.treeview.js"></script>
-	<script type="text/javascript" src="{LIB_PATH}javascript/tree.js"></script>
-	<script type="text/javascript" src="{LIB_PATH}javascript/tree_tpl.js"></script>
-	<script src="{LIB_PATH}javascript/AjaxUpload.min.js" type="text/javascript"></script>
-	<script src="{LIB_PATH}javascript/jquery.formatCurrency.js" type="text/javascript"></script>
-	<script type="text/javascript" src="{LIB_PATH}javascript/validate/jquery.validationEngine-es.js"></script>
-	<script src="xml/ejemplo.js" type="text/javascript"></script>
-	-->
+  <!-- Librerías Javascript de Bootstrap 5.3.0 -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script> -->
 </head>
 <body>
   <!-- Div de máscara cargando -->
@@ -102,17 +82,17 @@
 		</div>
 		{FOOTER}
 	</div>
-<script>
-<!--
-$(document).ready(function(){
-	$(document).ajaxStart(function() {
-		$('#imgCargando').css('visibility','visible');
-	})
-	.ajaxStop(function() {
-		$('#imgCargando').css('visibility','hidden');
+	<script>
+	<!--
+	$(document).ready(function(){
+		$(document).ajaxStart(function() {
+			$('#imgCargando').css('visibility','visible');
+		})
+		.ajaxStop(function() {
+			$('#imgCargando').css('visibility','hidden');
+		});
 	});
-});
-//-->
-</script>
+	//-->
+	</script>
 </body>
 </html>

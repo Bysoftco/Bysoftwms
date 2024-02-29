@@ -107,6 +107,10 @@ input.campoForm {
   width: 70%;
 }
 
+#titulo_ruta table {
+  font-size: 13px;
+}
+
 .div_barra {
 	background-color: #cedae8;
 	height: 44px; /* height: 42px; */
@@ -126,8 +130,7 @@ input.campoForm {
 }
 
 #tabla_general tr {
-  height: 10px;
-  
+  height: 10px; 
 }
 
 #tabla_general td {
@@ -140,7 +143,6 @@ input.campoForm {
   border-right-color:#cccccc;
   font-size: 9px;
   text-transform: uppercase; 
-  
 }
 
 #tabla_general th {
@@ -154,14 +156,15 @@ input.campoForm {
   border-right-width:1px;
   border-right-color:#cccccc;
   background-color: #f4f4f4;
+  font-size: 13px;  /* Agregada esta línea */
 }
 
 /*TAMAÑO DE FONTS EN INPUTS::BYSOFT */
 #tabla_general input[type=text],
 #tabla_general input[type=password],
 #tabla_general input[type=email] {
-  width: 250px;
-  height: 10px;
+  width: 258px; /* Cambiado de 250px a 258px */
+  height: 16px; /* Cambiado de 10px a 16px */
   font-size: 11px;
   color: #55758c;
 }
@@ -194,7 +197,6 @@ input.campoForm {
 
 #tabla_acondicionar tr {
   height: 10px;
-  
 }
 
 #tabla_acondicionar td {
@@ -206,8 +208,7 @@ input.campoForm {
   border-right-width:1px;
   border-right-color:#cccccc;
   font-size: 9px;
-  text-transform: uppercase; 
-  
+  text-transform: uppercase;
 }
 
 #tabla_acondicionar th {
@@ -650,7 +651,6 @@ table#tabla_rdaCM tr {
   background: #cccccc;
   padding: 5px 50px 5px 50px;
   color: #ffffff;
-  -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   border-top: 0px;
   border-left: 0px;
@@ -673,7 +673,6 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
 .button:hover { /* el efecto hover */
   background-color: #878787;
   color: #ffffff;
-  -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   border-top: 0px;
   border-left: 0px;
@@ -1060,8 +1059,8 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
   position:fixed;
   padding-top: 15%;
   width:100%;
-  filter:alpha(opacity=40);
-  -moz-opacity:.40;
+  /* filter:alpha(opacity=40); */
+  -webkit-opacity:.40;
   opacity:.40;
   z-index: 2000;
 }
@@ -1216,6 +1215,7 @@ label.errorCampo{color: #ca0000;}
   border-right-width:1px;
   border-right-color:#cccccc;
   background-color: #f4f4f4;
+  font-size: 14px;  /* Agregada esta línea estilo Referencia */
 }
 
 /*** Fredy Salom -------**/
@@ -1264,6 +1264,7 @@ label.errorCampo{color: #ca0000;}
   border-right-width:1px;
   border-right-color:#cccccc;
   background-color: #f4f4f4;
+  font-size: 14px;  /* Agregada esta línea estilo Documentos Anexos */
 }
 
 /*TAMAÑO DE FONTS EN INPUTS::BYSOFT */
