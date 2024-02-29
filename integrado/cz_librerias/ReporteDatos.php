@@ -1,25 +1,28 @@
 <?php
-require_once("MYDB.php");// Se debe Apuntar a una tabla cualquiera  
-require_once("LevanteDatos.php");// Se debe Apuntar a una tabla cualquiera 
+require_once(DB.'BDControlador.php'); 
+require_once("LevanteDatos.php");
 
-class Reporte extends MYDB {
+class Reporte extends BDControlador {
+  var $db;
+
   function Reporte() {
-    $this->estilo_error = " ui-state-error";
-    $this->estilo_ok = " ui-state-highlight";
+    $this->db = $_SESSION['conexion'];
+    $this->estilo_error = "ui-state-error";
+    $this->estilo_ok = "ui-state-highlight";
   }
   
   function getInventario($arregloDatos) {
     $sede = $_SESSION['sede'];
-    $arreglo[having] = "HAVING (TRUNCATE(c_nal,1) > 0 OR TRUNCATE(c_ext,1) > 0) AND (TRUNCATE(cantidad,1) > 0)";
+    $arreglo['having'] = "HAVING (TRUNCATE(c_nal,1) > 0 OR TRUNCATE(c_ext,1) > 0) AND (TRUNCATE(cantidad,1) > 0)";
     
-    if(!empty($arregloDatos[moneda_filtro])) $arreglo[where] .= " AND arribos.moneda = $arregloDatos[moneda_filtro] ";
-	if(!empty($arregloDatos[id_item])) $arreglo[where] .= " AND ie.codigo = $arregloDatos[id_item] ";
-    if(!empty($arregloDatos[por_cuenta_filtro])) $arreglo[where] .= " AND do_asignados.por_cuenta = '$arregloDatos[por_cuenta_filtro]' ";
-    if(!empty($arregloDatos[fecha_inicio]) AND !empty($arregloDatos[fecha_fin])) {
-      $arreglo[where] .= " AND do_asignados.fecha >= '$arregloDatos[fecha_inicio]' AND  do_asignados.fecha <= '$arregloDatos[fecha_fin]' ";
+    if(!empty($arregloDatos['moneda_filtro'])) $arreglo['where'] .= " AND arribos.moneda = $arregloDatos[moneda_filtro] ";
+    if(!empty($arregloDatos['id_item'])) $arreglo['where'] .= " AND ie.codigo = $arregloDatos[id_item] ";
+    if(!empty($arregloDatos['por_cuenta_filtro'])) $arreglo['where'] .= " AND do_asignados.por_cuenta = '$arregloDatos[por_cuenta_filtro]' ";
+    if(!empty($arregloDatos['fecha_inicio']) AND !empty($arregloDatos['fecha_fin'])) {
+      $arreglo['where'] .= " AND do_asignados.fecha >= '$arregloDatos[fecha_inicio]' AND  do_asignados.fecha <= '$arregloDatos[fecha_fin]' ";
     }
-    if(!empty($arregloDatos[orden_filtro])) $arreglo[where] .= " AND do_asignados.do_asignado = '$arregloDatos[orden_filtro]' ";
-    if(!empty($arregloDatos[documento_filtro])) $arreglo[where] .= " AND do_asignados.doc_tte = '$arregloDatos[documento_filtro]' ";
+    if(!empty($arregloDatos['orden_filtro'])) $arreglo['where'] .= " AND do_asignados.do_asignado = '$arregloDatos[orden_filtro]' ";
+    if(!empty($arregloDatos['documento_filtro'])) $arreglo['where'] .= " AND do_asignados.doc_tte = '$arregloDatos[documento_filtro]' ";
     
     $sql = "SELECT orden, doc_tte, inventario_entrada, inventario_entrada AS item, arribo, nombre_referencia, cod_referencia, codigo_ref, documento, fecha,
                 SUM(cantidad) AS cantidad, SUM(valor) AS valor, SUM(peso) AS peso, modelo, SUM(p_ext) AS p_ext, SUM(p_nal) AS p_nal, nombre_ubicacion,
@@ -110,10 +113,9 @@ class Reporte extends MYDB {
 			  //GROUP BY orden,codigo_ref,modelo $arreglo[having]";
 			  //echo $sql;
 
-    if($arregloDatos[excel]){ return $sql; }
-    $this->_lastError=NULL;
-    $this->query($sql);
-    if($this->_lastError) {
+    if($arregloDatos['excel']){ return $sql; }
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       $this->mensaje = "error al consultar Inventario1 ";
       $this->estilo = $this->estilo_error;
@@ -135,9 +137,8 @@ class Reporte extends MYDB {
               . " AND arribos.orden=do_asignados.do_asignado"
               . " AND clientes.numero_documento=do_asignados.por_cuenta";
               
-    $this->query($sql);
-    echo $sql;
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       $this->mensaje = "error al consultar Inventario1 ";
       $this->estilo = $this->estilo_error;
@@ -148,39 +149,33 @@ class Reporte extends MYDB {
   function findClientet($arregloDatos) {
 		$sql = "SELECT razon_social	FROM clientes WHERE (numero_documento = '$arregloDatos')";
     
-		$this->query($sql);
-		if($this->_lastError) {
-			echo $sql;
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
 			return TRUE;
 		}
-    $this->fetch();
-    return $this->razon_social;
+    $dato = $this->db->fetch();
+    return $dato->razon_social;
 	}
-	function listarMercanciaRechazada($arregloDatos) {
 
-		
-	}
+	function listarMercanciaRechazada($arregloDatos) {}
+
 	function excelAcondicionamientos($arregloDatos) {
 		echo "ready";
-		$sql = "SELECT * FROM arribos
-WHERE orden  in('1702100009','1702100008')";
-$this->query($sql);
-$this->get(2);
-$a=$this->toArray();
-//$this->fetch();
-$people = array();
-//$this->fetch();
-//while ($this->fetch()) {
-    /* store the results in an array */
-    $people[] = clone($this);
-   // echo "GOT {$this->name}<BR>";
-//}
-print_r($people);
-
-
+		$sql = "SELECT * FROM arribos WHERE orden in('1702100009','1702100008')";
+    $this->query($sql);
+    $this->get(2);
+    $a=$this->toArray();
+    //$this->fetch();
+    $people = array();
+    //$this->fetch();
+    //while ($this->fetch()) {
+        /* store the results in an array */
+        $people[] = clone($this);
+       // echo "GOT {$this->name}<BR>";
+    //}
+    print_r($people);
 		// incluir libraries/classes/PHPExcel.php
-		
-
 	}
 }
 ?>

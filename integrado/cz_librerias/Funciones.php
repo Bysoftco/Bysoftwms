@@ -1,7 +1,7 @@
 <?php
-ini_set('include_path', PATH .'./integrado/cz_librerias/pear/');
+/*ini_set('include_path', PATH .'./integrado/cz_librerias/pear/');
 require_once("PEAR.php");
-require_once("DB/DataObject/Cast.php");
+require_once("DB/DataObject/Cast.php");*/
 require_once("HTML/Template/IT.php");
 require_once("Image/Graph.php");
 require_once("Image/Canvas.php");

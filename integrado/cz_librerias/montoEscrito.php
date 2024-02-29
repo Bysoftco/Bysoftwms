@@ -17,12 +17,12 @@ function ValorEnLetras($x, $Moneda )
     if(floatVal($x) < 0)
      $Signo = $this->Neg . " ";
     else
-     $Signo = "";
-    
-    if(intval(number_format($x,2,'.','') )!=$x) 
+     $Signo = "";    
+    if(intval(number_format($x,2,'.',''))!=$x) {
       $s = number_format($x,2,'.','');
-    else
+    } else {
       $s = number_format($x,0,'.','');
+    }    
        
     $Pto = strpos($s, $this->Dot);
         
@@ -173,7 +173,8 @@ function Parte($x)
 {
     $Rtn='';
     $t='';
-    $i='';
+    //$i='';
+    $i=0;
     Do
     {
       switch($x)

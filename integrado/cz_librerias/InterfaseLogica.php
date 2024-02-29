@@ -1,7 +1,7 @@
 <?php
 require_once("InterfaseDatos.php");
 require_once("InterfasePresentacion.php");
-require_once("ReporteExcelWO.php");
+//require_once("ReporteExcelWO.php");
 require_once("InventarioDatos.php");
 
 class InterfaseLogica {
@@ -9,26 +9,26 @@ class InterfaseLogica {
   var $pantalla;
 		
   function InterfaseLogica() {
-    $this->datos =& new Interfase();
-    $this->pantalla =& new InterfasePresentacion($this->datos);
+    $this->datos = new Interfase();
+    $this->pantalla = new InterfasePresentacion($this->datos);
   }
 
   function maestro($arregloDatos) {
-    $arregloDatos[tab_seleccionado] = 0;  
-    $arregloDatos[plantillaFiltro] = "levanteFiltroNacionalizar.html";
+    $arregloDatos['tab_seleccionado'] = 0;  
+    $arregloDatos['plantillaFiltro'] = "levanteFiltroNacionalizar.html";
     $this->pantalla->maestro($arregloDatos);
   }
         
   function getPreInterfase($arregloDatos) {
-    $arregloDatos[plantilla_conceptos] = 'InterfaseConceptos.html';
+    $arregloDatos['plantilla_conceptos'] = 'InterfaseConceptos.html';
     $this->pantalla->preInterfase($arregloDatos);
   }
         
   // Función que genera el número Oficial de la Interfase y la cierra
   function setNuevaInterfase($arregloDatos) {
-    $arregloDatos[funcion] = 'Oficial';
+    $arregloDatos['funcion'] = 'Oficial';
     $unConsecutivo = new Interfase();
-    $arregloDatos[num_Interfase] = $unConsecutivo->numeroInterfase($arregloDatos);
+    $arregloDatos['num_Interfase'] = $unConsecutivo->numeroInterfase($arregloDatos);
             
     $this->datos->setNuevaInterfase($arregloDatos);
     $this->getInterfaseCabezaInfo($arregloDatos);
@@ -36,22 +36,23 @@ class InterfaseLogica {
 
   // Función que genera el número Oficial de la Interfase y la cierra
   function consultaInterfase($arregloDatos) {
-    if($arregloDatos[accion] == "habilitar"){ // se habilita la Interfase para impresión
+    if($arregloDatos['accion'] == "habilitar"){ // se habilita la Interfase para impresión
       $this->datos->habilitaReimpresion($arregloDatos);  
     }
-    $arregloDatos[mostar] = "0";
-    $arregloDatos[plantilla] = 'InterfaseToolbar.html';
-    $arregloDatos[thisFunction] = 'getToolbar';  
-    $arregloDatos[toolbar] = $this->pantalla->setFuncion($arregloDatos,$this->datos);
+    $arregloDatos['mostar'] = "0";
+    $arregloDatos['plantilla'] = 'InterfaseToolbar.html';
+    $arregloDatos['thisFunction'] = 'getToolbar';  
+    //$arregloDatos['toolbar'] = $this->pantalla->setFuncion($arregloDatos,$this->datos);
+    $arregloDatos['toolbar'] = $this->pantalla->cargaPlantilla($arregloDatos);
 
-    $arregloDatos[mostrar] = 1;
+    $arregloDatos['mostrar'] = 1;
     $this->datos->setNuevaInterfase($arregloDatos);
     $this->getInterfaseCabezaInfo($arregloDatos);
   }
         
   function getInterfaseCuerpoInfo($arregloDatos) {
-    $arregloDatos[plantilla] = 'InterfaseConceptosInfo.html';
-    $arregloDatos[thisFunction] = 'getConceptos';  
+    $arregloDatos['plantilla'] = 'InterfaseConceptosInfo.html';
+    $arregloDatos['thisFunction'] = 'getConceptos';  
     $this->pantalla->setFuncion($arregloDatos,$this->datos);
   }
         
@@ -72,11 +73,12 @@ class InterfaseLogica {
   function cerrarInterfase(&$arregloDatos) {
     $unaInterfas = new Interfase();
     $unaInterfas->existeInterfase($arregloDatos);
-    if($unaInterfas->N == 0) {
+    $rows = $unaInterfas->db->countRows();
+    if($rows == 0) {
       $unaInterfas->cerrarInterfase($arregloDatos);
     } else {
-      $arregloDatos[mensaje] = "El nombre de interfase $arregloDatos[interfase_filtro] ya existe, elija otro para cerrar la nueva interfase";
-      $arregloDatos[estilo] = 'ui-state-error';
+      $arregloDatos['mensaje'] = "El nombre de interfase $arregloDatos[interfase_filtro] ya existe, elija otro para cerrar la nueva interfase";
+      $arregloDatos['estilo'] = 'ui-state-error';
     }
   }
    
@@ -88,18 +90,18 @@ class InterfaseLogica {
    
   //Método que retorna el listado de Ordenes para Interfaser Consulta de Ordenes
   function paraInterfaser($arregloDatos) {
-    $arregloDatos[mostrar] = 1;
-    $arregloDatos[plantilla] = 'InterfaseListadoParaInterfaser.html';
-    $arregloDatos[thisFunction] = 'getParaInterfaser';
+    $arregloDatos['mostrar'] = 1;
+    $arregloDatos['plantilla'] = 'InterfaseListadoParaInterfaser.html';
+    $arregloDatos['thisFunction'] = 'getParaInterfaser';
     $this->pantalla->setFuncion($arregloDatos,$this->datos);
   }
     
   //Método que retorna el listado de Ordenes para Interfaser Consulta de Remesas
   function paraInterfaserRemesas($arregloDatos) {
-    $arregloDatos[tipo_movimiento] = 3; // 3 Retiros
-    $arregloDatos[mostrar] = 1;
-    $arregloDatos[plantilla] = 'InterfaseListadoParaInterfaserRemesa.html';
-    $arregloDatos[thisFunction] = 'getParaInterfaserRemesa';
+    $arregloDatos['tipo_movimiento'] = 3; // 3 Retiros
+    $arregloDatos['mostrar'] = 1;
+    $arregloDatos['plantilla'] = 'InterfaseListadoParaInterfaserRemesa.html';
+    $arregloDatos['thisFunction'] = 'getParaInterfaserRemesa';
     $this->pantalla->setFuncion($arregloDatos,$this->datos);
   }
     
@@ -112,29 +114,29 @@ class InterfaseLogica {
   // Exporta Interfaz WorldOffice en Excel
   function generaExcel($arregloDatos) {
     $f = Date("YmdHi");
-    $arregloDatos['titulo'] = str_replace('Interface ', '', $arregloDatos[interfase])."-".$f;
+    $arregloDatos['titulo'] = str_replace('Interface ', '', $arregloDatos['interfase'])."-".$f;
     $unExcel = new reporteExcelWO();
     $unExcel->generarExcel($arregloDatos);
   } 
     
   //Función que retorna un título
   function titulo($arregloDatos) {
-    $unDato = new Interfase();
     $titulo = '';
 
     if(!empty($arregloDatos['por_cuenta_filtro'])) {
-      $arregloDatos[por_cuenta] = $arregloDatos[por_cuenta_filtro];
+      $arregloDatos['por_cuenta'] = $arregloDatos['por_cuenta_filtro'];
+      $unDato = new Interfase();
       $unDato->existeCliente($arregloDatos);
-      $unDato->fetch();
+      $unDato = $unDato->db->fetch();
       $titulo = $unDato->razon_social;
     }
-    if(!empty($arregloDatos[interfase_filtro])) {
-      $arregloDatos[titulo] = $arregloDatos[interfase_filtro];
+    if(!empty($arregloDatos['interfase_filtro'])) {
+      $arregloDatos['titulo'] = $arregloDatos['interfase_filtro'];
     }
-    if(!empty($arregloDatos[fechaDesde]) AND !empty($arregloDatos[fechaHasta])) {
-      $arregloDatos[titulo] .= " DEL ".$arregloDatos[fechaDesde]." AL $arregloDatos[fechaHasta]";
+    if(!empty($arregloDatos['fechaDesde']) AND !empty($arregloDatos['fechaHasta'])) {
+      $arregloDatos['titulo'] .= " DEL ".$arregloDatos['fechaDesde']." AL $arregloDatos[fechaHasta]";
     }
-    $arregloDatos[titulo] = ucwords(strtolower($arregloDatos[titulo]));
+    $arregloDatos['titulo'] = ucwords(strtolower($arregloDatos['titulo']));
   }
 }
 ?>

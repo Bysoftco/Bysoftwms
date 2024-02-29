@@ -1,8 +1,11 @@
 <?php
-require_once("MYDB.php");
+require_once(DB.'BDControlador.php');
 
-class Reempaque extends MYDB {
+class Reempaque extends BDControlador {
+  var $db;
+
   function Reempaque() {
+    $this->db = $_SESSION['conexion'];
     $this->estilo_error = "ui-state-error";
     $this->estilo_ok = "ui-state-highlight";
   }
@@ -16,27 +19,29 @@ class Reempaque extends MYDB {
             VALUES($arregloDatos[arribo],$arregloDatos[orden_seleccion],$arregloDatos[tipo_movimiento],'$fecha','2',
               $arregloDatos[tot_cant_nonac],$arregloDatos[tot_peso_nonac2],$arregloDatos[total_fob2])";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $arregloDatos[mensaje] = "&nbsp;Error al crear el movimiento en el inventario de entradas";
       $arregloDatos[estilo] = $this->estilo_error;
       return TRUE;
     }
 
     //Obtiene el nuevo Consecutivo generado
-    $ult_codigo = mysql_insert_id();
+    $ult_codigo = $this->db->getInsertID();
     return $ult_codigo; //Retorna el último consecutivo
   }
   
   //Extrae cualquier tipo de inventario
   function inventario($arregloDatos) {
-    if(!empty($arregloDatos[cliente]) or !empty($arregloDatos[por_cuenta_filtro])) {
-      $arregloDatos[where] .= " AND (do_asignados.por_cuenta='$arregloDatos[cliente]' OR do_asignados.por_cuenta='$arregloDatos[por_cuenta_filtro]')";
+    $arregloDatos['where'] = "";
+    if(!empty($arregloDatos['cliente']) or !empty($arregloDatos['por_cuenta_filtro'])) {
+      $arregloDatos['where'] .= " AND (do_asignados.por_cuenta='$arregloDatos[cliente]' OR do_asignados.por_cuenta='$arregloDatos[por_cuenta_filtro]')";
     }
-    if(!empty($arregloDatos[orden_reempaque])) $arregloDatos[where] .= " AND ie.orden = '$arregloDatos[orden_reempaque]'";
-    if(!empty($arregloDatos[doc_tte_reempaque])) $arregloDatos[where] .= " AND do_asignados.doc_tte = '$arregloDatos[doc_tte_reempaque]'";
-    if(!empty($arregloDatos[fecha_desde]) && (!empty($arregloDatos[fecha_hasta])))
-      $arregloDatos[where] .= " AND (ie.fecha >= '$arregloDatos[fecha_desde]' AND ie.fecha <= '$arregloDatos[fecha_hasta]')";
+    if(!empty($arregloDatos['orden_reempaque'])) $arregloDatos['where'] .= " AND ie.orden = '$arregloDatos[orden_reempaque]'";
+    if(!empty($arregloDatos['doc_tte_reempaque'])) $arregloDatos['where'] .= " AND do_asignados.doc_tte = '$arregloDatos[doc_tte_reempaque]'";
+    if(!empty($arregloDatos['fecha_desde']) && (!empty($arregloDatos['fecha_hasta'])))
+      $arregloDatos['where'] .= " AND (ie.fecha >= '$arregloDatos[fecha_desde]' AND ie.fecha <= '$arregloDatos[fecha_hasta]')";
     $sql = "SELECT orden, doc_tte, inventario_entrada, inventario_entrada AS item, arribo, nombre_referencia,
               cod_referencia, codigo_referencia, cant_declaraciones, cantidad, peso, valor, modelo,
               SUM(peso_nonac) AS peso_nonac, SUM(peso_naci) AS peso_naci, SUM(cantidad_naci) AS cantidad_naci,
@@ -72,26 +77,29 @@ class Reempaque extends MYDB {
                   AND do_asignados.sede = '$arregloDatos[sede]') AS inv
                 GROUP BY $arregloDatos[GroupBy] $arregloDatos[having] $arregloDatos[orderBy]";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $this->db->query($sql);
+    $rows = count($this->db->getArray());
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "&nbsp;Error al consultar Inventario";
       $this->estilo = $this->estilo_error;
       return TRUE;
     }
-    if($this->N==0) {
+    if($rows==0) {
       $this->mensaje = "&nbsp;No hay registros para mostrar";
-      $arregloDatos[mensaje] = $this->mensaje;
+      $arregloDatos['mensaje'] = $this->mensaje;
       $this->estilo	= $this->estilo_error;
-      $arregloDatos[estilo] = $this->estilo;
+      $arregloDatos['estilo'] = $this->estilo;
     }
   }
   
-  //Lista la Mercancia Disponible para Reempacar
+  //Lista la Mercancía Disponible para Reempacar
   function getInvParaReempacar($arregloDatos) {
-    $arregloDatos[sede] = $_SESSION['sede'];     
-    $arregloDatos[movimiento] = "1,2,3,30";
-    $arregloDatos[GroupBy] = "inv.orden, inv.referencia";
-    $arregloDatos[having] = "HAVING TRUNCATE(peso_nonac,1) > 0";
+    $arregloDatos['sede'] = $_SESSION['sede'];     
+    $arregloDatos['movimiento'] = "1,2,3,30";
+    $arregloDatos['GroupBy'] = "inv.orden, inv.referencia";
+    $arregloDatos['having'] = "HAVING TRUNCATE(peso_nonac,1) > 0";
     $this->inventario($arregloDatos);    
   }
 
@@ -110,20 +118,22 @@ class Reempaque extends MYDB {
               GROUP BY arribos.orden
             HAVING TRUNCATE(peso_nonac,1) > 0";
               
-    $this->query($sql);
-    if($this->_lastError) {
+    $this->db->query($sql);
+    $rows = count($this->db->getArray());
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       $this->mensaje = "&nbsp;Error al consultar Inventario";
-      $arregloDatos[mensaje] = $this->mensaje;
+      $arregloDatos['mensaje'] = $this->mensaje;
       $this->estilo	= $this->estilo_error;
-      $arregloDatos[estilo] = $this->estilo;
+      $arregloDatos['estilo'] = $this->estilo;
       return TRUE;
     }
-    if($this->N==0) {
+    if($rows==0) {
       $this->mensaje = "&nbsp;No hay registros para mostrar";
-      $arregloDatos[mensaje] = $this->mensaje;
+      $arregloDatos['mensaje'] = $this->mensaje;
       $this->estilo	= $this->estilo_error;
-      $arregloDatos[estilo] = $this->estilo;
+      $arregloDatos['estilo'] = $this->estilo;
     }
   }
 
@@ -135,15 +145,34 @@ class Reempaque extends MYDB {
               (inventario_entrada,fecha,tipo_movimiento,peso_nonac,cantidad_nonac,fob_nonac,cod_maestro)
             VALUES($arregloDatos[id_itemx],'$fecha',1,$arregloDatos[tot_peso_nonac2],$arregloDatos[tot_cant_nonac],$arregloDatos[total_fob2] ,$arregloDatos[id_reempaque])";           
 
-    $this->query($sql);
-    if($this->_lastError) {
-      $arregloDatos[mensaje] = "&nbsp;Error al reempacar la mercanc&iacute;a";
-      $arregloDatos[estilo] = $this->estilo_error;
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
+      $arregloDatos['mensaje'] = "&nbsp;Error al reempacar la mercanc&iacute;a";
+      $arregloDatos['estilo'] = $this->estilo_error;
+      echo $sql;
+      return TRUE;
+    } else {
+      $arregloDatos['mensaje'] = "&nbsp;Se reempac&oacute; correctamente la mercanc&iacute;a";
+      $arregloDatos['estilo'] = $this->estilo_ok;      
+    }  
+  }
+
+  function findDocumento($arregloDatos) {
+    $sql = "SELECT DISTINCT doc_tte,do_asignado,SUM(im.peso_nonac) AS peso_nonac,SUM(im.peso_naci) AS peso_nac                
+            FROM inventario_movimientos im,inventario_entradas ie,arribos,do_asignados
+            WHERE im.inventario_entrada = ie.codigo
+              AND arribos.arribo = ie.arribo
+              AND arribos.orden = do_asignados.do_asignado
+              AND do_asignados.por_cuenta = '$arregloDatos[cliente]'
+              AND doc_tte LIKE '%$arregloDatos[q]%'
+            GROUP BY doc_tte,do_asignado";
+
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       return TRUE;
     }
-    $arregloDatos[mensaje] = "&nbsp;Se reempac&oacute; correctamente la mercanc&iacute;a";
-    $arregloDatos[estilo] = $this->estilo_ok;  
   }
 
   //Ajusta el inventario con codigo = 30
@@ -154,15 +183,16 @@ class Reempaque extends MYDB {
               (fecha,inventario_entrada,tipo_movimiento,peso_nonac,cantidad_nonac,fob_nonac,cod_maestro)
             VALUES('$fecha',$id_item,$tipo_movi,$peso,$cantidad,$fob,$id_reempaque)";
 
-    $this->query($sql);
-    if($this->_lastError) {
-      $arregloDatos[mensaje] = "&nbsp;Error al ajustar el inventario";
-      $arregloDatos[estilo] = $this->estilo_error;
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
+      $arregloDatos['mensaje'] = "&nbsp;Error al ajustar el inventario";
+      $arregloDatos['estilo'] = $this->estilo_error;
       return TRUE;
-    }
-    $arregloDatos[mensaje] = "&nbsp;Se ajust&oacute; correctamente el inventario";
-    $arregloDatos[estilo] = $this->estilo_ok;  
+    } else {
+      $arregloDatos['mensaje'] = "&nbsp;Se ajust&oacute; correctamente el inventario";
+      $arregloDatos['estilo'] = $this->estilo_ok;      
+    } 
   }
 
   //Lista la Mercancía en el cuerpo de movimientos de nacionalización y Reempaque Integrar
@@ -170,10 +200,11 @@ class Reempaque extends MYDB {
     $sql = "SELECT codigo FROM inventario_movimientos
             WHERE inventario_entrada = '$arregloDatos[cod_item]' AND tipo_movimiento = $arregloDatos[tipo_movimiento]";
 
-    $this->query($sql);
-    if($this->_lastError) {
-      $arregloDatos[mensaje] = "&nbsp;Error al consultar Inventario&nbsp;" . $sql;
-      $arregloDatos[estilo] = $this->estilo_error;
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql."<br>";
+      $arregloDatos['mensaje'] = "&nbsp;Error al consultar Inventario&nbsp;" . $sql;
+      $arregloDatos['estilo'] = $this->estilo_error;
       return TRUE;
     }
   }
@@ -183,8 +214,8 @@ class Reempaque extends MYDB {
             FROM inventario_maestro_movimientos imm
             WHERE imm.codigo = $arregloDatos[id_reempaque] "; 
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       $this->mensaje = "error al consultar Inventario " . $sql;
       echo $sql."<br>";
       $this->estilo = $this->estilo_error;
@@ -212,8 +243,9 @@ class Reempaque extends MYDB {
               AND im.cod_maestro = '$arregloDatos[id_reempaque]' AND tipo_movimiento = $arregloDatos[tipo_movimiento]
             GROUP BY inventario_entrada";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "&nbsp;Error al consultar Inventario&nbsp;" . $sql;
       $this->estilo = $this->estilo_error;
       return TRUE;
@@ -227,8 +259,9 @@ class Reempaque extends MYDB {
             LEFT JOIN posiciones ON imm.posicion = posiciones.codigo
             WHERE imm.codigo = $arregloDatos[id_reempaque]";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "&nbsp;Error al consultar Inventario" . $sql;
       $this->estilo = $this->estilo_error;
       return TRUE;
@@ -243,8 +276,9 @@ class Reempaque extends MYDB {
               obs = '$arregloDatos[obs]'
             WHERE codigo = $arregloDatos[id_reempaque]";
             
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "&nbsp;Error al actualizar inventario_maestro_movimientos" . $sql;
       $this->estilo = $this->estilo_error;
       return TRUE;
@@ -260,25 +294,27 @@ class Reempaque extends MYDB {
     $sql = "INSERT INTO inventario_maestro_movimientos (fecha,tip_movimiento)
             VALUES('$fecha','$arregloDatos[tipo_movimiento]')";
 
-    $this->query($sql);
-    if($this->_lastError) {
-      $arregloDatos[mensaje] = "&nbsp;Error al crear el movimiento de Reempaque";
-      $arregloDatos[estilo] = $this->estilo_error;
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
+      $arregloDatos['mensaje'] = "&nbsp;Error al crear el movimiento de Reempaque";
+      $arregloDatos['estilo'] = $this->estilo_error;
       return TRUE;
     }
 
     //Obtiene el nuevo Id_Reempaque generado
     $this->getIdReempaque($arregloDatos);
-    $this->fetch();
-    return $this->codigo; //Reenvía el nuevo Id_Reempaque generado
+    $datos = $this->db->fetch();
+    return $datos->codigo; //Reenvía el nuevo Id_Reempaque generado
   }
 
   //Devuelve el último ID creado en la tabla inventario_maestro_movimientos
   function getIdReempaque($arregloDatos) {
     $sql = "SELECT MAX(codigo) AS codigo FROM inventario_maestro_movimientos";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "&nbsp;Error al consultar ID Reempaque ";
       $this->estilo = $this->estilo_error;
       return TRUE;
@@ -290,10 +326,10 @@ class Reempaque extends MYDB {
     $sql = "DELETE FROM inventario_movimientos
             WHERE (cod_maestro = '$arregloDatos[id_reempaque]'
               AND (tipo_movimiento IN(1,5,4,30)))";
-            
-    //echo $sql . "<br>";
-    $this->query($sql);
-    if($this->_lastError) {
+
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "&nbsp;Error al borrar mercanc&iacute;a a reempacar";
       $this->estilo = $this->estilo_error;
       return TRUE;
@@ -305,25 +341,26 @@ class Reempaque extends MYDB {
     $sql = "SELECT MAX(codigo) AS codigo FROM inventario_entradas
             WHERE (orden = $arregloDatos[orden_seleccion]) AND (referencia = '2')";
     
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "&nbsp;Error al borrar inventario de entrada";
       $this->estilo = $this->estilo_error;
       return TRUE;
+    } else {
+      $datos = $this->db->fetch();    
+      return $datos->codigo;      
     }
-
-    $this->fetch();    
-    return $this->codigo;
   }
   
   function borrarReferencia($arregloDatos) {
     //Elimina Referencia Tipo 2 del Inventario de Entradas
     $sql = "DELETE FROM inventario_entradas
             WHERE (codigo = $arregloDatos[id_item]) AND (orden = $arregloDatos[orden_seleccion]) AND (referencia = '2')";
-    
-    //echo $sql;
-    $this->query($sql);
-    if($this->_lastError) {
+
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "&nbsp;Error al borrar referencia en el inventario de entradas";
       $this->estilo = $this->estilo_error;
       return TRUE;
@@ -334,8 +371,8 @@ class Reempaque extends MYDB {
     $sql = "SELECT numero_documento,razon_social FROM clientes
             WHERE  numero_documento = '$arregloDatos[por_cuenta]'";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       return TRUE;
     }
@@ -345,8 +382,8 @@ class Reempaque extends MYDB {
     $sql = "SELECT numero_documento,razon_social FROM clientes
             WHERE numero_documento = '$arregloDatos[por_cuenta_filtro]'";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       return TRUE;
     }  
@@ -361,24 +398,27 @@ class Reempaque extends MYDB {
 
     $sql.="	ORDER BY nombre	" ;
 	
-    $this->query($sql); 
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       return FALSE;
     } else {
       $arreglo = array();
-      while($this->fetch()) {
-        $arreglo[$this->codigo] =  ucwords($this->nombre);
+      while($obj=$this->db->fetch()) {
+        $arreglo[$obj->codigo] = ucwords($obj->nombre);
       }
+      return $arreglo;
     }
-    return $arreglo;
   }
 
   function hayReempaques($arregloDatos) {
     $sql = "SELECT codigo FROM inventario_movimientos
             WHERE inventario_entrada = '$arregloDatos[cod_item]' AND tipo_movimiento = 1";
 
-    $this->query($sql);
-    return $this->N;
+    $this->db->query($sql);
+    $rows = count($this->db->getArray());
+    $resultado = $this->db->query($sql);
+    return $rows;
   }
 
   function getToolbar($arregloDatos) {
@@ -391,7 +431,7 @@ class Reempaque extends MYDB {
     $sql = "UPDATE inventario_movimientos SET flg_control = 0 WHERE (inventario_entrada = $inventario_entrada)
               AND tipo_movimiento IN($movimiento)";
               
-    $this->query($sql);
+    $this->db->query($sql);
   }
   
   function setControla($arribo, $movimiento) {
@@ -399,7 +439,7 @@ class Reempaque extends MYDB {
             ON im.inventario_entrada = ie.codigo SET flg_control = 0 WHERE (ie.arribo = $arribo)
               AND im.tipo_movimiento IN($movimiento) AND (ie.referencia = 2)";
               
-    $this->query($sql);
+    $this->db->query($sql);
   }  
 }
 ?>

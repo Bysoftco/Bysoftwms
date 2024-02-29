@@ -1,39 +1,39 @@
 <?php
 require_once("ControlDatos.php");
 require_once("ControlPresentacion.php");
-require_once("ReporteExcel.php");
+//require_once("ReporteExcel.php");
 
 class ControlLogica {
   var $datos;
   var $pantalla;
 
   function ControlLogica() {
-    $this->datos =& new Control();
-    $this->pantalla =& new ControlPresentacion($this->datos);
+    $this->datos = new Control();
+    $this->pantalla = new ControlPresentacion($this->datos);
   }
 
   function controlar($arregloDatos) {
-    $arregloDatos[tab_seleccionado] = 0;
+    $arregloDatos['tab_seleccionado'] = 0;
     //Asigna Plantilla Filtro de Entrada
-    $arregloDatos[plantillaFiltro] = "controlFiltro.html";
+    $arregloDatos['plantillaFiltro'] = "controlFiltro.html";
     $this->pantalla->maestro($arregloDatos); 
   }
   
   function getListaControlar($arregloDatos) {
-    $arregloDatos[tab_seleccionado] = 1;
-    //Configuraci髇 informaci髇 a mostrar TAB-Mercancia
-    $arregloDatos[plantillaMercancia] = "controlListaDisponible.html";      
-    $arregloDatos[metodoMercancia] = "getMercanciaBloquear";
-    //Configuraci髇 informaci髇 a mostrar TAB-Control
-    $arregloDatos[plantillaControl] = "controlDocumentoBloqueado.html";
-    $arregloDatos[metodoControl] = "getControlDocumento";
+    $arregloDatos['tab_seleccionado'] = 1;
+    //Configuraci贸n informaci贸n a mostrar TAB-Mercancia
+    $arregloDatos['plantillaMercancia'] = "controlListaDisponible.html";
+    $arregloDatos['metodoMercancia'] = "getMercanciaBloquear";
+    //Configuraci贸n informaci贸n a mostrar TAB-Control
+    $arregloDatos['plantillaControl'] = "controlDocumentoBloqueado.html";
+    $arregloDatos['metodoControl'] = "getControlDocumento";
     $this->pantalla->maestro($arregloDatos);
   }
   
   function impresion($arregloDatos) {
-    $arregloDatos[mostrar] = 1;
-    $arregloDatos[plantilla] = 'levanteRemesaRetiro.html';
-    $arregloDatos[thisFunction]	= 'getRetiro';
+    $arregloDatos['mostrar'] = 1;
+    $arregloDatos['plantilla'] = 'levanteRemesaRetiro.html';
+    $arregloDatos['thisFunction']	= 'getRetiro';
     $this->pantalla->setFuncion($arregloDatos,$this->datos);
   }
   
@@ -41,71 +41,68 @@ class ControlLogica {
     // Inserta el Control a la Tabla controles_legales
     $this->datos->addItemBloquear($arregloDatos);
     // Codifica los Tipos de Controles
-    list($arregloDatos[nombre_entidad],$arregloDatos[nombre_control]) = $this->datos->codTipoControl($arregloDatos);
-    //Una vez registrado el Control en la tabla controles_legales se env韆 el email de Tracking.
-    $arregloDatos[plantilla_mail] = "mailTrackingControles.html";
-    $arregloDatos[asunto_mail] = "Control para el DO: ".$arregloDatos[do_asignado_full];
+    list($arregloDatos['nombre_entidad'],$arregloDatos['nombre_control']) = $this->datos->codTipoControl($arregloDatos);
+    //Una vez registrado el Control en la tabla controles_legales se env铆a el email de Tracking.
+    $arregloDatos['plantilla_mail'] = "mailTrackingControles.html";
+    $arregloDatos['asunto_mail'] = "Control para el DO: ".$arregloDatos['do_asignado_full'];
     $this->envioMail($arregloDatos);
   }
  
-  //Funci髇 visualiza controles a un documento
+  //Funci贸n visualiza controles a un documento
   function getListaControl($arregloDatos) {
-    $arregloDatos[mensaje] = '';
-    $arregloDatos[plantilla] = 'controlVerBloqueos.html';
-    $arregloDatos[thisFunction] = 'getListaControles';
+    $arregloDatos['mensaje'] = '';
+    $arregloDatos['plantilla'] = 'controlVerBloqueos.html';
+    $arregloDatos['thisFunction'] = 'getListaControles';
     $this->pantalla->setFuncion($arregloDatos,$this->datos);    
   }
   
   function getControlDocumento($arregloDatos) {
-    $arregloDatos[mostrar] = 1;
-    $arregloDatos[plantilla] = 'controlDocumentoBloqueado.html';
-    $arregloDatos[thisFunction]	= 'getControlDocumento';
+    $arregloDatos['mostrar'] = 1;
+    $arregloDatos['plantilla'] = 'controlDocumentoBloqueado.html';
+    $arregloDatos['thisFunction']	= 'getControlDocumento';
     
     $this->pantalla->setFuncion($arregloDatos,$this->datos);
   }
   
   function getItemBloquear($arregloDatos) {
-    $unDatos = new Control();
-    $arregloDatos[plantilla] = 'controlFormaBloquear.html';
-    $arregloDatos[thisFunction] = 'controlBloquear';
+    $arregloDatos['plantilla'] = 'controlFormaBloquear.html';
+    $arregloDatos['thisFunction'] = 'controlBloquear';
     $this->pantalla->getItemBloquear($arregloDatos);
   }
   
   function existeCliente($arregloDatos) {
-    $unaConsulta = new Reempaque();
+    $unaConsulta = new Control();
     $unaConsulta->existeCliente($arregloDatos);
+    $rows = count($unaConsulta->db->getArray());
 
-    if($unaConsulta->N == 0) {
-      echo $unaConsulta->N;
-      die();
+    if($rows == 0) {
+      echo 0;
+    } else {
+      echo 1;
     }
-    $unaConsulta->existeReempaque($arregloDatos);
-
-    if($unaConsulta->N > 0) {
-      echo 10;
-      die();
-    }
-    echo 1;
   }
 
   function imprimeLevante($arregloDatos) {
-    $arregloDatos[mostrar] = 1;
-    $arregloDatos[plantilla] = 'levanteRemesaRetiro.html';
-    $arregloDatos[thisFunction] = 'listaInventario';  
+    $arregloDatos['mostrar'] = 1;
+    $arregloDatos['plantilla'] = 'levanteRemesaRetiro.html';
+    $arregloDatos['thisFunction'] = 'listaInventario';  
     $this->pantalla->setFuncion($arregloDatos,$this->datos);
   }
   
   function findDocumento($arregloDatos) {
     $unaConsulta = new Control();
-    $unaConsulta->findDocumento($arregloDatos);
-    $arregloDatos[q] = strtolower($_GET["q"]);
-    header('Content-type: text/html; charset=iso-8859-1');
 
-    while($unaConsulta->fetch()) {
-      $nombre = trim($unaConsulta->doc_tte)." [ORDEN] ".trim($unaConsulta->do_asignado);
-      echo "$nombre|$unaConsulta->doc_tte|$unaConsulta->do_asignado\n";
+    $arregloDatos['q'] = strtolower($_GET["q"]);
+    $unaConsulta->findDocumento($arregloDatos);
+    
+    $fila = 0;
+    while($obj=$unaConsulta->db->fetch()) {
+      $nombre = trim($obj->doc_tte)." [ORDEN] ".trim($obj->do_asignado);
+
+      echo "$nombre|$obj->doc_tte|$obj->do_asignado\n";
+      $fila++;
     }
-    if($unaConsulta->N == 0) {
+    if($fila == 0) {
       echo "No hay Resultados|0\n";
     }
   }
@@ -118,10 +115,10 @@ class ControlLogica {
 		require_once('EnvioMail.php');
 		$mail = new EnvioMail();
 
-		$mail->cuerpo($arregloDatos[plantilla_mail],$arregloDatos[plantilla_mail],$arregloDatos);
-		$mail->cargarCabecera($destino, $remite, $arregloDatos[asunto_mail]);
-		//Procedimiento de Env韔 de mail y validaci髇 de env韔 correcto
-		$arregloDatos[info] = $mail->enviarEmail() ? -1 : 0;
+		$mail->cuerpo($arregloDatos['plantilla_mail'],$arregloDatos['plantilla_mail'],$arregloDatos);
+		$mail->cargarCabecera($destino, $remite, $arregloDatos['asunto_mail']);
+		//Procedimiento de Env铆o de mail y validaci贸n de env铆o correcto
+		$arregloDatos['info'] = $mail->enviarEmail() ? -1 : 0;
 		$this->pantalla->mostrarMensaje($arregloDatos);
 	}  
 }		

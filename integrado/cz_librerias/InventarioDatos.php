@@ -1,26 +1,28 @@
 <?php
-require_once("MYDB.php"); 
+require_once(DB.'BDControlador.php'); 
 require_once("LevanteDatos.php"); 	
 
-class Inventario extends MYDB {
+class Inventario extends BDControlador {
+  var $db;
 
-  function Inventario() { 
+  function Inventario() {
+    $this->db = $_SESSION['conexion'];
     $this->estilo_error = "ui-state-error";
     $this->estilo_ok = "ui-state-highlight";
 	////VERSION 06052017
   }
 
   function listaInventario($arregloDatos) {
-    $sql = "SELECT codigo AS item,arribo,':' AS una_referencia FROM inventario_entradas
-            WHERE arribo = '$arregloDatos[id_arribo]'";
-            
-    if(!empty($arregloDatos['una_referencia'])) {
+    $sql = "SELECT codigo AS item,arribo,':' AS una_referencia FROM inventario_entradas WHERE arribo = '$arregloDatos[id_arribo]'";
+
+    if(!empty($arregloDatos['una_referencia']) && $arregloDatos['una_referencia']!='undefined') {
 		  $sql .= " AND inventario_entradas.referencia IN($arregloDatos[una_referencia])";	
     }		
     $sql .= " ORDER BY codigo DESC";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "Error al consultar Inventario ";
       $this->estilo = $this->estilo_error;
       return TRUE;
@@ -29,17 +31,20 @@ class Inventario extends MYDB {
 
   function encabezadoInventario($arregloDatos) {
     $sql = "SELECT arribos.peso_bruto AS p_arribo,
-              SUM(ie.peso) AS p_inv, arribos.peso_bruto-sum(ie.peso) dif_p,
-              MAX(arribos.valor_fob) valor_fob,
+              SUM(ie.peso) AS p_inv, arribos.peso_bruto-sum(ie.peso) AS dif_p,
+              /*MAX(arribos.valor_fob) AS valor_fob,*/
+              MAX(arribos.fob) AS valor_fob, 
               SUM(ie.valor) AS v_inv,
-              arribos.valor_fob-sum(ie.valor) AS dif_f
+              /*arribos.valor_fob-sum(ie.valor) AS dif_f*/
+              arribos.fob-sum(ie.valor) AS dif_f
             FROM arribos, inventario_entradas ie
             WHERE arribos.arribo = '$arregloDatos[id_arribo]'
               AND arribos.arribo = ie.arribo
             GROUP BY arribos.arribo";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "Error al consultar Inventario ";
       $this->estilo = $this->estilo_error;
       return TRUE;
@@ -53,112 +58,98 @@ class Inventario extends MYDB {
               inv.fecha_expira, ref.fecha_expira AS chkfecha_expira, ref.serial AS chkserial, ref.codigo_ref 
             FROM referencias ref,posiciones,do_asignados,inventario_entradas inv
 			LEFT JOIN unidades_medida ON inv.un_empaque=unidades_medida.id 
-            WHERE inv.referencia = ref.codigo
-             
+            WHERE inv.referencia = ref.codigo          
               AND inv.posicion = posiciones.codigo
               AND do_asignados.do_asignado = inv.orden
               AND inv.codigo = $arregloDatos[id_item]";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "Error al consultar Inventario ";
       $this->estilo = $this->estilo_error;
       return TRUE;
     }
   }
 
-  function lista($tabla,$condicion = NULL,$campoCondicion = NULL) {
+  function lista($tabla,$condicion=NULL,$campoCondicion=NULL) {
     $sede = $_SESSION['sede'];
-    
-    if($orden == NULL) $orden = $nombre;
-    
-    $sql = "SELECT codigo,nombre
-            FROM $tabla
-            WHERE codigo NOT IN('0')";
-    if($condicion <> NULL and $condicion <> '%') $sql .= " AND $campoCondicion IN ($condicion)";
-    if($tabla == 'do_bodegas') $sql .= " AND sede = '$sede'";
-    $sql .= "	ORDER BY nombre";
-		//echo $sql;
-    $this->query($sql); 
-    if($this->_lastError) {
-      return FALSE;
-    } else {
-      $arreglo = array();
-      while($this->fetch()) {
-        $arreglo[$this->codigo] = ucwords(strtolower($this->nombre));
-      }
+    //if($orden == NULL) $orden = $nombre; - Old Version
+    if(is_null($orden)) $orden = $nombre;
+    $sql = "SELECT codigo,nombre FROM $tabla WHERE codigo NOT IN('0')" ;
+    if($condicion <> NULL and $condicion <> '%') {
+      $sql .= " AND $campoCondicion IN($condicion)";
     }
-
+    if($tabla == 'do_bodegas') {
+      $sql .= " AND sede ='$sede'";
+    }       
+    $sql .= " ORDER BY nombre" ;
+    $this->db->query($sql);
+    $arreglo = array();
+    while($obj=$this->db->fetch()) {
+      $arreglo[$obj->codigo] = ucwords(strtolower($obj->nombre));
+    }
     return $arreglo;
   }
-  
-  
+ 
   function lista_medida($tabla,$condicion = NULL,$campoCondicion = NULL) {
     $sede = $_SESSION['sede'];
     
-    if($orden == NULL) $orden = $nombre;
+    //if($orden == NULL) $orden = $nombre; - Old Version
+    //if(is_null($orden)) $orden = $nombre;
     
-    $sql = "SELECT id as codigo,medida as nombre
-            FROM unidades_medida 
+    $sql = "SELECT id as codigo,medida as nombre FROM unidades_medida 
             WHERE id NOT IN('0')";
     if($condicion <> NULL and $condicion <> '%') $sql .= " AND $campoCondicion IN ($condicion)";
     if($tabla == 'do_bodegas') $sql .= " AND sede = '$sede'";
     $sql .= "	ORDER BY medida";
 		
-    $this->query($sql); 
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       return FALSE;
     } else {
       $arreglo = array();
-      while($this->fetch()) {
-        $arreglo[$this->codigo] = ucwords(strtolower($this->nombre));
+      while($obj=$this->db->fetch()) {
+        $arreglo[$obj->codigo] = ucwords(strtolower($obj->nombre));
       }
+      return $arreglo;
     }
-
-    return $arreglo;
   }
   
- function tipo_sede($arregloDatos) {
-  $sql ="SELECT sedes.tipo_sede 
-	FROM arribos,do_asignados,sedes,tipos_sedes,inventario_entradas
-	WHERE arribos.orden=do_asignados.do_asignado
-	AND sedes.codigo=do_asignados.sede
-	AND sedes.tipo_sede=tipos_sedes.codigo
-	AND inventario_entradas.arribo=arribos.arribo
-	AND inventario_entradas.codigo='$arregloDatos[id_item]'";
-   $this->query($sql);
-    if($this->_lastError) {
+  function tipo_sede($arregloDatos) {
+    $sql ="SELECT sedes.tipo_sede FROM arribos,do_asignados,sedes,tipos_sedes,inventario_entradas WHERE arribos.orden=do_asignados.do_asignado AND sedes.codigo=do_asignados.sede AND sedes.tipo_sede=tipos_sedes.codigo AND inventario_entradas.arribo=arribos.arribo AND inventario_entradas.codigo='$arregloDatos[id_item]'";
+
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "error al consultar el tipo de sede ";
       $this->estilo = $this->estilo_error;
       return TRUE;
-   }
-    $this->fetch();
+    }
+    $datos = $this->db->fetch();
 	
-	return $this->tipo_sede;
- 
- }
-    function addMovimiento($arregloDatos) {
+    return $datos->tipo_sede;
   }
 
+  function addMovimiento($arregloDatos) { }
+
   function addInventario($arregloDatos) {
-    if($arregloDatos[origen]=='dividir') {// se esta dividiendo el item por lo cual se heredan los datos del padre 10/09/2016
+    if($arregloDatos['origen']=='dividir') {// se esta dividiendo el item por lo cual se heredan los datos del padre 10/09/2016
       $campos_adicional = ",modelo,fmm,embalaje";
       $valor_adicional = ",'$arregloDatos[modelo]','$arregloDatos[fmm]','$arregloDatos[embalaje]'";
     } else {
-      $arregloDatos[referencia] = 1;
-      $arregloDatos[un_empaque] = 1;
+      $arregloDatos['referencia'] = 1;
+      $arregloDatos['un_empaque'] = 1;
     }
-    if(empty($arregloDatos[peso_bruto])) $arregloDatos[peso_bruto] = 0;
-    if(empty($arregloDatos[cantidad])) $arregloDatos[cantidad] = 0;
-    if(empty($arregloDatos[valor_fob])) $arregloDatos[valor_fob] = 0;
-    if(empty($arregloDatos[fechaexpira])) $arreglo[fechaexpira] = '0000-00-00';
+    if(empty($arregloDatos['peso_bruto'])) $arregloDatos['peso_bruto'] = 0;
+    if(empty($arregloDatos['cantidad'])) $arregloDatos['cantidad'] = 0;
+    if(empty($arregloDatos['valor_fob'])) $arregloDatos['valor_fob'] = 0;
+    if(empty($arregloDatos['fechaexpira'])) $arregloDatos['fechaexpira'] = '0000-00-00';
     $fecha = date('Y/m/d');
-    $sql = "INSERT INTO inventario_entradas(orden, arribo, fecha, referencia, posicion, un_empaque, cantidad, peso, valor, fecha_expira)
-						VALUES('$arregloDatos[do_asignado]','$arregloDatos[id_arribo]','$fecha',1,1,1,$arregloDatos[cantidad],$arregloDatos[peso_bruto],
-										$arregloDatos[valor_fob], '$arregloDatos[fechaexpira]')";
+    $sql = "INSERT INTO inventario_entradas(orden, arribo, fecha, referencia, posicion, un_empaque, cantidad, peso, valor, fecha_expira) VALUES('$arregloDatos[do_asignado]','$arregloDatos[id_arribo]','$fecha',1,1,1,$arregloDatos[cantidad],$arregloDatos[peso_bruto],$arregloDatos[valor_fob], '$arregloDatos[fechaexpira]')";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       $this->mensaje = "Error al crear registro de Inventario ";
       $this->estilo = $this->estilo_error;
@@ -169,13 +160,12 @@ class Inventario extends MYDB {
   function selectUbicacion($arregloDatos) {
     $sql = "SELECT posiciones.codigo,posiciones.nombre,ru.rango ,ru.inicio,ru.fin,posiciones_fin.nombre as fin_label
             FROM referencias_ubicacion ru
-			RIGHT JOIN  posiciones AS posiciones_fin ON ru.fin=posiciones_fin.codigo,
-			posiciones
+			RIGHT JOIN posiciones AS posiciones_fin ON ru.fin=posiciones_fin.codigo, posiciones
             WHERE ru.ubicacion = posiciones.codigo
               AND item = $arregloDatos[id_item]";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       $this->mensaje = "Error al crear registro de Inventario ";
       $this->estilo = $this->estilo_error;
@@ -183,8 +173,8 @@ class Inventario extends MYDB {
     }
 
     $arreglo = array();
-    while($this->fetch()) {
-      $arreglo[$this->codigo] = ucwords(strtolower($this->nombre));
+    while($obj=$this->db->fetch()) {
+      $arreglo[$obj->codigo] = ucwords(strtolower($obj->nombre));
     }
     
     return $arreglo;
@@ -193,8 +183,8 @@ class Inventario extends MYDB {
   function delUbicacion($arregloDatos) {
     $sql = "DELETE FROM referencias_ubicacion WHERE item = $arregloDatos[id_item]";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       $this->mensaje = "Error al crear registro de Inventario ";
       $this->estilo = $this->estilo_error;
@@ -206,8 +196,8 @@ class Inventario extends MYDB {
   function getLastItem($arregloDatos) {
     $sql = "SELECT MAX(codigo) AS item FROM inventario_entradas WHERE arribo = $arregloDatos[arribo]";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       $this->mensaje = "Error al crear registro de Inventario ";
       $this->estilo	= $this->estilo_error;
@@ -216,20 +206,19 @@ class Inventario extends MYDB {
   }
 
   function addUbicacion($arregloDatos) {
-    if(empty($arregloDatos[inicio])) { 
-      $arregloDatos[inicio] = 0;
+    if(empty($arregloDatos['inicio'])) { 
+      $arregloDatos['inicio'] = 0;
     }
-    if(empty($arregloDatos[fin])) { 
-      $arregloDatos[fin] = 0;
+    if(empty($arregloDatos['fin'])) { 
+      $arregloDatos['fin'] = 0;
     }
-    if(!empty($arregloDatos[rango])) { 
-      $arregloDatos[posicion] = $arregloDatos[inicio];
+    if(!empty($arregloDatos['rango'])) { 
+      $arregloDatos['posicion'] = $arregloDatos['inicio'];
   	}
-    $sql = "INSERT INTO referencias_ubicacion(item, ubicacion, rango,inicio,fin)
-            VALUES('$arregloDatos[id_item]','$arregloDatos[posicion]','$arregloDatos[rango]','$arregloDatos[inicio]','$arregloDatos[fin]')";
+    $sql = "INSERT INTO referencias_ubicacion(item, ubicacion, rango,inicio,fin) VALUES('$arregloDatos[id_item]','$arregloDatos[posicion]','$arregloDatos[rango]','$arregloDatos[inicio]','$arregloDatos[fin]')";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       $this->mensaje = "Error al crear registro de Inventario ";
       $this->estilo = $this->estilo_error;
@@ -240,8 +229,8 @@ class Inventario extends MYDB {
   function delInventario($arregloDatos) {
     $sql = "DELETE FROM inventario_entradas WHERE codigo = '$arregloDatos[id_item]'";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       $this->mensaje = "Error al consultar Inventario ";
       $this->estilo	= $this->estilo_error;
       return TRUE;
@@ -249,30 +238,29 @@ class Inventario extends MYDB {
   }
 
   function findPosicion($arregloDatos) {
-    $sql = "SELECT codigo, nombre FROM posiciones WHERE nombre LIKE '%$arregloDatos[q]%'
-            UNION SELECT codigo, nombre FROM posiciones WHERE codigo = 1";
-
-    $this->query($sql);
-    if($this->_lastError) {
+    $sql = "SELECT codigo, nombre FROM posiciones WHERE nombre LIKE '%$arregloDatos[q]%' UNION SELECT codigo, nombre FROM posiciones WHERE codigo = 1";
+ 
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       return TRUE;
+    } else {
+      return $this->db->getArray();
     }
   }
 
   function findReferencia($arregloDatos) {
-   $arregloDatos[qmin]=strtolower($arregloDatos[q]);
-   $arregloDatos[qmay]=strtoupper($arregloDatos[q]);
-    $sql = "SELECT codigo, nombre, fecha_expira, serial, codigo_ref FROM referencias
-            WHERE (nombre LIKE '%$arregloDatos[q]%' OR codigo_ref LIKE '%$arregloDatos[q]%' OR codigo_ref LIKE '%$arregloDatos[qmin]%' OR codigo_ref LIKE '%$arregloDatos[qmay]%')
-              AND cliente = '$arregloDatos[id_cliente]'
-           ";
-	if($arregloDatos[filtro_arribo]){// si la invoca referencias solo busca las referencias de 1 arribo
-		$sql .= " AND codigo IN( SELECT referencia FROM inventario_entradas where arribo=$arregloDatos[arribo])";
-	}		
-	$sql .= "  UNION SELECT codigo, nombre, fecha_expira, serial, codigo_ref FROM referencias WHERE codigo IN(1,2)";
-   //echo $sql;
-    $this->query($sql);
-    if($this->_lastError) {
+    $arregloDatos['qmin']=strtolower($arregloDatos['q']);
+    $arregloDatos['qmay']=strtoupper($arregloDatos['q']);
+    $sql = "SELECT codigo,nombre,fecha_expira,serial,codigo_ref FROM referencias WHERE (nombre LIKE '%$arregloDatos[q]%' OR codigo_ref LIKE '%$arregloDatos[q]%' OR codigo_ref LIKE '%$arregloDatos[qmin]%' OR codigo_ref LIKE '%$arregloDatos[qmay]%') AND cliente = '$arregloDatos[id_cliente]'";
+
+    if($arregloDatos['filtro_arribo']) {// si la invoca, referencias solo busca las referencias de 1 arribo
+		  $sql .= " AND codigo IN(SELECT referencia FROM inventario_entradas where arribo=$arregloDatos[arribo])";
+    }		
+    $sql .= " UNION SELECT codigo,nombre,fecha_expira,serial,codigo_ref FROM referencias WHERE codigo IN(1,2)";
+
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       return TRUE;
     }
@@ -289,9 +277,12 @@ class Inventario extends MYDB {
 				AND ie.referencia = ref.codigo
 				AND im.inventario_entrada = $arregloDatos[id_item]
 				AND im.tipo_movimiento in(2,3,8,7,11,13,5)";
-	$this->query($sql);
-	if($this->_lastError) {
-	}					
+
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
+      return true;
+    }					
   }
   
   function setNuevoPeso($arregloDatos) {  // 07/09/2016  se actualiza peso del item cuando se divide despues de retiros
@@ -299,34 +290,32 @@ class Inventario extends MYDB {
 				      cantidad=$arregloDatos[cantidad],valor=$arregloDatos[valor],
               fecha_expira=$arregloDatos[fechaexpira]
             WHERE codigo=$arregloDatos[id_item]";
-	//echo $arregloDatos[id_item];
-	//echo 	$sql.'<br>';
-	$this->query($sql);
-	if($this->_lastError) {
-	}
+
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
+      return TRUE;
+    }
   }
   
-   function setAjustaInventario($arregloDatos) {  // 05-11-2016 ajusta el inventario
-   // El ingreso del inventario original se debe ajustar dado que se dividio la mercancia
-  	$sql = "UPDATE inventario_movimientos SET peso_nonac=$arregloDatos[peso],
-				      cantidad_nonac=$arregloDatos[cantidad],
-				      fob_nonac=$arregloDatos[valor]
-            WHERE inventario_entrada=$arregloDatos[id_item] AND tipo_movimiento=1";
-	//echo 	$sql.'<br>';
-	$this->query($sql);
-	if($this->_lastError) {
-	}
+  function setAjustaInventario($arregloDatos) {  // 05-11-2016 ajusta el inventario
+    // El ingreso del inventario original se debe ajustar dado que se dividio la mercancia
+  	$sql = "UPDATE inventario_movimientos SET peso_nonac=$arregloDatos[peso],cantidad_nonac=$arregloDatos[cantidad],fob_nonac=$arregloDatos[valor] WHERE inventario_entrada=$arregloDatos[id_item] AND tipo_movimiento=1";
+
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
+      return TRUE;
+    }
   }
   
   function saveItem($arregloDatos) {
-	//var_dump($arregloDatos);
-	if($this->tipo_sede($arregloDatos)==4){
-	//var_dump($arregloDatos);
-		if($this->existe_como_servicio($arregloDatos)==0){
-		
-			$this->crear_servicio($arregloDatos);
-		}
-	}
+    //Aplica para Factura de Venta
+    if($this->tipo_sede($arregloDatos)==4) {
+      if($this->existe_como_servicio($arregloDatos)==0) {
+        $this->crear_servicio($arregloDatos);
+      }
+    }
     $sql = "UPDATE inventario_entradas
               SET cantidad = $arregloDatos[cantidad],
               peso = $arregloDatos[peso],
@@ -340,44 +329,42 @@ class Inventario extends MYDB {
               embalaje = '$arregloDatos[embalaje]',
               fecha_expira = '$arregloDatos[fechaexpira]'
             WHERE codigo = '$arregloDatos[id_item]'";
-    //echo $sql;
-    $this->query($sql);
-    if($this->_lastError) {
+
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "error al consultar Inventario ";
       $this->estilo = $this->estilo_error;
       return TRUE;
     }
   }
 
-
   function existe_como_servicio($arregloDatos) {
- 	 $sql ="SELECT referencia 
-	 		FROM servicios
-			WHERE referencia='$arregloDatos[referencia]' ";
-	 $this->query($sql);
-    if($this->_lastError) {
-      $this->mensaje = "error al consultar si la referencia existe como servicio ";
-      $this->estilo = $this->estilo_error;
-    }  
-	$this->fetch();
-	return $this->N;
-	//echo "NNNNNNNNNNNNNNNNNNNNNNNNNNN" .$this->N;
- }
- 
- function crear_servicio($arregloDatos) {
+    $sql ="SELECT referencia FROM servicios WHERE referencia='$arregloDatos[referencia]' ";
 
- $sede = $_SESSION['sede'];
- 	 $sql ="INSERT INTO servicios(codigo,nombre,referencia,sede,cuenta)VALUES('$arregloDatos[referencia]', '$arregloDatos[referencia_nombre]','$arregloDatos[referencia]','$sede','4145300502')";
+    $this->db->query($sql);
+    $rows = count($this->db->getArray());
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
+      $this->mensaje = "Error al consultar si la referencia existe como servicio ";
+      $this->estilo = $this->estilo_error;
+      return true;
+    }
+    return $rows;
+  }
+ 
+  function crear_servicio($arregloDatos) {
+    $sede = $_SESSION['sede'];
+    $sql ="INSERT INTO servicios(codigo,nombre,referencia,sede,cuenta)VALUES('$arregloDatos[referencia]','$arregloDatos[referencia_nombre]','$arregloDatos[referencia]','$sede','4145300502')";
 	 
- 	 $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "error al insertar el servicio ";
       $this->estilo = $this->estilo_error;
       return TRUE;
     }
-	//echo $sql;
- }
- 
- 
+  }
 }  
 ?>

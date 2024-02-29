@@ -1,109 +1,98 @@
 <?php
-require_once("MYDB.php");// Se debe Apuntar a una tabla cualquiera  
+require_once(DB.'BDControlador.php');
 
-class Subpartida extends MYDB {
+class Subpartida extends BDControlador {
+  var $db;
+
   function Subpartida() {
+		$this->db = $_SESSION['conexion'];
     $this->estilo_error = " ui-state-error";
     $this->estilo_ok = " ui-state-highlight";
   }
   
+	function getListado($arregloDatos) {
+    $fecha = date('Y-m-d:a');
+    $sede = $_SESSION['sede'];
 
-   function getListado($arregloDatos)
-    {
-      $fecha=date('Y-m-d:a');
-      $sede=$_SESSION['sede'];
-      
-      $sql="select * from subpartidas  ";
-       if(!empty($arregloDatos[subpartida])){
-	   		$sql.=" where subpartida like '%$arregloDatos[subpartida]%'";		
-	   }
-	   if(!empty($arregloDatos[descripcion]) and empty($arregloDatos[subpartida]) ){
-	   		$sql.=" where descripcion like '%$arregloDatos[descripcion]%'";		
-	   }
-       $this->query($sql);
-       //echo $sql;
-		if ($this->_lastError) 
-        {
-          	echo "<div class=error align=center> :( Error al listar Subpartidas <br>$sql</div>.";  
-            return FALSE;
-        }
- 
-       
-    }
+    $sql = "SELECT * FROM subpartidas ";
+		if(!empty($arregloDatos['subpartida'])) {
+			$sql .= " WHERE subpartida LIKE '%$arregloDatos[subpartida]%'";
+		}
+		if(!empty($arregloDatos['descripcion']) and empty($arregloDatos['subpartida'])) {
+   		$sql .= " WHERE descripcion LIKE '%$arregloDatos[descripcion]%'";		
+		}
+
+		$resultado = $this->db->query($sql);
+		if(!is_null($resultado)) {
+    	echo "<div class=error align=center> :( Error al listar Subpartidas <br>$sql</div>.";  
+      return FALSE;
+		}
+	}
 	
-	 function getUnaSubpartida($arregloDatos)
-    {
-      $fecha=date('Y-m-d:a');
-      $sede=$_SESSION['sede'];
-      
-      $sql="select * from subpartidas  ";
-       if(!empty($arregloDatos[subpartida])){
-	   		$sql.=" where subpartida like '%$arregloDatos[subpartida]%'";		
-	   }
+	function getUnaSubpartida($arregloDatos) {
+    $fecha = date('Y-m-d:a');
+    $sede = $_SESSION['sede'];
+    
+    $sql = "SELECT * FROM subpartidas ";
+		if(!empty($arregloDatos['subpartida'])) {
+   		$sql .= " WHERE subpartida LIKE '%$arregloDatos[subpartida]%'";		
+		}
 	   
-       $this->query($sql);
-		if ($this->_lastError) 
-        {
-          	echo "<div class=error align=center> :( Error al listar Subpartidas <br>$sql</div>.";  
-            return FALSE;
-        }
- 
-       
-    }
+		$resultado = $this->db->query($sql);
+		if(!is_null($resultado)) {
+    	echo "<div class=error align=center> :( Error al listar Subpartidas <br>$sql</div>.";  
+      return FALSE;
+		}
+	}
 	
-	 function updateSubpartida($arregloDatos)
-    {
-      $fecha=date('Y-m-d:a');
-      $sede=$_SESSION['sede'];
-      $subpartida=trim($arregloDatos[subpartida]);
-      $sql="update  subpartidas set arancel=$arregloDatos[arancel], descripcion='$arregloDatos[descripcion]' where TRIM(subpartida) = '$subpartida'";
-      $this->query($sql);
-       //echo $sql;
-	   
-	   $arregloDatos[mensaje]='se edito correctamente';
-	   
-		if ($this->_lastError) 
-        {
-          	$arregloDatos[mensaje]='Error al editar';
-            return FALSE;
-        }
- 
-       
-    }
+	function updateSubpartida($arregloDatos) {
+    $fecha = date('Y-m-d:a');
+    $sede = $_SESSION['sede'];
+
+    $subpartida = trim($arregloDatos['subpartida']);
+    $sql = "UPDATE subpartidas SET arancel=$arregloDatos[arancel], descripcion='$arregloDatos[descripcion]' WHERE TRIM(subpartida) = '$subpartida'";
+
+		$resultado = $this->db->query($sql);
+		if(!is_null($resultado)) {
+    	$arregloDatos['mensaje'] = 'Error al editar';
+      return FALSE;
+    } else {
+    	$arregloDatos['mensaje'] = 'se edito correctamente';
+    } 
+	}
+
 	function findCliente($arregloDatos) {
 		$sql = "SELECT subpartida,descripcion
 						FROM subpartidas  WHERE (descripcion LIKE '%$arregloDatos[q]%') OR (subpartida  LIKE '%$arregloDatos[q]%')";
 
-		$this->query($sql);
-		if($this->_lastError) {
+		$resultado = $this->db->query($sql);
+		if(!is_null($resultado)) {
 			echo $sql;
 			return TRUE;
 		}
 	}
-	function getFormaNueva($arregloDatos) {
-		
-	}
-	
-	function addSubpartida($arregloDatos){
-		$sql = "INSERT INTO subpartidas (subpartida, descripcion, arancel, detalle, obs)
-				VALUES ('$arregloDatos[subpartida]', '$arregloDatos[descripcion]', $arregloDatos[arancel], '$arregloDatos[detalle]', '$arregloDatos[obs]')";
-		
-		$this->query($sql);
-		if($this->_lastError) {
-			echo $sql;
-			return TRUE;
-		}
-		
-	}
-	function deleteSubpartida($arregloDatos) {
-    	$sql = "DELETE FROM subpartidas WHERE subpartida = '$arregloDatos[subpartida]'";
 
-    	$this->query($sql);
-    	if($this->_lastError) {
-     		 $this->mensaje = "error al borrar subpartida";
-      		$this->estilo = $this->estilo_error;
-      		return TRUE;
-    	}
+	function getFormaNueva($arregloDatos) {	}
+	
+	function addSubpartida($arregloDatos) {
+		$sql = "INSERT INTO subpartidas (subpartida, descripcion, arancel, detalle, obs) VALUES ('$arregloDatos[subpartida]', '$arregloDatos[descripcion]', $arregloDatos[arancel], '$arregloDatos[detalle]', '$arregloDatos[obs]')";
+		
+		$resultado = $this->db->query($sql);
+		if(!is_null($resultado)) {
+			echo $sql;
+			return TRUE;
+		}	
+	}
+
+	function deleteSubpartida($arregloDatos) {
+  	$sql = "DELETE FROM subpartidas WHERE subpartida = '$arregloDatos[subpartida]'";
+
+		$resultado = $this->db->query($sql);
+		if(!is_null($resultado)) {
+			$this->mensaje = "error al borrar subpartida";
+			$this->estilo = $this->estilo_error;
+			return TRUE;
   	}
   }
+}
 ?>

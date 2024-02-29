@@ -1,18 +1,22 @@
 <?php
-require_once("MYDB.php");
+require_once(DB.'BDControlador.php');
 
-class Anexos extends MYDB {
-  function Anexos() { 
+class Anexos extends BDControlador {
+  var $db;
+
+  function Anexos() {
+    $this->db = $_SESSION['conexion'];
     $this->estilo_error = "ui-state-error";
     $this->estilo_ok = "ui-state-highlight";
   } 
 
   function findOrdenDoc($arregloDatos) {
-    $sql = "SELECT DISTINCT doc_tte, do_asignado, por_cuenta FROM do_asignados
-              WHERE doc_tte like '$arregloDatos[q]%' AND por_cuenta='$arregloDatos[idCliente]'";
+    $sql = "SELECT DISTINCT doc_tte, do_asignado, por_cuenta FROM do_asignados WHERE doc_tte LIKE '$arregloDatos[q]%'";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    //echo $sql;
+
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       return TRUE;
     }
@@ -21,8 +25,8 @@ class Anexos extends MYDB {
   function listar($arregloDatos) {
     $sql = "SELECT fecha_foto, nombre_foto FROM ordenes_anexos WHERE  orden = '$arregloDatos[orden]'";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       return TRUE;
     }

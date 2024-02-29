@@ -1,7 +1,7 @@
 <?php
-require_once("pear/PEAR.php");
-require_once 'pear/DB.php';
-require_once 'pear/Spreadsheet/Excel/Writer.php';
+require_once("PEAR.php");
+require_once('DB.php');
+require_once('Spreadsheet/Excel/Writer.php');
 
  
 /*

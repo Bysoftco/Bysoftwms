@@ -8,21 +8,21 @@ class ControlPresentacion {
   var $plantilla;
 
   function ControlPresentacion(&$datos) {
-    $this->datos =& $datos;
+    $this->datos = $datos;
     $this->plantilla = new HTML_Template_IT();
   } 
 
   function mantenerDatos($arregloCampos,&$plantilla) {
-    $plantilla =& $plantilla;
+    $plantilla = $plantilla;
     
     if(is_array($arregloCampos)) {
       foreach($arregloCampos as $key => $value) {
-        $plantilla->setVariable($key , $value);
+        $plantilla->setVariable($key, $value);
       }
     }
   }
 
-  //Funci髇 que coloca los datos que vienen de la BD
+  //Funci贸n que coloca los datos que vienen de la BD
   function setDatos($arregloDatos,&$datos,&$plantilla) {
     foreach($datos as $key => $value) {
       $plantilla->setVariable($key , $value);
@@ -33,98 +33,96 @@ class ControlPresentacion {
     $unAplicaciones = new Control();
     $formularioPlantilla = new HTML_Template_IT();
 
-    $formularioPlantilla->loadTemplateFile(PLANTILLAS . $arregloDatos[plantilla],true,true);
-    $formularioPlantilla->setVariable('comodin'	,' ');
+    $formularioPlantilla->loadTemplateFile(PLANTILLAS.$arregloDatos['plantilla'],true,true);
+    $formularioPlantilla->setVariable('comodin',' ');
     $this->mantenerDatos($arregloDatos,$formularioPlantilla);
-    $this->$arregloDatos[thisFunction]($arregloDatos,$this->datos,$formularioPlantilla);
-    if($arregloDatos[mostrar]) {
+    $metodo = $arregloDatos['thisFunction'];
+    $this->$metodo($arregloDatos,$unAplicaciones,$formularioPlantilla);
+    if($arregloDatos['mostrar']) {
       $formularioPlantilla->show();
     } else {
       return $formularioPlantilla->get();
     }
   }
 
-  //Arma cada Formulario o funci髇 en pantalla
+  //Arma cada Formulario o funci贸n en pantalla
   function setFuncion($arregloDatos,$unDatos) {
     $unDatos = new Control();
 
-    //Comprueba si se han enviado las cabeceras HTTP
-    if(!headers_sent()) {
-      header( 'Content-type: text/html; charset=iso-8859-1' );
-    }
-    
-    $r = $unDatos->$arregloDatos[thisFunction]($arregloDatos);
+    $metodo = $arregloDatos['thisFunction']; 
+    $r = $unDatos->$metodo($arregloDatos);
     $unaPlantilla = new HTML_Template_IT();
 
-    $unaPlantilla->loadTemplateFile(PLANTILLAS . $arregloDatos[plantilla],true,true);
-    $unaPlantilla->setVariable('comodin', ' ');
-    if(!empty($arregloDatos[mensaje])) {
-      $unaPlantilla->setVariable('mensaje', $arregloDatos[mensaje]);
-      $unaPlantilla->setVariable('estilo', $arregloDatos[estilo]);
+    $unaPlantilla->loadTemplateFile(PLANTILLAS.$arregloDatos['plantilla'],true,true);
+    $unaPlantilla->setVariable('comodin',' ');
+    if(!empty($arregloDatos['mensaje'])) {
+      $unaPlantilla->setVariable('mensaje',$arregloDatos['mensaje']);
+      $unaPlantilla->setVariable('estilo',$arregloDatos['estilo']);
     }
 
-    $this->mantenerDatos($arregloDatos, $unaPlantilla);
-    $arregloDatos[n] = 0;
-    while($unDatos->fetch()) {
-      $odd = ($arregloDatos[n] % 2) ? 'odd' : '';
-      $arregloDatos[n] = $arregloDatos[n] + 1;
+    $this->mantenerDatos($arregloDatos,$unaPlantilla);
+    $arregloDatos['n'] = 0;
+    while($obj=$unDatos->db->fetch()) {
+      $odd = ($arregloDatos['n'] % 2) ? 'odd' : '';
+      $arregloDatos['n'] = $arregloDatos['n'] + 1;
       $unaPlantilla->setCurrentBlock('ROW');
-      $this->setDatos($arregloDatos,$unDatos,$unaPlantilla);
-      $this->$arregloDatos[thisFunction]($arregloDatos,$unDatos,$unaPlantilla);
-      $unaPlantilla->setVariable('n', $arregloDatos[n]);
+      $this->setDatos($arregloDatos,$obj,$unaPlantilla);
+      $metodo = $arregloDatos['thisFunction'];
+      $this->$metodo($arregloDatos,$obj,$unaPlantilla);
+      $unaPlantilla->setVariable('n', $arregloDatos['n']);
       $unaPlantilla->setVariable('odd', $odd);
       $unaPlantilla->parseCurrentBlock();
     }
-    if($unDatos->N == 0 and empty($unDatos->mensaje)) {
-      $unaPlantilla->setVariable('mensaje', '&nbsp;No hay registros para listar'.$arregloDatos[mensaje]);
-      $unaPlantilla->setVariable('estilo', 'ui-state-error');
-      $unaPlantilla->setVariable('mostrarCuerpo', 'none');
+    if($arregloDatos['n'] == 0 and empty($unDatos->mensaje)) {
+      $unaPlantilla->setVariable('mensaje','&nbsp;No hay registros para listar'.$arregloDatos['mensaje']);
+      $unaPlantilla->setVariable('estilo','ui-state-error');
+      $unaPlantilla->setVariable('mostrarCuerpo','none');
     }
-    $unaPlantilla->setVariable('num_registros', $unDatos->N);
-    if($arregloDatos[mostrar]) {
+    $unaPlantilla->setVariable('num_registros',$arregloDatos['n']);
+    if($arregloDatos['mostrar']) {
       $unaPlantilla->show();
     } else {
-      $unaPlantilla->setVariable('cuenta', $this->cuenta);
+      $unaPlantilla->setVariable('cuenta',$this->cuenta);
       return $unaPlantilla->get();
     }
   }
 
   function maestro($arregloDatos) {
-		$this->plantilla->loadTemplateFile(PLANTILLAS .'controlMaestro.html',true,true);
+		$this->plantilla->loadTemplateFile(PLANTILLAS.'controlMaestro.html',true,true);
     $this->plantilla->setVariable('comodin',' ');
 
-    //Captura y Coloca el T韙ulo
+    //Captura y Coloca el T铆tulo
     $this->getTitulo($arregloDatos);    
 		$this->mantenerDatos($arregloDatos,$this->plantilla);
-    $arregloDatos[mostrar] = 0;
-    $arregloDatos[plantilla] = 'controlToolbar.html';
-    $arregloDatos[thisFunction] = 'getToolbar';
-    $this->plantilla->setVariable('toolbarControl',$this->setFuncion($arregloDatos,$this->datos));
-    if(empty($arregloDatos[por_cuenta_filtro])) {
+    $arregloDatos['mostrar'] = 0;
+    $arregloDatos['plantilla'] = 'controlToolbar.html';
+    $arregloDatos['thisFunction'] = 'getToolbar';
+    $this->plantilla->setVariable('toolbarControl',$this->cargaPlantilla($arregloDatos));
+    if(empty($arregloDatos['por_cuenta_filtro'])) {
       //Indica que debe abrir la ventana de filtro de Controles
-      $this->plantilla->setVariable('abre_ventana', 1);
+      $this->plantilla->setVariable('abre_ventana',1);
     } else {
       //Indica que no debe abrir la ventana de filtro de Controles
-      $this->plantilla->setVariable('abre_ventana', 0);
-      //La L骻ica env韆 la plantilla y el m閠odo para pintar el TAB de Mercanc韆
-      $arregloDatos[mostrar] = 0;
-      $arregloDatos[plantilla] = $arregloDatos[plantillaMercancia];
-      $arregloDatos[thisFunction] = $arregloDatos[metodoMercancia];  
+      $this->plantilla->setVariable('abre_ventana',0);
+      //La L贸gica env铆a la plantilla y el m茅todo para pintar el TAB de Mercanc铆a
+      $arregloDatos['mostrar'] = 0;
+      $arregloDatos['plantilla'] = $arregloDatos['plantillaMercancia'];
+      $arregloDatos['thisFunction'] = $arregloDatos['metodoMercancia'];  
       $htmlMercancia = $this->setFuncion($arregloDatos,$this->datos);
-      $this->plantilla->setVariable('htmlMercancia', $htmlMercancia);
-      //Muestra informaci髇 en el TAB Control
-      $arregloDatos[mostrar] = 0;
-      $arregloDatos[plantilla] = $arregloDatos[plantillaControl];
-      $arregloDatos[thisFunction] = $arregloDatos[metodoControl]; 
+      $this->plantilla->setVariable('htmlMercancia',$htmlMercancia);
+      //Muestra informaci贸n en el TAB Control
+      $arregloDatos['mostrar'] = 0;
+      $arregloDatos['plantilla'] = $arregloDatos['plantillaControl'];
+      $arregloDatos['thisFunction'] = $arregloDatos['metodoControl']; 
       $htmlBloquear = $this->setFuncion($arregloDatos,$this->datos);
-      $this->plantilla->setVariable('htmlBloquear', $htmlBloquear);
+      $this->plantilla->setVariable('htmlBloquear',$htmlBloquear);
     }
     $unDatos = new Control();
-    $arregloDatos[mostrar] = 0;
-    $arregloDatos[plantilla] = $arregloDatos[plantillaFiltro];
-    $arregloDatos[thisFunction] = 'filtroControl';
+    $arregloDatos['mostrar'] = 0;
+    $arregloDatos['plantilla'] = $arregloDatos['plantillaFiltro'];
+    $arregloDatos['thisFunction'] = 'filtroControl';
     $htmlFiltroctrl = $this->cargaPlantilla($arregloDatos);  
-    $this->plantilla->setVariable('filtroControl', $htmlFiltroctrl);
+    $this->plantilla->setVariable('filtroControl',$htmlFiltroctrl);
     $this->plantilla->show();
   }
 
@@ -135,12 +133,13 @@ class ControlPresentacion {
   }
   
   function getItemBloquear($arregloDatos) {
-    $htmlBloquear = $this->cargaPlantilla($arregloDatos);  
-    $this->plantilla->setVariable('controlBloquear', $htmlBloquear);
+    $unDatos = new Control();
+    $htmlBloquearx = $this->cargaPlantilla($arregloDatos);  
+    $this->plantilla->setVariable('controlBloquear',$htmlBloquearx);
     $this->plantilla->show();
   }
   
-  //Funci髇 visualiza documentos bloqueados
+  //Funci贸n visualiza documentos bloqueados
   function getControlDocumento($arregloDatos,$datos,$plantilla) {
     $this->mantenerDatos($arregloDatos,$plantilla);
   }
@@ -150,13 +149,13 @@ class ControlPresentacion {
     
     //Carga Cuadro Combinado de Entidades
     $lista = $unaLista->lista("controles_entidades");
-    $lista = armaSelect($lista,'[Seleccionar]',NULL);
-    $plantilla->setVariable("listaEntidades", $lista);
+    $listaEntidades = $unaLista->armSelect($lista,'[Seleccionar]',NULL);
+    $plantilla->setVariable("listaEntidades", $listaEntidades);
     
     //Carga Cuadro Combinado de Controles
     $lista = $unaLista->lista("controles_control");
-    $lista = armaSelect($lista,'[Seleccionar]',NULL);
-    $plantilla->setVariable("listaControles", $lista);
+    $listaControles = $unaLista->armSelect($lista,'[Seleccionar]',NULL);
+    $plantilla->setVariable("listaControles", $listaControles);
   }
 
   function listaInventario($arregloDatos,&$datos,&$plantilla) {  
@@ -182,17 +181,17 @@ class ControlPresentacion {
   }
 
   function getTitulo(&$arregloDatos) {
-    if(!empty($arregloDatos[por_cuenta_filtro])) {
+    if(!empty($arregloDatos['por_cuenta_filtro'])) {
       $unControl = new Control();
       $unControl->getCliente($arregloDatos);
-      $unControl->fetch();
-      $arregloDatos[titulo] .= " - [".$unControl->numero_documento."] <b>" . $unControl->razon_social . "</b>";
-    } else $arregloDatos[titulo] = "CONTROLES";
+      $dato = $unControl->db->fetch();
+      $arregloDatos['titulo'] .= " - [".$dato->numero_documento."] <b>" . $dato->razon_social . "</b>";
+    } else $arregloDatos['titulo'] = "CONTROLES";
   } 
 
 	function mostrarMensaje($arregloDatos) {
-		if($arregloDatos[info]) {
-			$msg = "Se ha enviado un correo a la cuenta: ".$arregloDatos[email]." satisfactoriamente.";
+		if($arregloDatos['info']) {
+			$msg = "Se ha enviado un correo a la cuenta: ".$arregloDatos['email']." satisfactoriamente.";
 			$registrar = -1;
 		} else {
 			$msg = "Error al enviar el correo electr\u00f3nico, por favor revisar el servidor de correo saliente.";
@@ -200,12 +199,12 @@ class ControlPresentacion {
 		}
 		echo "<script type='text/javascript'>alert('$msg');</script>";
 		if($registrar) {
-			//Registra informaci髇 del correo en la tabla de Tracking
+			//Registra informaci贸n del correo en la tabla de Tracking
 			$unCorreo = new Orden();
 			$unCorreo = $unCorreo->registroCorreo($arregloDatos);
 			//Notifica resultado del registro
 			if(!$unCorreo) {
-				$msg = "Error al intentar registrar el correo a la cuenta: ".$arregloDatos[email];
+				$msg = "Error al intentar registrar el correo a la cuenta: ".$arregloDatos['email'];
 				echo "<script type='text/javascript'>alert('$msg');</script>";			
 			}			
 		}

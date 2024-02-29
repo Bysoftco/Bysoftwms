@@ -1,10 +1,7 @@
 <?php
 require_once('Mail.php');
 require_once('Mail/mime.php');
-//ini_set('include_path', URL_BASE .'_scripts/phpmailer/');
-//require("class.phpmailer.php");
 
-//require("class.phpmailer.php");
 class EnvioMail extends Mail_mime {    
 	var $destino;
 	var $remite;
@@ -85,10 +82,10 @@ class EnvioMail extends Mail_mime {
 		}
 
 		if($tplHtml <> NULL) {
-			if(empty($arregloCampos[ruta_plantillas])) {
+			if(empty($arregloCampos['ruta_plantillas'])) {
 				$ruta = './_plantillas';
 			} else {
-				$ruta = $arregloCampos[ruta_plantillas];
+				$ruta = $arregloCampos['ruta_plantillas'];
         echo "<script>alert($ruta);</script>";
 			}
 
@@ -148,7 +145,7 @@ class EnvioMail extends Mail_mime {
       }
 		}
 		// se asigna el cuerpo al correo
-		$this->Mail_mime();
+		//$this->Mail_mime();
 		$this->cuerpo = $this->get();
 	}
 
@@ -168,7 +165,7 @@ class EnvioMail extends Mail_mime {
 			if(checkdnsrr(array_pop(explode("@",$email)),"MX")) { 
 				return true; 
 			} else { 
-				$this->logger = 'La dirección de Correo '.$email.' no existe o el servidor no esta disponible';
+				$this->logger = 'La dirección de Correo '.$email.' no existe o el servidor no está disponible';
 				return false; 
 			} 
 		} else { 
@@ -210,7 +207,7 @@ class EnvioMail extends Mail_mime {
 		return true;
 	}
 
-	function lipiarPlantillas($contenidoTexto = '' , $contenidoHTML = '') {
+	function limpiarPlantillas($contenidoTexto = '' , $contenidoHTML = '') {
 		$this->tplCuerpo->free();
 		$this->tplTexto->free();;
 	}

@@ -1,17 +1,18 @@
 <?php
-require_once("MYDB.php");
+require_once(DB.'BDControlador.php');
 require_once("OrdenDatos.php");
 
-class Control extends MYDB {
+class Control extends BDControlador {
   function Control() {
+    $this->db = $_SESSION['conexion'];
     $this->estilo_error = "ui-state-error";
     $this->estilo_ok = "ui-state-highlight";
   }
 
   //Extrae cualquier tipo de inventario
   function inventario($arregloDatos) {
-    if(!empty($arregloDatos[cliente]) or !empty($arregloDatos[por_cuenta_filtro])) {
-      $arregloDatos[where] .= " AND (do_asignados.por_cuenta='$arregloDatos[cliente]' OR do_asignados.por_cuenta='$arregloDatos[por_cuenta_filtro]')";
+    if(!empty($arregloDatos['cliente']) or !empty($arregloDatos['por_cuenta_filtro'])) {
+      $arregloDatos['where'] .= " AND (do_asignados.por_cuenta='$arregloDatos[cliente]' OR do_asignados.por_cuenta='$arregloDatos[por_cuenta_filtro]')";
     }
     
     $sql = "SELECT orden, CONCAT(sigla,'-',orden) AS do_asignado_full, doc_tte, inventario_entrada, inventario_entrada AS item, arribo, manifiesto, fecha_manifiesto,
@@ -49,28 +50,31 @@ class Control extends MYDB {
                   AND ie.referencia = ref.codigo $arregloDatos[where]) AS inv 
                 GROUP BY $arregloDatos[GroupBy] $arregloDatos[having] $arregloDatos[orderBy]";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $this->db->query($sql);
+    $rows = count($this->db->getArray());
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
       $this->mensaje = "&nbsp;Error al consultar Inventario";
       $this->estilo = $this->estilo_error;
       return TRUE;
     }
-    if($this->N==0) {
+    if($rows == 0) {
       $this->mensaje = "&nbsp;No hay registros para mostrar";
-      $arregloDatos[mensaje] = $this->mensaje;
+      $arregloDatos['mensaje'] = $this->mensaje;
       $this->estilo	= $this->estilo_error;
-      $arregloDatos[estilo] = $this->estilo;
+      $arregloDatos['estilo'] = $this->estilo;
     }
   }
   
   //Lista la Mercancia Disponible para Bloquear
   function getMercanciaBloquear($arregloDatos) {
-    $arregloDatos[cliente] = $arregloDatos[por_cuenta_filtro];
-    //Configura parámetros para consulta en inventario
-    $arregloDatos[movimiento] = "1,2,3,10,15,30";
-    $arregloDatos[where] = ($arregloDatos[doc_tte_control]!= "") ? "AND do_asignados.doc_tte = '$arregloDatos[doc_tte_control]'" : "";
-    $arregloDatos[GroupBy] = "inv.orden, inv.referencia";
-    $arregloDatos[having] = "HAVING TRUNCATE(peso_nonac,1) > 0 OR TRUNCATE(peso_naci,1) > 0";
+    $arregloDatos['cliente'] = $arregloDatos['por_cuenta_filtro'];
+    //Configura parÃ¡metros para consulta en inventario
+    $arregloDatos['movimiento'] = "1,2,3,10,15,30";
+    $arregloDatos['where'] = ($arregloDatos['doc_tte_control']!= "") ? "AND do_asignados.doc_tte = '$arregloDatos[doc_tte_control]'" : "";
+    $arregloDatos['GroupBy'] = "inv.orden, inv.referencia";
+    $arregloDatos['having'] = "HAVING TRUNCATE(peso_nonac,1) > 0 OR TRUNCATE(peso_naci,1) > 0";
     $this->inventario($arregloDatos);    
   }
 
@@ -78,7 +82,7 @@ class Control extends MYDB {
   function addItemBloquear($arregloDatos) {
     $fecha_actual = FECHA;
     
-    $arregloDatos[bloquear] = isset($arregloDatos[bloquear]) ? $arregloDatos[bloquear] : "No";
+    $arregloDatos['bloquear'] = isset($arregloDatos['bloquear']) ? $arregloDatos['bloquear'] : "No";
   
     $sql = "INSERT INTO controles_legales
               (orden,ingreso,entidad,control,auto_adm,bloquea,periodicidad,observaciones,fecha,fecha_registro)
@@ -86,18 +90,18 @@ class Control extends MYDB {
                     '$arregloDatos[auto_adm]','$arregloDatos[bloquear]',$arregloDatos[periodicidad],'$arregloDatos[obs]',
                     '$arregloDatos[fecha]','$fecha_actual')";           
 
-    $this->query($sql);
-    if($this->_lastError) {
-      $arregloDatos[mensaje] = "&nbsp;Error al bloquear el Documento de Transporte:&nbsp;"+$arregloDatos[doc_tte];
-      $arregloDatos[estilo] = $this->estilo_error;
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
+      $arregloDatos['mensaje'] = "&nbsp;Error al bloquear el Documento de Transporte:&nbsp;"+$arregloDatos[doc_tte];
+      $arregloDatos['estilo'] = $this->estilo_error;
       return TRUE;
     }
-    $arregloDatos[mensaje] = "&nbsp;Se bloque&oacute; correctamente el Documento de Transporte:&nbsp;"+$arregloDatos[doc_tte];
-    $arregloDatos[estilo] = $this->estilo_ok;  
+    $arregloDatos['mensaje'] = "&nbsp;Se bloque&oacute; correctamente el Documento de Transporte:&nbsp;"+$arregloDatos['doc_tte'];
+    $arregloDatos['estilo'] = $this->estilo_ok;  
   }
 
-  //Lista la Mercancía en el TAB de Control
+  //Lista la MercancÃ­a en el TAB de Control
   function getControlDocumento($arregloDatos) {
     $sede = $_SESSION['sede'];
     
@@ -113,15 +117,15 @@ class Control extends MYDB {
               AND do_asignados.sede = '$sede'
               AND arribos.cantidad > 0";
     
-    if(!empty($arregloDatos[por_cuenta_filtro])) $sql .= " AND do_asignados.por_cuenta = '$arregloDatos[por_cuenta_filtro]'";
-		if(!empty($arregloDatos[fecha_desde]) AND (!empty($arregloDatos[fecha_hasta])))
+    if(!empty($arregloDatos['por_cuenta_filtro'])) $sql .= " AND do_asignados.por_cuenta = '$arregloDatos[por_cuenta_filtro]'";
+		if(!empty($arregloDatos['fecha_desde']) AND (!empty($arregloDatos['fecha_hasta'])))
       $sql .= " AND cl.fecha >= '$arregloDatos[fecha_desde]' AND cl.fecha <= '$arregloDatos[fecha_hasta]'";
     $sql .= " ORDER BY cl.codigo DESC";
 
-    $this->query($sql);
-    if($this->_lastError) {
-      $arregloDatos[mensaje] = "&nbsp;Error al mostrar documentos bloqueados&nbsp;" . $sql;
-      $arregloDatos[estilo] = $this->estilo_error;
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      $arregloDatos['mensaje'] = "&nbsp;Error al mostrar documentos bloqueados&nbsp;" . $sql;
+      $arregloDatos['estilo'] = $this->estilo_error;
       return TRUE;
     }
   }
@@ -133,9 +137,9 @@ class Control extends MYDB {
             WHERE cc.codigo = $arregloDatos[controles]
               AND ce.codigo = $arregloDatos[entidades]";
 
-    $this->query($sql);
-    $this->fetch();
-		return array($this->nombre_entidad,$this->nombre_control);
+    $this->db->query($sql);
+    $dato = $this->db->fetch();
+		return array($dato->nombre_entidad,$dato->nombre_control);
   }
   
   //Lista controles asignados a un tipo documento de transporte
@@ -150,14 +154,15 @@ class Control extends MYDB {
               AND (cc.codigo = cl.control)
               AND (cl.ingreso = a.arribo)";
 
-    if(!empty($arregloDatos[fecha_desde]) AND (!empty($arregloDatos[fecha_hasta])))
+    if(!empty($arregloDatos['fecha_desde']) AND (!empty($arregloDatos['fecha_hasta'])))
       $sql .= " AND cl.fecha >= '$arregloDatos[fecha_desde]' AND cl.fecha <= '$arregloDatos[fecha_hasta]'";
     $sql .= " ORDER BY cl.codigo DESC";
     
-    $this->query($sql);
-    if($this->_lastError) {
-      $arregloDatos[mensaje] = "&nbsp;Error al listar los controles&nbsp;" . $sql;
-      $arregloDatos[estilo] = $this->estilo_error;
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
+      echo $sql;
+      $arregloDatos['mensaje'] = "&nbsp;Error al listar los controles&nbsp;" . $sql;
+      $arregloDatos['estilo'] = $this->estilo_error;
       return TRUE;
     }
   }  
@@ -166,8 +171,8 @@ class Control extends MYDB {
     $sql = "SELECT numero_documento,razon_social FROM clientes
             WHERE  numero_documento = '$arregloDatos[por_cuenta]'";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       return TRUE;
     }
@@ -177,8 +182,8 @@ class Control extends MYDB {
     $sql = "SELECT numero_documento,razon_social FROM clientes
             WHERE numero_documento = '$arregloDatos[por_cuenta_filtro]'";
 
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       return TRUE;
     }  
@@ -193,13 +198,13 @@ class Control extends MYDB {
 
     $sql.="	ORDER BY nombre	" ;
 	
-    $this->query($sql); 
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql); 
+    if(!is_null($resultado)) {
       return FALSE;
     } else {
       $arreglo = array();
-      while($this->fetch()) {
-        $arreglo[$this->codigo] =  ucwords($this->nombre);
+      while($reg=$this->db->fetch()) {
+        $arreglo[$reg->codigo] = ucwords(strtolower($reg->nombre));
       }
     }
     return $arreglo;
@@ -219,8 +224,8 @@ class Control extends MYDB {
               AND doc_tte LIKE '%$arregloDatos[q]%'
             GROUP BY doc_tte, do_asignado";
             
-    $this->query($sql);
-    if($this->_lastError) {
+    $resultado = $this->db->query($sql);
+    if(!is_null($resultado)) {
       echo $sql;
       return TRUE;
     }

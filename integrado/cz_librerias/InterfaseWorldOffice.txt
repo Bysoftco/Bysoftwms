@@ -1,0 +1,14 @@
+:( Error al Consultar Retenciones en la Factura
+SELECT dr.nit_tercero, dr.factura_detalle, SUM(dr.iva) AS iva, MAX(clientes.tipo) as tipo, SUM(dr.valor) AS valor FROM detalle_retenciones dr, facturas_maestro fm, clientes WHERE fm.factura = dr.factura AND clientes.numero_documento = dr.nit_tercero AND fm.numero_oficial = '2' AND fm.sede = '11' GROUP BY dr.nit_tercero, dr.factura_detalle
+.
+:( Error al Consultar Retenciones en la Factura
+SELECT dr.nit_tercero, dr.factura_detalle, SUM(dr.iva) AS iva, MAX(clientes.tipo) as tipo, SUM(dr.valor) AS valor FROM detalle_retenciones dr, facturas_maestro fm, clientes WHERE fm.factura = dr.factura AND clientes.numero_documento = dr.nit_tercero AND fm.numero_oficial = '2' AND fm.sede = '11' GROUP BY dr.nit_tercero, dr.factura_detalle
+
+string(6) "WO0209"
+string(3) "001"
+string(7) "Contado" 
+
+array(28) { ["clase"]=> string(9) "Interfase" ["metodo"]=> string(12) "getInterfase" ["num_interfase"]=> string(6) "WO0209" ["nombre_interfase"]=> string(6) "WO0209" ["tipo_interfase"]=> string(1) "4" ["total_interfase"]=> int(28800) ["total_interfase_f"]=> string(6) "28.800" ["tipo_cliente"]=> string(1) "2" ["cuenta_filial"]=> string(0) "" ["razon_social"]=> NULL ["factura"]=> string(1) "2" ["recibo_anticipo"]=> string(0) "" ["Auxfactura"]=> string(1) "2" ["numero_oficial"]=> string(1) "2" ["iva"]=> string(5) "70072" ["rte_fuente"]=> string(5) "14752" ["rte_fuented"]=> float(4) ["rte_iva"]=> string(1) "0" ["rte_iva_fac"]=> string(1) "0" ["rte_ica"]=> string(18) "3457.2000000000003" ["intermediario"]=> string(9) "830036507" ["anticipo"]=> string(1) "0" ["valor_anticipo"]=> string(1) "0" ["cuenta"]=> string(10) "4145300502" ["facturado_a"]=> string(9) "830036507" ["por_cuenta_de"]=> string(9) "830036507" ["nit"]=> string(9) "830036507" ["sede"]=> string(2) "11" } 
+
+array(5) { ["clase"]=> string(9) "Interfase" ["metodo"]=> string(12) "getInterfase" ["num_interfase"]=> string(6) "WO0209" ["nombre_interfase"]=> string(6) "WO0209" ["tipo_interfase"]=> string(1) "4" }
+string(3) "BOG" 

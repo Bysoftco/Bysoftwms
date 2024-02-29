@@ -1,15 +1,19 @@
 <?php
-require_once("pear/PEAR.php");
-require_once 'pear/DB.php';
-require_once 'pear/Spreadsheet/Excel/Writer.php';
+//ini_set("include_path",'/home1/isamis/php:.:/opt/cpanel/ea-php56/root/usr/share/pear' . ini_get("include_path") );
+//require_once("pear/PEAR.php");
+require_once 'PEAR.php';
+//require_once 'pear/DB.php';
+require_once 'MDB2.php';
+require_once 'MDB2/Schema.php'; //Nuevo
+//require_once 'pear/Spreadsheet/Excel/Writer.php';
+require_once 'Spreadsheet/Excel/Writer.php';
 
  
 /*
  * ReporteExcel
  *   
  **/
-class ReporteExcel {
-	
+class ReporteExcel {	
 	var $sentencia;
 	var $resultado;
 	var $workbook;
@@ -22,10 +26,10 @@ class ReporteExcel {
 	var $titulo;
 	var $consulta;
 	var $titulo_columna;
-	function ReporteExcel($arregloCampos){
-	
-		$this->titulo_columna= $arregloCampos['titulo_columna'];
-		$this->sentencia 	= $arregloCampos['sql'];
+
+	function ReporteExcel($arregloCampos) {	
+		$this->titulo_columna = $arregloCampos['titulo_columna'];
+		$this->sentencia = $arregloCampos['sql'];
 		$this->titulo = isset($arregloCampos['titulo'])?$arregloCampos['titulo']:'Reporte';
 		$arregloDatos = array();
 		$this->arrayFormatTitle = 	    array('Align' => 'left',
@@ -50,9 +54,39 @@ class ReporteExcel {
 		$this->workbook = new Spreadsheet_Excel_Writer();	
 		
 		//$cadenaDeConexion ="mysql://root:bysoft@localhost/nbysoft_db";
+		//Nuevas Instrucciones de Conexión - 03/nov/2022 (Jueves)
+		/*$user = 'isamis_uwbysoft';
+    $pass = 'pwbysoft';
+    $host = 'grupobysoft.com';
+    $mdb2_name = 'wmsbysoft';
+    $mdb2_type = !empty($_GET['db_type']) ? $_GET['db_type'] : 'mysql';*/
 		$cadenaDeConexion ="mysql://isamis_uwbysoft:pwbysoft@grupobysoft.com/isamis_wmsbysoft";
 		//$cadenaDeConexion ="mysql://comapan_bysoft:byorden@localhost/comapan_receta";
 		//$cadenaDeConexion ="mysql://bysoft_alconta:alcomexby@supremecenter12.co.uk/bysoft_alconta";
+		// Data Source Name: This is the universal connection string
+    /*$dsn['username'] = $user;
+    $dsn['password'] = $pass;
+    $dsn['hostspec'] = $host;
+    $dsn['phptype'] = $mdb2_type;
+
+    $mdb2 =& MDB2::factory($dsn);*/
+		// With MDB2::isError you can differentiate between an error or
+    // a valid connection.
+    /*if (MDB2::isError($mdb2)) {
+        die (__LINE__.$mdb2->getMessage());
+    }
+		require_once 'MDB2/Schema.php';*/
+    // you can either pass a dsn string, a dsn array or an exisiting mdb2 connection
+    /*$schema =& MDB2_Schema::factory($mdb2);
+    $input_file = 'wmsbysoft.schema';*/
+    // lets create the database using 'metapear_test_db.schema'
+    // if you have allready run this script you should have 'metapear_test_db.schema.before'
+    // in that case MDB2 will just compare the two schemas and make any
+    // necessary modifications to the existing database
+    /*Var_Dump($schema->updateDatabase($input_file, $input_file.'.before'));
+    echo('updating database from xml schema file<br>');
+    echo('switching to database: '.$mdb2_name.'<br>');
+    $mdb2->setDatabase($mdb2_name);*/
 		if (DB::isError($this->rs =  DB::connect($cadenaDeConexion, FALSE))) {
 	    	trigger_error($this->rs->getMessage(), E_USER_ERROR);
 		}

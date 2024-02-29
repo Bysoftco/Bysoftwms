@@ -8,12 +8,12 @@ class AnexosPresentacion {
   var $plantilla;
 
   function AnexosPresentacion(&$datos) {
-    $this->datos =& $datos;
+    $this->datos = $datos;
     $this->plantilla = new HTML_Template_IT();
   } 
 
   function mantenerDatos($arregloCampos,&$plantilla) {
-    $plantilla =& $plantilla;
+    $plantilla = $plantilla;
 
     if(is_array($arregloCampos)) {
       foreach($arregloCampos as $key => $value) {
@@ -22,7 +22,7 @@ class AnexosPresentacion {
     }
   }
 
-  //Función que coloca los datos que vienen de la BD
+  //FunciÃ³n que coloca los datos que vienen de la BD
   function setDatos($arregloDatos,&$datos,&$plantilla) {
     foreach($datos as $key => $value) {
       $plantilla->setVariable($key, $value);
@@ -31,77 +31,63 @@ class AnexosPresentacion {
 
   function cargaPlantilla($arregloDatos) {
     $unAplicaciones = new Anexos();
-    $formularioPlantilla = new HTML_Template_IT();
+    $formularioPlantilla = new HTML_Template_IT(PLANTILLAS);
     
-    $formularioPlantilla->loadTemplateFile(PLANTILLAS . $arregloDatos[plantilla],true,true);
+    $formularioPlantilla->loadTemplateFile($arregloDatos['plantilla'],true,true);
     $formularioPlantilla->setVariable('comodin',' ');
     $this->mantenerDatos($arregloDatos,$formularioPlantilla);
-    $this->$arregloDatos[thisFunction]($arregloDatos,$this->datos,$formularioPlantilla);
+    $metodo = $arregloDatos['thisFunction'];
+    $this->$metodo($arregloDatos,$unAplicaciones,$formularioPlantilla);
     
-    if($arregloDatos[mostrar]) $formularioPlantilla->show();
+    if($arregloDatos['mostrar']) $formularioPlantilla->show();
     else return $formularioPlantilla->get();
   }
 
-  //Arma cada Formulario o función en pantalla
+  //Arma cada Formulario o funciÃ³n en pantalla
   function setFuncion($arregloDatos,$unDatos) {
     $unDatos = new Anexos();
+    $metodo = $arregloDatos['thisFunction'];
 
-    $r = $unDatos->$arregloDatos[thisFunction]($arregloDatos);
+    $r = $unDatos->$metodo($arregloDatos);
     $unaPlantilla = new HTML_Template_IT();
     
-    $unaPlantilla->loadTemplateFile(PLANTILLAS . $arregloDatos[plantilla],true,true);
-    if(!empty($arregloDatos[mensaje])) {
-      $unaPlantilla->setVariable('mensaje', $arregloDatos[mensaje]);
-      $unaPlantilla->setVariable('estilo', $arregloDatos[estilo]);
-    }
+    $unaPlantilla->loadTemplateFile(PLANTILLAS.$arregloDatos['plantilla'],true,true);
     $this->mantenerDatos($arregloDatos,$unaPlantilla);
-    $arregloDatos[n] = 0;
-    while($unDatos->fetch()) {
-      $odd = ($arregloDatos[n] % 2) ? 'odd' : '';
-      $arregloDatos[n] = $arregloDatos[n] + 1;
+    $arregloDatos['n'] = 0;
+    while($obj = $unDatos->db->fetch()) {
+      $odd = $arregloDatos['n'] % 2 ? 'odd' : '';
+      $arregloDatos['n'] = $arregloDatos['n'] + 1;
       $unaPlantilla->setCurrentBlock('ROW');
-      $this->setDatos($arregloDatos,$unDatos,$unaPlantilla);
-      $this->$arregloDatos[thisFunction]($arregloDatos,$unDatos,$unaPlantilla);
-      $unaPlantilla->setVariable('n', $arregloDatos[n]);
+      $this->setDatos($arregloDatos,$obj,$unaPlantilla);
+      $metodo = $arregloDatos['thisFunction'];
+      $this->$metodo($arregloDatos,$obj,$unaPlantilla);
+      $unaPlantilla->setVariable('n', $arregloDatos['n']);
       $unaPlantilla->setVariable('odd', $odd);
       $unaPlantilla->parseCurrentBlock();
     }
-    if($unDatos->N == 0 and empty($unDatos->mensaje)) {
-      $unaPlantilla->setVariable('mensaje', '&nbsp;No hay fotos registradas');
-      $unaPlantilla->setVariable('estilo', 'ui-state-error');
-    }
-    $unaPlantilla->setVariable('num_registros', $unDatos->N);
-    if($arregloDatos[mostrar]) $unaPlantilla->show();
+    if($arregloDatos['n'] == 0) {
+      $unaPlantilla->setVariable('mensaje','&nbsp;No hay fotos registradas&nbsp;');
+      $unaPlantilla->setVariable('estilo','ui-state-error');
+      $unaPlantilla->setVariable('ver','block');
+    } else { $unaPlantilla->setVariable('ver','none'); }
+    $unaPlantilla->setVariable('num_registros',$arregloDatos['n']);
+    if($arregloDatos['mostrar']) $unaPlantilla->show();
     else return $unaPlantilla->get();
   }
 
-  function verFotos($arregloDatos) {
-    $this->plantilla->loadTemplateFile(PLANTILLAS . 'anexosListado.html',false,false);
-    $this->mantenerDatos($arregloDatos,$this->plantilla);
-    $this->plantilla->setVariable('comodin', '');
-    
-    $this->plantilla->show();
-  }
-
   function fotoAnexos($arregloDatos) {
-    $arregloDatos[idCliente] = $_SESSION['datos_logueo']['usuario'];
-    $this->plantilla->loadTemplateFile(PLANTILLAS . 'anexosFotos.html',true,true);
+    $arregloDatos['idCliente'] = $_SESSION['datos_logueo']['usuario'];
+    $this->plantilla->loadTemplateFile(PLANTILLAS.'anexosFotos.html',true,true);
     $this->mantenerDatos($arregloDatos,$this->plantilla);
-    $this->plantilla->setVariable('comodin', '');
+    $this->plantilla->setVariable('comodin','');
     
-    $arregloDatos[mostrar] = 0;
-    
-    if(!empty($arregloDatos[filtroc])) {    
-      $arregloDatos[plantilla] = 'anexosListado.html';
-      $arregloDatos[thisFunction] = 'verAnexosFotos';
-      $htmListado = $this->setFuncion($arregloDatos,$unDatos);
-      $this->plantilla->setVariable('htmListado', $htmListado);
-    } else {	 
-      $arregloDatos[thisFunction] = 'filtroc';
-      $arregloDatos[plantilla] = 'anexosReportefiltroc.html';  
-      $htmfiltroc=$this->cargaPlantilla($arregloDatos);
-      $this->plantilla->setVariable('filtrocEntradaConsulta', $htmfiltroc);
-    }
+    $arregloDatos['plantilla'] = 'anexosReporteFiltroc.html';  
+    $arregloDatos['thisFunction'] = 'filtroc';
+    $arregloDatos['mostrar'] = 0;
+    $htmfiltroc=$this->cargaPlantilla($arregloDatos);
+    $arregloDatos['mostrar'] = 1;
+    $this->plantilla->setVariable('mostrar',$arregloDatos['mostrar']);
+    $this->plantilla->setVariable('filtroAnexos',$htmfiltroc);
 
     $this->plantilla->show();
   }
