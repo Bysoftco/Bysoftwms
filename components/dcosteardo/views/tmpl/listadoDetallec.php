@@ -35,7 +35,7 @@
         </td>
         <td align="center">
 					<div class="popupsEditar borde_circular noSeleccion">
-						<a href="javascript:void(0)">
+						<a href="javascript:void(0)" title="Editar Costos del DO">
 							<img src="img/acciones/edit.png" title="Editar" width="25" height="25" border="0" />
 						</a>
 					</div>
@@ -63,7 +63,13 @@
   </table>
   <table align="center" style="width:100%" cellpadding="0" cellspacing="0" id="tabla_general">
     <tr>
-      <th><div id="total_ingre"></div></th><th><div id="total_gasto"></div></th>
+    	<!-- BEGIN TOTALES -->
+      <th><div id="total_ingre">{totalingreso}</div></th>
+      <th><div id="total_gasto">{totalgasto}</div></th>
+			<input type="hidden" name="totalingreso" id="totalingreso" value="{totalingreso}" />
+			<input type="hidden" name="totalgasto" id="totalgasto" value="{totalgasto}" />
+			<input type="hidden" name="utilidad" id="utilidad" value="{utilidad}" />
+			<!-- END TOTALES -->
     </tr>
   </table>
   <table align="center" style="width:100%" cellpadding="0" cellspacing="0" id="tabla_general">
@@ -121,14 +127,13 @@
 	<input type="hidden" name="orden" id="orden" value="{orden}" />
 	<input type="hidden" name="id_orden" id="id_orden" value="{id_orden}" />
 	<input type="hidden" name="do_asignado" id="do_asignado" value="{do_asignadoc}" />
+	<input type="hidden" name="doc_tte" id="doc_tte" value="{doc_ttec}" />
 	<input type="hidden" name="numdetalle" id="numdetalle" value="{nr}" />
-	<input type="hidden" name="totalingreso" id="totalingreso" value="{totalingreso}" />
-	<input type="hidden" name="totalgasto" id="totalgasto" value="{totalgasto}" />
-  <input type="hidden" name="utilidad" id="utilidad" value="{utilidad}" />
 </form>
 <script>
 	Nifty("div.borde_circular","transparent");
 	Nifty("div.div_barra","top transparent");
+	
 	$('.noSeleccion').css('display', 'none');
   $('.verImprimir').css('display', $("#muestraImprimir").val());
   $('.verLogos').css('display', 'none');
@@ -232,7 +237,7 @@
 	
 	$('.popupsAgregar a').wowwindow({
 		draggable: true,
-		width: 550,
+		width: 560,
 		height: 250,
 		overlay: {
 			clickToClose: false,
@@ -244,12 +249,14 @@
 		before: function() {
 			var numdetalle = parseInt($("#numdetalle").attr("value")) + 1;
 			var do_asignado = $("#do_asignado").attr("value");
+			var doc_tte = $("#doc_tte").attr("value");
                  
 			$.ajax({
 				url: 'index_blank.php?component=dcosteardo&method=agregarDetallec',
 				data: {
 					numdetalle: numdetalle,
-					do_asignado: do_asignado
+					do_asignado: do_asignado,
+					doc_tte: doc_tte
 				},
 				async: true,
 				type: "POST",
@@ -262,7 +269,7 @@
 	
 	$('.popupsEditar a').wowwindow({
 		draggable: true,
-		width: 550,
+		width: 560,
 		height: 250,
 		overlay: {
 			clickToClose: false,
@@ -274,12 +281,14 @@
 		before: function() {
 			var numdetalle = $("#numdetalle").attr("value");
 			var do_asignado = $("#do_asignado").attr("value");
+			var doc_tte = $("#doc_tte").attr("value");
                  
 			$.ajax({
 				url: 'index_blank.php?component=dcosteardo&method=editarDetallec',
 				data: {
 					numdetalle: numdetalle,
-					do_asignado: do_asignado
+					do_asignado: do_asignado,
+					doc_tte: doc_tte
 				},
 				async: true,
 				type: "POST",
@@ -293,6 +302,7 @@
 	function eliminar() {
     var numdetalle = $("#numdetalle").attr("value");
     var do_asignado = $("#do_asignado").attr("value");
+    var doc_tte = $("#doc_tte").attr("value");
 
 		if(confirm('\u00bfRealmente desea eliminar el detalle '+numdetalle+'?')) {
 			$.ajax({
@@ -301,7 +311,8 @@
 				type: "POST",
 				data: {
           numdetalle: numdetalle,
-          do_asignado: do_asignado 
+          do_asignado: do_asignado,
+          doc_tte: doc_tte
 				},
 				success: function(msm) {
 					$('#vdetallec').html(msm);

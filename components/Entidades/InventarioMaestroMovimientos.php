@@ -34,12 +34,10 @@ class InventarioMaestroMovimientos extends BDControlador {
   var $module_directory = 'Entidades';
   var $object_name = "InventarioMaestroMovimientos";
   
-  var $campos = array('codigo', 'fecha', 'id_camion', 'destinatario', 'direccion', 'fmm',
-                      'producto', 'doc_tte', 'orden', 'unidad', 'cantidad', 'cantidad_nac',
-                      'cantidad_ext', 'peso', 'valor', 'ciudad', 'obs', 'cierre');
+  var $campos = array('codigo','fecha','id_camion','destinatario','direccion','fmm','producto','doc_tte','orden','unidad','cantidad','cantidad_nac','cantidad_ext','peso','valor','ciudad','obs','cierre');
   
   function __construct() {
-    $this->fecha=date('Y-m-d H:i');
+    $this->fecha = date('Y-m-d H:i');
     parent :: Manejador_BD();
   }
 }

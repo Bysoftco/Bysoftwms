@@ -49,7 +49,8 @@
       <th>Peso</th>
       <th>Valor</th>
       <th>FMMN</th>
-      <th>Piezas Nal.</th>
+      <th>UN</th>
+      <th>Piezas Nal/Nzo</th>
       <th>Piezas Ext.</th>
     </tr>
   </thead>
@@ -59,7 +60,7 @@
       <td>[{doc_cliente}] {nombre_cliente}</td>
       <td style="text-align: center;">{orden}</td>
       <td style="text-align: center;">{arribo}</td>
-      <td style="text-align: center;">{doc_transporte}</td>
+      <td>{doc_transporte}</td>
       <td style="text-align: center;">{fmmi}</td>
       <td style="text-align: center;">{consecutivo}</td>
       <td style="text-align: center;">{codigo_referencia}</td>
@@ -71,9 +72,12 @@
       <td style="text-align: right;">{peso}</td>
       <td style="text-align: right;">{valor}</td>
       <td style="text-align: center;">{fmmn}</td>
+      <td>{un}</td>
       <td style="text-align: right;">{piezas_nal}</td>
       <td style="text-align: right;">{piezas_ext}</td>
     </tr>
+    {total_piezas}{total_peso}{total_valor}
+    {total_piezas_nal}{total_piezas_ext}
     <!-- END ROW  -->
   </tbody>
   <tfoot>
@@ -92,6 +96,7 @@
       <th style="text-align: right;">{total_peso}</th>
       <th style="text-align: right;">{total_valor}</th>
       <th></th>
+      <th></th>
       <th style="text-align: right;">{total_piezas_nal}</th>
       <th style="text-align: right;">{total_piezas_ext}</th>
     </tr>
@@ -103,7 +108,6 @@
   <input type="hidden" name="fechadesdefe" id="fechadesdefe" value="{fechadesdefe}" />
   <input type="hidden" name="fechahastafe" id="fechahastafe" value="{fechahastafe}" />
   <input type="hidden" name="doasignadofe" id="doasignadofe" value="{doasignadofe}" />
-  <input type="hidden" name="tipoingresofe" id="tipoingresofe" value="{tipoingresofe}" />
   <input type="hidden" name="component" id="component" value="existencias" />
   <input type="hidden" name="method" id="method" value="exportarExcel" />
 </form>
@@ -127,8 +131,7 @@
 
   $('a[class="tblank"]').click(function() {
     window.open("index_blank.php?component=existencias&method=imprimeListadoExistencias&buscarClientefe="+$("#buscarClientefe").val()+
-      "&nitfe="+$("#nitfe").val()+"&fechadesdefe="+$("#fechadesdefe").val()+"&fechahastafe="+$("#fechahastafe").val()+"&doasignadofe="+$("#doasignadofe").val()+
-      "&tipoingresofe="+$("#tipoingresofe").val());
+      "&nitfe="+$("#nitfe").val()+"&fechadesdefe="+$("#fechadesdefe").val()+"&fechahastafe="+$("#fechahastafe").val()+"&doasignadofe="+$("#doasignadofe").val());
     return false;
   });
   

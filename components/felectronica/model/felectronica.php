@@ -9,14 +9,15 @@ class felectronicaModelo extends BDControlador {
   function listadoFacturas($arreglo) {
     $db = $_SESSION['conexion'];
 		$sede = $_SESSION['sede'];
+    $arreglo['where'] = "";
 
 		//Prepara la condición del filtro
-    if(!empty($arreglo[nitfel])) $arreglo[where] .= " AND fm.cliente = '$arreglo[nitfel]'";
-    if(!empty($arreglo[fechadesdefel])) $arreglo[where] .= " AND fm.fecha_factura >= '$arreglo[fechadesdefel]'";
-    if(!empty($arreglo[fechahastafel])) $arreglo[where] .= " AND fm.fecha_factura <= '$arreglo[fechahastafel]'";
-    if(!empty($arreglo[facturafiltrofel])) $arreglo[where] .= " AND fm.numero_oficial = '$arreglo[facturafiltrofel]'";
-    if(!empty($arreglo[dofiltrofel])) $arreglo[where] .= " AND fm.orden = '$arreglo[dofiltrofel]'";
-    if(!empty($arreglo[docfiltrofel])) $arreglo[where] .= " AND fm.documento_transporte = '$arreglo[docfiltrofel]'";
+    if(!empty($arreglo['nitfel'])) $arreglo['where'] .= " AND fm.cliente = '$arreglo[nitfel]'";
+    if(!empty($arreglo['fechadesdefel'])) $arreglo['where'] .= " AND fm.fecha_factura >= '$arreglo[fechadesdefel]'";
+    if(!empty($arreglo['fechahastafel'])) $arreglo['where'] .= " AND fm.fecha_factura <= '$arreglo[fechahastafel]'";
+    if(!empty($arreglo['facturafiltrofel'])) $arreglo['where'] .= " AND fm.numero_oficial = '$arreglo[facturafiltrofel]'";
+    if(!empty($arreglo['dofiltrofel'])) $arreglo['where'] .= " AND fm.orden = '$arreglo[dofiltrofel]'";
+    if(!empty($arreglo['docfiltrofel'])) $arreglo['where'] .= " AND fm.documento_transporte = '$arreglo[docfiltrofel]'";
     
     $query = "SELECT fm.*, clientes.razon_social, clientes.numero_documento AS por_cuenta
               FROM facturas_maestro fm, clientes 

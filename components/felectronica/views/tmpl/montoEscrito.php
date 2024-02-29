@@ -173,7 +173,7 @@ function Parte($x)
 {
     $Rtn='';
     $t='';
-    $i='';
+    $i=0;
     Do
     {
       switch($x)

@@ -37,6 +37,7 @@
     <input type="hidden" name="fecha" id="fecha" value="{fecha}" />
     <input type="hidden" name="valordetalle" id="valordetalle" value="{valordetalle}" />
     <input type="hidden" name="do_asignado" id="do_asignado" value="{do_asignado}" />
+    <input type="hidden" name="doc_tte" id="doc_tte" value="{doc_tte}" />
     <input type="hidden" name="codservicio" id="codservicio" value="{codservicio}" />
     <input type="hidden" name="totalingreso" id="totalingreso" value="{totalingreso}" />
     <input type="hidden" name="totalgasto" id="totalgasto" value="{totalgasto}" />

@@ -16,18 +16,18 @@ class felectronicaVista {
     $this->template->setVariable('COMODIN', '');
 
     // Carga información del Perfil y Usuario
-    $arreglo[perfil] = $_SESSION['datos_logueo']['perfil_id'];
-    $arreglo[usuario] = $_SESSION['datos_logueo']['usuario'];
+    $arreglo['perfil'] = $_SESSION['datos_logueo']['perfil_id'];
+    $arreglo['usuario'] = $_SESSION['datos_logueo']['usuario'];
     // Valida el Perfil para identificar el Tercero
-    if($arreglo[perfil] == 23) {
+    if($arreglo['perfil'] == 23) {
       $this->template->setVariable('soloLectura', "readonly=''");
-      $this->template->setVariable(usuario, $arreglo[usuario]);
-      $cliente = $this->datos->findClientet($arreglo[usuario]);
-      $this->template->setVariable(cliente, $cliente->razon_social);
+      $this->template->setVariable('usuario', $arreglo['usuario']);
+      $cliente = $this->datos->findClientet($arreglo['usuario']);
+      $this->template->setVariable('cliente', $cliente->razon_social);
     } else {
       $this->template->setVariable('soloLectura', "");
-      $this->template->setVariable(usuario, "");
-      $this->template->setVariable(cliente, "");
+      $this->template->setVariable('usuario', "");
+      $this->template->setVariable('cliente', "");
     }
 
     $this->template->show();

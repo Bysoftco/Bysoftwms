@@ -37,16 +37,18 @@ class existencias {
   }
     
   function findCliente($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findCliente($arreglo);
-    $Existe = count($unaConsulta); 
+    $Existe = count($unaConsulta);
 
-    foreach($unaConsulta as $value) {
-			$nombre = trim($value['razon_social']);
-      $nit = $value['numero_documento'];
-			echo "$nombre|$nit\n";
-    }
     if($Existe == 0) echo "No hay Resultados|0\n";
+    else {
+      foreach($unaConsulta as $value) {
+        $nombre = trim($value['razon_social']);
+        $nit = $value['numero_documento'];
+        echo "$nombre|$nit\n";
+      }
+    }  
   }
 }
 ?>

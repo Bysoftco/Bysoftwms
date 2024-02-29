@@ -3,7 +3,7 @@
   label { display: inline-block; width: 100px; }
   legend { padding: 0.5em; }
   fieldset fieldset label { display: block; }
-  #frmfiltroex label { width: 110px; margin-left: 10px;} /*ancho de las etiquetas de los campos*/
+  #frmExistencias label { width: 110px; margin-left: 10px;} /*ancho de las etiquetas de los campos*/
   h1 { font-size: 1.2em; margin: .6em 0; }
   div#users-contain { width: 100%; margin: 5px 0; margin-left: 0%; }
   div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
@@ -13,9 +13,8 @@
   tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
   .ui-datepicker-trigger { position: relative; top: 5px; right: 1px; height:22px; } /* Configuración tamaño imagen del DatePicker */
 </style>
-{COMODIN}
 <link rel="stylesheet" type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" />
-<div id="winfiltroex" title="Formulario de Existencias">
+<div id="winfltrexis" title="Formulario de Existencias">
   <div id="frmfiltroex">
     <p id="msgfiltroex">Seleccione uno o varios filtros para delimitar resultados.</p>
     <form name="frmExistencias" id="frmExistencias" method="post" action="">
@@ -43,14 +42,6 @@
           <label>Orden:</label>
           <input type="text" name="doasignadofe" id="doasignadofe" />
         </p>
-        <!-- <p> 
-          <label>Tipo de Ingreso:</label>
-          <select name="tipoingresofe" id="tipoingresofe" class="ui-widget-content">
-            <option value="">[Seleccionar]</option>
-            <option value="consignada">Consignada</option>
-            <option value="asignada">Asignada</option>
-          </select>
-        </p> -->
       </fieldset>
     </form>
   </div>
@@ -60,10 +51,9 @@
 <input type="hidden" name="soloLectura" id="soloLectura" value="{soloLectura}" />
 <script>
 	$(function() {
-    $( "#winfiltroex" ).dialog({
+    $( "#winfltrexis" ).dialog({
       autoOpen: false,
       resizable: false,
-      //height: 420,
       height: 400,
       width: 550,
 			modal: true,
@@ -80,7 +70,7 @@
 							async: false,
 							data: $('#frmExistencias').serialize(),
 							success: function(msm) {
-								$("#winfiltroex").dialog("close");
+								$("#winfltrexis").dialog("close");
 								$('#componente_central').html(msm);
 							}
 						});
@@ -91,14 +81,13 @@
   });
 
   // Muestra la Ventana de Filtro de Existencias
-  $( "#winfiltroex" ).dialog( "open" );
+  $( "#winfltrexis" ).dialog( "open" );
 
   // Limpia los campos del formulario
   $("#frmExistencias")[0].reset();
 
   //Inicializa fecha_desde y fecha_hasta con la fecha actual
-  $(function() {
-    //$("#fecha_desdec").datepicker({dateFormat:"yy-mm-dd"}).datepicker("setDate",new Date());	  
+  $(function() {	  
 		$("#fechadesdefe").datepicker();
     $("#fechadesdefe").datepicker('option', {
       dateFormat: 'yy-mm-dd',
@@ -108,8 +97,7 @@
       buttonImage: 'integrado/imagenes/calendar.png',
       buttonImageOnly: true
     });
-    
-    //$("#fecha_hastac").datepicker({dateFormat:"yy-mm-dd"}).datepicker("setDate",new Date());    
+        
 		$("#fechahastafe").datepicker();		
     $("#fechahastafe").datepicker('option', {
       dateFormat: 'yy-mm-dd',

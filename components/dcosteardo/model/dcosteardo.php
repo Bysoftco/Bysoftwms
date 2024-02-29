@@ -28,9 +28,7 @@ class DCosteardoModelo extends BDControlador {
 			$orden = " $arreglo[orden] $arreglo[id_orden]";
 		}
 
-		$query = "SELECT ocd.numdetalle,ocd.do_asignado,ocd.codservicio,ocd.fecha,ocd.ingreso,ocd.gasto,ocd.sede,s.nombre AS nomservicio
-              FROM orden_costos_detalle ocd, servicios s
-							WHERE ocd.do_asignado = $arreglo[do_asignado] AND ocd.codservicio = s.codigo AND ocd.sede = s.sede ORDER BY $orden";
+		$query = "SELECT ocd.numdetalle,ocd.do_asignado,ocd.codservicio,ocd.fecha,ocd.ingreso,ocd.gasto,ocd.sede,s.nombre AS nomservicio FROM orden_costos_detalle ocd, servicios s WHERE ocd.do_asignado = $arreglo[do_asignado] AND ocd.codservicio = s.codigo AND ocd.sede = s.sede ORDER BY $orden";
 		    
 		$db->query($query);
 		$mostrar = 6;
@@ -48,7 +46,7 @@ class DCosteardoModelo extends BDControlador {
     $sede = $_SESSION['sede'];
         
     //Verifica el tipo de registro - Agregar / Editar
-    if($arreglo[actualiza]) {
+    if($arreglo['actualiza']) {
   		$query = "UPDATE orden_costos_detalle SET numdetalle=$arreglo[numdetalle],do_asignado=$arreglo[do_asignado],
                   codservicio=$arreglo[codservicio],fecha='$arreglo[fecha]',naturaleza='$arreglo[naturaleza]',
                   ingreso=$arreglo[ingreso],gasto=$arreglo[gasto],sede='$sede'
