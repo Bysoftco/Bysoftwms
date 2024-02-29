@@ -10,7 +10,7 @@
       <th>Arribo</th>
       <th>Referencia</th>
       <th>Fecha</th>
-      <th>Ubicación</th>
+      <th>Ubicaci&oacute;n</th>
       <th>Piezas Nal.</th>
       <th>Peso Nal.</th>
       <th>Valor CIF</th>

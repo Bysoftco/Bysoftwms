@@ -160,7 +160,10 @@
               $("#vdetallec").dialog("destroy");
             }
           });
-        }
+        },
+        "Cancelar": function() {
+          $("#vdetallec").dialog("close");
+        }        
       },
 		});
 		// Muestra la Ventana Detalle de Costos DO

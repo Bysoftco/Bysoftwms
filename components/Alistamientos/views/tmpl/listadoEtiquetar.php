@@ -46,7 +46,7 @@
       FMM
       <span id="spanfmm" class="noOrden"></span>
     </th>
-    <th style="width:10px;">Acción</th>
+    <th style="width:10px;">Acci&oacute;n</th>
   </tr>
   <!-- BEGIN ROW  -->
   <tr id="{id_tr_estilo}">

@@ -71,7 +71,7 @@ class ClientesModelo extends BDControlador {
 	
     $limit= ' LIMIT '. ($arreglo['pagina'] -1) * $mostrar . ',' . $mostrar;
     $query.=$limit;
-    $db->query($query);
+    //$db->query($query);
     $retornar['datos']=$db->getArray();
     return $retornar;
   }
@@ -136,12 +136,11 @@ class ClientesModelo extends BDControlador {
   }
 	
   function nuevaTarifa($arreglo) {
-    if(isset($arreglo[tarifa_general])) {
-      $arreglo[tarifa_general] = 1;
-    } else {$arreglo[tarifa_general] = 0;}
+    if(isset($arreglo['tarifa_general'])) {
+      $arreglo['tarifa_general'] = 1;
+    } else { $arreglo['tarifa_general'] = 0; }
     $db = $_SESSION['conexion'];
-    $query = "INSERT INTO tarifas_cliente(cliente, nombre_tarifa, general)
-              VALUES('$arreglo[cliente]', '$arreglo[nombre_tarifa]', $arreglo[tarifa_general])";
+    $query = "INSERT INTO tarifas_cliente(cliente,nombre_tarifa,general) VALUES('$arreglo[cliente]','$arreglo[nombre_tarifa]',$arreglo[tarifa_general])";
     $db->query($query);
     return $db->getInsertID();
   }
@@ -174,37 +173,29 @@ class ClientesModelo extends BDControlador {
   
   function datosReferenciaCliente($arreglo) {
     $db = $_SESSION['conexion']; 
-    $query = "SELECT * FROM referencias WHERE codigo_ref = '$arreglo[referencia]'
-                AND cliente = '$arreglo[numero_documento]'";
+    $query = "SELECT * FROM referencias WHERE codigo_ref = '$arreglo[referencia]' AND cliente = '$arreglo[numero_documento]'";
     $db->query($query);
     return $db->fetch();
   }
   
   function nuevaReferencia($arreglo) {
-    $arreglo[vence_referencia] = (isset($arreglo[vence_referencia])?1:0);
-    $arreglo[serial_referencia] = (isset($arreglo[serial_referencia])?1:0);
-    $arreglo[minimo_stock] = (isset($arreglo[minimo_stock])?1:0);
     $db = $_SESSION['conexion'];
-     
+
+    $arreglo['vence_referencia'] = (isset($arreglo['vence_referencia'])?1:0);
+    $arreglo['serial_referencia'] = (isset($arreglo['serial_referencia'])?1:0);
+    $arreglo['minimo_stock'] = (isset($arreglo['minimo_stock'])?1:0);
+    
     //Validación duplicidad de Referencia asociada a un mismo Cliente
-    $resultado = mysql_query("SELECT * FROM referencias WHERE (codigo_ref = '$arreglo[id_referencia]') 
-                                AND (cliente = '$arreglo[cliente]');");                            
-    $existe = mysql_num_rows($resultado);
+    $query = "SELECT * FROM referencias WHERE (codigo_ref = '$arreglo[id_referencia]') AND (cliente = '$arreglo[cliente]');";
+    $resultado = $db->query($query);                        
+    $existe = $db->countRows($resultado);
      
     if($existe > 0) {
       echo "<script language='javascript'> alert('Referencia '+'$arreglo[id_referencia]'+' para el Cliente '
         +'$arreglo[cliente]'+' ya existe'); </script>";
       return true;
     } else {
-      $query = "INSERT INTO referencias(codigo_ref, ref_prove, nombre,  cliente, unidad,
-                  unidad_venta, presentacion_venta, fecha_expira, min_stock, alto, largo,
-                  ancho, serial, tipo, grupo_item, factor_conversion,vigencia,parte_numero,lote_cosecha)
-                VALUES('$arreglo[id_referencia]', '$arreglo[SKU_Proveedor]', '$arreglo[nombre_referencia]',
-                  '$arreglo[cliente]', $arreglo[embalaje_referencia], $arreglo[unidad_referencia],
-                  '$arreglo[presenta_venta]', $arreglo[vence_referencia], $arreglo[minimo_stock], $arreglo[alto_referencia],
-                  $arreglo[largo_referencia], $arreglo[ancho_referencia], $arreglo[serial_referencia],
-                  $arreglo[tipo_referencia], RIGHT('$arreglo[grupo_items]',4),$arreglo[factor_conversion],'$arreglo[vigencia]',
-				  '$arreglo[parte_numero]','$arreglo[lote_cosecha]')";
+      $query = "INSERT INTO referencias(codigo_ref,ref_prove,nombre,cliente,unidad,unidad_venta, presentacion_venta,fecha_expira,min_stock,alto,largo,ancho,serial,tipo,grupo_item,factor_conversion,vigencia,parte_numero,lote_cosecha) VALUES(TRIM('$arreglo[id_referencia]'),'$arreglo[SKU_Proveedor]','$arreglo[nombre_referencia]','$arreglo[cliente]',$arreglo[embalaje_referencia],$arreglo[unidad_referencia],'$arreglo[presenta_venta]',$arreglo[vence_referencia],$arreglo[minimo_stock],$arreglo[alto_referencia],$arreglo[largo_referencia],$arreglo[ancho_referencia],$arreglo[serial_referencia],$arreglo[tipo_referencia],RIGHT('$arreglo[grupo_items]',4),$arreglo[factor_conversion],'$arreglo[vigencia]','$arreglo[parte_numero]','$arreglo[lote_cosecha]')";
 
       $db->query($query);
       return $db->getInsertID();
@@ -267,17 +258,18 @@ class ClientesModelo extends BDControlador {
   }
 
   function editarReferencia($arreglo) {
-    $arreglo[vence_referencia] = (isset($arreglo[vence_referencia])?1:0);
-    $arreglo[serial_referencia] = (isset($arreglo[serial_referencia])?1:0);
-    $arreglo[minimo_stock] = (isset($arreglo[minimo_stock])?1:0);
     $db = $_SESSION['conexion'];
+    $arreglo['vence_referencia'] = (isset($arreglo['vence_referencia'])?1:0);
+    $arreglo['serial_referencia'] = (isset($arreglo['serial_referencia'])?1:0);
+    $arreglo['minimo_stock'] = (isset($arreglo['minimo_stock'])?1:0);
  
     //Organizado por Fredy Salom - 21/01/2021   
-    $query = "UPDATE referencias SET ref_prove = '$arreglo[SKU_Proveedor]',".
-             "nombre = '$arreglo[nombre_referencia]',cliente = '$arreglo[cliente]',".
+    $query = "UPDATE referencias SET codigo_ref = TRIM('$arreglo[id_referencia]'),".
+             "ref_prove = '$arreglo[SKU_Proveedor]',".
+             "nombre = TRIM('$arreglo[nombre_referencia]'),cliente = '$arreglo[cliente]',".
              "unidad = $arreglo[embalaje_referencia],".
-             "unidad_venta = '$arreglo[unidad_referencia]',".
-             "presentacion_venta = $arreglo[presenta_venta],".
+             "unidad_venta = $arreglo[unidad_referencia],".
+             "presentacion_venta = '$arreglo[presenta_venta]',".
              "fecha_expira = $arreglo[vence_referencia],".
              "min_stock = $arreglo[minimo_stock],".
              "alto = $arreglo[alto_referencia],".
@@ -332,7 +324,7 @@ class ClientesModelo extends BDControlador {
   function eliminarCliente($documento) {
     $db = $_SESSION['conexion'];
 
-    $query = " UPDATE clientes SET inactivo = 1 WHERE numero_documento = $documento";
+    $query = "UPDATE clientes SET inactivo = 1 WHERE numero_documento = $documento";
 
     $db->query($query);
   }
@@ -356,10 +348,10 @@ class ClientesModelo extends BDControlador {
   
   function eliminarDocumento($arreglo) {
     $db = $_SESSION['conexion'];
-    $ruta = "integrado/_files/".$arreglo[documento]."/";
+    $ruta = "integrado/_files/".$arreglo['documento']."/";
     
     // Eliminamos físicamente el archivo
-    unlink($ruta.$arreglo[nombredoc]);
+    unlink($ruta.$arreglo['nombredoc']);
     // Eliminamos el archivo de la tabla
     $query = "DELETE FROM docclientes_anexos
               WHERE (numero_documento = '$arreglo[documento]') AND (nombre_documento = '$arreglo[nombredoc]')";

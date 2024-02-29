@@ -27,6 +27,7 @@ class dcosteardo {
 	function editarDetallec($arreglo) {
     $datosDetallec = $this->datos->datosDetallec($arreglo);
     $arreglo['datosDetallec'] = $datosDetallec[0];
+    $arreglo['datosDetallec']['doc_tte'] = $arreglo['doc_tte'];
 
 		$this->vista->agregarDetallec($arreglo);
 	}
@@ -42,7 +43,7 @@ class dcosteardo {
 	}
     
   function findServicio($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findServicio($arreglo);
     $Existe = count($unaConsulta); 
 
@@ -50,7 +51,7 @@ class dcosteardo {
 			$nombre = trim($value['nombre']);
       $naturaleza = $value['naturaleza'];
       $codigo = $value['codigo'];
-      $valor = $value['tarifa_plena_cif'];
+      $valor = $value['tarifa_plena_cubico'];
 			echo "$nombre|$naturaleza|$codigo|$valor\n";
     }
     if($Existe == 0) echo "No hay Resultados|0\n";

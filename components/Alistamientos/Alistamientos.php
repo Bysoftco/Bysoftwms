@@ -62,11 +62,12 @@ class Alistamientos {
     $codigoMaestro = $invMaestro->save();
 
     if($arreglo['tipo_mercancia']==1) {
-      $this->alistarNacional($arreglo, $codigoMaestro, $codigoNuevaEntrada);
+      //$this->alistarNacional($arreglo, $codigoMaestro, $codigoNuevaEntrada);
+      $this->alistarNacional($arreglo, $codigoMaestro);
     } else if($arreglo['tipo_mercancia']==2) {
-      $this->alistarExtranjera($arreglo, $codigoMaestro, $codigoNuevaEntrada);
+      $this->alistarExtranjera($arreglo, $codigoMaestro);
     } else if($arreglo['tipo_mercancia']==3) {
-      $this->alistarMixta($arreglo, $codigoMaestro, $codigoNuevaEntrada);
+      $this->alistarMixta($arreglo, $codigoMaestro);
     }
     $arregloEnviar['id_registro'] = $codigoMaestro;
     $arregloEnviar['tipo_mercancia'] = $arreglo['tipo_mercancia'];
@@ -93,7 +94,7 @@ class Alistamientos {
     return $arregloMaestro;
   }
 
-  function alistarNacional($arreglo, $codigoMaestro, $codigoNuevaEntrada) {
+  function alistarNacional($arreglo, $codigoMaestro) {
     $arregloMaestro = $this->armarArregloEncabezado($arreglo);
 
     $cantidadTotal = 0;
@@ -145,7 +146,7 @@ class Alistamientos {
     $codigoMaestro = $invMaestro->save($codigoMaestro, 'codigo');
   }
 
-  function alistarExtranjera($arreglo, $codigoMaestro, $codigoNuevaEntrada) {
+  function alistarExtranjera($arreglo, $codigoMaestro) {
     $arregloMaestro=$this->armarArregloEncabezado($arreglo);
 
     $cantidadTotal = 0;
@@ -198,7 +199,7 @@ class Alistamientos {
     $codigoMaestro = $invMaestro->save($codigoMaestro, 'codigo');
   }
   
-  function alistarMixta($arreglo, $codigoMaestro, $codigoNuevaEntrada) {
+  function alistarMixta($arreglo, $codigoMaestro) {
     $arregloMaestro = $this->armarArregloEncabezado($arreglo);
     
     $cantidadTotal = 0;

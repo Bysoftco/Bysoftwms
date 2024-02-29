@@ -1,3 +1,9 @@
+<style>
+  td.ajustarancho {
+    width: 1px;
+    white-space: nowrap;
+  }
+</style>
 {COMODIN}
 <div style="padding-top: 10px;"></div>
 <fieldset>
@@ -6,67 +12,88 @@
   </legend><br />
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general">
     <tr>
-      <th colspan="4">
-        Descripción del Alistamiento No. {codigo_operacion}
+      <th colspan="6">
+        Descripci&oacute;n del Alistamiento No. {codigo_operacion}
         <input type="hidden" name="codigo_operacion" id="codigo_operacion" value="{codigo_operacion}" />
       </th>
     </tr>
     <tr>
-      <td class="tituloForm" style="width: 25%">Documento Cliente</td>
-      <td style="width: 25%">
+      <td class="tituloForm ajustarancho">Nombre Cliente&nbsp;</td>
+      <td>&nbsp;<b>{razon_social}</b></td>
+      <td class="tituloForm ajustarancho">Documento Cliente&nbsp;</td>
+      <td>&nbsp;
         {numero_documento}
         <input type="hidden" name="doc_cliente" id="doc_cliente" value="{numero_documento}" />
       </td>
-      <td style="width: 25%" class="tituloForm">Nombre Cliente</td>
-      <td style="width: 25%"><b>{razon_social}</b></td>
+      <td class="tituloForm ajustarancho">Fecha de Alistamiento&nbsp;</td>
+      <td>&nbsp;{fecha}</td>
     </tr>
     <tr>
-      <td class="tituloForm" style="width: 25%">Fecha de Alistamiento</td>
-      <td style="width: 25%">{fecha}</td>
-      <td style="width: 25%" class="tituloForm">Destinatario</td>
-      <td style="width: 25%">{destinatario}</td>
+      <td class="tituloForm ajustarancho">Destinatario&nbsp;</td>
+      <td>&nbsp;{destinatario}</td>
+      <td class="tituloForm ajustarancho">Ciudad / Direcci&oacute;n&nbsp;</td>
+      <td>&nbsp;{ciudad} / {direccion}</td>      
+      <td class="tituloForm ajustarancho">Conductor&nbsp;</td>
+      <td>&nbsp;{conductor_nombre}</td>
     </tr>
     <tr>
-      <td class="tituloForm">Ciudad / Direcci&oacute;n</td>
-      <td>{ciudad} / {direccion}</td>      
-      <td style="width: 25%" class="tituloForm">Conductor</td>
-      <td style="width: 25%">{conductor_nombre}</td>
+      <td class="tituloForm ajustarancho">Identificaci&oacute;n&nbsp;</td>
+      <td>&nbsp;{conductor_identificacion}</td>
+      <td class="tituloForm ajustarancho">Placa&nbsp;</td>
+      <td>&nbsp;{placa}</td>
+      <td class="tituloForm ajustarancho">Empresa Transportadora&nbsp;</td>
+      <td>&nbsp;{empresa}</td>
+    </tr>
+    <tr>            
+      <td class="tituloForm ajustarancho">FMM&nbsp;</td>
+      <td>&nbsp;{fmm}</td>
+      <td class="tituloForm ajustarancho">Tipo de Operaci&oacute;n&nbsp;</td>
+      <td>&nbsp;{producto}</td>
+      <td class="tituloForm ajustarancho">Orden&nbsp;</td>
+      <td>&nbsp;{orden}</td>
     </tr>
     <tr>
-      <td class="tituloForm">Identificaci&oacute;n</td>
-      <td>{conductor_identificacion}</td>
-      <td style="width: 25%" class="tituloForm">Placa</td>
-      <td style="width: 25%">{placa}</td>      
-    </tr>
-    <tr>      
-      <td class="tituloForm">Empresa Transportadora</td>
-      <td>{empresa}</td>      
-      <td style="width: 25%" class="tituloForm">FMM</td>
-      <td style="width: 25%">{fmm}</td>
+      <td class="tituloForm">Pedido&nbsp;</td>
+      <td>&nbsp;{pedido}</td>
+      <td class="tituloForm">Cantidad&nbsp;</td>
+      <td style="text-align:right;">{cantidad}&nbsp;</td>
+      <td class="tituloForm">Cantidad Nacional&nbsp;</td>
+      <td style="text-align:right;">{cantidad_nac}&nbsp;</td>
     </tr>
     <tr>
-      <td class="tituloForm">Tipo de Operación</td>
-      <td>{producto}</td>
-      <td class="tituloForm">Orden</td>
-      <td>{orden}</td>
+      <td class="tituloForm ajustarancho">Cantidad Extranjera&nbsp;</td>
+      <td style="text-align:right;">{cantidad_ext}&nbsp;</td>
+      <td class="tituloForm">Peso Neto:&nbsp;</td>
+      <td>
+        <!-- BEGIN pesoneto -->
+        <input type="text" name="pesoneto" id="pesoneto" value="{pesoneto}" size="10" style="text-align:right;" readonly />
+        <!-- END pesoneto -->
+      </td>
+      <td class="tituloForm">Peso Bruto:&nbsp;</td>
+      <td>
+        <input type="text" name="pesobruto" id="pesobruto" value="" size="10" style="text-align:right;" readonly />
+      </td>
     </tr>
     <tr>
-      <td class="tituloForm">Pedido</td>
-      <td>{pedido}</td>
-      <td class="tituloForm">Cantidad</td>
-      <td>{cantidad}</td>
-    </tr>
+      <td class="tituloForm">Bultos:&nbsp;</td>
+      <td>
+        <input type="text" name="bultos" id="bultos" value="" size="10" style="text-align:right;" readonly />
+      </td>
+      <td class="tituloForm">Ocultar Peso:&nbsp;</td>
+      <td>
+        <input type="text" name="ocultarPB" id="ocultarPB" value="" size="10" style="text-align:right;" readonly />
+      </td>
+      <td class="tituloForm">Ocultar Valor:&nbsp;</td>
+      <td>
+        <input type="text" name="ocultarVC" id="ocultarVC" value="" size="10" style="text-align:right;" readonly />
+      </td>
+    </tr>    
     <tr>
-      <td class="tituloForm">Cantidad Nacional</td>
-      <td>{cantidad_nac}</td>
-      <td class="tituloForm">Cantidad Extranjera</td>
-      <td>{cantidad_ext}</td>
-    </tr>
-    <tr>
-      <td class="tituloForm">Observaciones</td>
-      <td colspan="3">{observaciones}</td>
+      <td class="tituloForm">Observaciones&nbsp;</td>
+      <td colspan="5">&nbsp;{observaciones}</td>
     </tr>
   </table><br /><br />
+  <input type="hidden" name="obs" id="obs" value="{observaciones}" />
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general">
     <tr>
       <th colspan="11">Detalle del Alistamiento</th>
@@ -76,7 +103,7 @@
       <th>Arribo</th>
       <th>Referencia</th>
       <th>Fecha Ing.</th>
-      <th>Ubicación</th>
+      <th>Ubicaci&oacute;n</th>
       <th>Piezas Nal.</th>
       <th>Peso Nal.</th>
       <th>Valor CIF</th>
@@ -86,17 +113,17 @@
     </tr>
     <!-- BEGIN ROW -->
     <tr>
-      <td>{orden_detalle}</td>
+      <td style="text-align:center;">{orden_detalle}</td>
       <td style="text-align:center;">{arribo}</td>
       <td>[{codigo_referen}] {nombre_referencia}</td>
       <td style="text-align:center;">{fecha_detalle}</td>
       <td style="text-align:center;">{nombre_ubicacion}</td>
       <td style="text-align: right;">{cantidad_nacional}</td>
-      <td style="text-align: right;">{peso_nacional}</td>
-      <td style="text-align: right;">{valor_cif}</td>
+      <td style="text-align: right;"><span style="display:{verPeson}">{peso_nacional}</span></td>
+      <td style="text-align: right;"><span style="display:{verCif}">{valor_cif}</span></td>
       <td style="text-align: right;">{cantidad_extranjera}</td>
-      <td style="text-align: right;">{peso_extranjera}</td>
-      <td style="text-align: right;">{valor_fob}</td>
+      <td style="text-align: right;"><span style="display:{verPesoe}">{peso_extranjera}</span></td>
+      <td style="text-align: right;"><span style="display:{verFob}">{valor_fob}</span></td>
     </tr>
     <!-- END ROW -->
   </table><br /><br />
@@ -107,7 +134,7 @@
       </td>
       <td style="width: 5px;"></td>
       <td>
-        <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="devolver" >Devolver Operación</button>
+        <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="devolver" >Devolver Operaci&oacute;n</button>
       </td>
       <td style="width: 5px;"></td>
       <td>
@@ -115,7 +142,7 @@
       </td>
     </tr>
     <tr style="display: {mostrar_mensaje}">
-      <td colspan="2" style="color:#FF0000;">* La operación no puede ser devuelta debido a que se encuentra cerrada.</td>
+      <td colspan="2" style="color:#FF0000;">* La operaci&oacute;n no puede ser devuelta debido a que se encuentra cerrada.</td>
       <td style="width: 5px;"></td>
       <td>
         <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="pcklist-2" >Packing List</button>
@@ -137,7 +164,7 @@
     }
   })
 	.click(function() {
-    if(confirm("\u00BFRealmente desea Cerrar la Operación?")) {
+    if(confirm("\u00BFRealmente desea Cerrar la Operaci\u00f3n?")) {
       $.ajax({
         url: 'index_blank.php?component=Alistamientos&method=cerrarAlistamiento',
         type: "POST",
@@ -170,7 +197,7 @@
           doc_cliente: $("#doc_cliente").attr("value")
         },
         success: function(msm) {
-          alert("Devolución Realizada con Éxito.");
+          alert("Devoluci\u00f3n Realizada con \u00c9xito.");
           jQuery(document.body).overlayPlayground('close');void(0);
           $('#componente_central').html(msm);
         }
@@ -188,4 +215,25 @@
     window.open("index_blank.php?component=Alistamientos&method=generarPackingList&codigoMaestro="+$("#codigoMaestro").attr("value"));
     return false;
   });
+
+  var observa = document.getElementById("obs").value;
+
+  //Obtenemos el Peso Bruto
+  var pb = observa.split('[');
+  let valor = pb[1].split(']')[0];
+
+  const numActual = +valor.replace(/,/g, '')
+  const peso = numActual.toLocaleString('en-US',{minimumFractionDigits: 2})
+  document.getElementById("pesobruto").value = peso;
+
+  //Obtenemos Bultos
+  var nblts = observa.split('{');
+  let vblts = nblts[1].split('}')[0];
+  document.getElementById("bultos").value = vblts;
+
+  //Obtenemos Checks - Ver/Ocultar Peso/Valor
+  var rchks = observa.split('(');
+  let vchks = rchks[1].split(')')[0];
+  document.getElementById("ocultarPB").value = vchks.substring(0,1);
+  document.getElementById("ocultarVC").value = vchks.substring(1,2);
 </script>

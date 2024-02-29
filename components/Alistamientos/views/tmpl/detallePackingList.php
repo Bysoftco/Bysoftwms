@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Packing List</title>
   <script type="text/javascript">
     print();
@@ -56,7 +56,11 @@
 <body>
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_packinglist">
     <tr>
-      <th colspan="8"><b>LISTA DE EMPAQUE</b></th>
+      <th>Fecha: <strong>{fecha_impresion}</strong></th>  
+      <th height="21" colspan="6" align="center"><strong>LISTA DE EMPAQUE</strong><br/>
+      <img src="integrado/imagenes/cliente.png" style="width:79px;height:37px;" /></th>
+      <th>Hora: <strong>{hora_impresion}</strong></th>
+      <!-- <th colspan="8"><b>LISTA DE EMPAQUE</b></th> -->
     </tr>
     <tr>
       <td style="width: 12%;" class="tituloForm">Nombre Cliente</td>
@@ -66,7 +70,7 @@
         {numero_documento}
         <input type="hidden" name="doc_cliente" id="doc_cliente" value="{numero_documento}" />
       </td>
-      <td class="tituloForm" style="width: 12%">Fecha de Operación</td>
+      <td class="tituloForm" style="width: 12%">Fecha de Operaci&oacute;n</td>
       <td style="width: 13%">{fecha}</td>
       <td class="tituloForm" style="width: 12%">Destinatario</td>
       <td style="width: 13%">{destinatario}</td>
@@ -87,7 +91,7 @@
       <td style="width: 13%"><b>{empresa}</b></td>
       <td class="tituloForm" style="width: 12%">FMM</td>
       <td style="width: 13%">{fmm}</td>
-      <td class="tituloForm" style="width: 12%">Tipo de Operación</td>
+      <td class="tituloForm" style="width: 12%">Tipo de Operaci&oacute;n</td>
       <td style="width: 13%">{producto}</td>
       <td class="tituloForm">Orden</td>
       <td>{orden}</td>
@@ -103,6 +107,40 @@
       <td style="width: 13%">{cantidad_ext}</td>
     </tr>
     <tr>
+      <td class="tituloForm" style="width: 12%">Peso Neto</td>
+      <td style="width: 13%">
+        <!-- BEGIN pesoneto -->
+        <input name="pesoneto" type="text" id="pesoneto" style="font-weight:bold;text-align:right;" value="{pesoneto}" size="13" readonly />
+        <!-- END pesoneto -->
+      </td>
+      <td class="tituloForm" style="width: 12%">Peso Bruto</td>
+      <td style="width: 13%">
+        <input name="pesobruto" type="text" id="pesobruto" style="font-weight:bold;text-align:right;" value="" size="13" readonly />
+      </td>
+      <td class="tituloForm" style="width: 12%">Bultos</td>
+      <td style="width: 13%">
+        <input name="bultos" type="text" id="bultos" style="font-weight:bold;text-align:right;" value="" size="5" readonly />
+      </td>
+      <td class="tituloForm" style="width: 25%" colspan="2"></td>
+    </tr>
+    <input type="hidden" name="obs" id="obs" value="{observaciones}" />
+    <script>
+      var observa = document.getElementById("obs").value;
+
+      //Obtenemos el Peso Bruto
+      var pb = observa.split('[');
+      let valor = pb[1].split(']')[0];
+
+      const numActual = +valor.replace(/,/g, '')
+      const peso = numActual.toLocaleString('en-US',{minimumFractionDigits: 2})
+      document.getElementById("pesobruto").value = peso;
+
+      //Obtenemos Bultos
+      var nblts = observa.split('{');
+      let vblts = nblts[1].split('}')[0];
+      document.getElementById("bultos").value = vblts;
+    </script>
+    <tr>
       <td class="tituloForm" style="width: 12%">Observaciones</td>
       <td style="width: 13%" colspan="7"> {observaciones}</td>
     </tr>
@@ -110,9 +148,9 @@
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_packinglist">
     <tr>
       <th><b>Orden</b></th>
-      <th><b>Código Ref.</b></th>
+      <th><b>C&oacute;digo Ref.</b></th>
       <th><b>Referencia</b></th>
-      <th><b>Ubicación</b></th>
+      <th><b>Ubicaci&oacute;n</b></th>
       <th><b>M/L/C</b></th>
       <th><b>Piezas Nal.</b></th>
       <th><b>Peso Nal.</b></th>
@@ -123,7 +161,7 @@
     </tr>
     <!-- BEGIN ROW -->
     <tr>
-      <td style="padding: 2.5px;">{orden_detalle}</td>
+      <td style="padding: 2.5px;text-align:center;">{orden_detalle}</td>
       <td style="text-align: center;padding: 2.5px;">
         <img src="components/Alistamientos/views/tmpl/generar.php?serial={codigo_referen}" />
       </td>
@@ -131,13 +169,14 @@
       <td style="text-align:center;">{nombre_ubicacion}</td>
       <td style="text-align:center;">{modelo}</td>
       <td style="text-align: right;padding-right: 5px;">{cantidad_nacional}</td>
-      <td style="text-align: right;padding-right: 5px;">{peso_nacional}</td>
-      <td style="text-align: right;padding-right: 5px;">{valor_cif}</td>
+      <td style="text-align: right;padding-right: 5px;"><span style="display:{verPeson}">{peso_nacional}</span></td>
+      <td style="text-align: right;padding-right: 5px;"><span style="display:{verCif}">{valor_cif}</span></td>
       <td style="text-align: right;padding-right: 5px;">{cantidad_extranjera}</td>
-      <td style="text-align: right;padding-right: 5px;">{peso_extranjera}</td>
-      <td style="text-align: right;padding-right: 5px;">{valor_fob}</td>
+      <td style="text-align: right;padding-right: 5px;"><span style="display:{verPesoe}">{peso_extranjera}</span></td>
+      <td style="text-align: right;padding-right: 5px;"><span style="display:{verFob}">{valor_fob}</span></td>
     </tr>
     <!-- END ROW -->
+    <!-- BEGIN Totales -->
     <tr>
       <td colspan="5" style="font-size: 12px;"><b>T O T A L E S</b></td>
       <td style="text-align: right;font-size: 12px;padding-right: 5px;"><b>{tot_piezas_naci}</b></td>
@@ -146,6 +185,26 @@
       <td style="text-align: right;font-size: 12px;padding-right: 5px;"><b>{tot_piezas_ext}</b></td>
       <td style="text-align: right;font-size: 12px;padding-right: 5px;"><b>{tot_peso_ext}</b></td>
       <td style="text-align: right;font-size: 12px;padding-right: 5px;"><b>{tot_valor_fob}</b></td>
+    </tr>
+    <!-- END Totales -->
+    <tr>
+      <td colspan="11">
+        <table width="100%">
+          <tr><td colspan="5" style="border: none;"></td></tr>
+          <tr><td colspan="5" style="border: none;"></td></tr>
+          <tr><td colspan="5" style="border: none;"></td></tr>
+          <tr><td colspan="5" style="border: none;"></td></tr>
+          <tr><td colspan="5" style="border: none;"></td></tr>
+          <tr><td colspan="5" style="border: none;"></td></tr>
+          <tr>
+            <td style="border-left:none;border-top:1px solid;border-right:none;border-bottom:none;width:20%;width:20%;text-align:center;"><strong>JEFE - BODEGA</strong></td>
+            <td width="20%" style="border: none;"></td>           
+            <td style="border-left:none;border-top:1px solid;border-right:none;border-bottom:none;width:20%;width:20%;text-align:center;">&nbsp;</td>
+            <td width="20%" style="border: none;"></td>
+            <td style="border-left:none;border-top:1px solid;border-right:none;border-bottom:none;width:20%;width:20%;text-align:center;"><strong>NOMBRE_RECIBE_A_SATISFACCI&Oacute;N</strong></td>
+          </tr>      
+        </table>
+      </td>
     </tr>
     <tr>
       <td colspan="11">

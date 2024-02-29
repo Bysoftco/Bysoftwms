@@ -4,23 +4,23 @@
   <table align="center" width="50%" cellpadding="0" cellspacing="0" id="tabla_general">
     <tr class="tituloForm" align="center">
       <td  align="center" colspan="2">
-        Ingrese parte del nombre de cliente y seleccione la opción que desea consultar...
+        Ingrese parte del nombre de cliente y seleccione la opci&oacute;n que desea consultar...
       </td>
     </tr>
     <tr>
       <td align="right">Por cuenta de:</td>
       <td align="left">
-        <input type="text" id="buscarCliente_Kit" class="{required:true}" size="50" style="width: 255px;" />
+        <input type="text" id="buscarCliente_Kit" class="{required:true}" size="50" style="width: 255px; height: 20px;" />
       </td>
     </tr>
     <tr>
       <td align="right">Nit:</td>
       <td align="left">
-        <input name="docCliente" type="text" class="{required:true}" id="docCliente" style="width: 255px;" />
+        <input name="docCliente" type="text" class="{required:true}" id="docCliente" style="width: 255px; height: 20px;" />
       </td>
     </tr>
     <tr>
-      <td align="right">Tipo de mercancía:</td>
+      <td align="right">Tipo de mercanc&iacute;a:</td>
       <td align="left">
         <select class="{required:true} input" id="tipo_mercancia" name="tipo_mercancia" style="width: 260px;">
           <option value="1">Nacional</option>

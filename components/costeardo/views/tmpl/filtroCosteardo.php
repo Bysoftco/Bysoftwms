@@ -1,9 +1,9 @@
 <style>
-  body { font-family: Arial,Helvetica,sans-serif; font-size: 11px; color:#523A0B; }  	
-  label { display: inline-block; width: 120px; margin-left: 5px; }
+  body { font-family: Arial,Helvetica,sans-serif; font-size: 62.5%; color:#523A0B; }  	
+  label { display: inline-block; width: 90px; margin-left: 5px; }
   legend { padding: 0.5em; }
   fieldset fieldset label { display: block; }
-  #formulario label { width: 160px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
+  #frmFiltrocdo label { width: 100px; margin-left: 5px;}/*ancho de las etiquetas de los campos*/
   h1 { font-size: 1.2em; margin: .6em 0; }
   div#users-contain { width: 100%; margin: 5px 0; margin-left: 0%; }
   div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
@@ -53,7 +53,7 @@
       autoOpen: false,
       resizable: false,
       height: 400,
-      width: 550,
+      width: 530,
 			modal: true,
 			buttons: {
         "Consultar": function() {

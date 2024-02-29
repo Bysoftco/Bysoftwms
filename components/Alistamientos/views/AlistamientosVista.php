@@ -4,7 +4,7 @@
  *
  * @author  Teresa
  * @author  Fredy Salom <fsalom@bysoft.us>
- * @date    17-Marzo-2015
+ * @date    17-Marzo-2015 - Actualizado: 26/06/2023
  */
 
 require_once COMPONENTS_PATH . 'Entidades/Clientes.php';
@@ -15,32 +15,32 @@ class AlistamientosVista {
   var $datos;
   
   function AlistamientosVista() {
-    $this->template = new HTML_Template_IT();
+    $this->template = new HTML_Template_IT(COMPONENTS_PATH);
     $this->datos = new AlistamientosDatos();
   }
   
   function filtroClientes() {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'Alistamientos/views/tmpl/filtroClientes.php' );
-    $this->template->setVariable('COMODIN', '' );
+    $this->template->loadTemplateFile('Alistamientos/views/tmpl/filtroClientes.php');
+    $this->template->setVariable('COMODIN', '');
     $this->template->show();
   }
   
 	function filtroEtiquetar($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'Alistamientos/views/tmpl/filtroEtiquetar.php' );
+    $this->template->loadTemplateFile('Alistamientos/views/tmpl/filtroEtiquetar.php');
     $this->template->setVariable('COMODIN', '');
     $this->template->show();
 	}
 
   function listadoEtiquetar($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'Alistamientos/views/tmpl/listadoEtiquetar.php' );
+    $this->template->loadTemplateFile('Alistamientos/views/tmpl/listadoEtiquetar.php');
     $this->template->setVariable('COMODIN', '');
     $this->template->setVariable('paginacion', $arreglo['datos']['paginacion']);
     $this->template->setVariable('pagina', $arreglo['pagina']);
     $this->template->setVariable('verAlerta', 'none');
 	
-    $this->template->setVariable('orden', $arreglo['orden']);
-    $this->template->setVariable('id_orden', $arreglo['id_orden']);
-    $this->template->setVariable('campoBuscar', $arreglo['buscar']);
+    $this->template->setVariable('orden', isset($arreglo['orden'])?$arreglo['orden']:"");
+    $this->template->setVariable('id_orden', isset($arreglo['id_orden'])?$arreglo['id_orden']:"");
+    $this->template->setVariable('campoBuscar', isset($arreglo['buscar'])?$arreglo['buscar']:"");
         	
     if(isset($arreglo['alerta_accion'])) {
       $this->template->setVariable('alerta_accion', $arreglo['alerta_accion']);
@@ -55,8 +55,8 @@ class AlistamientosVista {
     //+-----------------------------------------------------------------------------------------------------------+
     $numRegistro = count($arreglo['datos']['datos']);
     if($numRegistro == 0) {
-      $this->template->setVariable(mensaje, "&nbsp;No hay Alistamientos para Etiquetar");
-      $this->template->setVariable(estilo, "ui-state-error");
+      $this->template->setVariable('mensaje', "&nbsp;No hay Alistamientos para Etiquetar");
+      $this->template->setVariable('estilo', "ui-state-error");
     } else {
       $codbagcolor = 1; $n = $arreglo['pagina'] == '1' ? 0 : (((int) $arreglo['pagina'] - 1) * 10);
       foreach($arreglo['datos']['datos'] as $value) {
@@ -84,8 +84,8 @@ class AlistamientosVista {
   }
   
   function mostrarListadoReferencias($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'Alistamientos/views/tmpl/listadoReferencias.php' );
-    $this->template->setVariable('COMODIN', '' );
+    $this->template->loadTemplateFile('Alistamientos/views/tmpl/listadoReferencias.php');
+    $this->template->setVariable('COMODIN', '');
     $this->template->setVariable('tipo_mercancia', $arreglo['tipo_mercancia']);
     if($arreglo['tipo_mercancia']==1) {
       $this->template->setVariable('nombre_tipo_mercancia', 'NACIONAL');
@@ -140,21 +140,21 @@ class AlistamientosVista {
   }
   
   function alistarReferencias($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'Alistamientos/views/tmpl/formAlistamiento.php' );
-    $this->template->setVariable('COMODIN', '' );
+    $this->template->loadTemplateFile('Alistamientos/views/tmpl/formAlistamiento.php');
+    $this->template->setVariable('COMODIN', '');
     
     $cliente = new Clientes();
     $datosCliente = $cliente->recover($arreglo['docCliente'],'numero_documento');
-    $this->template->setVariable('documento_cliente' , isset($datosCliente->numero_documento)?$datosCliente->numero_documento:'');
-    $this->template->setVariable('nombre_cliente' , isset($datosCliente->razon_social)?$datosCliente->razon_social:'');
+    $this->template->setVariable('documento_cliente',isset($datosCliente->numero_documento)?$datosCliente->numero_documento:'');
+    $this->template->setVariable('nombre_cliente',isset($datosCliente->razon_social)?$datosCliente->razon_social:'');
     
-    $this->template->setVariable('tipo_mercancia' , $arreglo['tipo_mercancia']);
+    $this->template->setVariable('tipo_mercancia',$arreglo['tipo_mercancia']);
     if($arreglo['tipo_mercancia']==1) {
-      $this->template->setVariable('nombre_tipo_mercancia' , 'NACIONAL');
+      $this->template->setVariable('nombre_tipo_mercancia','NACIONAL');
     } else if($arreglo['tipo_mercancia']==2) {
-      $this->template->setVariable('nombre_tipo_mercancia' , 'EXTRANJERA');
+      $this->template->setVariable('nombre_tipo_mercancia','EXTRANJERA');
     } else if($arreglo['tipo_mercancia']==3) {
-      $this->template->setVariable('nombre_tipo_mercancia' , 'MIXTA');
+      $this->template->setVariable('nombre_tipo_mercancia','MIXTA');
     }
 
     //Captura automática de fecha y hora 
@@ -184,8 +184,8 @@ class AlistamientosVista {
   }
   
   function mostrarAlistamiento($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'Alistamientos/views/tmpl/detalleAlistamiento.php' );
-    $this->template->setVariable('COMODIN', '' );
+    $this->template->loadTemplateFile('Alistamientos/views/tmpl/detalleAlistamiento.php');
+    $this->template->setVariable('COMODIN', '');
     
     $datosMaestro = $this->datos->retornarMaestroAlistamiento($arreglo['id_registro']);
     
@@ -198,8 +198,8 @@ class AlistamientosVista {
       $this->template->setVariable('n',2);
     }
 
-    $this->template->setVariable('tipo_mercancia', $arreglo['tipo_mercancia']);
-        
+    $this->template->setVariable('tipo_mercancia',isset($arreglo['tipo_mercancia'])?$arreglo['tipo_mercancia']:"");
+           
     $this->template->setVariable('codigo_operacion', $datosMaestro->codigo);
     $this->template->setVariable('numero_documento', $datosMaestro->numero_documento);    
     $this->template->setVariable('razon_social', $datosMaestro->razon_social);
@@ -220,9 +220,22 @@ class AlistamientosVista {
     $this->template->setVariable('cantidad_nac', number_format($datosMaestro->cantidad_nac,2,".",","));
     $this->template->setVariable('cantidad_ext', number_format($datosMaestro->cantidad_ext,2,".",","));
     $this->template->setVariable('observaciones', $datosMaestro->obs);
-    
+
+    //Extraemos los check para saber que Peso/Valor Ocultar/Mostrar
+    $pesovlr = explode(')',(explode('(',$datosMaestro->obs)[1]))[0];
+    $verPeson = substr($pesovlr,0,1)=='0' ? 'block' : 'none';
+    $this->template->setVariable('verPeson',$verPeson);
+    $verCif = substr($pesovlr,1,1)=='0' ? 'block' : 'none';
+    $this->template->setVariable('verCif',$verCif);
+    $verPesoe = substr($pesovlr,0,1)=='0' ? 'block' : 'none';
+    $this->template->setVariable('verPesoe',$verPesoe);
+    $verFob = substr($pesovlr,1,1)=='0' ? 'block' : 'none';
+    $this->template->setVariable('verFob',$verFob);
+
     $detalleAlistamiento = $this->datos->retornarDetalleAlistamiento($arreglo['id_registro']);
-    
+
+    //Acumuladores Peso Neto
+    $pesonal=$pesoext=0;  
     foreach($detalleAlistamiento as $valueDetalle) {
       $this->template->setCurrentBlock("ROW");
       $this->template->setVariable('orden_detalle', $valueDetalle['orden']);
@@ -230,22 +243,41 @@ class AlistamientosVista {
       $this->template->setVariable('codigo_referen', $valueDetalle['codigo_ref']);
       $this->template->setVariable('nombre_referencia', $valueDetalle['nombre_referencia']);
       $this->template->setVariable('fecha_detalle', $valueDetalle['fecha']);
-      $this->template->setVariable('nombre_ubicacion', isset($valueDetalle['nombre_ubicacion'])?$valueDetalle['nombre_ubicacion']:'POR ASIGNAR');    
+      $this->template->setVariable('nombre_ubicacion',isset($valueDetalle['nombre_ubicacion'])?$valueDetalle['nombre_ubicacion']:'POR ASIGNAR');
       $this->template->setVariable('cantidad_nacional', number_format(abs($valueDetalle['cantidad_naci']),2,".",","));
       $this->template->setVariable('peso_nacional', number_format(abs($valueDetalle['peso_naci']),2,".",","));
+      $pesonal += abs($valueDetalle['peso_naci']);
       $this->template->setVariable('valor_cif', number_format(abs($valueDetalle['cif']),2,".",","));
+      if(abs($valueDetalle['peso_naci'])>0) {
+        $verPeson = substr($pesovlr,0,1)=='0' ? 'block' : 'none';
+        $this->template->setVariable('verPeson',$verPeson);
+        $verCif = substr($pesovlr,1,1)=='0' ? 'block' : 'none';
+        $this->template->setVariable('verCif',$verCif);        
+      }
       $this->template->setVariable('cantidad_extranjera', number_format(abs($valueDetalle['cantidad_nonac']),2,".",","));
       $this->template->setVariable('peso_extranjera', number_format(abs($valueDetalle['peso_nonac']),2,".",","));
+      $pesoext += abs($valueDetalle['peso_nonac']);
       $this->template->setVariable('valor_fob', number_format(abs($valueDetalle['fob_nonac']),2,".",","));
+      if(abs($valueDetalle['peso_nonac'])>0) {
+        $verPesoe = substr($pesovlr,0,1)=='0' ? 'block' : 'none';
+        $this->template->setVariable('verPesoe',$verPesoe);
+        $verFob = substr($pesovlr,1,1)=='0' ? 'block' : 'none';
+        $this->template->setVariable('verFob',$verFob);        
+      }      
       $this->template->parseCurrentBlock("ROW");
     }
+    $this->template->setCurrentBlock("pesoneto");
+    //Acumulamos el Peso Neto
+    $pesoneto = $pesonal + $pesoext;
+    $this->template->setVariable('pesoneto', number_format($pesoneto,2,".",","));
+    $this->template->parseCurrentBlock("pesoneto");
     
     $this->template->show();
   }
 
   function mostrarPackingList($idRegistro) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'Alistamientos/views/tmpl/detallePackingList.php' );
-    $this->template->setVariable('COMODIN', '' );
+    $this->template->loadTemplateFile('Alistamientos/views/tmpl/detallePackingList.php');
+    $this->template->setVariable('COMODIN', '');
     
     $datosMaestro = $this->datos->retornarMaestroAlistamiento($idRegistro);
     
@@ -256,6 +288,14 @@ class AlistamientosVista {
       $this->template->setVariable('mostrar_mensaje', 'block');
     }
 
+    //Configura fecha y hora de impresión
+    $arregloDatos['fecha_impresion'] = date('d-m-Y');
+    $hora = getdate(time());
+    $horas = strlen($hora["hours"]) == 1 ? '0'.$hora["hours"] : $hora["hours"];
+    $minutos = strlen($hora["minutes"]) == 1 ? '0'.$hora["minutes"] : $hora["minutes"];
+    $arregloDatos['hora_impresion'] = $horas.":".$minutos;
+    $this->template->setVariable('fecha_impresion', $arregloDatos['fecha_impresion']);
+    $this->template->setVariable('hora_impresion', $arregloDatos['hora_impresion']);
     $this->template->setVariable('razon_social', $datosMaestro->razon_social);
     $this->template->setVariable('numero_documento', $datosMaestro->numero_documento);
     $fecha = date_create($datosMaestro->fecha);
@@ -275,6 +315,9 @@ class AlistamientosVista {
     $this->template->setVariable('cantidad_nac', number_format($datosMaestro->cantidad_nac,2,".",","));
     $this->template->setVariable('cantidad_ext', number_format($datosMaestro->cantidad_ext,2,".",","));
     $this->template->setVariable('observaciones', $datosMaestro->obs);
+
+    //Extraemos los check para saber que Peso/Valor Ocultar/Mostrar
+    $pesovlr = explode(')',(explode('(',$datosMaestro->obs)[1]))[0];
     
     $detalleAlistamiento = $this->datos->retornarDetalleAlistamiento($idRegistro);
     
@@ -294,9 +337,21 @@ class AlistamientosVista {
       $this->template->setVariable('cantidad_nacional', number_format(abs($valueDetalle['cantidad_naci']),2,".",","));
       $this->template->setVariable('peso_nacional', number_format(abs($valueDetalle['peso_naci']),2,".",","));
       $this->template->setVariable('valor_cif', number_format(abs($valueDetalle['cif']),2,".",","));
+      if(abs($valueDetalle['peso_naci'])>0) {
+        $verPeson = substr($pesovlr,0,1)=='0' ? 'block' : 'none';
+        $this->template->setVariable('verPeson',$verPeson);
+        $verCif = substr($pesovlr,1,1)=='0' ? 'block' : 'none';
+        $this->template->setVariable('verCif',$verCif);        
+      }
       $this->template->setVariable('cantidad_extranjera', number_format(abs($valueDetalle['cantidad_nonac']),2,".",","));
       $this->template->setVariable('peso_extranjera', number_format(abs($valueDetalle['peso_nonac']),2,".",","));
       $this->template->setVariable('valor_fob', number_format(abs($valueDetalle['fob_nonac']),2,".",","));
+      if(abs($valueDetalle['peso_nonac'])>0) {
+        $verPesoe = substr($pesovlr,0,1)=='0' ? 'block' : 'none';
+        $this->template->setVariable('verPesoe',$verPesoe);
+        $verFob = substr($pesovlr,1,1)=='0' ? 'block' : 'none';
+        $this->template->setVariable('verFob',$verFob);        
+      } 
       /*************************************************************************************************/
       // Registro de Totales
       $tot_piezas_naci += abs($valueDetalle['cantidad_naci']); $tot_piezas_ext += abs($valueDetalle['cantidad_nonac']);
@@ -305,20 +360,27 @@ class AlistamientosVista {
       /*************************************************************************************************/
       $this->template->parseCurrentBlock("ROW");
     }
+    $this->template->setCurrentBlock("pesoneto");
+    //Acumulamos el Peso Neto
+    $pesoneto = $tot_peso_naci + $tot_peso_ext;
+    $this->template->setVariable('pesoneto', number_format($pesoneto,2,".",","));
+    $this->template->parseCurrentBlock("pesoneto");
     // Captura los totales registrados
+    $this->template->setCurrentBlock("Totales");
     $this->template->setVariable('tot_piezas_naci', number_format($tot_piezas_naci,2,".",","));
     $this->template->setVariable('tot_peso_naci', number_format($tot_peso_naci,2,".",","));
     $this->template->setVariable('tot_valor_cif', number_format($tot_valor_cif,2,".",","));
     $this->template->setVariable('tot_piezas_ext', number_format($tot_piezas_ext,2,".",","));
     $this->template->setVariable('tot_peso_ext', number_format($tot_peso_ext,2,".",","));
     $this->template->setVariable('tot_valor_fob', number_format($tot_valor_fob,2,".",","));
+    $this->template->parseCurrentBlock("Totales");    
     
     $this->template->show();
   }
   
   function mostrarDetalleAlistamiento($idRegistro) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'Alistamientos/views/tmpl/mostrarDetalleAlistamiento.php' );
-    $this->template->setVariable('COMODIN', '' );
+    $this->template->loadTemplateFile('Alistamientos/views/tmpl/mostrarDetalleAlistamiento.php');
+    $this->template->setVariable('COMODIN', '');
     
     $datosMaestro = $this->datos->retornarMaestroAlistamiento($idRegistro);
     $detalleAlistamiento = $this->datos->retornarDetalleAlistamiento($idRegistro);
@@ -345,8 +407,8 @@ class AlistamientosVista {
   }
   
   function mostrarEtiquetarAlistamiento($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'Alistamientos/views/tmpl/detalleEtiquetarAlistamiento.php' );
-    $this->template->setVariable('COMODIN', '' );
+    $this->template->loadTemplateFile('Alistamientos/views/tmpl/detalleEtiquetarAlistamiento.php');
+    $this->template->setVariable('COMODIN', '');
 
     //Captura fecha de etiqueta y sede
     $this->template->setVariable('fecha', date('Y-m-d H:i'));
@@ -360,7 +422,7 @@ class AlistamientosVista {
       $this->template->setVariable('mostrar_mensaje', 'block');
     }
 
-    $this->template->setVariable('tipo_mercancia', $arreglo['tipo_mercancia']);
+    $this->template->setVariable('tipo_mercancia', isset($arreglo['tipo_mercancia'])?$arreglo['tipo_mercancia']:"");
         
     $this->template->setVariable('razon_social', $datosMaestro->razon_social);
     $this->template->setVariable('numero_documento', $datosMaestro->numero_documento);
@@ -392,8 +454,8 @@ class AlistamientosVista {
   }
   
   function mostrarEtiqueta($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'Alistamientos/views/tmpl/detalleEtiqueta.php' );
-    $this->template->setVariable('COMODIN', '' );
+    $this->template->loadTemplateFile('Alistamientos/views/tmpl/detalleEtiqueta.php');
+    $this->template->setVariable('COMODIN', '');
 
     //Captura fecha de etiqueta y sede
     $this->template->setVariable('fecha', date('Y-m-d H:i'));
@@ -407,7 +469,7 @@ class AlistamientosVista {
       $this->template->setVariable('mostrar_mensaje', 'block');
     }
 
-    $this->template->setVariable('tipo_mercancia', $arreglo['tipo_mercancia']);
+    $this->template->setVariable('tipo_mercancia', isset($arreglo['tipo_mercancia'])?$arreglo['tipo_mercancia']:"");
         
     $this->template->setVariable('razon_social', $datosMaestro->razon_social);
     $this->template->setVariable('numero_documento', $datosMaestro->numero_documento);
@@ -424,7 +486,8 @@ class AlistamientosVista {
     $this->template->setVariable('cantidad_ext', number_format($datosMaestro->cantidad_ext,2,".",","));
     
     $detalleAlistamiento = $this->datos->retornarDetalleAlistamiento($arreglo['id_registro']);
-    $n = 0;
+    $n = $tot_piezas_naci = $tot_piezas_ext = 0;
+
     foreach($detalleAlistamiento as $valueDetalle) {
       $this->template->setCurrentBlock("ROW");
       $n++;
@@ -439,7 +502,8 @@ class AlistamientosVista {
         $this->template->setVariable('cantidad_extranjera', number_format(abs($valueDetalle['cantidad_nonac']),2,".",","));
         /*************************************************************************************************/
         // Registro de Totales
-        $tot_piezas_naci += abs($valueDetalle['cantidad_naci']); $tot_piezas_ext += abs($valueDetalle['cantidad_nonac']);
+        $tot_piezas_naci += abs($valueDetalle['cantidad_naci']);
+        $tot_piezas_ext += abs($valueDetalle['cantidad_nonac']);
         /*************************************************************************************************/
         $this->template->parseCurrentBlock("ROW");
       }

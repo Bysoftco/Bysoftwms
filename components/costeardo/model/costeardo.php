@@ -39,6 +39,7 @@ class CosteardoModelo extends BDControlador {
     }
 		
 		$query = "SELECT do_asignados.do_asignado,
+                    do_asignados.sede,
 										do_asignados.fecha,
 										do_asignados.doc_tte,
 										do_asignados.bodega,
@@ -54,10 +55,10 @@ class CosteardoModelo extends BDControlador {
 							AND do_asignados.sede = '$sede'$buscar";
 							
 		//Prepara la condición de filtro
-		if(!empty($arreglo[nitc])) $query .= " AND do_asignados.por_cuenta = '$arreglo[nitc]'";
-		if(!empty($arreglo[fechadesdec])) $query .= " AND do_asignados.fecha >= '$arreglo[fechadesdec]'";
-		if(!empty($arreglo[fechahastac])) $query .= " AND do_asignados.fecha <= '$arreglo[fechahastac]'";
-		if(!empty($arreglo[doasignadoc])) $query .= " AND do_asignados.do_asignado = '$arreglo[doasignadoc]'";
+		if(!empty($arreglo['nitc'])) $query .= " AND do_asignados.por_cuenta = '$arreglo[nitc]'";
+		if(!empty($arreglo['fechadesdec'])) $query .= " AND do_asignados.fecha >= '$arreglo[fechadesdec]'";
+		if(!empty($arreglo['fechahastac'])) $query .= " AND do_asignados.fecha <= '$arreglo[fechahastac]'";
+		if(!empty($arreglo['doasignadoc'])) $query .= " AND do_asignados.do_asignado = '$arreglo[doasignadoc]'";
 		//Ordena el Listado
 		$query .= " ORDER BY $orden";
 
@@ -75,9 +76,7 @@ class CosteardoModelo extends BDControlador {
  	function listadoDetallec($arreglo) {
 		$db = $_SESSION['conexion'];
 
-		$query = "SELECT ocd.numdetalle,ocd.do_asignado,ocd.codservicio,ocd.fecha,ocd.ingreso,ocd.gasto,ocd.sede,s.nombre AS nomservicio
-              FROM orden_costos_detalle ocd, servicios s
-							WHERE ocd.do_asignado = $arreglo[do_asignado] AND ocd.codservicio = s.codigo AND ocd.sede = s.sede";
+		$query = "SELECT ocd.numdetalle,ocd.do_asignado,ocd.codservicio,ocd.fecha,ocd.ingreso,ocd.gasto,ocd.sede,s.nombre AS nomservicio FROM orden_costos_detalle ocd, servicios s WHERE ocd.do_asignado = $arreglo[do_asignado] AND ocd.codservicio = s.codigo AND ocd.sede = s.sede";
 		    
 		$db->query($query);
 		$retornar['datos'] = $db->getArray();
@@ -87,8 +86,7 @@ class CosteardoModelo extends BDControlador {
   function actualizaCosteardo($arreglo) {
     $db = $_SESSION['conexion'];
     
-    $query = "UPDATE do_asignados SET ingreso_total = $arreglo[totalingreso], gasto_total = $arreglo[totalgasto]
-              WHERE do_asignado = $arreglo[do_asignado]";
+    $query = "UPDATE do_asignados SET ingreso_total = $arreglo[totalingreso], gasto_total = $arreglo[totalgasto] WHERE do_asignado = $arreglo[do_asignado]";
 
     $db->query($query);
     return true;

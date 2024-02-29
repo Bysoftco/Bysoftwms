@@ -1,131 +1,107 @@
 <style>
-  body { font-size: 62.5%; }
+  body { font-size: 12px; }
   label { display: inline-block; width: 100px; }
-  legend { padding: 0.5em; }
-  fieldset fieldset label { display: block; }
-  #frmfiltroci label { width: 110px; margin-left: 10px;} /*ancho de las etiquetas de los campos*/
-  h1 { font-size: 1.2em; margin: .6em 0; }
-  div#users-contain { width: 100%; margin: 5px 0; margin-left: 0%; }
-  div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
-  div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
   .ui-dialog .ui-state-error { padding: .3em; }
-  tbody tr.odd th,tbody tr.odd td {border-color:#EBE5D9;background:#F7F4EE;}
-  tbody tr:hover td,tbody tr:hover th {background:#EAECEE;border-color:#523A0B;}
 	.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
     text-align: center;
     float: none !important;
 	}
+  .ui-dialog-title {
+    font-size: 12px;
+  }
 </style>
 {COMODIN}
-<div id="winfiltroci" title="Cargue Masivo de Inventarios">
-  <div id="frmfiltroci">
-    <p id="msgfiltroci">Seleccione el archivo en Excel que desea cargar.</p>
-    <form name="frmcargueInventarios" id="frmcargueInventarios" method="post" action="">
-      <fieldset class="ui-widget ui-widget-content ui-corner-all">
-        <legend class="ui-widget ui-widget-header ui-corner-all">
-          <div id="filtrocargueInventarios">Selección y Carga del Archivo</div>
-        </legend>  
-        <div class="margenes">
-          <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general">
-            <tr>
-              <th colspan="2">CARGUE DE INVENTARIOS DESDE EXCEL</th>
-            </tr>
-            <tr>
-              <td width="30%">Proceso de Selecci&oacute;n
-                <img src="img/Flecha.png" style="padding:0px 0px 0px 7px;" title="Seleccionar" width="15" height="15" border="0" />
-              </td>
-              <td>
-                <input type="file" name="file" id="file" />
-              </td>
-            </tr>
-          </table>
+<!-- Acceso a las librerias de Bootstrap 5.3.0 de estilos -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<body>
+<div id="wincargueinv" title="Cargue Masivo de Inventarios" style="font-size: 14px;">
+  <div class="container-fluid mt-2">
+    <div class="row">
+      <div class="col-md-12">  
+        <div class="card">
+          <div class="card-header d-flex align-items-center">
+            <p><span><strong>CARGUE DE INVENTARIOS DESDE EXCEL</strong></span></p>
+          </div>
+          <div class="card-body mt-2">
+            <form action="" method="POST" enctype="multipart/form-data" name="archivoSeleccionado">
+              <input type="file" name="archivo_importar" class="form-control" />
+              <button type="submit" name="cargar_datos_excel" class="btn btn-primary mt-3" id="cargar_datos">Importar</button>
+            </form>
+          </div>
         </div>
-      </fieldset>
-    </form>
+      </div>
+    </div>
   </div>
 </div>
+<!-- Librerías Javascript de Bootstrap 5.3.0 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 <script>
 	$(function() {
-		$( "#winfiltroci" ).dialog({
+		$( "#wincargueinv" ).dialog({
 			autoOpen: false,
 			resizable: false,
-			height: 250,
+			height: 260,
 			width: 650,
 			modal: true,
-			buttons: {
-				"Enviar": function() {
-		      var archivos = document.getElementById("file");//Damos el valor del input tipo file
-		      var archivo = archivos.files; //Obtenemos el valor del input (el archivo) en modo de arreglo
+		}).css("font-size", "12px");
 
-				  //Valida el formato del archivo a cargar
-          if(archivo[0].name.slice(-4)=='.xls'||archivo[0].name.slice(-5)=='.xlsx') {
-            $( "#winfiltroci" ).dialog( "close" );
-            seleccionar(archivo);
-          } else alert('Error, debe cargar un archivo con extensión .xls o .xlsx');
-				}
-			},
-		});
+    $('#cargar_datos').click(function(event) {
+      event.preventDefault(); //Para que no se recargue la página
+      var nombreArchivo = $('input[type=file]').val().split('\\').pop();
+      var ext_archivo = nombreArchivo.split('.')[1];
+      var ext_permitida = ['xls','csv','xlsx'];
+
+      //Verifica selección de archivo
+      if(nombreArchivo != '') {
+        //Verifica si la extensión del archivo es válida
+        if(in_array(ext_archivo, ext_permitida)) { 
+          cargarArchivo(nombreArchivo); //Enviamos archivo para su cargue
+        } else {
+          alert('** Archivo con extensión no válida **');
+          return false;
+        } 
+      } else {
+        alert('** No ha seleccionado el archivo Excel a cargar **');
+        return false;
+      }
+    }); 
 	});
-	
-	function procesarPlantilla(nomfile) {
-    var ruta = "integrado/_files/";
-    var nombrefile = ruta+nomfile;
 
-		$.ajax({
-			url: 'index_blank.php?component=cargueInventarios&method=procesarPlantilla',
-			data: { nombrefile: nombrefile },
-			async: true,
-			type: "POST",
-			success: function(msm) {
-				jQuery(document.body).overlayPlayground('close');void(0);
-				$('#componente_central').html(msm);
-			}
-		});
-	}
-	
-	function seleccionar(archivo) {
-    /* Creamos el objeto que hara la petición AJAX al servidor, debemos de validar 
-       si existe el objeto “ XMLHttpRequest” ya que en internet explorer viejito no esta,
-       y si no esta usamos “ActiveXObject” */ 
-    if(window.XMLHttpRequest) {
-      var Req = new XMLHttpRequest(); 
-    } else if(window.ActiveXObject) { 
-      var Req = new ActiveXObject("Microsoft.XMLHTTP"); 
-    }
+  // Muestra la Ventana de Cargue de Inventario
+  $( "#wincargueinv" ).dialog( "open" ); 
 
-    //El objeto FormData nos permite crear un formulario pasandole clave/valor para poder enviarlo, 
-    //este tipo de objeto ya tiene la propiedad multipart/form-data para poder subir archivos
-    var data = new FormData();
+  function cargarArchivo(nomArchivo) {
+    $( "#wincargueinv" ).dialog( "close" );
+    //Añadimos la imagen de carga en el contenedor
+    $('#componente_central').html('<div class="d-flex justify-content-center align-items-center"><img src="img/bar.gif" alt="cargando" /><br/>&nbsp;&nbsp;Un momento, por favor...</div>');
 
-    data.append('archivo',archivo[0]);
+    /* Creamos el objeto que hará la petición AJAX al servidor. */
+    var Req = new XMLHttpRequest();
+
+    /*El objeto FormData nos permite crear un formulario pasándole clave/valor para poder enviarlo, este tipo de objeto ya tiene la propiedad multipart/form-data para poder subir archivos */
+    var data = new FormData(document.forms.archivoSeleccionado);
 
     //Pasándole la url a la que haremos la petición
-    Req.open("POST", "index_blank.php?component=cargueInventarios&method=cargarPlantilla", true);
+    Req.open("POST", "index_blank.php?component=cargueInventarios&method=procesarArchivo", true);
 
-    /* Le damos un evento al request, esto quiere decir que cuando termine de hacer la petición,
-       se ejecutara este fragmento de código */ 
+    //Tipo de respuesta 
+    Req.responseType = 'text';
 
-    Req.onload = function(Event) {
-      //Validamos que el status http sea Ok 
-      if(Req.status == 200) {
-        //Recibimos la respuesta de php
-        var msg = Req.responseText;
-                 
-        //Valida Carga Exitosa de la Plantilla
-        if(msg == archivo[0]['name']) {
-          //Carga Datos a MySQL
-          procesarPlantilla(msg);
-        } else { alert(msg); } // Error al Cargar la Plantilla
-      } else {
-        alert("No se recibe una respuesta");
-        console.log(Req.status); //Vemos que paso. 
-      } 
-    };
+    Req.onreadystatechange = function() {
+      if(Req.readyState == 4 && Req.status == 200) {
+        var msm = Req.response;
+
+        if(msm=="Importado") {
+          alert('Cargue del INVENTARIO ENTRADAS y MOVIMIENTOS satisfactoriamente');
+          location.reload();
+        } else {
+          $('#componente_central').html(msm);
+        }
+      }
+    }
 
     //Enviamos la petición 
-    Req.send(data);
+    Req.send(data);   
   }
-
-  // Muestra la Ventana de Filtro de Existencias
-  $( "#winfiltroci" ).dialog( "open" );
 </script>
+</body>

@@ -106,9 +106,9 @@
   </table>
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_etiqueta">
     <tr>
-      <th><b>Código Ref.</b></th>
+      <th><b>C&oacute;digo Ref.</b></th>
       <th><b>Referencia</b></th>
-      <th><b>Ubicación</b></th>
+      <th><b>Ubicaci&oacute;n</b></th>
       <th><b>M/L/C</b></th>
       <th><b>Piezas Nal.</b></th>
       <th><b>Piezas Ext.</b></th>

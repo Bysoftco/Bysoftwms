@@ -104,19 +104,18 @@ class clientes {
       //Creación Automática de Referencia
       $arreglo['accion'] = 0; //Valor que permite agregar Referencia
       //Configuración Datos de Referencia
-      $arreglo[id_referencia] = '99'; $arreglo[SKU_Proveedor] = '9801900000';
-      $arreglo[nombre_referencia] = 'BULTOS O PIEZAS';
-      $arreglo[cliente] = $arreglo['numero_documento'];
-      $arreglo[embalaje_referencia] = 3; $arreglo[unidad_referencia] = 6;
-      $arreglo[presenta_venta] = '24'; $arreglo[vence_referencia] = 0;
-      $arreglo[minimo_stock] = 0; $arreglo[alto_referencia] = 1;
-      $arreglo[largo_referencia] = 1; $arreglo[ancho_referencia] = 1;
-      $arreglo[serial_referencia] = 0; $arreglo[tipo_referencia] = 15;
-      $arreglo[grupo_items] = $arreglo['numero_documento'];
-      $arreglo[factor_conversion] = 1; $arreglo[parte_numero] = '1';
-      $arreglo[lote_cosecha] = '0';
+      $arreglo['id_referencia'] = '99'; $arreglo['SKU_Proveedor'] = '9801900000';
+      $arreglo['nombre_referencia'] = 'BULTOS O PIEZAS';
+      $arreglo['cliente'] = $arreglo['numero_documento'];
+      $arreglo['embalaje_referencia'] = 1; $arreglo['unidad_referencia'] = 1;
+      $arreglo['presenta_venta'] = 'U';$arreglo['codigo_unidadmedida'] = 'U'; 
+      $arreglo['vence_referencia'] = 0;$arreglo['minimo_stock'] = 0;
+      $arreglo['alto_referencia'] = 1;$arreglo['largo_referencia'] = 1;
+      $arreglo['ancho_referencia'] = 1;$arreglo['serial_referencia'] = 0;
+      $arreglo['tipo_referencia'] = 15;$arreglo['grupo_items'] = $arreglo['numero_documento'];$arreglo['factor_conversion'] = 1;
+      $arreglo['parte_numero'] = '1';$arreglo['lote_cosecha'] = '0';
       //Inicializa Fecha de Vigencia con la Fecha Actual
-      $arreglo[vigencia] = date('Y-m-d'); //Autor: Fredy Salom - Fecha: 21/01/2021
+      $arreglo['vigencia'] = date('Y-m-d'); //Autor: Fredy Salom - Fecha: 21/01/2021
       $arreglo['automatica'] = 1;
       $this->nuevaReferencia($arreglo);
       $arreglo['alerta_accion'] = 'Cliente Creado Con &Eacute;xito';
@@ -208,26 +207,29 @@ class clientes {
     $arreglo['codigo_unidadmedida'] = 'U';
 		$arreglo['cod_uniref'] = $this->datos->obtenerCodUnidadMedida($arreglo);
 
+    $arreglo['accion'] = 0;
+
     $this->vista->agregarReferencia($arreglo);
   }
 
   function nuevaReferencia($arreglo) {
+    //Obtiene Id Unidad de Medida - Autor: Fredy Salom - Fecha: 22/01/2021
+    //Modificado: 25/05/2021
+    $arreglo['presenta_venta'] = $this->datos->obtenerIdUnidadInventario($arreglo);
+    $arreglo['presenta_venta'] = $arreglo['presenta_venta']->id;
+    //Obtiene Código Unidad de Medida - Autor: Fredy Salom - Fecha: 21/01/2021
+    //Modificado: 25/05/2021
+    $arreglo['cod_uniref'] = $this->datos->obtenerCodUnidadMedida($arreglo);
+    $arreglo['unidad_referencia'] = $arreglo['cod_uniref'][0]['id'];
     if($arreglo['accion'] != 1) {
       $arreglo['id_referencia'] = $this->datos->nuevaReferencia($arreglo);
-      $arreglo['documento'] = $arreglo['cliente'];
-      $arreglo['datosReferencias'] = $this->datos->datosReferencias($arreglo);
+      $arreglo['documento'] = $arreglo['cliente'];  
     } else {
-			//Obtiene Id Unidad de Medida - Autor: Fredy Salom - Fecha: 22/01/2021
-			$arreglo['presenta_venta'] = $this->datos->obtenerIdUnidadInventario($arreglo);
-			$arreglo['presenta_venta'] = $arreglo['presenta_venta']->id;
-			//Obtiene Código Unidad de Medida - Autor: Fredy Salom - Fecha: 21/01/2021
-			$arreglo['cod_uniref'] = $this->datos->obtenerCodUnidadMedida($arreglo);
-			$arreglo['unidad_referencia'] = $arreglo['cod_uniref'][0]['id'];
       $arreglo['id_referencia'] = $this->datos->editarReferencia($arreglo);
       $arreglo['documento'] = $arreglo['cliente'];
       $arreglo['datosReferencias'] = $this->datos->datosReferencias($arreglo);
     }
-    
+    $arreglo['datosReferencias'] = $this->datos->datosReferencias($arreglo);
     //Valida Creación Automática Referencia Interfaz Sizfra
     if($arreglo['automatica'] != 1) {
       $this->vista->verReferencias($arreglo);
@@ -255,13 +257,12 @@ class clientes {
     $arreglo['id'] = $arreglo['infoReferencia']->unidad_venta;
     $arreglo['codigo_unidadmedida'] = $this->datos->obtenerCodigoUnidadMedida($arreglo);
     $arreglo['select_tipoemb'] = $this->datos->armSelect($lista_tipoemb, 'Seleccione Unidad...', $arreglo['codigo_unidadmedida']->codigo);
-
- 		//Obtiene Grupo Item del Cliente - Autor: Fredy Salom - Fecha: 21/01/2021
-    $arreglo['grupo_item'] = $this->datos->obtenerGrupoItems($arreglo);
-
     //Obtiene Código Unidad de Medida - Autor: Fredy Salom - Fecha: 21/01/2021
     $arreglo['codigo_unidadmedida'] = $arreglo['codigo_unidadmedida']->codigo;
     $arreglo['cod_uniref'] = $this->datos->obtenerCodUnidadMedida($arreglo);
+
+ 		//Obtiene Grupo Item del Cliente - Autor: Fredy Salom - Fecha: 21/01/2021
+    $arreglo['grupo_item'] = $this->datos->obtenerGrupoItems($arreglo);
 
     $arreglo['accion'] = 1;
 
@@ -309,14 +310,14 @@ class clientes {
   function cargarArchivos($arreglo) {
     $ruta = "integrado/_files/";
     //Verificamos si existe el Directorio
-    if(!file_exists($ruta.$arreglo[numdoc])) { mkdir($ruta.$arreglo[numdoc]); }
-    $ruta .= $arreglo[numdoc]."/";
+    if(!file_exists($ruta.$arreglo['numdoc'])) { mkdir($ruta.$arreglo['numdoc']); }
+    $ruta .= $arreglo['numdoc']."/";
 		foreach ($_FILES as $key) {
     	if($key['error'] == UPLOAD_ERR_OK ) {//Verificamos si se subió correctamente
         $nombre = $key['name']; //Definimos el nombre del archivo en el servidor
       	$temporal = $key['tmp_name']; //Obtenemos el nombre del archivo temporal
       	move_uploaded_file($temporal, $ruta . $nombre); //Movemos el archivo temporal a la ruta especificada
-        $arreglo[archivo] = $nombre;
+        $arreglo['archivo'] = $nombre;
         $this->datos->cargarDocumentos($arreglo);
 			} else {
 				echo $key['error']; //Si no se cargo mostramos el error

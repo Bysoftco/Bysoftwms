@@ -88,6 +88,8 @@
       <td style="text-align: right;">{piezas_ext}</td>
       <td style="text-align: right;">{peso_ext}</td>
     </tr>
+    {total_piezas_nal}{total_peso_nal}
+    {total_piezas_ext}{total_peso_ext}
     <!-- END ROW -->
     <tr>
       <td colspan="10" style="font-size: 12px;"><b>T O T A L E S</b></td>

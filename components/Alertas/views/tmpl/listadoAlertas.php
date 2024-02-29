@@ -25,7 +25,7 @@
       <th>U.Comercial</th>
       <th>FMM</th>
       <th>Fecha Manifiesto</th>
-      <th>Fecha Límite</th>
+      <th>Fecha L&iacute;mite</th>
       <th>Prorroga</th>
       <th>Control</th>
       <th></th>
@@ -62,7 +62,7 @@
     $('#tabla_general_z').dataTable({
       "aaSorting": [],
       "oLanguage": {
-        "sLengthMenu": "Mostrar _MENU_ registros por página",
+        "sLengthMenu": "Mostrar _MENU_ registros por p&aacute;gina",
         "sZeroRecords": "No hay registros para mostrar",
         "sInfo": "Mostrando _START_ a _END_ registros de _TOTAL_",
         "sInfoEmpty": "Mostrando 0 a 0 registros de 0",

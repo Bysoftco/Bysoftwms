@@ -249,18 +249,18 @@ class acondicionaDatos extends BDControlador {
   function listadoRechazadas($arreglo) {
     $db = $_SESSION['conexion'];
 
-    $arreglo[GroupBy] = "inventario_entrada";
-    $arreglo[having] = "HAVING (TRUNCATE(ABS(tc_nal),1) > 0 OR TRUNCATE(ABS(tc_ext),1) > 0)";
+    $arreglo['GroupBy'] = "inventario_entrada";
+    $arreglo['having'] = "HAVING (TRUNCATE(ABS(tc_nal),1) > 0 OR TRUNCATE(ABS(tc_ext),1) > 0)";
+    $arreglo['where'] = "";
 
 		//Prepara la condición del filtro
-    if(!empty($arreglo[nitfr])) $arreglo[where] .= " AND da.por_cuenta = '$arreglo[nitfr]'";
-    if(!empty($arreglo[fechadesdefr])) $arreglo[where] .= " AND DATE(im.fecha) >= '$arreglo[fechadesdefr]'";
-    if(!empty($arreglo[fechahastafr])) $arreglo[where] .= " AND DATE(im.fecha) <= '$arreglo[fechahastafr]'";
-    if(!empty($arreglo[doasignadofr])) $arreglo[where] .= " AND da.do_asignado = '$arreglo[doasignadofr]'";
-    if(!empty($arreglo[tiporechazofr])) $arreglo[where] .= " AND im.estado_mcia = '$arreglo[tiporechazofr]'";
+    if(!empty($arreglo['nitfr'])) $arreglo['where'] .= " AND da.por_cuenta = '$arreglo[nitfr]'";
+    if(!empty($arreglo['fechadesdefr'])) $arreglo['where'] .= " AND DATE(im.fecha) >= '$arreglo[fechadesdefr]'";
+    if(!empty($arreglo['fechahastafr'])) $arreglo['where'] .= " AND DATE(im.fecha) <= '$arreglo[fechahastafr]'";
+    if(!empty($arreglo['doasignadofr'])) $arreglo['where'] .= " AND da.do_asignado = '$arreglo[doasignadofr]'";
+    if(!empty($arreglo['tiporechazofr'])) $arreglo['where'] .= " AND im.estado_mcia = '$arreglo[tiporechazofr]'";
 
-    $query = "SELECT im.*,im.fecha AS fecha_rechazo,im.codigo AS codigo_mov,ie.*,
-                ref.nombre AS nombre_referencia,
+    $query = "SELECT im.*,im.fecha AS fecha_rechazo,im.codigo AS codigo_mov,ie.*,ref.nombre AS nombre_referencia,
                 ref.codigo_ref,p.nombre AS nombre_ubicacion,em.nombre AS tipo_rechazo,
                 imm.doc_tte, cl.numero_documento,cl.razon_social,
                 SUM(cantidad_naci) AS tc_nal,
@@ -328,10 +328,10 @@ class acondicionaDatos extends BDControlador {
                 AND do_asignados.sede = '$sede'$buscar";
               		
 		//Prepara la condición de filtro
-    if(!empty($arreglo[niteac])) $query .= " AND do_asignados.por_cuenta = '$arreglo[niteac]'";
-		if(!empty($arreglo[fechadesdeeac])) $query .= " AND imm.fecha >= '$arreglo[fechadesdeeac]'";
-		if(!empty($arreglo[fechahastaeac])) $query .= " AND imm.fecha <= '$arreglo[fechahastaeac]'";
-		if(!empty($arreglo[nacondiciona])) $query .= " AND im.cod_maestro = '$arreglo[nacondiciona]'";
+    if(!empty($arreglo['niteac'])) $query .= " AND do_asignados.por_cuenta = '$arreglo[niteac]'";
+		if(!empty($arreglo['fechadesdeeac'])) $query .= " AND imm.fecha >= '$arreglo[fechadesdeeac]'";
+		if(!empty($arreglo['fechahastaeac'])) $query .= " AND imm.fecha <= '$arreglo[fechahastaeac]'";
+		if(!empty($arreglo['nacondiciona'])) $query .= " AND im.cod_maestro = '$arreglo[nacondiciona]'";
     
 		//Ordena el Listado
 		$query .= " ORDER BY $orden";

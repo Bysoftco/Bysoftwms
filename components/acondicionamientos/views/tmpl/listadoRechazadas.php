@@ -73,6 +73,8 @@
       </td>
       <input type="hidden" name="codigo_mov[{n}]" id="codigo_mov{n}" value="{codigo}" />
     </tr>
+    {total_piezas_nal}{total_peso_nal}
+    {total_piezas_ext}{total_peso_ext}
     <!-- END ROW  -->
   </tbody>
   <tfoot>

@@ -8,7 +8,7 @@
     <table align="right" cellpadding="0" cellspacing="0" border="0">
       <tr>
         <td style="padding-top: 8px;font-family:sans-serif;font-size:10px;">
-          ALISTAMIENTO DE MERCANCÍA <b>{nombre_tipo_mercancia}</b> - [{documento_cliente}] <b>{nombre_cliente}</b>
+          ALISTAMIENTO DE MERCANC&Iacute;A <b>{nombre_tipo_mercancia}</b> - [{documento_cliente}] <b>{nombre_cliente}</b>
         </td>
       </tr>
     </table>
@@ -56,7 +56,7 @@
   </tr>
 </table>
 <div class="alistar">
-  <a id="realizarAlistamiento" href="" title="Preparación del Alistamiento">
+  <a id="realizarAlistamiento" href="" title="Preparaci&oacute;n del Alistamiento">
   </a>
 </div>
 

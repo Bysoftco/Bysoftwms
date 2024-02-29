@@ -25,7 +25,7 @@ Los campos marcados con un asterisco (*) son obligatorios.<br /><br />
       <td><select style="width:auto;" name="presenta_venta" id="presenta_venta" onchange="javascript:cambio_unidadinventario();">{select_unidad}</select></td>
       <td>Unidad Comercial/Venta</td>
       <td><select style="width:auto;" name="unidad_referencia" id="unidad_referencia" onchange="javascript:cambio_unidadmedida();">{select_tipoemb}</select>&nbsp;-&nbsp;<input type="text" style="width:50px;height:14px;" name="codigo_unidadmedida" id="codigo_unidadmedida" value="{cod_uniref}" readonly/></td>
-    </tr>      
+    </tr>
     <tr>
       <td>Unidades Embalaje</td>
       <td><input type="text" style="width:60px" name="embalaje_referencia" id="embalaje_referencia" value="1" /></td>
@@ -34,9 +34,12 @@ Los campos marcados con un asterisco (*) son obligatorios.<br /><br />
         Serial&nbsp; 
         <input type="checkbox" name="serial_referencia" id="serial_referencia" {serial_referencia} />
         Min_Stock&nbsp; 
-        <input type="checkbox" name="minimo_stock" id="minimo_stock" {minimo_stock} /></td>
+        <input type="checkbox" name="minimo_stock" id="minimo_stock" {minimo_stock} />
+      </td>
       <td>Fecha Vigencia</td>
-      <td><input name="vigencia" class="required"  type="text" id="vigencia" style="width:60px" value="{vigencia}"></td>
+      <td>
+        <input name="vigencia" class="required"  type="text" id="vigencia" style="width:70px" value="{vigencia}">
+      </td>
     </tr>
     <tr>
       <td>Grupo Items</td>
@@ -89,9 +92,8 @@ Los campos marcados con un asterisco (*) son obligatorios.<br /><br />
     });
     $("#SKU_Proveedor").result(function(event, data, formatted) {
       $("#SKU_Proveedor").val(data[1]);
-    });
-
-  }); //SKU_Proveedor)
+    }); //SKU_Proveedor
+  });
   
   function enviarDatos() {
     $.ajax({

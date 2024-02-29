@@ -16,9 +16,9 @@ class CosteardoVista {
     $this->template->setVariable('pagina', $arreglo['pagina']);
     $this->template->setVariable('verAlerta', 'none');
 	
-    $this->template->setVariable('orden', $arreglo['orden']);
-    $this->template->setVariable('id_orden', $arreglo['id_orden']);
-    $this->template->setVariable('campoBuscar', $arreglo['buscar']);
+    $this->template->setVariable('orden', isset($arreglo['orden'])?$arreglo['orden']:"");
+    $this->template->setVariable('id_orden', isset($arreglo['id_orden'])?$arreglo['id_orden']:"");
+    $this->template->setVariable('campoBuscar', isset($arreglo['buscar'])?$arreglo['buscar']:"");
     	
     if(isset($arreglo['alerta_accion'])) {
       $this->template->setVariable('alerta_accion', $arreglo['alerta_accion']);
@@ -26,15 +26,15 @@ class CosteardoVista {
     }
 
     //Configura datos del filtro
-    $this->template->setVariable('nitc', $arreglo['nitc']);
-    $this->template->setVariable('fechadesdec', $arreglo['fechadesdec']);
-    $this->template->setVariable('fechahastac', $arreglo['fechahastac']);
-    $this->template->setVariable('doasignadoc', $arreglo['doasignadoc']);
+    $this->template->setVariable('nitc',isset($arreglo['nitc'])?$arreglo['nitc']:0);
+    $this->template->setVariable('fechadesdec',isset($arreglo['fechadesdec'])?$arreglo['fechadesdec']:'');
+    $this->template->setVariable('fechahastac',isset($arreglo['fechahastac'])?$arreglo['fechahastac']:'');
+    $this->template->setVariable('doasignadoc',isset($arreglo['doasignadoc'])?$arreglo['doasignadoc']:0);
 
     $numRegistro = count($arreglo['datos']['datos']);
     if($numRegistro == 0) {
-      $this->template->setVariable(mensaje, "&nbsp;No hay Costos DO para mostrar");
-      $this->template->setVariable(estilo, "ui-state-error");
+      $this->template->setVariable('mensaje', "&nbsp;No hay Costos DO para mostrar");
+      $this->template->setVariable('estilo', "ui-state-error");
     } else {
       $codbagcolor = 1;
       foreach($arreglo['datos']['datos'] as $value) {

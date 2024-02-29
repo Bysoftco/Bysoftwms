@@ -209,10 +209,10 @@ class AlistamientosDatos extends BDControlador {
                 AND do_asignados.sede = '$sede'$buscar";
               		
 		//Prepara la condición de filtro
-    if(!empty($arreglo[nitea])) $query .= " AND do_asignados.por_cuenta = '$arreglo[nitea]'";
-		if(!empty($arreglo[fechadesdeea])) $query .= " AND imm.fecha >= '$arreglo[fechadesdeea]'";
-		if(!empty($arreglo[fechahastaea])) $query .= " AND imm.fecha <= '$arreglo[fechahastaea]'";
-		if(!empty($arreglo[nalista])) $query .= " AND im.cod_maestro = '$arreglo[nalista]'";
+    if(!empty($arreglo['nitea'])) $query .= " AND do_asignados.por_cuenta = '$arreglo[nitea]'";
+		if(!empty($arreglo['fechadesdeea'])) $query .= " AND imm.fecha >= '$arreglo[fechadesdeea]'";
+		if(!empty($arreglo['fechahastaea'])) $query .= " AND imm.fecha <= '$arreglo[fechahastaea]'";
+		if(!empty($arreglo['nalista'])) $query .= " AND im.cod_maestro = '$arreglo[nalista]'";
     
 		//Ordena el Listado
 		$query .= " ORDER BY $orden";

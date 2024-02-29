@@ -5,35 +5,36 @@
  * @author  Fredy Salom <fsalom@bysoft.us>
  * @date    24-Febrero-2018
  */
+require_once COMPONENTS_PATH.'Entidades/Clientes.php';
+require_once COMPONENTS_PATH.'Entidades/Camiones.php';
+require_once COMPONENTS_PATH.'Entidades/Referencias.php';
 
-require_once COMPONENTS_PATH . 'Entidades/Clientes.php';
-require_once COMPONENTS_PATH . 'Entidades/Camiones.php';
-require_once COMPONENTS_PATH . 'Entidades/Referencias.php';
+require_once(COMPONENTS_PATH.'acondicionamientos/model/acondicionamientos.php');
 
 class acondicionaVista {
   var $template;
   var $datos;
   
   function acondicionaVista() {
-    $this->template = new HTML_Template_IT();
+    $this->template = new HTML_Template_IT(COMPONENTS_PATH);
     $this->datos = new acondicionaDatos();
   }
   
   function filtroCliente() {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/filtroCliente.php' );
+    $this->template->loadTemplateFile('acondicionamientos/views/tmpl/filtroCliente.php');
     $this->template->setVariable('COMODIN', '' );
     $this->template->show();
   }
   
 	function filtroRechazadas($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/filtroRechazadas.php' );
+    $this->template->loadTemplateFile('acondicionamientos/views/tmpl/filtroRechazadas.php');
     $this->template->setVariable('COMODIN', '');
     $this->template->setVariable('select_tiporechazo', $arreglo['select_tiporechazo']);
     $this->template->show();
 	}
 
   function listadoRechazadas($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/listadoRechazadas.php' );
+    $this->template->loadTemplateFile('acondicionamientos/views/tmpl/listadoRechazadas.php' );
     $this->template->setVariable('COMODIN', '');
     
     //Datos de Filtro para Impresión
@@ -78,7 +79,7 @@ class acondicionaVista {
   }
   
   function mostrarListadoReferencias($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/listadoReferencias.php' );
+    $this->template->loadTemplateFile('acondicionamientos/views/tmpl/listadoReferencias.php' );
     $this->template->setVariable('COMODIN', '' );
     $this->template->setVariable('tipo_mercancia', $arreglo['tipo_mercancia']);
     $this->template->setVariable('nombre_tipo_mercancia',$arreglo['nombre_tipo_mercancia']);        
@@ -120,7 +121,7 @@ class acondicionaVista {
   }
   
   function acondicionarReferencias($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/formAcondicionamiento.php' );
+    $this->template->loadTemplateFile('acondicionamientos/views/tmpl/formAcondicionamiento.php' );
     $this->template->setVariable('COMODIN', '' );
     
     $cliente = new Clientes();
@@ -164,7 +165,7 @@ class acondicionaVista {
   }
   
   function mostrarAcondicionamiento($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/detalleAcondicionamiento.php' );
+    $this->template->loadTemplateFile('acondicionamientos/views/tmpl/detalleAcondicionamiento.php' );
     $this->template->setVariable('COMODIN', '' );
  
     $datosMaestro = $this->datos->retornarMaestroAcondicionamiento($arreglo['id_registro']);
@@ -183,7 +184,6 @@ class acondicionaVista {
 
     $this->template->setVariable('tipo_mercancia', $arreglo['tipo_mercancia']);
     $this->template->setVariable('nombre_tipo_mercancia', $arreglo['nombre_tipo_mercancia']);
-    $this->template->setVariable('select_tiporechazo', $arreglo['select_tiporechazo']);
       
     $this->template->setVariable('codigo_operacion', $datosMaestro->codigo);
     $this->template->setVariable('numero_documento', $datosMaestro->numero_documento);    
@@ -271,7 +271,7 @@ class acondicionaVista {
   }
 
   function generarOrdenAcondicionamiento($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/detalleOrdenAcondicionamiento.php' );
+    $this->template->loadTemplateFile('acondicionamientos/views/tmpl/detalleOrdenAcondicionamiento.php' );
     $this->template->setVariable('COMODIN', '' );
     
     $datosMaestro = $this->datos->retornarMaestroAcondicionamiento($arreglo['codigoMaestro']);
@@ -345,7 +345,7 @@ class acondicionaVista {
   }
 
   function registroAcondicionamiento($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/registroAcondicionamiento.php' );
+    $this->template->loadTemplateFile('acondicionamientos/views/tmpl/registroAcondicionamiento.php' );
     $this->template->setVariable('COMODIN', '' );
 
     //Carga el cuadro de lista Tipo de Rechazo - Tabla: estados_mcia
@@ -412,7 +412,7 @@ class acondicionaVista {
   }
     
   function imprimeListadoRechazadas($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'acondicionamientos/views/tmpl/verListadoRechazadas.php' );
+    $this->template->loadTemplateFile('acondicionamientos/views/tmpl/verListadoRechazadas.php' );
     $this->template->setVariable('COMODIN', '');
 
     $n = 1; $tpiezas_nal = $tpeso_nal = $tpiezas_ext = $tpeso_ext = 0;

@@ -29,22 +29,22 @@ class costeardo {
 
 		$numregistro = count($arreglo['datosCostear']['datos']);
 		if($numregistro == 0) {
-		  $arreglo[totalingreso] = $arreglo[totalgasto] = 0;
+		  $arreglo['totalingreso'] = $arreglo['totalgasto'] = 0;
 		} else {
       $totalingreso = $totalgasto = 0;
 			foreach($arreglo['datosCostear']['datos'] as $value) {
         $totalingreso += $value['ingreso']; //Acumula los Ingresos
         $totalgasto += $value['gasto']; //Acumula los Gastos
 			}
-      $arreglo[totalingreso] = $totalingreso;
-      $arreglo[totalgasto] = $totalgasto;
+      $arreglo['totalingreso'] = $totalingreso;
+      $arreglo['totalgasto'] = $totalgasto;
 		}
     $this->datos->actualizaCosteardo($arreglo);
     $this->listadoCosteardo($arreglo);
   }
   
   function findCliente($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findCliente($arreglo);
     $Existe = count($unaConsulta); 
 

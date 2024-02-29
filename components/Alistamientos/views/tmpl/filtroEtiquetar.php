@@ -1,9 +1,9 @@
 <style>
-  body { font-family: Arial,Helvetica,sans-serif; font-size: 11px; color:#523A0B; }  	
-  label { display: inline-block; width: 120px; margin-left: 5px; }
+  body { font-size: 62.5%; }  	
+  label { display: inline-block; width: 100px; margin-left: 5px; }
   legend { padding: 0.5em; }
   fieldset fieldset label { display: block; }
-  #formulario label { width: 160px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
+  #formulario label { width: 110px; margin-left: 10px;}/*ancho de las etiquetas de los campos*/
   h1 { font-size: 1.2em; margin: .6em 0; }
   div#users-contain { width: 100%; margin: 5px 0; margin-left: 0%; }
   div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
@@ -21,7 +21,7 @@
     <form name="frmFiltroet" id="frmFiltroet" method="post" action="">
       <fieldset class="ui-widget ui-widget-content ui-corner-all">
         <legend class="ui-widget ui-widget-header ui-corner-all">
-          <div id="filtroetiquetar">Parámetros de Búsqueda</div>
+          <div id="filtroetiquetar">Par&aacute;metros de B&uacute;squeda</div>
         </legend>  
         <p>
           <label>Por Cuenta de:</label>
@@ -52,8 +52,8 @@
     $( "#winfiltroe" ).dialog({
       autoOpen: false,
       resizable: false,
-      height: 410,
-      width: 550,
+      height: 400,
+      width: 560,
 			modal: true,
 			buttons: {
         "Consultar": function() {
