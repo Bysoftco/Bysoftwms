@@ -9,15 +9,12 @@ class SizfraModelo extends BDControlador {
   function listadoSizfra($arreglo) {
     $db = $_SESSION['conexion'];
 		$sede = $_SESSION['sede'];
-
-
-    
-
+    $arreglo['where'] = "";
 
 		//Prepara la condición del filtro
-    if(!empty($arreglo[nitfe])) $arreglo[where] .= " AND do_asignados.por_cuenta='$arreglo[nitfe]'";
-    if(!empty($arreglo[fechadesdefe])) $arreglo[where] .= " AND DATE_FORMAT(im.fecha, '%Y-%m-%d') >= '$arreglo[fechadesdefe]'";
-    if(!empty($arreglo[fechahastafe])) $arreglo[where] .= " AND DATE_FORMAT(im.fecha, '%Y-%m-%d') <= '$arreglo[fechahastafe]'";
+    if(!empty($arreglo['nitfe'])) $arreglo['where'] .= " AND do_asignados.por_cuenta='$arreglo[nitfe]'";
+    if(!empty($arreglo['fechadesdefe'])) $arreglo['where'] .= " AND DATE_FORMAT(im.fecha, '%Y-%m-%d') >= '$arreglo[fechadesdefe]'";
+    if(!empty($arreglo['fechahastafe'])) $arreglo['where'] .= " AND DATE_FORMAT(im.fecha, '%Y-%m-%d') <= '$arreglo[fechahastafe]'";
 
     //echo "<script language='javascript'> alert('Nit '+'$arreglo[where]'); </script>";
 

@@ -58,7 +58,7 @@
       <th>Arribo</th>
       <th>Referencia</th>
       <th>Fecha Ing.</th>
-      <th>Ubicación</th>
+      <th>Ubicaci&oacute;n</th>
       <th>Piezas Nal.</th>
       <th>Peso Nal.</th>
       <th>Valor CIF</th>
@@ -89,7 +89,7 @@
       </td>
       <td style="width: 5px;"></td>
       <td>
-        <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="devolver" >Devolver Operación</button>
+        <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="devolver" >Devolver Operaci&oacute;n</button>
       </td>
       <td style="width: 5px;"></td>
       <td>
@@ -97,7 +97,7 @@
       </td>
     </tr>
     <tr style="display: {mostrar_mensaje}">
-      <td colspan="2" style="color:#FF0000;">* La operación no puede ser devuelta debido a que se encuentra cerrada.</td>
+      <td colspan="2" style="color:#FF0000;">* La operaci&oacute;n no puede ser devuelta debido a que se encuentra cerrada.</td>
       <td style="width: 5px;"></td>
       <td>
         <button style="font-family: sans-serif;font-size: 12px;" class="submit" type="submit" id="pcklist-2" >Packing List</button>

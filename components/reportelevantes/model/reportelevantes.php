@@ -11,15 +11,14 @@ class ReportelevantesModelo extends BDControlador {
     $sede = $_SESSION['sede'];
 
     //Prepara la condición del filtro
-    $arreglo[where] = '';
-    //if(!empty($arreglo[nitrl])) $arreglo[where] .= " AND da.por_cuenta='$arreglo[nitrl]'";
-    if(!empty($arreglo[nitrl])) $arreglo[where] .= " AND cl.numero_documento='$arreglo[nitrl]'";
-    if(!empty($arreglo[fechadesderl])) $arreglo[where] .= " AND DATE(im.fecha) >= '$arreglo[fechadesderl]'";
-    if(!empty($arreglo[fechahastarl])) $arreglo[where] .= " AND DATE(im.fecha) <= '$arreglo[fechahastarl]'";
-    if(!empty($arreglo[doctterl])) $arreglo[where] .= " AND da.doc_tte = '$arreglo[doctterl]'";
-    if(!empty($arreglo[doasignadorl])) $arreglo[where] .= " AND da.do_asignado = '$arreglo[doasignadorl]'";
-    if(!empty($arreglo[referenciarl])) $arreglo[where] .= " AND rf.codigo = '$arreglo[referenciarl]'";
-    if(!empty($arreglo[movimiento])) $arreglo[where] .= " AND im.cod_maestro = '$arreglo[movimiento]'";
+    $arreglo['where'] = '';
+    if(!empty($arreglo['nitrl'])) $arreglo['where'] .= " AND cl.numero_documento='$arreglo[nitrl]'";
+    if(!empty($arreglo['fechadesderl'])) $arreglo['where'] .= " AND DATE(im.fecha) >= '$arreglo[fechadesderl]'";
+    if(!empty($arreglo['fechahastarl'])) $arreglo['where'] .= " AND DATE(im.fecha) <= '$arreglo[fechahastarl]'";
+    if(!empty($arreglo['doctterl'])) $arreglo['where'] .= " AND da.doc_tte = '$arreglo[doctterl]'";
+    if(!empty($arreglo['doasignadorl'])) $arreglo['where'] .= " AND da.do_asignado = '$arreglo[doasignadorl]'";
+    if(!empty($arreglo['referenciarl'])) $arreglo['where'] .= " AND rf.codigo = '$arreglo[referenciarl]'";
+    if(!empty($arreglo['movimiento'])) $arreglo['where'] .= " AND im.cod_maestro = '$arreglo[movimiento]'";
 
     $query = "SELECT cl.numero_documento AS documento,cl.razon_social AS nombre_cliente,
                 da.do_asignado AS orden,da.doc_tte,rf.codigo_ref,rf.nombre AS nombre_referencia,

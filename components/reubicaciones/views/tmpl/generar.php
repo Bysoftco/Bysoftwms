@@ -1,6 +1,9 @@
 <?php
-  require_once("Image/Barcode/code128.php");
-  $bc = new Image_Barcode_Code128('',2,4);
+  ini_set("include_path",'/home1/isamis/php:.:/opt/cpanel/ea-php56/root/usr/share/pear' . ini_get("include_path") );
+  require_once('Image/Barcode2.php');
+  $bcObj = new Image_Barcode2();
   $ocupacion = $_GET['ocupacion'];
-  $bc->draw($ocupacion, 'png', true, 'png');
+  $bcAltura = 25;
+  $bc = $bcObj->draw($ocupacion, "Code128", "png", false, $bcAltura);
+  imagepng($bc);
 ?>

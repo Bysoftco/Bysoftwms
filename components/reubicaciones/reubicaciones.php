@@ -28,9 +28,16 @@ class reubicaciones {
     
     $this->listadoReubicaciones($arreglo);
   }
+
+  function Agregar($arreglo) {
+    //Procedimiento de Agregar
+    $this->datos->Agregar($arreglo);
+
+    $this->listadoReubicaciones($arreglo);
+  }
   
   function findCliente($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findCliente($arreglo);
     $Existe = count($unaConsulta); 
 
@@ -43,7 +50,7 @@ class reubicaciones {
   }
   
   function findDocumento($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findDocumento($arreglo);
     $Existe = count($unaConsulta);
     
@@ -57,7 +64,7 @@ class reubicaciones {
   }
   
   function findReubicaciones($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findReubicaciones($arreglo);
     $Existe = count($unaConsulta); 
 
@@ -70,14 +77,15 @@ class reubicaciones {
   }
   
   function findReferencia($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findReferencia($arreglo);
     $Existe = count($unaConsulta); 
 
     foreach($unaConsulta as $value) {
 			$codigo = $value['codigo'];
-      $nombre = trim($value['nombre']);
-			echo "$nombre|$codigo\n";
+      $codref = trim($value['codigo_ref']);
+      $nombre = '['.trim($value['codigo_ref']).'] ' .trim($value['nombre']);
+			echo "$nombre|$codigo|$codref\n";
     }
     if($Existe == 0) echo "No hay Resultados|-1\n";
   }

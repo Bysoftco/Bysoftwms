@@ -78,7 +78,7 @@ class Kits {
       $codReferencia = $ref->save();
     }
     $_POST = $temp;
-        return $codReferencia;
+    return $codReferencia;
   }
     
   function guardarKit($arreglo) {

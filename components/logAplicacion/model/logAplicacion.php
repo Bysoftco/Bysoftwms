@@ -1,6 +1,7 @@
 <?php
 require_once(CLASSES_PATH.'BDControlador.php');
-class LogAplicacionModelo extends BDControlador{
+
+class LogAplicacionModelo extends BDControlador {
 	
 	function LogAplicacionModelo(){
 		parent :: Manejador_BD();
@@ -38,10 +39,9 @@ class LogAplicacionModelo extends BDControlador{
 			$query.=" AND sl.siglog_fecha_edicion <= '$arreglo[filtroHasta] 23:59:59' ";
 		}
 		
-		
 		if(isset($arreglo['orden']) && !empty($arreglo['orden'])){
 			$query.=" ORDER BY $arreglo[orden] ";
-		}else{
+		} else {
 			$query.=" ORDER BY sl.siglog_fecha_edicion DESC ";
 		}
 		
@@ -88,10 +88,9 @@ class LogAplicacionModelo extends BDControlador{
 			$query.=" AND sl.siglog_fecha_accion <= '$arreglo[filtroHasta] 23:59:59' ";
 		}
 		
-		
 		if(isset($arreglo['orden']) && !empty($arreglo['orden'])){
 			$query.=" ORDER BY $arreglo[orden] ";
-		}else{
+		} else {
 			$query.=" ORDER BY sl.siglog_fecha_accion DESC ";
 		}
 

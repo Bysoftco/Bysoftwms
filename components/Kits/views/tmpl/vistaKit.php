@@ -25,7 +25,7 @@
                 </td>
             </tr>
             <tr>
-                <td height="27px" class="tituloForm">Código Kit</td>
+                <td height="27px" class="tituloForm">C&oacute;digo Kit</td>
                 <td>
                     {codigo_kit}
                     <input type="hidden" name="codigo_kit" id="codigo_kit" value="{codigo_kit}" />
@@ -63,8 +63,8 @@
                     
                     <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general">
                         <tr>
-                            <th>Código de referencia</th>
-                            <th>Descripción de referencia</th>
+                            <th>C&oacute;digo de referencia</th>
+                            <th>Descripci&oacute;n de referencia</th>
                             <th>Piezas en el Kit</th>
                             <th>Disponible Nacional</th>
                             <th>Disponible Extranjera</th>

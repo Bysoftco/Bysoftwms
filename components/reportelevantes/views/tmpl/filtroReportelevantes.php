@@ -62,8 +62,8 @@
     $( "#winfiltrorl" ).dialog({
       autoOpen: false,
       resizable: false,
-      height: 428,
-      width: 600,
+      height: 450,
+      width: 630,
 			modal: true,
 			buttons: {
         "Consultar": function() {

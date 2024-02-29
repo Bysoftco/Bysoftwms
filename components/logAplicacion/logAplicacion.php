@@ -4,7 +4,6 @@ require_once COMPONENTS_PATH . 'logAplicacion/model/logAplicacion.php';
 require_once COMPONENTS_PATH . 'logAplicacion/views/vista.php';
 
 class logAplicacion{
-	
 	var $vista;
 	var $datos;
 	

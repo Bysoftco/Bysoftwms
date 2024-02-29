@@ -97,15 +97,14 @@
 
   function filtrarReporte() {
     $.ajax({
-        url: 'index_blank.php?component=Reporte_do&method=mostrarListadoOrdenes',
-        data: $("#form_filtro_do").serialize(),
-        async: true,
-        type: "POST",
-        success: function(msm){
-            jQuery(document.body).overlayPlayground('close');void(0);
-            $('#componente_central').html(msm);
-        }
+      url: 'index_blank.php?component=Reporte_do&method=mostrarListadoOrdenes',
+      data: $("#form_filtro_do").serialize(),
+      async: true,
+      type: "POST",
+      success: function(msm) {
+        jQuery(document.body).overlayPlayground('close');void(0);
+        $('#componente_central').html(msm);
+      }
     });
   }
-
 </script>

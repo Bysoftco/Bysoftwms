@@ -56,7 +56,7 @@
       autoOpen: false,
       resizable: false,
       height: 380,
-      width: 550,
+      width: 560,
 			modal: true,
 			buttons: {
         "Consultar": function() {

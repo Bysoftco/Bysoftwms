@@ -17,7 +17,7 @@
       <td>{modelo}</td>
     </tr>
     <tr style="text-align: left;">
-      <td>Última Operación: </td>
+      <td>&Uacute;ltima Operaci&oacute;n: </td>
       <td>[{cod_ultima}] {nom_ultima}</td>
     </tr>
     <tr style="text-align: left;">
@@ -32,8 +32,8 @@
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general_z">
     <thead>
       <tr>
-        <th>Operación</th>
-        <th>Fecha Operación</th>
+        <th>Operaci&oacute;n</th>
+        <th>Fecha Operaci&oacute;n</th>
         <th>C&oacute;digo Referencia</th>
         <th>Referencia</th>
         <th>FMM</th>
@@ -61,7 +61,7 @@
     $('#tabla_general_z').dataTable({
       "aaSorting": [],
       "oLanguage": {
-        "sLengthMenu": "Mostrar _MENU_ registros por página",
+        "sLengthMenu": "Mostrar _MENU_ registros por p&aacute;gina",
         "sZeroRecords": "No hay registros para mostrar",
         "sInfo": "Mostrando _START_ a _END_ registros de _TOTAL_",
         "sInfoEmpty": "Mostrando 0 a 0 registros de 0",

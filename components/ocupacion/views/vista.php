@@ -4,43 +4,42 @@ class OcupacionVista {
   var $datos;
 
 	function OcupacionVista() {
-		$this->template = new HTML_Template_IT();
+		$this->template = new HTML_Template_IT(COMPONENTS_PATH);
     $this->datos = new OcupacionModelo();
 	}
 
-
   function filtroOcupacion($arreglo) {
-		$this->template->loadTemplateFile(COMPONENTS_PATH . 'ocupacion/views/tmpl/filtroOcupacion.php');
+		$this->template->loadTemplateFile('ocupacion/views/tmpl/filtroOcupacion.php');
 		$this->template->setVariable('COMODIN', '');
 
     // Carga información del Perfil y Usuario
-    $arreglo[perfil] = $_SESSION['datos_logueo']['perfil_id'];
-    $arreglo[usuario] = $_SESSION['datos_logueo']['usuario'];
+    $arreglo['perfil'] = $_SESSION['datos_logueo']['perfil_id'];
+    $arreglo['usuario'] = $_SESSION['datos_logueo']['usuario'];
     // Valida el Perfil para identificar el Tercero
-    if($arreglo[perfil] == 23) {
-      $this->template->setVariable(soloLectura, "readonly=''");
-      $this->template->setVariable(nito, $arreglo[usuario]);
-      $cliente = $this->datos->findClientet($arreglo[usuario]);
-      $this->template->setVariable(cliente, $cliente->razon_social);
+    if($arreglo['perfil'] == 23) {
+      $this->template->setVariable('soloLectura', "readonly=''");
+      $this->template->setVariable('nito', $arreglo['usuario']);
+      $cliente = $this->datos->findClientet($arreglo['usuario']);
+      $this->template->setVariable('cliente', $cliente->razon_social);
     } else {
-      $this->template->setVariable(soloLectura, "");
-      $this->template->setVariable(nito, "");
-      $this->template->setVariable(cliente, "");
+      $this->template->setVariable('soloLectura', "");
+      $this->template->setVariable('nito', "");
+      $this->template->setVariable('cliente', "");
     }
     
 		$this->template->show();
 	}
 
   function listadoOcupacion($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'ocupacion/views/tmpl/listadoOcupacion.php' );
+    $this->template->loadTemplateFile('ocupacion/views/tmpl/listadoOcupacion.php');
     $this->template->setVariable('COMODIN', '');
 
     //Conservación datos del filtro
-    $this->template->setVariable('nito',$arreglo[nito]);
-    $this->template->setVariable('doctteo',$arreglo[doctteo]);
-    $this->template->setVariable('doasignadoo',$arreglo[doasignadoo]);
-    $this->template->setVariable('ocupaciono',$arreglo[ocupaciono]);
-    $this->template->setVariable('referenciao',$arreglo[referenciao]);
+    $this->template->setVariable('nito',$arreglo['nito']);
+    $this->template->setVariable('doctteo',$arreglo['doctteo']);
+    $this->template->setVariable('doasignadoo',$arreglo['doasignadoo']);
+    $this->template->setVariable('ocupaciono',$arreglo['ocupaciono']);
+    $this->template->setVariable('referenciao',$arreglo['referenciao']);
     //Inicializa el número de registro
     $n = 0; $tr = count($arreglo['datos']); //Total de Registros    
     //Visualiza Listado Solicitado
@@ -63,7 +62,7 @@ class OcupacionVista {
   }
 
   function imprimeListadoOcupacion($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'ocupacion/views/tmpl/verListadoOcupacion.php' );
+    $this->template->loadTemplateFile('ocupacion/views/tmpl/verListadoOcupacion.php' );
     $this->template->setVariable('COMODIN', '');
 
     //Visualiza Ocupaciones Solicitadas

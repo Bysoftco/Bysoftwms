@@ -6,34 +6,34 @@ class SaldosVista {
   var $datos;
 	
   function SaldosVista() {
-    $this->template = new HTML_Template_IT();
+    $this->template = new HTML_Template_IT(COMPONENTS_PATH);
     $this->datos = new SaldosModelo();
   }
   
 	function filtroSaldos($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'saldos/views/tmpl/filtroSaldos.php' );
+    $this->template->loadTemplateFile('saldos/views/tmpl/filtroSaldos.php');
     $this->template->setVariable('COMODIN', '');
     
     // Carga información del Perfil y Usuario
-    $arreglo[perfil] = $_SESSION['datos_logueo']['perfil_id'];
-    $arreglo[usuario] = $_SESSION['datos_logueo']['usuario'];
+    $arreglo['perfil'] = $_SESSION['datos_logueo']['perfil_id'];
+    $arreglo['usuario'] = $_SESSION['datos_logueo']['usuario'];
     // Valida el Perfil para identificar el Tercero
-    if($arreglo[perfil] == 23) {
-      $this->template->setVariable(soloLectura, "readonly=''");
-      $this->template->setVariable(usuario, $arreglo[usuario]);
-      $cliente = $this->datos->findClientet($arreglo[usuario]);
-      $this->template->setVariable(cliente, $cliente->razon_social);
+    if($arreglo['perfil'] == 23) {
+      $this->template->setVariable('soloLectura', "readonly=''");
+      $this->template->setVariable('usuario', $arreglo['usuario']);
+      $cliente = $this->datos->findClientet($arreglo['usuario']);
+      $this->template->setVariable('cliente', $cliente->razon_social);
     } else {
-      $this->template->setVariable(soloLectura, "");
-      $this->template->setVariable(usuario, "");
-      $this->template->setVariable(cliente, "");
+      $this->template->setVariable('soloLectura', "");
+      $this->template->setVariable('usuario', "");
+      $this->template->setVariable('cliente', "");
     }
     
     $this->template->show();
 	}
   	
   function listadoSaldos($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'saldos/views/tmpl/listadoSaldos.php' );
+    $this->template->loadTemplateFile('saldos/views/tmpl/listadoSaldos.php');
     $this->template->setVariable('COMODIN', '');
     
     //Datos de Filtro para Impresión
@@ -44,6 +44,7 @@ class SaldosVista {
     $this->template->setVariable('doasignadofs', $arreglo['doasignadofs']);
 
     $n = 1; $tpiezas = $tpiezas_nal = $tpiezas_ext = 0;
+    $t_ret_nal = $t_ret_ext = 0;
     foreach($arreglo['datos'] as $value) {
       $this->template->setCurrentBlock("ROW");
       $this->template->setVariable('n', $n);
@@ -58,37 +59,34 @@ class SaldosVista {
       $this->template->setVariable('piezas', number_format(abs($value['cantidad']),2));
       $this->template->setVariable('piezas_nal', number_format(abs($value['c_nal']),2));
       $this->template->setVariable('piezas_ext', number_format(abs($value['c_ext']),2));
-	  
-	  $this->template->setVariable('c_ret_nal', number_format(abs($value['c_ret_nal']),2));
-	  $this->template->setVariable('c_ret_ext', number_format(abs($value['c_ret_ext']),2));
-	  
+      $this->template->setVariable('c_ret_nal', number_format(abs($value['c_ret_nal']),2));
+      $this->template->setVariable('c_ret_ext', number_format(abs($value['c_ret_ext']),2));  
       $this->template->setVariable('saldo_piezas', number_format(abs($value['c_nal']+$value['c_ext']),2));
+
       //Acumula Totales
       $tpiezas += $value['cantidad']; $tpiezas_nal += $value['c_nal'];
-      $tpiezas_ext += $value['c_ext']; $n++;
-	  
-      $t_ret_nal=$t_ret_nal+abs($value['c_ret_nal']);
-	  $t_ret_ext=$t_ret_ext+abs($value['c_ret_ext']);
-	  
-	  
-	  $this->template->parseCurrentBlock("ROW");
+      $tpiezas_ext += $value['c_ext']; $n++;	  
+      $t_ret_nal += abs($value['c_ret_nal']);
+      $t_ret_ext += abs($value['c_ret_ext']);
+      $this->template->parseCurrentBlock("ROW");
     }
+
     $this->template->setVariable('total_piezas', number_format($tpiezas,2));
     $this->template->setVariable('total_piezas_nal', number_format($tpiezas_nal,2));
     $this->template->setVariable('total_piezas_ext', number_format($tpiezas_ext,2));
     $this->template->setVariable('total_saldo_piezas', number_format($tpiezas_nal+$tpiezas_ext,2));
-	
-	$this->template->setVariable('total_ret_nal', number_format($t_ret_nal,2));
-	$this->template->setVariable('total_ret_ext', number_format($t_ret_ext,2));
+    $this->template->setVariable('total_ret_nal', number_format($t_ret_nal,2));
+    $this->template->setVariable('total_ret_ext', number_format($t_ret_ext,2));
     
     $this->template->show();
   }
 
   function imprimeListadoSaldos($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'saldos/views/tmpl/verListadoSaldos.php' );
+    $this->template->loadTemplateFile('saldos/views/tmpl/verListadoSaldos.php');
     $this->template->setVariable('COMODIN', '');
 
     $n = 1; $tpiezas = $tpiezas_nal = $tpiezas_ext = 0;
+    $t_ret_nal = $t_ret_ext = 0;
     foreach($arreglo['datos'] as $value) {
       $this->template->setCurrentBlock("ROW");
       $this->template->setVariable('n', $n);
@@ -107,12 +105,16 @@ class SaldosVista {
       //Acumula Totales
       $tpiezas += $value['cantidad']; $tpiezas_nal += $value['c_nal'];
       $tpiezas_ext += $value['c_ext']; $n++;
+      $t_ret_nal += abs($value['c_ret_nal']);
+      $t_ret_ext += abs($value['c_ret_ext']);
       $this->template->parseCurrentBlock("ROW");
     }
     $this->template->setVariable('total_piezas', number_format($tpiezas,2));
     $this->template->setVariable('total_piezas_nal', number_format($tpiezas_nal,2));
     $this->template->setVariable('total_piezas_ext', number_format($tpiezas_ext,2));
     $this->template->setVariable('total_saldo_piezas', number_format($tpiezas_nal+$tpiezas_ext,2));
+    $this->template->setVariable('total_ret_nal', number_format($t_ret_nal,2));
+    $this->template->setVariable('total_ret_ext', number_format($t_ret_ext,2));
     
     $this->template->show();
   }

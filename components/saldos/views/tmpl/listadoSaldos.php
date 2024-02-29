@@ -66,6 +66,8 @@
       <td style="text-align: right;">{c_ret_nal}</td>
       <td style="text-align: right;">{saldo_piezas}</td>
     </tr>
+    {total_piezas}{total_piezas_nal}{total_piezas_ext}
+    {total_ret_ext}{total_ret_nal}{total_saldo_piezas}
     <!-- END ROW  -->
   </tbody>
   <tfoot>

@@ -65,9 +65,9 @@
 	
   function seleccionado(){ 
 		var archivos = document.getElementById("archivos");//Damos el valor del input tipo file
-		var archivo = archivos.files; //Obtenemos el valor del input (los arcchivos) en modo de arreglo
+		var archivo = archivos.files; //Obtenemos el valor del input (los archivos) en modo de arreglo
 
-		/* Creamos el objeto que hara la petición AJAX al servidor, debemos de validar 
+		/* Creamos el objeto que hará la petición AJAX al servidor, debemos de validar 
 			 si existe el objeto “ XMLHttpRequest” ya que en internet explorer viejito no esta,
 			 y si no esta usamos “ActiveXObject” */ 
 		if(window.XMLHttpRequest) {
@@ -80,8 +80,8 @@
 		//este tipo de objeto ya tiene la propiedad multipart/form-data para poder subir archivos
 		var data = new FormData();
 
-		//Como no sabemos cuantos archivos subira el usuario, iteramos la variable y al
-		//objeto de FormData con el metodo "append" le pasamos clave/valor, usamos el indice "i" para
+		//Como no sabemos cuántos archivos subira el usuario, iteramos la variable y al
+		//objeto de FormData con el metodo "append" le pasamos clave/valor, usamos el indice "i" para 
 		//que no se repita, si no lo usamos solo tendra el valor de la ultima iteración
 		for(i=0; i<archivo.length; i++) {
 			data.append('archivo'+i,archivo[i]);
@@ -90,8 +90,7 @@
 		//Pasándole la url a la que haremos la petición
 		Req.open("POST", "index_blank.php?component=seriales&method=cargarArchivo", true);
 
-		/* Le damos un evento al request, esto quiere decir que cuando termine de hacer la petición,
-			 se ejecutara este fragmento de código */ 
+		/* Le damos un evento al request, esto quiere decir que cuando termine de hacer la petición, se ejecutará este fragmento de código */ 
 
 		Req.onload = function(Event) {
 			//Validamos que el status http sea Ok 

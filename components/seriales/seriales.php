@@ -94,7 +94,7 @@ class seriales {
 	}
   
   function findSerial($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findSerial($arreglo);
     $Existe = count($unaConsulta); 
 
@@ -116,7 +116,6 @@ class seriales {
  	function buscarSerial($arreglo) {
 		$ordenserial = $this->datos->buscarSerial($arreglo);
 		if(count($ordenserial) != 0) {
-			$ordenserial[0];
       $serial = trim($ordenserial[0]['serial']);
     	$orden = $ordenserial[0]['numorden'];
       $doc_tte = $ordenserial[0]['doc_tte'];

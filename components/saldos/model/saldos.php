@@ -10,15 +10,20 @@ class SaldosModelo extends BDControlador {
     $db = $_SESSION['conexion'];
 		$sede = $_SESSION['sede'];
 
-    $arreglo[movimiento] = "1,2,3,7,10,15,16,30";
-    $arreglo[GroupBy] = "orden,codigo_ref";
-    $arreglo[having] = "HAVING (TRUNCATE(c_nal,1) > 0 OR TRUNCATE(c_ext,1) > 0) AND (TRUNCATE(cantidad,1) > 0)";
+    $arreglo['movimiento'] = "1,2,3,7,10,15,16,30";
+    $arreglo['where'] = "";
+    $arreglo['GroupBy'] = "orden,codigo_ref";
+    $arreglo['having'] = "HAVING (TRUNCATE(c_nal,1) > 0 OR TRUNCATE(c_ext,1) > 0) AND (TRUNCATE(cantidad,1) > 0)";
 
 		//Prepara la condición del filtro
-    if(!empty($arreglo[nitfs])) $arreglo[where] .= " AND do_asignados.por_cuenta='$arreglo[nitfs]'";
-    if(!empty($arreglo[fechadesdefs])) $arreglo[where] .= " AND ie.fecha >= '$arreglo[fechadesdefs]'";
-    if(!empty($arreglo[fechahastafs])) $arreglo[where] .= " AND ie.fecha <= '$arreglo[fechahastafs]'";
-    if(!empty($arreglo[doasignadofs])) $arreglo[where] .= " AND do_asignados.do_asignado = '$arreglo[doasignadofs]'";
+    if(!empty($arreglo['nitfs'])) 
+      $arreglo['where'] .= " AND do_asignados.por_cuenta = ".$arreglo['nitfs'];
+    if(!empty($arreglo['fechadesdefs']))
+      $arreglo['where'] .= " AND ie.fecha >= '".$arreglo['fechadesdefs']."'";
+    if(!empty($arreglo['fechahastafs']))
+      $arreglo['where'] .= " AND ie.fecha <= '".$arreglo['fechahastafs']."'";
+    if(!empty($arreglo['doasignadofs']))
+      $arreglo['where'] .= " AND do_asignados.do_asignado = '".$arreglo['doasignadofs']."'";
     
     $query = "SELECT orden, doc_tte, inventario_entrada, inventario_entrada AS item, arribo, nombre_referencia, cod_referencia, codigo_ref, documento, fecha,
                 SUM(cantidad) AS cantidad, SUM(valor) AS valor, SUM(peso) AS peso, modelo, SUM(p_ext) AS p_ext, SUM(p_nal) AS p_nal, nombre_ubicacion, fmm,
@@ -106,7 +111,7 @@ class SaldosModelo extends BDControlador {
                 AND clientes.numero_documento = do_asignados.por_cuenta
                 AND ie.referencia = ref.codigo
                 AND ie.posicion = p.codigo AND p.sede='$sede'
-                AND do_asignados.sede = '$sede' $arreglo[where]) AS inv
+                AND do_asignados.sede = '$sede'".$arreglo['where'].") AS inv
               GROUP BY $arreglo[GroupBy] $arreglo[having]"; //cod_referencia se cambio por codigo_ref
     
     $db->query($query);

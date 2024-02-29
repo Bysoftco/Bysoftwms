@@ -30,7 +30,7 @@
     </table>
   </div>
 </div>
-<div style="padding-top: 43px;"></div>
+<div style="padding-top: 45px;"></div>
 <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general_z" class="display">
   <thead>
     <tr>
@@ -99,7 +99,7 @@
       "aaSorting": [],
 	  "aLengthMenu": [[20, 40, 60, -1], [20, 40, 60, "Todos"]],
       "oLanguage": {
-        "sLengthMenu": "Mostrar _MENU_ registros por página",
+        "sLengthMenu": "Mostrar _MENU_ registros por p&aacute;gina",
         "sZeroRecords": "No hay registros para mostrar",
         "sInfo": "Mostrando _START_ a _END_ registros de _TOTAL_",
         "sInfoEmpty": "Mostrando 0 a 0 registros de 0",

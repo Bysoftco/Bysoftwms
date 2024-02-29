@@ -25,7 +25,7 @@
         </td>
       </tr>
       <tr>
-        <td class="tituloForm">Código Kit</td>
+        <td class="tituloForm">C&oacute;digo Kit</td>
         <td>
           {codigo_kit}
           <input style="display: {ocultar_codigo}" type="text" name="codigo_kit" id="codigo_kit" class="inputTabla required" value="{codigo_kit}" />
@@ -45,7 +45,7 @@
         </td>
       </tr>
       <tr>
-        <td class="tituloForm">Presentación Venta</td>
+        <td class="tituloForm">Presentaci&oacute;n Venta</td>
         <td>
           <select name="p_venta" style="width:255px" >
             {select_p_venta}
@@ -74,8 +74,8 @@
         <td colspan="2">
           <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general">
             <tr>
-              <th>Código de referencia</th>
-              <th>Descripción de referencia</th>
+              <th>C&oacute;digo de referencia</th>
+              <th>Descripci&oacute;n de referencia</th>
               <th>Piezas en el Kit</th>
             </tr>
             <!-- BEGIN ROW -->

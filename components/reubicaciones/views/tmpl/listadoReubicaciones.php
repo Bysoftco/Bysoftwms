@@ -26,11 +26,18 @@
             </a>
           </div> 
         </td>
+        <td align="center">
+          <div class="borde_circular">
+            <a href="javascript: agregar()">
+              <img src="img/acciones/agregar.png" title="Agregar" width="25" height="25" border="0" />
+            </a>
+          </div>
+        </td>
       </tr>
     </table>
   </div>
 </div>
-<div style="padding-top: 43px;"></div>
+<div style="padding-top: 44px;"></div>
 <link type="text/css" href="./integrado/cz_estilos/jquery.autocomplete.css" rel="stylesheet" />
 <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general_z" class="display">
   <thead>
@@ -41,7 +48,7 @@
       <th>Referencia</th>      
       <th>Documento TTE</th>
       <th>Orden</th>
-      <th>Nueva UbicaciÛn</th>
+      <th>Nueva Ubicaci&oacute;n</th>
       <th>Fecha Reubicaci&oacute;n</th>
     </tr>
   </thead>
@@ -51,6 +58,7 @@
       <td style="text-align: center;padding: 2.5px;">
         <img src="components/reubicaciones/views/tmpl/generar.php?ocupacion={nombre_ubicacion}" />
         <input name="codigo{n}" type="hidden" id="codigo{n}" value="{codigo}" />
+        <input name="item{n}" type="hidden" id="item{n}" value="{item}" />
       </td>
       <td>[{doc_cliente}] {nombre_cliente}</td>
       <td style="text-align: center;">{codigo_referencia}</td>
@@ -58,11 +66,12 @@
       <td style="text-align: center;">{doc_transporte}</td>
       <td style="text-align: center;">{orden}</td>
       <td style="text-align: center;">
-        <input type="text" name="reubica{n}" id="reubica{n}" maxlength="30" size="28" style="width:auto;"
+        <input type="text" name="reubica{n}" id="reubica{n}" maxlength="30" size="28" style="width:auto;height:20px;"
           onfocus="seleccion({n})" oninput="mostrar({n})" />
         <input type="hidden" name="ubicacionr{n}" id="ubicacionr{n}" />
       </td>
       <td style="text-align: center;">{fecha_reubica}</td>
+      {tr}
     </tr>
     <!-- END ROW  -->
   </tbody>
@@ -83,7 +92,7 @@
       "iDisplayLength": 20,
       "aLengthMenu": [[20, 40, 60, -1], [20, 40, 60, "Todos"]],
       "oLanguage": {
-        "sLengthMenu": "Mostrar _MENU_ registros por p·gina",
+        "sLengthMenu": "Mostrar _MENU_ registros por p&aacute;gina",
         "sZeroRecords": "No hay registros para mostrar",
         "sInfo": "Mostrando _START_ a _END_ registros de _TOTAL_",
         "sInfoEmpty": "Mostrando 0 a 0 registros de 0",
@@ -127,16 +136,50 @@
       }
     });
   }
-  
+
+  //Reubica la referencia dada (nueva posici√≥n)  
   function reubicar() {
     var fechar = new Date().toJSON().slice(0,10); //Captura fecha en formato yyyy-mm-dd
     var tabla = $('#tabla_general_z').DataTable();
-    
+
     $.ajax({
-      url: 'index_blank.php?component=reubicaciones&method=Reubicar&nr='+$('#nr').val()
-            +'&nitr='+$('#nitr').val()+'&doctter='+$('#doctter').val()+'&doasignador='
-            +$('#doasignador').val()+'&ubicacionr='+$('#ubicacionr').val()
-            +'&referenciar='+$('#referenciar').val()+'&fechar='+fechar,
+      url: 'index_blank.php?component=reubicaciones&method=Reubicar&nr='
+        +$('#nr').val()
+        +'&nitr='+$('#nitr').val()
+        +'&doctter='+$('#doctter').val()
+        +'&doasignador='
+        +$('#doasignador').val()
+        +'&ubicacionr='
+        +$('#ubicacionr').val()
+        +'&referenciar='
+        +$('#referenciar').val()
+        +'&fechar='+fechar,
+      type: "POST",
+      async: false,
+      data: tabla.$('input').serialize(),
+      success: function(msm) {
+        $('#componente_central').html(msm);
+      }
+    });
+  }
+
+  //Agrega la ubicaci√≥n dada
+  function agregar() {
+    var fechar = new Date().toJSON().slice(0,10); //Captura fecha en formato yyyy-mm-dd
+    var tabla = $('#tabla_general_z').DataTable();
+
+    $.ajax({
+      url: 'index_blank.php?component=reubicaciones&method=Agregar&nr='
+        +$('#nr').val()
+        +'&nitr='+$('#nitr').val()
+        +'&doctter='+$('#doctter').val()
+        +'&doasignador='
+        +$('#doasignador').val()
+        +'&ubicacionr='
+        +$('#ubicacionr').val()
+        +'&referenciar='
+        +$('#referenciar').val()
+        +'&fechar='+fechar,
       type: "POST",
       async: false,
       data: tabla.$('input').serialize(),

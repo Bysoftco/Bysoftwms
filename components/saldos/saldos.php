@@ -37,7 +37,7 @@ class saldos {
   }
     
   function findCliente($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findCliente($arreglo);
     $Existe = count($unaConsulta); 
 

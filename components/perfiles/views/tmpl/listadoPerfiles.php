@@ -4,7 +4,7 @@
     <table align="right" cellpadding="5" cellspacing="0" border="0">
       <tr>
         <td>
-		      ADMINISTRACI&Oacute;N DE PERFILES
+					ADMINISTRACI&Oacute;N DE PERFILES
         </td>
       </tr>
     </table>
@@ -14,21 +14,21 @@
 			<tr>
 				<td align="center">
 					<div class="popupsAgregar borde_circular">
-						<a href="">
+						<a href="" title="Agregar Perfil">
 							<img src="img/acciones/agregar.png" title="Agregar" width="25" height="25" border="0" />
 						</a>
 					</div>
 				</td>
 				<td align="center">
 					<div class="popupsVer borde_circular noSeleccion">
-						<a href="">
+						<a href="" title="Ver Perfil">
 							<img src="img/acciones/ver.png" title="Ver" width="25" height="25" border="0" />
 						</a>
 					</div>
 				</td>
 				<td align="center">
 					<div class="popupsEditar borde_circular noSeleccion">
-						<a href="">
+						<a href="" title="Editar Perfil">
 							<img src="img/acciones/edit.png" title="Editar" width="25" height="25" border="0" />
 						</a>
 					</div>
@@ -51,11 +51,8 @@
 		</table>
 	</div>
 </div>
-<div style="padding-top: 43px;"></div>
-<div id="alerta_accion" style="display: {verAlerta}">{alerta_accion}</div>
-<div style="height: 5px"></div>
-
-<table align="right" cellpadding="0" cellspacing="0" border="0">
+<div id="alerta_accion" style="margin-top: {alturax};display: {verAlerta}">{alerta_accion}</div>
+<table align="right" cellpadding="0" cellspacing="0" border="0" style="padding-top:{altura};">
 	<tr>
 		<td align="right" height="30px">
 			<a href="javascript:buscarCoincidencias()"><img src="img/acciones/buscar.png" title="Buscar" width="17" height="20" border="0" /></a>
@@ -118,7 +115,7 @@ Nifty("div.div_barra","top transparent");
 $('.noSeleccion').css('display', 'none');
 ordenadoActual();
 
-function seleccionado(nombre, id, idestado){
+function seleccionado(nombre, id, idestado) {
 	$('#nombreSeleccionado').attr('value', nombre);
 	$('#idSeleccionado').attr('value', id);
 	$('#idEstado').attr('value', idestado);
@@ -126,138 +123,143 @@ function seleccionado(nombre, id, idestado){
 }
 
 $('.popupsAgregar a').wowwindow({
-    draggable: true,
-    width:800,
-    overlay: {clickToClose: false,
-    	      background: '#000000'},
+  draggable: true,
+  width:800,
+  overlay: {
+  	clickToClose: false,
+  	background: '#000000'
+  },
 	onclose: function() {$('.formError').remove();},
-	before: function(){
+	before: function() {
 		$.ajax({
 			url:'index_blank.php?component=perfiles&method=agregarPerfil&id=0',
 			async:true,
 			type: "POST",
-			success: function(msm){
+			success: function(msm) {
 				$('#wowwindow-inner').html(msm);
-	        }
+	    }
 		});
 	}
 });
 
 $('.popupsVer a').wowwindow({
-    draggable: true,
-    width:800,
-    overlay: {clickToClose: false,
-	      background: '#000000' },
+  draggable: true,
+  width:800,
+  overlay: {
+  	clickToClose: false,
+    background: '#000000'
+  },
 	onclose: function() {$('.formError').remove();},
-    before: function(){
-    	$.ajax({
+  before: function() {
+  	$.ajax({
 			url:'index_blank.php?component=perfiles&method=verPerfiles',
 			async:true,
 			data:'id='+$('#idSeleccionado').attr('value'),
-			success: function(msm){
+			success: function(msm) {
 				$('#wowwindow-inner').html(msm);
-	        }
+	    }
 		});
 	}
 });
 
 $('.popupsEditar a').wowwindow({
-    draggable: true,
-    width:800,
-    overlay: {clickToClose: false,
-	      background: '#000000' },
+  draggable: true,
+  width:800,
+  overlay: {
+  	clickToClose: false,
+    background: '#000000'
+  },
 	onclose: function() {$('.formError').remove();},
-    before: function(){
-    	$.ajax({
+  before: function() {
+  	$.ajax({
 			url:'index_blank.php?component=perfiles&method=editarPerfiles',
 			async:true,
 			data:'id='+$('#idSeleccionado').attr('value'),
-			success: function(msm){
+			success: function(msm) {
 				$('#wowwindow-inner').html(msm);
-	        }
+	    }
 		});
 	}
 });
 
-function editarPerfil(id_perfil){
+function editarPerfil(id_perfil) {
 	$.ajax({
 		url:'index_blank.php?component=perfiles&method=editarPerfiles',
 		type: "POST",
 		data:'id='+id_perfil,
-		success: function(msm){
+		success: function(msm) {
 			$('#wowwindow-inner').html(msm);
-        }
+    }
 	});
 }
 
-function eliminarPerfil(){
+function eliminarPerfil() {
 	var nombre = $('#nombreSeleccionado').attr('value');
 	var id = $('#idSeleccionado').attr('value');
-	if(confirm('¿Realmente desea eliminar el perfil '+nombre+' ?')){
+	if(confirm('¿Realmente desea eliminar el perfil '+nombre+' ?')) {
 		$.ajax({
 		  type: "POST",
 		  url: 'index_blank.php',
 		  data: 'component=perfiles&method=cambiarEstadoPerfil&id='+id+'&estado=E',
-		  success: function(msm){
-		   $('#componente_central').html(msm);
-		  }
-		});
-	}
-}
-
-function activarDesactivar(){
-	var nombre = $('#nombreSeleccionado').attr('value');
-	var id = $('#idSeleccionado').attr('value');
-	var estado = $('#idEstado').attr('value');
-	if($('#idEstado').attr('value')=='A')
-		{estado='I';}
-	else
-		{estado='A';}
-	if(confirm('¿Realmente desea cambiar el estado del perfil "'+nombre+'" ?')){
-		$.ajax({
-		  type: "POST",
-		  url: 'index_blank.php',
-		  data: 'component=perfiles&method=cambiarEstadoPerfil&id='+id+'&estado='+estado,
-		  success: function(msm){
+		  success: function(msm) {
 		  	$('#componente_central').html(msm);
 		  }
 		});
 	}
 }
 
-function paginar(pagina){
-	$('#pagina').attr('value', pagina);
-    filtrar();
+function activarDesactivar() {
+	var nombre = $('#nombreSeleccionado').attr('value');
+	var id = $('#idSeleccionado').attr('value');
+	var estado = $('#idEstado').attr('value');
+	if($('#idEstado').attr('value')=='A') {
+		estado='I';
+	} else {
+		estado='A';
+	}
+	if(confirm('¿Realmente desea cambiar el estado del perfil "'+nombre+'" ?')) {
+		$.ajax({
+		  type: "POST",
+		  url: 'index_blank.php',
+		  data: 'component=perfiles&method=cambiarEstadoPerfil&id='+id+'&estado='+estado,
+		  success: function(msm) {
+		  	$('#componente_central').html(msm);
+		  }
+		});
+	}
 }
 
-function ordenadoActual(){
+function paginar(pagina) {
+	$('#pagina').attr('value', pagina);
+  filtrar();
+}
+
+function ordenadoActual() {
 	$('.noOrden').html('');
 	var orden_actual = $('#orden').attr('value');
 	var id_actual = $('#id_orden').attr('value');
-	if(id_actual=='ASC'){
+	if(id_actual=='ASC') {
 		$('#span'+orden_actual).html('<span style="font-size: 15px">&uarr;</span>');
-	}
-	else if(id_actual=='DESC'){
+	} else if(id_actual=='DESC') {
 		$('#span'+orden_actual).html('<span style="font-size: 15px">&darr;</span>');
-	}
-	else{
+	} else {
 		$('#span'+orden_actual).html('');
 	}
 }
 
-function buscarCoincidencias(){
+function buscarCoincidencias() {
 	$('#pagina').attr('value', 1);
-    filtrar();
+  filtrar();
 }
 
-function filtrar(){
+function filtrar() {
 	var busqueda = trim($('#campoBuscar').attr('value'));
 	$('#buscar').attr('value', busqueda);
 	$.ajax({
 	  url: 'index_blank.php?component=perfiles&method=listadoPerfiles',
 	  data: $('#form_filtros').serialize(),
-	  success: function(msm){
-	   $('#componente_central').html(msm);
+	  success: function(msm) {
+	  	$('#componente_central').html(msm);
 	  }
 	});
 }

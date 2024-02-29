@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Packing List</title>
   <script type="text/javascript">
     print();
@@ -66,13 +66,13 @@
         {numero_documento}
         <input type="hidden" name="doc_cliente" id="doc_cliente" value="{numero_documento}" />
       </td>
-      <td class="tituloForm" style="width: 12%">Fecha de Operación</td>
+      <td class="tituloForm" style="width: 12%">Fecha de Operaci&oacute;n</td>
       <td style="width: 13%">{fecha}</td>
       <td class="tituloForm" style="width: 12%">FMM</td>
       <td style="width: 13%">{fmm}</td>
     </tr>
     <tr>
-      <td class="tituloForm" style="width: 12%">Tipo de Operación</td>
+      <td class="tituloForm" style="width: 12%">Tipo de Operaci&oacute;n</td>
       <td style="width: 13%">{producto}</td>
       <td class="tituloForm">Orden</td>
       <td>{orden}</td>
@@ -93,9 +93,9 @@
   <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_packinglist">
     <tr>
       <th><b>Orden</b></th>
-      <th><b>Código Ref.</b></th>
+      <th><b>C&oacute;digo Ref.</b></th>
       <th><b>Referencia</b></th>
-      <th><b>Ubicación</b></th>
+      <th><b>Ubicaci&oacute;n</b></th>
       <th><b>M/L/C</b></th>
       <th><b>Piezas Nal.</b></th>
       <th><b>Peso Nal.</b></th>

@@ -32,7 +32,7 @@
           </td>
         </tr>
         <tr align="center">
-          <td colspan="2" class="copyright" valign="top">Copyright &copy; 2013 Bysoft (v2.0)</td>
+          <td colspan="2" class="copyright" valign="top">Derechos Reservados &copy; 2013-2023 Bysoft (v2.5)</td>
         </tr>        
       </table>
     </div>

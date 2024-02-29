@@ -110,7 +110,8 @@
       $("#ubicacionr").val(data[1]);
     });
 
-    $("#referenciaf").autocomplete("./index_blank.php?component=ocupacion&method=findReferencia", {
+    //Busca Referencia
+    $("#referenciaf").autocomplete("./index_blank.php?component=reubicaciones&method=findReferencia", {
       width: 300,
       selectFirst: false
     });

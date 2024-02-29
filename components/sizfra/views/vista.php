@@ -6,41 +6,38 @@ class SizfraVista {
   var $datos;
 	
   function SizfraVista() {
-    $this->template = new HTML_Template_IT();
+    $this->template = new HTML_Template_IT(COMPONENTS_PATH);
     $this->datos = new SizfraModelo();
   }
   
 	function filtroSizfra($arreglo) {  
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'sizfra/views/tmpl/filtroSizfra.php' );
-    $this->template->setVariable('COMODIN', '');
+    $this->template->loadTemplateFile('sizfra/views/tmpl/filtroSizfra.php');
+    $this->template->setVariable('COMODIN','');
     
     // Carga información del Perfil y Usuario
-    $arreglo[perfil] = $_SESSION['datos_logueo']['perfil_id'];
-    $arreglo[usuario] = $_SESSION['datos_logueo']['usuario'];
+    $arreglo['perfil'] = $_SESSION['datos_logueo']['perfil_id'];
+    $arreglo['usuario'] = $_SESSION['datos_logueo']['usuario'];
     
     $this->template->show();
 	}
   	
   function listadoSizfra($arreglo,$datosInterfaz) {    
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'sizfra/views/tmpl/listadoSizfra.php' );
-    $this->template->setVariable('COMODIN', '');
+    $this->template->loadTemplateFile('sizfra/views/tmpl/listadoSizfra.php');
+    $this->template->setVariable('COMODIN','');
     
     $this->template->setVariable('nombreinterfaz',$arreglo['nombreinterfaz']);
     $this->template->setVariable('emaildestino',$arreglo['emaildestino']);
     
-    $n = $arreglo[consecutivo];
+    $n = $arreglo['consecutivo'];
     
     // Generación de Interfaz 
     foreach($arreglo['datos'] as $value) {
-      $n;
       $this->template->setCurrentBlock("ROW");
       $this->template->setVariable('consecutivo', $n);
-      // $this->template->setVariable('csc', 0);
       $this->template->setVariable('fecha', $value['fecha']);
       $this->template->setVariable('operacion', $value['operacion']);
       $this->template->setVariable('sku_proveedor', $value['sku_proveedor']);
       $this->template->setVariable('peso_bruto', number_format($value['peso_bruto'],2));
-      //$this->template->setVariable('peso_neto', number_format($value['peso_neto'],2));
       $this->template->setVariable('peso_neto', number_format($value['peso_bruto'] * 0.95, 2));
       $this->template->setVariable('fletes', $value['fletes']);      
       $this->template->setVariable('seguros', $value['seguros']);
@@ -57,13 +54,7 @@ class SizfraVista {
       $this->template->setVariable('cantidad', number_format($value['cantidad'],2));
       $this->template->setVariable('cuc', number_format($value['cantidad'],2));
       $this->template->setVariable('precio', number_format($value['precio'],2));
-      // Escribe registro en el archivo de texto
-      //$linea = "0\t".$value['operacion']."\t".$value['sku_proveedor']."\t".number_format($value['peso_bruto'],2)."\t";      
-      //$linea .= number_format($value['peso_neto'],2)."\t".$value['fletes']."\t".$value['seguros']."\t".$value['otros_gastos']."\t";      
-      //$linea .= $value['cd_embalaje']."\t".$value['modo_transporte']."\t".$value['origen']."\t".$value['origen']."\t";
-      //$linea .= $value['origen']."\t".$value['destino']."\t".$value['destino']."\t".number_format($value['bultos'],2)."\t".$value['cod_referencia']."\t";
-      //$linea .= number_format($value['cantidad'],2)."\t".number_format($value['cantidad'],2)."\t".number_format($value['precio'],2)."\n";
-            
+      // Escribe registro en el archivo de texto            
       $linea  = $n."\t0\t".$value['operacion']."\t".$value['sku_proveedor']."\t".$value['peso_bruto']."\t";
       $linea .= $value['peso_neto']."\t".$value['fletes']."\t".$value['seguros']."\t".$value['otros_gastos']."\t";
       $linea .= $value['cd_embalaje']."\t".$value['modo_transporte']."\t".$value['origen']."\t".$value['origen']."\t";
@@ -79,8 +70,8 @@ class SizfraVista {
   }
   
   function consultaSizfra($arreglo) {    
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'sizfra/views/tmpl/consultaSizfra.php' );
-    $this->template->setVariable('COMODIN', '');
+    $this->template->loadTemplateFile('sizfra/views/tmpl/consultaSizfra.php');
+    $this->template->setVariable('COMODIN','');
         
     $n = 1; 
     foreach($arreglo['datos'] as $value) {
@@ -99,8 +90,8 @@ class SizfraVista {
   }
 
 	function capturaSizfra($arreglo) {
-    $this->template->loadTemplateFile( COMPONENTS_PATH . 'sizfra/views/tmpl/capturaSizfra.php' );
-    $this->template->setVariable('COMODIN', '');
+    $this->template->loadTemplateFile('sizfra/views/tmpl/capturaSizfra.php');
+    $this->template->setVariable('COMODIN','');
     
     $this->template->show();
 	}

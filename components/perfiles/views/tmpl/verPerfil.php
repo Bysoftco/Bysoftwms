@@ -1,6 +1,6 @@
 {COMODIN}
 <div class="div_barraFija">
-	<div id="titulo_ruta">Vista Información Perfil</div>
+	<div id="titulo_ruta" style="width: 100%;text-align: center;">Vista Informaci&oacute;n Perfil</div>
 </div><br />
 <table align="center" width="100%" cellpadding="0" cellspacing="0" id="tabla_general">
 	<tr>
@@ -11,7 +11,7 @@
 		<td>{nombre_perfil}</td>
 	</tr>
 	<tr>
-		<th>DescripciÃ³n</th>
+		<th>Descripci&oacute;n</th>
 		<td>{descripcion}</td>
 	</tr>
 	<tr>
@@ -22,5 +22,5 @@
 	</tr>
 </table>
 <script>
-Nifty("div.div_barraFija","top transparent");
+	Nifty("div.div_barraFija","top transparent");
 </script>

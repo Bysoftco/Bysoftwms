@@ -5,7 +5,7 @@ require_once(COMPONENTS_PATH.'sizfra/views/vista.php');
 require_once(COMPONENTS_PATH.'sizfra/views/tmpl/Archivo.php');
 require_once(COMPONENTS_PATH.'sizfra/views/tmpl/EnvioMail.php');
 
-class sizfra {
+class Sizfra {
   var $vista;
   var $datos;
 
@@ -24,7 +24,7 @@ class sizfra {
     //Actualiza Interfaz en Inventario Movimientos
     $this->actualizaMovimientos($arreglo);
 
-    //Instacia la clase Archivo
+    //Instancia la clase Archivo
     $datosInterfaz = new Archivo();
     //Creamos el archivo
     $datosInterfaz->crear("integrado/_files/".$arreglo['nombreinterfaz'].".txt");
@@ -67,7 +67,7 @@ class sizfra {
   }
   
   function findCliente($arreglo) {
-    $arreglo[q] = strtolower($_GET["q"]);
+    $arreglo['q'] = strtolower($_GET["q"]);
     $unaConsulta = $this->datos->findCliente($arreglo);
     $Existe = count($unaConsulta); 
 
@@ -81,8 +81,8 @@ class sizfra {
   
   function enviarAdjunto($arreglo) {
 		//Envía Mensaje de Correo Interfaz Sizfra
-    $arreglo[mensajeTexto] = $arreglo[mensaje]; 
-		$arreglo[asunto_mail] = $arreglo[asunto];
+    $arreglo['mensajeTexto'] = $arreglo['mensaje']; 
+		$arreglo['asunto_mail'] = $arreglo['asunto'];
     //Verifica internamente si hay archivos adjuntos
 		$this->envioMail($arreglo);
 
@@ -96,11 +96,11 @@ class sizfra {
 
 		$mail = new EnvioMail();
 
-    $mail->adjuntarArchivo($arreglo[adjunto]);
-		$mail->cuerpo($arreglo[mensajeTexto]);
-		$mail->cargarCabecera($destino, $remite, $arreglo[asunto_mail]);
+    $mail->adjuntarArchivo($arreglo['adjunto']);
+		$mail->cuerpo($arreglo['mensajeTexto']);
+		$mail->cargarCabecera($destino, $remite, $arreglo['asunto_mail']);
 		//Procedimiento de Envío de mail y validación de envío correcto
-		$arreglo[info] = $mail->enviarEmail() ? TRUE : FALSE;
+		$arreglo['info'] = $mail->enviarEmail() ? TRUE : FALSE;
 		$this->vista->mostrarMensaje($arreglo);
 	}
 }

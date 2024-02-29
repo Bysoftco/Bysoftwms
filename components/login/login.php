@@ -25,7 +25,6 @@ class login {
 			print('faltante');
 		} else {
 		  // Busca usuario en la tabla - verificando su existencia	
-		    
 			$this->datos->validar_usuario($arreglo);
 			if(isset($_SESSION['datos_logueo']['usuario'])) {
         $menu='<div id="myslidemenu" class="jqueryslidemenu">';
@@ -45,6 +44,7 @@ class login {
 			} else print('error');
 		}
 	}
+
 	function findSede($arregloDatos) {
     	
     	$this->datos->findSede($arregloDatos);
@@ -57,7 +57,8 @@ class login {
     	if($this->datos->N == 0) {
       		echo "No hay Resultados|0\n";
     	}*/
-  }	
+  }
+  	
 	function cerrar_sesion() {
     // Verifica Perfil de Tercero
     if($_SESSION['datos_logueo']['perfil_id'] == 23) {

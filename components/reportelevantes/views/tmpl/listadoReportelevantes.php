@@ -60,8 +60,23 @@
       <td style="text-align: right;">{peso}</td>
       <td style="text-align: right;">{valor}</td>
     </tr>
+    {total_piezas}{total_peso}{total_valor}
     <!-- END ROW  -->
   </tbody>
+  <tfoot>
+    <tr>
+      <th>Totales</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th style="text-align: right;">{total_piezas}</th>
+      <th style="text-align: right;">{total_peso}</th>
+      <th style="text-align: right;">{total_valor}</th>
+    </tr>
+  </tfoot>
 </table>
 <form name="frmExcel" action="index_blank.php" >
   <input type="hidden" name="nitrl" id="nitrl" value="{nitrl}" />

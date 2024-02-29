@@ -4,7 +4,7 @@
   <table align="center" width="50%" cellpadding="0" cellspacing="0" id="tabla_general">
     <tr class="tituloForm" align="center">
       <td align="center" colspan="2">
-        Ingrese parte del nombre de cliente y seleccione la opción que desea consultar...
+        Ingrese parte del nombre de cliente y seleccione la opci&oacute;n que desea consultar...
       </td>
     </tr>
     <tr>

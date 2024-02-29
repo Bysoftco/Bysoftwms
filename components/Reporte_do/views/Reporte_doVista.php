@@ -1,5 +1,5 @@
 <?php
-require_once COMPONENTS_PATH . 'Reporte_do/model/Reporte_doDatos.php';
+require_once COMPONENTS_PATH.'Reporte_do/model/Reporte_doDatos.php';
 
 class Reporte_doVista {
   var $template;
@@ -15,18 +15,18 @@ class Reporte_doVista {
     $this->template->setVariable('COMODIN', '');
 
     // Carga información del Perfil y Usuario
-    $arreglo[perfil] = $_SESSION['datos_logueo']['perfil_id'];
-    $arreglo[usuario] = $_SESSION['datos_logueo']['usuario'];
+    $arreglo['perfil'] = $_SESSION['datos_logueo']['perfil_id'];
+    $arreglo['usuario'] = $_SESSION['datos_logueo']['usuario'];
     // Valida el Perfil para identificar el Tercero
-    if($arreglo[perfil] == 23) {
-      $this->template->setVariable(soloLectura, "readonly=''");
-      $this->template->setVariable(usuario, $arreglo[usuario]);
-      $cliente = $this->datos->findClientet($arreglo[usuario]);
-      $this->template->setVariable(cliente, $cliente->razon_social);
+    if($arreglo['perfil'] == 23) {
+      $this->template->setVariable('soloLectura', "readonly=''");
+      $this->template->setVariable('usuario', $arreglo['usuario']);
+      $cliente = $this->datos->findClientet($arreglo['usuario']);
+      $this->template->setVariable('cliente', $cliente->razon_social);
     } else {
-      $this->template->setVariable(soloLectura, "");
-      $this->template->setVariable(usuario, "");
-      $this->template->setVariable(cliente, "");
+      $this->template->setVariable('soloLectura', "");
+      $this->template->setVariable('usuario', "");
+      $this->template->setVariable('cliente', "");
     }
 
     $listaAgencias = $this->datos->build_list("clientes", "numero_documento", "razon_social", " WHERE tipo = 4 ");
@@ -37,7 +37,7 @@ class Reporte_doVista {
   }
 
   function mostrarListadoOrdenes($arreglo) {
-    $this->template->loadTemplateFile(COMPONENTS_PATH . 'Reporte_do/views/tmpl/listadoDo.php');
+    $this->template->loadTemplateFile(COMPONENTS_PATH.'Reporte_do/views/tmpl/listadoDo.php');
     $this->template->setVariable('COMODIN', '');
 
     //Datos de Filtro para Exportar a Excel

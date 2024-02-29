@@ -3,27 +3,27 @@ class ReubicacionesVista {
   var $template;
 
 	function ReubicacionesVista() {
-		$this->template = new HTML_Template_IT();
+		$this->template = new HTML_Template_IT(COMPONENTS_PATH);
 	}
 
 
   function filtroReubicaciones($arreglo) {
-		$this->template->loadTemplateFile(COMPONENTS_PATH . 'reubicaciones/views/tmpl/filtroReubicaciones.php');
-		$this->template->setVariable('COMODIN', '');
+		$this->template->loadTemplateFile('reubicaciones/views/tmpl/filtroReubicaciones.php');
+		$this->template->setVariable('COMODIN','');
     
 		$this->template->show();
 	}
 
   function listadoReubicaciones($arreglo) {
-    $this->template->loadTemplateFile(COMPONENTS_PATH . 'reubicaciones/views/tmpl/listadoReubicaciones.php');
-    $this->template->setVariable('COMODIN', '');
+    $this->template->loadTemplateFile('reubicaciones/views/tmpl/listadoReubicaciones.php');
+    $this->template->setVariable('COMODIN','');
 
     //Conservación datos del filtro
-    $this->template->setVariable('nitr',$arreglo[nitr]);
-    $this->template->setVariable('doctter',$arreglo[doctter]);
-    $this->template->setVariable('doasignador',$arreglo[doasignador]);
-    $this->template->setVariable('ubicacionr',$arreglo[ubicacionr]);
-    $this->template->setVariable('referenciar',$arreglo[referenciar]);
+    $this->template->setVariable('nitr',$arreglo['nitr']);
+    $this->template->setVariable('doctter',$arreglo['doctter']);
+    $this->template->setVariable('doasignador',$arreglo['doasignador']);
+    $this->template->setVariable('ubicacionr',$arreglo['ubicacionr']);
+    $this->template->setVariable('referenciar',$arreglo['referenciar']);
     //Inicializa el número de registro
     $n = 0; $tr = count($arreglo['datos']); //Total de Registros
     //Visualiza Listado Solicitado
@@ -32,6 +32,7 @@ class ReubicacionesVista {
       $this->template->setVariable('n', ++$n);
       $this->template->setVariable('nombre_ubicacion', $value['nombre_ubicacion']);
       $this->template->setVariable('codigo', $value['codigo']);
+      $this->template->setVariable('item', $value['item']);
       $this->template->setVariable('doc_cliente', $value['documento']);
       $this->template->setVariable('nombre_cliente', $value['nombre_cliente']);
       $this->template->setVariable('codigo_referencia', $value['codigo_ref']);
@@ -48,8 +49,8 @@ class ReubicacionesVista {
 
   function imprimeListadoOcupacion($arreglo) {
     $ruta = !$arreglo['todos'] ? 'ocupacion/views/tmpl/verListadoOcupacion.php' : 'ocupacion/views/tmpl/verSoloOcupacion.php';
-    $this->template->loadTemplateFile( COMPONENTS_PATH . $ruta );
-    $this->template->setVariable('COMODIN', '');
+    $this->template->loadTemplateFile($ruta);
+    $this->template->setVariable('COMODIN','');
 
     //Valida visualización solo Ubicaciones
     if(!$arreglo['todos']) {
